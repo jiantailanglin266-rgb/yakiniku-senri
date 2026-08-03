@@ -1,26 +1,370 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ============================================================
+   デザインシステム — 焼肉 千里
+   黒 / 金 / 白を基調とした、老舗焼肉店のブランドカラー。
+   ============================================================ */
+@theme {
+  --color-black: #080808;
+  --color-black-soft: #111111;
+  --color-charcoal: #1a1a1a;
+  --color-charcoal-light: #232323;
+  --color-gold: #c7a253;
+  --color-gold-light: #e5ca83;
+  --color-gold-dark: #8f6b28;
+  --color-white: #ffffff;
+  --color-ivory: #f7f3e8;
+  --color-gray: #a7a7a7;
+  --color-gray-dark: #6d6d6d;
+  --color-red-dark: #5f0b0b;
+  --color-ember: #b9381e;
+
+  --font-serif-jp: var(--font-noto-serif-jp), "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --font-sans-jp: var(--font-noto-sans-jp), "Hiragino Sans", "Yu Gothic", sans-serif;
+  --font-display: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+
+  --ease-craft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --breakpoint-xs: 24rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+/* ------------------------------------------------------------
+   ベース
+   ------------------------------------------------------------ */
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    color-scheme: dark;
+    scroll-behavior: smooth;
+    /* 固定ヘッダー分のアンカーオフセット */
+    scroll-padding-top: 5.5rem;
+  }
+
+  html,
+  body {
+    /* 横スクロール防止 */
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  body {
+    background-color: transparent;
+    color: var(--color-ivory);
+    font-family: var(--font-sans-jp);
+    font-feature-settings: "palt";
+    letter-spacing: 0.02em;
+    line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-gold-dark);
+    color: var(--color-white);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold-light);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-serif-jp);
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: 0.06em;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* 印刷用（お品書きの印刷に対応） */
+@media print {
+  :root {
+    color-scheme: light;
+  }
+  body {
+    background: #fff !important;
+    color: #111 !important;
+  }
+  .bg-canvas,
+  .bg-grain,
+  .no-print {
+    display: none !important;
+  }
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.75em;
+    color: #555;
+  }
+}
+
+/* ------------------------------------------------------------
+   処方A — ページ全体を1枚の連続背景に
+   すべてのセクションは background:transparent。境界の色飛びが起きない。
+   ------------------------------------------------------------ */
+.bg-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 60% at 50% -10%, #16110c 0%, rgba(22, 17, 12, 0) 60%),
+    radial-gradient(90% 55% at 110% 32%, #1a120e 0%, rgba(26, 18, 14, 0) 58%),
+    radial-gradient(80% 55% at -10% 70%, #140f0d 0%, rgba(20, 15, 13, 0) 60%),
+    linear-gradient(180deg, #0a0908 0%, #0d0b0a 38%, #100c0a 64%, #080808 100%);
+}
+
+/* 処方B — バンディング除去（SVG fractalNoise を overlay で撹拌） */
+.bg-grain {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+/* ------------------------------------------------------------
+   処方C — つなぎ目を溶かす
+   ------------------------------------------------------------ */
+/* 幅の狭い金の光の帯（実線ボーダーの代わり） */
+.rule-gold {
+  height: 1px;
+  border: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(199, 162, 83, 0.35) 50%,
+    transparent 100%
+  );
+  opacity: 0.7;
+}
+
+/* 濃色セクションの上下 160px 移行帯 */
+.section-bleed {
+  position: relative;
+  isolation: isolate;
+}
+.section-bleed::before {
+  content: "";
+  position: absolute;
+  inset: -160px 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(5, 4, 4, 0) 0%,
+    rgba(5, 4, 4, 0.75) 160px,
+    rgba(5, 4, 4, 0.75) calc(100% - 160px),
+    rgba(5, 4, 4, 0) 100%
+  );
+}
+
+/* ------------------------------------------------------------
+   処方D — 画像を背景に馴染ませる
+   ------------------------------------------------------------ */
+.media-frame {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.media-frame img,
+.media-frame .media-placeholder {
+  filter: saturate(0.92) contrast(1.04) brightness(0.98);
+}
+/* ページ地の色を薄く被せて色温度を統一 */
+.media-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(16, 12, 10, 0.24) 0%, rgba(8, 8, 8, 0.4) 100%);
+  mix-blend-mode: multiply;
+}
+/* 矩形の縁を立たせないマスクフェード */
+.media-soft {
+  -webkit-mask-image:
+    linear-gradient(180deg, transparent 0%, #000 7%, #000 93%, transparent 100%),
+    linear-gradient(90deg, transparent 0%, #000 5%, #000 95%, transparent 100%);
+  mask-image:
+    linear-gradient(180deg, transparent 0%, #000 7%, #000 93%, transparent 100%),
+    linear-gradient(90deg, transparent 0%, #000 5%, #000 95%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+/* プレースホルダー画像（差し替え前の表示） */
+.media-placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(110% 80% at 30% 0%, rgba(143, 107, 40, 0.22) 0%, rgba(143, 107, 40, 0) 62%),
+    radial-gradient(90% 70% at 80% 100%, rgba(185, 56, 30, 0.16) 0%, rgba(185, 56, 30, 0) 60%),
+    linear-gradient(150deg, #16120f 0%, #0d0b0a 55%, #131010 100%);
+}
+
+/* ------------------------------------------------------------
+   処方E — モーション（ゆっくり像を結ぶ）
+   ------------------------------------------------------------ */
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(26px) scale(0.988);
+    filter: blur(7px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+.reveal {
+  animation: reveal 1100ms var(--ease-craft) both;
+  animation-play-state: paused;
+}
+.reveal.is-in {
+  animation-play-state: running;
+}
+.stagger > * {
+  animation-delay: calc(var(--i, 0) * 80ms);
+}
+
+@keyframes ember-rise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.6);
+  }
+  14% {
+    opacity: var(--ember-opacity, 0.7);
+  }
+  72% {
+    opacity: var(--ember-opacity, 0.7);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--ember-drift, 12px), -140px, 0) scale(1);
+  }
+}
+
+@keyframes smoke-drift {
+  0% {
+    opacity: 0;
+    transform: translate3d(-4%, 8%, 0) scale(1.08);
+  }
+  40% {
+    opacity: 0.45;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(4%, -14%, 0) scale(1.24);
+  }
+}
+
+@keyframes marquee-up {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-50%);
+  }
+}
+@keyframes marquee-down {
+  from {
+    transform: translateY(-50%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes scroll-hint {
+  0% {
+    transform: scaleY(0.08);
+    transform-origin: top;
+    opacity: 0.25;
+  }
+  45% {
+    transform: scaleY(1);
+    transform-origin: top;
+    opacity: 1;
+  }
+  46% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+    opacity: 1;
+  }
+  100% {
+    transform: scaleY(0.08);
+    transform-origin: bottom;
+    opacity: 0.25;
+  }
+}
+
+/* ------------------------------------------------------------
+   ユーティリティ
+   ------------------------------------------------------------ */
+.text-gold-gradient {
+  background: linear-gradient(
+    120deg,
+    var(--color-gold-dark) 0%,
+    var(--color-gold-light) 42%,
+    var(--color-gold) 68%,
+    var(--color-gold-light) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.vertical-rl {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+/* Canvas / SVG に頼らない軽量な炭火のにじみ */
+.ember-glow {
+  background: radial-gradient(
+    60% 50% at 50% 100%,
+    rgba(185, 56, 30, 0.34) 0%,
+    rgba(143, 107, 40, 0.18) 38%,
+    rgba(8, 8, 8, 0) 72%
+  );
+}
+
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ------------------------------------------------------------
+   reduced motion — すべてのモーションを無効化（必須）
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
 }

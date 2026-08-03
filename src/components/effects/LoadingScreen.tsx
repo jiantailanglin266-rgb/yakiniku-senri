@@ -1,0 +1,111 @@
+"use client";
+
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { useEffect, useState, useSyncExternalStore } from "react";
+import { store } from "@/data/store";
+
+const SESSION_KEY = "senri:loaded";
+const DURATION_MS = 2000;
+
+/** sessionStorage はクライアント専用のため useSyncExternalStore で読み取ります */
+const noopSubscribe = () => () => {};
+
+function readSeen(): boolean {
+  try {
+    return window.sessionStorage.getItem(SESSION_KEY) === "1";
+  } catch {
+    // sessionStorage が使えない環境ではローディングを出しません
+    return true;
+  }
+}
+
+/**
+ * 初回表示のローディング演出。
+ * - セッション中に一度だけ表示（sessionStorage）
+ * - prefers-reduced-motion では表示しない
+ * - 表示中は背面のスクロールを止める
+ */
+export function LoadingScreen() {
+  const reduced = useReducedMotion();
+  const [dismissed, setDismissed] = useState(false);
+  // サーバー側は「表示済み」として扱い、初期HTMLにローディングを含めません
+  const seen = useSyncExternalStore(noopSubscribe, readSeen, () => true);
+
+  const visible = !reduced && !seen && !dismissed;
+
+  useEffect(() => {
+    if (!visible) return;
+
+    document.body.style.overflow = "hidden";
+    const timer = window.setTimeout(() => {
+      try {
+        window.sessionStorage.setItem(SESSION_KEY, "1");
+      } catch {
+        /* noop */
+      }
+      document.body.style.overflow = "";
+      setDismissed(true);
+    }, DURATION_MS);
+
+    return () => {
+      window.clearTimeout(timer);
+      document.body.style.overflow = "";
+    };
+  }, [visible]);
+
+  return (
+    <AnimatePresence>
+      {visible ? (
+        <motion.div
+          key="loading"
+          role="status"
+          aria-live="polite"
+          aria-label="読み込み中"
+          className="fixed inset-0 z-[100] grid place-items-center bg-black"
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {/* 下部から立ち上がる炭火の光 */}
+          <motion.span
+            aria-hidden="true"
+            className="ember-glow absolute inset-x-0 bottom-0 h-2/3"
+            initial={{ opacity: 0, scaleY: 0.6 }}
+            animate={{ opacity: 1, scaleY: 1 }}
+            transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
+            style={{ transformOrigin: "bottom" }}
+          />
+          {/* 上方向へ流れる薄い煙 */}
+          <motion.span
+            aria-hidden="true"
+            className="absolute bottom-0 left-1/2 size-[520px] -translate-x-1/2 rounded-full blur-3xl"
+            style={{
+              background:
+                "radial-gradient(circle, rgba(199,162,83,0.14) 0%, rgba(167,167,167,0.07) 45%, rgba(8,8,8,0) 72%)",
+            }}
+            initial={{ opacity: 0, y: 80 }}
+            animate={{ opacity: 1, y: -40 }}
+            transition={{ duration: 2, ease: "easeOut" }}
+          />
+
+          <motion.div
+            className="relative text-center"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <p className="font-display text-gold/70 text-[0.6rem] tracking-[0.5em] uppercase">
+              Since {store.founded}
+            </p>
+            <p className="text-gold-gradient font-serif-jp mt-4 text-3xl tracking-[0.3em] sm:text-4xl">
+              {store.name}
+            </p>
+            <p className="font-display text-gold/55 mt-3 text-[0.62rem] tracking-[0.45em] uppercase">
+              {store.nameEn}
+            </p>
+          </motion.div>
+        </motion.div>
+      ) : null}
+    </AnimatePresence>
+  );
+}
