@@ -101,6 +101,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="antialiased">
         {/* 処方A/B — ページ全体で1枚の連続背景。セクション固有背景を持たせない */}
         <div className="bg-canvas" aria-hidden="true" />
+        <div className="bg-ornament" aria-hidden="true" />
         <div className="bg-grain" aria-hidden="true" />
 
         <SkipLink />
