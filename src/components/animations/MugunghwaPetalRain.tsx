@@ -99,8 +99,13 @@ export function MugunghwaPetalRain({
   // モバイルのCTA周辺は、操作の邪魔と負荷を避けるため表示しません。
   if (tier === "mobile" && variant === "cta") return null;
 
+  // 既定は z-0（本文の z-10 より背面）。呼び出し側が z-* を渡した場合は、
+  // 同じ優先度のクラスが2つ並んでCSSの出力順に結果が左右されるのを避けるため、既定を外します。
+  const hasZIndex = className ? /(^|\s)-?z-/.test(className) : false;
+
   const wrapperClass = cn(
-    "pointer-events-none absolute inset-0 z-0 overflow-hidden select-none",
+    "pointer-events-none absolute inset-0 overflow-hidden select-none",
+    hasZIndex ? undefined : "z-0",
     className,
   );
 

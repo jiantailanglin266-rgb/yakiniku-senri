@@ -117,7 +117,7 @@ public/
 ```text
 public/images/
 ├── brand/       logo-senri.webp（ヘッダー・フッターのロゴ／透過）
-├── hero/        hero-main.webp / hero-meat.webp / hero-charcoal.webp
+├── hero/        hero-panel-1.webp / hero-panel-2.webp / hero-panel-3.webp（3枚組）
 ├── movie/       movie-poster.webp
 ├── story/       story-history.webp / story-sauce.webp / story-family.webp
 ├── commitment/  commitment-legacy.webp / -sauce / -momi / -space
@@ -130,7 +130,10 @@ public/images/
 └── common/      page-hero-*.webp（下層ページのヒーロー）/ ogp.png
 ```
 
-- 現在入っているのは、`npm run placeholders` で生成した仮画像です。
+- **ブランドロゴ（`brand/`）とファーストビュー（`hero/`）は本番の画像です。**
+  それ以外は `npm run placeholders` で生成した仮画像なので、順次差し替えてください。
+- `npm run placeholders` は仮画像を上書き再生成します。
+  本番画像に差し替えたものは対象から外してあるため、実行しても消えません。
 - **拡張子を変える場合**（例：`.jpg` にする）は、`src/data/media.ts` の該当行の `src` を書き換えてください。
 - **画像を一時的に外したい場合**は、`src` を空文字 `""` にしてください。
   レイアウトを崩さずにプレースホルダー表示へ切り替わります。
@@ -152,10 +155,17 @@ public/images/
 ヘッダーのロゴはリンク側に `aria-label` があるため `alt=""`（装飾扱い）、
 フッターのロゴは `media.logo.alt` を読み上げます。
 
-### ファーストビューの背景を増減する
+### ファーストビューの3枚組を差し替える
 
-`src/data/media.ts` の `media.hero` 配列に追記・削除するだけです。
-2枚以上ある場合、6.5秒ごとに**クロスフェード**で切り替わり、右下のインジケーターで手動操作もできます。
+ファーストビューは、3枚の写真を横に並べた構成です（`src/components/home/HeroTriptych.tsx`）。
+差し替えるときは `public/images/hero/hero-panel-1〜3.webp` を上書きするか、
+`src/data/media.ts` の `media.hero` 配列の `src` / `alt` を書き換えてください。
+
+- 左から順に並びます。**スマートフォンでは1枚目だけを全面表示**します（3列では細くなりすぎるため）。
+- 枚数を3枚から変える場合は、`HeroTriptych.tsx` のグリッド列数（`sm:grid-cols-3`）も合わせてください。
+- パネルの間の目地は `gap-[3px]` と背景の黒で表現しています。
+- 各パネルはごくゆっくり縮小します（`prefers-reduced-motion` 時は停止）。
+- 写真は縦長（およそ 3:4）を想定しています。横長の写真を入れると左右が大きく切り取られます。
 
 ---
 
@@ -307,7 +317,7 @@ Vercel を想定しています。
 ## 13. 実装済みの主な内容
 
 - ローディング演出（セッション中1回のみ／reduced motion時は非表示）
-- フルスクリーンのファーストビュー（背景クロスフェード／一文字ずつの見出し表示／手動切替）
+- フルスクリーンのファーストビュー（写真3枚組の横並び／一文字ずつの見出し表示）
 - ファーストビュー直下のブランドムービー枠（左右にスクロール連動の縦書き装飾）
 - ブランドストーリー（左右交互レイアウト／背景の大きな英字）
 - こだわり4項目、おすすめメニュー3品、お品書きカテゴリー一覧
