@@ -118,13 +118,13 @@ export const FLOWER_COUNTS: Record<DeviceTier, Record<FlowerDensity, CountSet>> 
     high: { flower: 9, petal: 10, sparkle: 12 },
   },
   mobile: {
-    low: { flower: 3, petal: 3, sparkle: 4 },
-    medium: { flower: 4, petal: 5, sparkle: 6 },
-    high: { flower: 6, petal: 7, sparkle: 8 },
+    low: { flower: 5, petal: 5, sparkle: 6 },
+    medium: { flower: 7, petal: 8, sparkle: 10 },
+    high: { flower: 9, petal: 11, sparkle: 13 },
   },
 };
 
-/** レイヤーの割り当て比率。モバイルは手前レイヤーを持ちません。 */
+/** レイヤーの割り当て比率。画面が小さいほど手前レイヤーを減らします。 */
 const LAYER_WEIGHTS: Record<DeviceTier, [FlowerLayer, number][]> = {
   desktop: [
     ["back", 0.45],
@@ -137,9 +137,9 @@ const LAYER_WEIGHTS: Record<DeviceTier, [FlowerLayer, number][]> = {
     ["front", 0.08],
   ],
   mobile: [
-    ["back", 0.6],
-    ["middle", 0.4],
-    ["front", 0],
+    ["back", 0.5],
+    ["middle", 0.42],
+    ["front", 0.08],
   ],
 };
 
@@ -177,11 +177,21 @@ const LAYER_SPEC: Record<
   },
 };
 
-/** モバイルは全体を小さくして負荷とうるささを抑えます。 */
+/** 画面幅ごとの大きさの倍率。 */
 const TIER_SIZE_SCALE: Record<DeviceTier, number> = {
   desktop: 1,
   tablet: 0.85,
-  mobile: 0.68,
+  mobile: 0.85,
+};
+
+/**
+ * 画面が小さいほど花1輪あたりの面積が小さく、存在感が出ません。
+ * スマートフォンだけ透明度を上げて見えやすくします（上限0.58で頭打ち）。
+ */
+const TIER_OPACITY_SCALE: Record<DeviceTier, number> = {
+  desktop: 1,
+  tablet: 1,
+  mobile: 1.35,
 };
 
 /* ------------------------------------------------------------------
@@ -271,7 +281,7 @@ export function buildFallingFlowers({
     ["sparkle", showSparkles ? counts.sparkle : 0],
   ];
 
-  // モバイルは「大きな花は1〜2個まで」。大きめに割り当てた花の数を数えて抑制します。
+  // モバイルでも大きな花を出しすぎないよう、上限を設けます。
   let largeOnMobile = 0;
 
   for (const [type, count] of plan) {
@@ -293,8 +303,8 @@ export function buildFallingFlowers({
       if (type === "petal") size *= 0.55;
 
       if (tier === "mobile" && type === "flower") {
-        if (size > 26) {
-          if (largeOnMobile >= 2) size = 18 + rand() * 6;
+        if (size > 32) {
+          if (largeOnMobile >= 3) size = 22 + rand() * 8;
           else largeOnMobile += 1;
         }
       }
@@ -312,7 +322,7 @@ export function buildFallingFlowers({
         delay: -rand() * duration,
         swayDistance: between(rand, spec.sway),
         rotation: (120 + rand() * 240) * (rand() > 0.5 ? 1 : -1),
-        opacity: between(rand, spec.opacity),
+        opacity: Math.min(0.58, between(rand, spec.opacity) * TIER_OPACITY_SCALE[tier]),
         // 光粒はぼかさない（フィルタ数を減らす）
         blur: type === "sparkle" ? 0 : Math.round(blurBase * 10) / 10,
         layer,
