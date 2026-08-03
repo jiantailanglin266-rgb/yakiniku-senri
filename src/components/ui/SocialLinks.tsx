@@ -1,16 +1,31 @@
-import type { ComponentType, SVGProps } from "react";
+import type { ComponentType } from "react";
 import { Utensils, MapPin, Music2 } from "lucide-react";
 import { FacebookIcon, InstagramIcon, XIcon } from "./BrandIcons";
 import { socialLinks } from "@/data/site";
 import { cn } from "@/lib/utils";
 
-const icons: Record<string, ComponentType<SVGProps<SVGSVGElement>>> = {
+type IconComponentProps = {
+  className?: string;
+  "aria-hidden"?: boolean | "true" | "false";
+};
+
+const icons: Record<string, ComponentType<IconComponentProps>> = {
   instagram: InstagramIcon,
   facebook: FacebookIcon,
   twitter: XIcon,
   utensils: Utensils,
   map: MapPin,
   music: Music2,
+};
+
+/**
+ * currentColor で描く lucide アイコンのブランドカラー。
+ * ブランドアイコン（Instagram / Facebook / X）は自身で色を持つため、ここには含めません。
+ */
+const iconColors: Record<string, string> = {
+  utensils: "text-[#ff8a00]", // 食べログ（近似色）
+  map: "text-[#34a853]", // Google マップ
+  music: "text-gold",
 };
 
 type Props = {
@@ -36,7 +51,8 @@ export function SocialLinks({ className, size = "sm", only }: Props) {
               aria-label={`${link.label}（外部サイトを新しいタブで開きます）`}
               title={link.description}
               className={cn(
-                "text-gray hover:text-gold grid place-items-center rounded-full transition-colors duration-500",
+                "grid place-items-center rounded-full opacity-90 transition duration-500 hover:opacity-100",
+                iconColors[link.icon],
                 size === "sm" ? "size-11" : "size-12",
               )}
             >
