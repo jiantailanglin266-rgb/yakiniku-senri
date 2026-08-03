@@ -91,6 +91,7 @@ src/
 │   ├── page/             下層ページ共通（ヒーロー・関連リンク・FAQ）
 │   ├── legal/            法的ページ共通レイアウト
 │   ├── effects/          ローディング・火の粉・煙・ページ遷移
+│   ├── animations/       木槿（ムクゲ）の降下アニメーション
 │   └── ui/               ボタン・見出し・画像・縦書きなどの汎用パーツ
 ├── data/                 ★ 編集するのは基本ここだけ
 │   ├── store.ts          店舗情報（住所・電話・営業時間・定休日）
@@ -319,6 +320,36 @@ Vercel を想定しています。
 - 濃色セクションは上下160pxの移行帯（`.section-bleed`）で境界を溶かしています
 - 全画像に共通のカラーグレードとマスクフェードを適用し、矩形の縁を立たせません
 - 入場アニメーションは duration 1100ms / `cubic-bezier(.22,1,.36,1)` / スタッガー80ms に統一
+
+### 木槿（ムクゲ）の降下アニメーション
+
+`src/components/animations/` に、木槿の花が上部から下部へ舞い落ちる装飾レイヤーがあります。
+
+```tsx
+<section className="relative">
+  <MugunghwaPetalRain density="medium" variant="hero" />
+  <div className="relative z-10">{/* 本文 */}</div>
+</section>
+```
+
+| props          | 既定値      | 内容                                                         |
+| -------------- | ----------- | ------------------------------------------------------------ |
+| `density`      | `"medium"`  | `low` / `medium` / `high`。表示数                            |
+| `variant`      | `"section"` | `hero` / `section` / `cta`。`cta` は花を左右の外側へ寄せます |
+| `showFlowers`  | `true`      | 花全体を出すか                                               |
+| `showPetals`   | `true`      | 花びらを出すか                                               |
+| `showSparkles` | `true`      | 金の光粒を出すか                                             |
+
+- **本文は必ず `relative z-10` 以上に置いてください。** 装飾は `z-0` に入るため、本文・ボタン・ナビゲーションの背面に必ず回ります（`pointer-events: none`）。
+- 現在の設置箇所：ヒーロー（medium）／ストーリー（low）／オーナー紹介（low）／予約CTA（low）。
+  文章量の多いお品書き・アクセス・FAQ には設置していません。
+- **表示数・速度・色の調整は `src/components/animations/fallingFlowerConfig.ts` の定数だけで行えます。**
+  - 表示数：`FLOWER_COUNTS`（画面幅×densityごとに明示）
+  - 落下速度・大きさ・透明度・ぼかし・揺れ幅：`LAYER_SPEC`（奥 / 中間 / 手前の3層）
+  - 色：`FLOWER_PALETTE` と出現比率 `VARIANT_WEIGHTS`
+- 花の配置は固定シードの疑似乱数で決まるため、サーバーとクライアントで必ず一致します
+  （`Math.random()` をレンダー時に呼びません）。
+- `prefers-reduced-motion` 時は落下・回転・点滅をすべて停止し、静止した花を数輪だけ表示します。
 
 ---
 

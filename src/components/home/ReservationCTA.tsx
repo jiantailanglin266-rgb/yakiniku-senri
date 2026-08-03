@@ -1,4 +1,5 @@
 import { Clock, MapPin } from "lucide-react";
+import { MugunghwaPetalRain } from "@/components/animations/MugunghwaPetalRain";
 import { FireParticleLayer } from "@/components/effects/FireParticleLayer";
 import { LinkButton } from "@/components/ui/Button";
 import { ReservationButton } from "@/components/ui/ReservationButton";
@@ -11,9 +12,10 @@ export function ReservationCTA() {
       aria-labelledby="reservation-heading"
       className="section-bleed relative overflow-hidden py-24 sm:py-32"
     >
+      <MugunghwaPetalRain density="low" variant="cta" showPetals={false} />
       <FireParticleLayer intensity="soft" />
 
-      <div className="relative mx-auto max-w-3xl px-5 text-center sm:px-8">
+      <div className="relative z-10 mx-auto max-w-3xl px-5 text-center sm:px-8">
         <Reveal>
           <p className="font-display text-gold text-[0.68rem] tracking-[0.46em] uppercase">
             Reservation

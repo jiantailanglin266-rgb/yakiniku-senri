@@ -1,3 +1,4 @@
+import { MugunghwaPetalRain } from "@/components/animations/MugunghwaPetalRain";
 import { Figure } from "@/components/ui/Figure";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -8,7 +9,9 @@ import { cn } from "@/lib/utils";
 export function StorySection({ showCta = true }: { showCta?: boolean } = {}) {
   return (
     <section aria-labelledby="story-heading" className="relative py-20 sm:py-28">
-      <div className="mx-auto max-w-[100rem] px-5 sm:px-8">
+      <MugunghwaPetalRain density="low" variant="section" showSparkles={false} />
+
+      <div className="relative z-10 mx-auto max-w-[100rem] px-5 sm:px-8">
         <SectionHeading
           id="story-heading"
           en="STORY"

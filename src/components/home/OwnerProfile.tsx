@@ -1,3 +1,4 @@
+import { MugunghwaPetalRain } from "@/components/animations/MugunghwaPetalRain";
 import { Figure } from "@/components/ui/Figure";
 import { LinkButton } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
@@ -38,7 +39,9 @@ function SoundWave() {
 export function OwnerProfile() {
   return (
     <section aria-labelledby="owner-heading" className="relative overflow-hidden py-20 sm:py-28">
-      <div className="relative mx-auto max-w-[100rem] px-5 sm:px-8">
+      <MugunghwaPetalRain density="low" variant="section" />
+
+      <div className="relative z-10 mx-auto max-w-[100rem] px-5 sm:px-8">
         <SoundWave />
 
         <div className="grid items-center gap-12 lg:grid-cols-[0.85fr_1fr] lg:gap-16">
