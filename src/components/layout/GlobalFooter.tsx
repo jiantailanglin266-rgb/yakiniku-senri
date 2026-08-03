@@ -1,5 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ExternalLink, MapPin, Phone } from "lucide-react";
+import { media } from "@/data/media";
 import { mainNav, utilityNav } from "@/data/navigation";
 import { googleMapsUrl } from "@/data/site";
 import { store } from "@/data/store";
@@ -16,10 +18,13 @@ export function GlobalFooter() {
         {/* 上部フッター */}
         <div className="grid gap-12 py-16 lg:grid-cols-[1.15fr_1fr_1fr] lg:gap-16 lg:py-20">
           <div>
-            <p className="font-serif-jp text-ivory text-2xl tracking-[0.22em]">{store.name}</p>
-            <p className="font-display text-gold/75 mt-2 text-[0.62rem] tracking-[0.42em] uppercase">
-              {store.nameEn}
-            </p>
+            <Image
+              src={media.logo.src}
+              alt={media.logo.alt}
+              width={media.logo.width}
+              height={media.logo.height}
+              className="h-20 w-auto"
+            />
             <p className="text-gray mt-6 max-w-sm text-[0.82rem] leading-[2]">
               {store.founded}
               年創業。世田谷・上馬で六十余年、先代より受け継いだ秘伝のタレとともに、変わらない味をお届けしています。

@@ -30,6 +30,13 @@ const img = (src: string, alt: string, width = 1600, height = 1067): Media => ({
 });
 
 export const media = {
+  /**
+   * ブランドロゴ（ヘッダー・フッターで使用）。
+   * 差し替える場合は、透過PNG / WebP を同じパスへ上書きしてください。
+   * 縦横比が変わるときは width / height も合わせて更新してください。
+   */
+  logo: img("/images/brand/logo-senri.webp", "焼肉 千里 since 1965", 514, 303),
+
   /** ファーストビュー背景（クロスフェードで切り替わります。増減自由） */
   hero: [
     img("/images/hero/hero-main.webp", "炭火で焼かれる焼肉 千里の看板メニュー", 1920, 1280),

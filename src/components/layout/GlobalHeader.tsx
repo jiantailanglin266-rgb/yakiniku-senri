@@ -1,11 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { DesktopNavigation } from "./DesktopNavigation";
 import { MobileNavigation } from "./MobileNavigation";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 import { ReservationButton } from "@/components/ui/ReservationButton";
+import { media } from "@/data/media";
 import { store } from "@/data/store";
 import { cn } from "@/lib/utils";
 
@@ -40,14 +42,15 @@ export function GlobalHeader() {
           aria-label={`${store.name} トップページ`}
         >
           <span aria-hidden="true" className="bg-gold/45 hidden h-9 w-px sm:block" />
-          <span className="flex flex-col leading-none">
-            <span className="font-serif-jp text-ivory text-lg tracking-[0.22em] sm:text-xl">
-              {store.name}
-            </span>
-            <span className="font-display text-gold/75 mt-1.5 text-[0.55rem] tracking-[0.42em] uppercase sm:text-[0.6rem]">
-              {store.nameEn}
-            </span>
-          </span>
+          {/* リンク側に aria-label があるため、画像は装飾扱い（alt="") にして二重読み上げを防ぎます */}
+          <Image
+            src={media.logo.src}
+            alt=""
+            width={media.logo.width}
+            height={media.logo.height}
+            priority
+            className="h-11 w-auto sm:h-14"
+          />
         </Link>
 
         <DesktopNavigation />
