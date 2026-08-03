@@ -3,7 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { BookOpenText, MapPin } from "lucide-react";
 import { HeroCopy } from "./HeroCopy";
-import { HeroSlider } from "./HeroSlider";
+import { HeroTriptych } from "./HeroTriptych";
 import { MugunghwaPetalRain } from "@/components/animations/MugunghwaPetalRain";
 import { ScrollIndicator } from "@/components/effects/ScrollIndicator";
 import { FireParticleLayer } from "@/components/effects/FireParticleLayer";
@@ -19,7 +19,7 @@ export function HeroSection() {
       aria-label="焼肉 千里 メインビジュアル"
       className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden"
     >
-      <HeroSlider slides={media.hero} />
+      <HeroTriptych panels={media.hero} />
       <MugunghwaPetalRain density="medium" variant="hero" className="z-[4]" />
       <FireParticleLayer intensity="soft" className="z-[5]" />
 

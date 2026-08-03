@@ -37,11 +37,15 @@ export const media = {
    */
   logo: img("/images/brand/logo-senri.webp", "焼肉 千里 since 1965", 514, 303),
 
-  /** ファーストビュー背景（クロスフェードで切り替わります。増減自由） */
+  /**
+   * ファーストビューの3枚組（左から順に横並びで表示）。
+   * スマートフォンでは1枚目のみを表示します。
+   * 枚数を変える場合は HeroTriptych 側のグリッド列数も合わせてください。
+   */
   hero: [
-    img("/images/hero/hero-main.webp", "炭火で焼かれる焼肉 千里の看板メニュー", 1920, 1280),
-    img("/images/hero/hero-meat.webp", "秘伝のタレをもみ込んだ厳選の肉", 1920, 1280),
-    img("/images/hero/hero-charcoal.webp", "赤々と熾る炭火", 1920, 1280),
+    img("/images/hero/hero-panel-1.webp", "炭火の網の上で焼かれる、焼肉 千里の肉", 632, 801),
+    img("/images/hero/hero-panel-2.webp", "きめ細かなサシの入った厳選の赤身肉", 680, 801),
+    img("/images/hero/hero-panel-3.webp", "雲丹とキャビアを添えた一品", 610, 801),
   ],
 
   /** ブランドムービーのポスター画像 */

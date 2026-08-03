@@ -67,10 +67,6 @@ function svg({ width, height, label, sub, seed = 0 }) {
 
 /** [出力パス, 幅, 高さ, ラベル, サブラベル] */
 const targets = [
-  ["images/hero/hero-main.webp", 1920, 1280, "HERO", "hero-main"],
-  ["images/hero/hero-meat.webp", 1920, 1280, "HERO", "hero-meat"],
-  ["images/hero/hero-charcoal.webp", 1920, 1280, "HERO", "hero-charcoal"],
-
   ["images/movie/movie-poster.webp", 1920, 1080, "MOVIE", "movie-poster"],
 
   ["images/story/story-history.webp", 1600, 1200, "STORY", "story-history"],
