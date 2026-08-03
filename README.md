@@ -116,6 +116,7 @@ public/
 
 ```text
 public/images/
+├── brand/       logo-senri.webp（ヘッダー・フッターのロゴ／透過）
 ├── hero/        hero-main.webp / hero-meat.webp / hero-charcoal.webp
 ├── movie/       movie-poster.webp
 ├── story/       story-history.webp / story-sauce.webp / story-family.webp
@@ -136,6 +137,20 @@ public/images/
 - 推奨形式は WebP または AVIF。next/image が自動で最適化・遅延読み込みを行います。
 - ファーストビューの1枚目のみ `priority` が付いています（LCP対策）。
 - ファビコン等は `public/favicon.ico` / `public/icon.png` / `public/apple-touch-icon.png` を差し替えてください。
+
+### ブランドロゴの差し替え
+
+ヘッダーとフッターのロゴは `public/images/brand/logo-senri.webp`（透過）です。
+差し替えるときは同名で上書きし、**縦横比が変わる場合は `src/data/media.ts` の `media.logo` の
+`width` / `height` も実寸に合わせて更新してください**（レイアウトのずれを防ぐため）。
+
+表示サイズはCSSで制御しています。
+
+- ヘッダー … `src/components/layout/GlobalHeader.tsx` の `h-11 sm:h-14`
+- フッター … `src/components/layout/GlobalFooter.tsx` の `h-20`
+
+ヘッダーのロゴはリンク側に `aria-label` があるため `alt=""`（装飾扱い）、
+フッターのロゴは `media.logo.alt` を読み上げます。
 
 ### ファーストビューの背景を増減する
 
