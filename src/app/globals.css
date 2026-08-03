@@ -89,6 +89,7 @@
     color: #111 !important;
   }
   .bg-canvas,
+  .bg-ornament,
   .bg-grain,
   .no-print {
     display: none !important;
@@ -107,13 +108,35 @@
 .bg-canvas {
   position: fixed;
   inset: 0;
-  z-index: -2;
+  z-index: -3;
   pointer-events: none;
   background:
+    /* 金の光だまり — 対角に2点だけ置いて、金の気配を全体に回す */
+    radial-gradient(72% 52% at 10% 2%, rgba(199, 162, 83, 0.1) 0%, rgba(199, 162, 83, 0) 58%),
+    radial-gradient(64% 46% at 93% 90%, rgba(199, 162, 83, 0.07) 0%, rgba(199, 162, 83, 0) 60%),
+    /* 炭火の赤 — 右上に深い緋色、足元に熾火の温度。どちらも「うっすら」 */
+    radial-gradient(104% 70% at 80% 6%, rgba(95, 11, 11, 0.22) 0%, rgba(95, 11, 11, 0) 62%),
+    radial-gradient(92% 58% at 50% 106%, rgba(185, 56, 30, 0.13) 0%, rgba(185, 56, 30, 0) 60%),
+    /* 以下は既存の地の色 */
     radial-gradient(120% 60% at 50% -10%, #16110c 0%, rgba(22, 17, 12, 0) 60%),
     radial-gradient(90% 55% at 110% 32%, #1a120e 0%, rgba(26, 18, 14, 0) 58%),
     radial-gradient(80% 55% at -10% 70%, #140f0d 0%, rgba(20, 15, 13, 0) 60%),
     linear-gradient(180deg, #0a0908 0%, #0d0b0a 38%, #100c0a 64%, #080808 100%);
+}
+
+/* 処方A2 — 金の地紋（七宝つなぎ）
+   画面中央は完全に抜き、周縁だけに現れる「額装」として効かせる。
+   本文が乗る中央帯には一切かからないので、可読性は落ちない。 */
+.bg-ornament {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cg fill='none' stroke='%23c7a253' stroke-width='0.9' stroke-opacity='0.5'%3E%3Ccircle cx='0' cy='0' r='30'/%3E%3Ccircle cx='60' cy='0' r='30'/%3E%3Ccircle cx='0' cy='60' r='30'/%3E%3Ccircle cx='60' cy='60' r='30'/%3E%3Ccircle cx='30' cy='30' r='30'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 88px 88px;
+  -webkit-mask-image: radial-gradient(116% 88% at 50% 50%, transparent 34%, #000 100%);
+  mask-image: radial-gradient(116% 88% at 50% 50%, transparent 34%, #000 100%);
 }
 
 /* 処方B — バンディング除去（SVG fractalNoise を overlay で撹拌） */
@@ -126,6 +149,31 @@
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 200px 200px;
+}
+
+/* ------------------------------------------------------------
+   SNSアイコン — Instagram のブランドグラデーション
+   SVG の <linearGradient id> は同一ページに複数置くと id が重複するため、
+   グラデーションは CSS の背景、ロゴの形は mask で表現しています。
+   ------------------------------------------------------------ */
+.icon-instagram {
+  display: inline-block;
+  background: radial-gradient(
+    circle at 30% 107%,
+    #fdf497 0%,
+    #fdf497 5%,
+    #fd5949 45%,
+    #d6249f 60%,
+    #285aeb 90%
+  );
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9'%3E%3Crect x='1.6' y='1.6' width='20.8' height='20.8' rx='5.8'/%3E%3Ccircle cx='12' cy='12' r='4.8'/%3E%3Ccircle cx='18' cy='6' r='1.15' fill='%23000' stroke='none'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9'%3E%3Crect x='1.6' y='1.6' width='20.8' height='20.8' rx='5.8'/%3E%3Ccircle cx='12' cy='12' r='4.8'/%3E%3Ccircle cx='18' cy='6' r='1.15' fill='%23000' stroke='none'/%3E%3C/svg%3E");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
 }
 
 /* ------------------------------------------------------------
