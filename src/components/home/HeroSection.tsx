@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { BookOpenText, MapPin } from "lucide-react";
 import { HeroCopy } from "./HeroCopy";
 import { HeroSlider } from "./HeroSlider";
+import { MugunghwaPetalRain } from "@/components/animations/MugunghwaPetalRain";
 import { ScrollIndicator } from "@/components/effects/ScrollIndicator";
 import { FireParticleLayer } from "@/components/effects/FireParticleLayer";
 import { LinkButton } from "@/components/ui/Button";
@@ -19,6 +20,7 @@ export function HeroSection() {
       className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden"
     >
       <HeroSlider slides={media.hero} />
+      <MugunghwaPetalRain density="medium" variant="hero" className="z-[4]" />
       <FireParticleLayer intensity="soft" className="z-[5]" />
 
       <div className="relative z-10 mx-auto w-full max-w-[100rem] px-5 pb-32 sm:px-8 sm:pb-36 md:pb-28">
