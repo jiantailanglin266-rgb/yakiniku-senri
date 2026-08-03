@@ -1,0 +1,102 @@
+{
+  "steps": {
+    "service": "Services",
+    "staff": "Staff",
+    "datetime": "Date & time",
+    "details": "Your details",
+    "confirm": "Review",
+    "done": "Done"
+  },
+  "service": {
+    "title": "Choose your services",
+    "duration": "About {minutes} min",
+    "selected": "Selected",
+    "select": "Select",
+    "remove": "Remove",
+    "empty": "No services are available to book online right now",
+    "total": "Total",
+    "totalDuration": "Total time"
+  },
+  "staff": {
+    "title": "Choose a staff member",
+    "anyone": "No preference",
+    "anyoneNote": "We will assign an available staff member",
+    "designationFee": "Request fee {amount}",
+    "select": "Choose"
+  },
+  "datetime": {
+    "title": "Choose a date and time",
+    "previousWeek": "Previous week",
+    "nextWeek": "Next week",
+    "noSlots": "No availability on this day",
+    "closed": "Closed",
+    "selectDate": "Select a date",
+    "availableCount": "{count} slots"
+  },
+  "details": {
+    "title": "Your details",
+    "name": "Name",
+    "nameKana": "Reading",
+    "phone": "Phone",
+    "email": "Email",
+    "emailHelp": "We will send your booking confirmation here",
+    "note": "Requests or notes",
+    "notePlaceholder": "Let us know about allergies or anything else",
+    "required": "Required",
+    "agreeTerms": "I agree to the terms of service",
+    "agreeCancellation": "I agree to the cancellation policy",
+    "agreePrivacy": "I agree to the privacy policy",
+    "viewPolicy": "Read"
+  },
+  "confirm": {
+    "title": "Review your booking",
+    "store": "Store",
+    "datetime": "Date & time",
+    "services": "Services",
+    "staff": "Staff",
+    "customer": "Name",
+    "contact": "Contact",
+    "total": "Estimated total",
+    "note": "Notes",
+    "submit": "Confirm booking",
+    "submitting": "Confirming…",
+    "edit": "Change",
+    "priceNote": "Prices shown include tax and are an estimate. The final amount may differ based on the service performed."
+  },
+  "done": {
+    "title": "Your booking is confirmed",
+    "titlePending": "We received your request",
+    "reference": "Reference",
+    "pendingNote": "The salon will review your request and confirm separately. Your booking is not confirmed yet.",
+    "confirmedNote": "A confirmation email is on its way. We look forward to seeing you.",
+    "noEmailNote": "No email address was provided, so no confirmation email will be sent. Please keep your reference number.",
+    "backToStore": "Back to the store page"
+  },
+  "cancellation": {
+    "title": "Cancellation policy",
+    "deadline": "You may cancel or change up to {hours} hours before your appointment"
+  },
+  "errors": {
+    "slotTaken": "Sorry — that time was just taken by another booking. Please choose a different slot.",
+    "outsideHours": "That time is outside opening hours",
+    "cutoffPassed": "Bookings for that time have closed",
+    "tooFar": "That date is beyond the booking window",
+    "staffUnavailable": "The chosen staff member is not available then",
+    "resourceUnavailable": "No facilities are free at that time",
+    "validation": "Please check your details",
+    "unexpected": "Something went wrong. Please try again shortly.",
+    "rateLimited": "Too many requests. Please wait a moment and try again."
+  },
+  "store": {
+    "hours": "Opening hours",
+    "closedDays": "Closed",
+    "address": "Address",
+    "phone": "Phone",
+    "access": "Getting here",
+    "bookNow": "Book online",
+    "notAcceptingOnline": "Online booking is currently unavailable"
+  },
+  "demo": {
+    "banner": "This is a fictional demo store. It does not exist."
+  }
+}

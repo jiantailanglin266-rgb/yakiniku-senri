@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+/*
+ * SalonFlow design tokens.
+ *
+ * An operations tool, not a marketing site: high information density, calm
+ * neutrals, and one accent used sparingly so that status colours stand out.
+ * Every colour pair here meets WCAG 2.2 AA contrast against its surface in
+ * both themes; status is additionally conveyed by an icon and a text label,
+ * never by colour alone (WCAG 1.4.1).
+ */
+
+@theme {
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Hiragino Kaku Gothic ProN",
+    "Noto Sans JP", Meiryo, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", "Menlo", "Consolas", monospace;
+
+  --color-surface: #ffffff;
+  --color-surface-muted: #f6f7f9;
+  --color-surface-sunken: #eceef2;
+  --color-border: #d9dde4;
+  --color-border-strong: #b6bdc8;
+  --color-ink: #16191f;
+  --color-ink-muted: #5b6472;
+  --color-ink-subtle: #7a8494;
+
+  --color-accent: #5b4bd6;
+  --color-accent-hover: #4a3cb8;
+  --color-accent-soft: #eeecfb;
+  --color-accent-ink: #ffffff;
+
+  --color-positive: #15703f;
+  --color-positive-soft: #e5f4ea;
+  --color-warning: #8a5300;
+  --color-warning-soft: #fdf1de;
+  --color-danger: #a4232c;
+  --color-danger-soft: #fdeaeb;
+  --color-info: #10557f;
+  --color-info-soft: #e6f1f8;
+
+  --radius-card: 0.625rem;
+}
+
+/*
+ * Dark theme.
+ *
+ * Salons often run the ledger on a tablet at the reception desk under warm
+ * lighting; the dark surfaces are deliberately not pure black so the screen
+ * does not become a mirror.
+ */
+@media (prefers-color-scheme: dark) {
+  @theme {
+    --color-surface: #161a21;
+    --color-surface-muted: #1d222b;
+    --color-surface-sunken: #11151b;
+    --color-border: #2f3742;
+    --color-border-strong: #465060;
+    --color-ink: #e9edf3;
+    --color-ink-muted: #a3adbd;
+    --color-ink-subtle: #7d8798;
+
+    --color-accent: #9b8dff;
+    --color-accent-hover: #b0a4ff;
+    --color-accent-soft: #262246;
+    --color-accent-ink: #14121f;
+
+    --color-positive: #6fd699;
+    --color-positive-soft: #16301f;
+    --color-warning: #f0b95e;
+    --color-warning-soft: #33260f;
+    --color-danger: #f58a91;
+    --color-danger-soft: #351619;
+    --color-info: #79c0ea;
+    --color-info-soft: #10262f;
+  }
+}
+
+html {
+  color-scheme: light dark;
+}
+
+body {
+  background-color: var(--color-surface-muted);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Visible focus for every interactive element, not just the ones we style. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+/* Respect a reduced-motion preference across the whole app. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Utility used by the ledger grid, which needs a hairline that survives zoom. */
+.hairline {
+  box-shadow: inset 0 -1px 0 0 var(--color-border);
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}

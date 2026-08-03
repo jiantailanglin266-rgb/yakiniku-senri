@@ -1,0 +1,102 @@
+{
+  "steps": {
+    "service": "メニュー選択",
+    "staff": "スタッフ選択",
+    "datetime": "日時選択",
+    "details": "お客様情報",
+    "confirm": "内容確認",
+    "done": "完了"
+  },
+  "service": {
+    "title": "メニューを選んでください",
+    "duration": "所要時間 約{minutes}分",
+    "selected": "選択中",
+    "select": "選ぶ",
+    "remove": "外す",
+    "empty": "現在オンラインで予約できるメニューがありません",
+    "total": "合計",
+    "totalDuration": "合計所要時間"
+  },
+  "staff": {
+    "title": "担当者を選んでください",
+    "anyone": "指名なし（空いているスタッフ）",
+    "anyoneNote": "ご来店時に担当が決まります",
+    "designationFee": "指名料 {amount}",
+    "select": "この担当者にする"
+  },
+  "datetime": {
+    "title": "日時を選んでください",
+    "previousWeek": "前の週",
+    "nextWeek": "次の週",
+    "noSlots": "この日は空きがありません",
+    "closed": "休業日",
+    "selectDate": "日付を選択",
+    "availableCount": "空き {count} 枠"
+  },
+  "details": {
+    "title": "お客様情報を入力してください",
+    "name": "お名前",
+    "nameKana": "フリガナ",
+    "phone": "電話番号",
+    "email": "メールアドレス",
+    "emailHelp": "ご予約の確認メールをお送りします",
+    "note": "ご要望・ご連絡事項",
+    "notePlaceholder": "アレルギーやご希望があればご記入ください",
+    "required": "必須",
+    "agreeTerms": "利用規約に同意します",
+    "agreeCancellation": "キャンセルポリシーに同意します",
+    "agreePrivacy": "個人情報の取り扱いに同意します",
+    "viewPolicy": "内容を読む"
+  },
+  "confirm": {
+    "title": "この内容で予約します",
+    "store": "店舗",
+    "datetime": "日時",
+    "services": "メニュー",
+    "staff": "担当",
+    "customer": "お名前",
+    "contact": "ご連絡先",
+    "total": "お支払い予定額",
+    "note": "ご要望",
+    "submit": "この内容で予約する",
+    "submitting": "予約を確定しています…",
+    "edit": "修正する",
+    "priceNote": "表示金額は税込の目安です。当日の施術内容により変わる場合があります。"
+  },
+  "done": {
+    "title": "ご予約を承りました",
+    "titlePending": "ご予約リクエストを受け付けました",
+    "reference": "予約番号",
+    "pendingNote": "店舗が内容を確認のうえ、あらためて確定のご連絡をいたします。この時点ではまだ予約は確定しておりません。",
+    "confirmedNote": "確認メールをお送りしました。ご来店をお待ちしております。",
+    "noEmailNote": "メールアドレスのご登録がないため、確認メールは送信されません。予約番号をお控えください。",
+    "backToStore": "店舗ページへ戻る"
+  },
+  "cancellation": {
+    "title": "キャンセルポリシー",
+    "deadline": "ご来店の{hours}時間前までキャンセル・変更を承ります"
+  },
+  "errors": {
+    "slotTaken": "申し訳ありません。選択された時間はほかの方のご予約が入りました。別の時間をお選びください。",
+    "outsideHours": "営業時間外の時間帯です",
+    "cutoffPassed": "この時間の受付は終了しました",
+    "tooFar": "予約を受け付けられる期間を超えています",
+    "staffUnavailable": "選択された担当者はその時間に対応できません",
+    "resourceUnavailable": "設備に空きがありません",
+    "validation": "入力内容をご確認ください",
+    "unexpected": "エラーが発生しました。時間をおいて再度お試しください。",
+    "rateLimited": "アクセスが集中しています。少し時間をおいてお試しください。"
+  },
+  "store": {
+    "hours": "営業時間",
+    "closedDays": "定休日",
+    "address": "住所",
+    "phone": "電話番号",
+    "access": "アクセス",
+    "bookNow": "ネット予約する",
+    "notAcceptingOnline": "現在オンライン予約を受け付けていません"
+  },
+  "demo": {
+    "banner": "これはデモ用の架空の店舗です。実在の店舗ではありません。"
+  }
+}

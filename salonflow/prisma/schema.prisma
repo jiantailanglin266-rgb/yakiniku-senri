@@ -1,0 +1,2486 @@
+// ---------------------------------------------------------------------------
+// SalonFlow — data model
+//
+// Conventions applied throughout this schema:
+//
+//   * Money is stored as Int in the currency's minor unit (JPY: 1 = 1 yen).
+//     Floating point is never used for money.
+//   * All timestamps are stored as `timestamptz` in UTC. Conversion to the
+//     store's timezone happens at render time only.
+//   * Business rows carry `organizationId` (tenant root) and, where the record
+//     belongs to a single store, `storeId`. The tenant guard in
+//     `src/server/db/tenant.ts` injects these on every query.
+//   * `deletedAt` marks logical deletion. `version` supports optimistic
+//     concurrency for records edited by multiple operators.
+//   * Double-booking is prevented by PostgreSQL exclusion constraints added in
+//     migration SQL — see docs/PHASE0_DESIGN.md §7.
+// ---------------------------------------------------------------------------
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ===========================================================================
+// Enums
+// ===========================================================================
+
+enum Locale {
+  ja
+  en
+  zh_Hans
+  zh_Hant
+  ko
+}
+
+enum IndustryType {
+  hair
+  barber
+  nail
+  eyelash
+  esthetic
+  relaxation
+  bodycare
+  personal
+  mixed
+}
+
+enum TenantStatus {
+  active
+  trial
+  suspended
+  closed
+}
+
+enum EmploymentType {
+  full_time
+  part_time
+  contract
+  freelance
+  trainee
+}
+
+enum Gender {
+  female
+  male
+  other
+  undisclosed
+}
+
+/// Lifecycle of an appointment. Transitions are validated server-side by
+/// src/server/modules/appointments/state-machine.ts
+enum AppointmentStatus {
+  pending
+  confirmed
+  checked_in
+  in_service
+  completed
+  cancelled
+  no_show
+}
+
+/// How the appointment entered the system.
+enum AppointmentSource {
+  public_web
+  phone
+  walk_in
+  next_visit
+  staff_entry
+  external
+  imported
+}
+
+/// Why a staff member's time is occupied. Rows with kind != service have no
+/// appointment attached but still participate in the exclusion constraint,
+/// so a break or a manual block reliably prevents bookings.
+enum StaffSlotKind {
+  service
+  break_time
+  block
+  time_off
+}
+
+enum ResourceKind {
+  chair
+  shampoo_stand
+  nail_table
+  bed
+  private_room
+  equipment
+  parking
+  space
+  other
+}
+
+enum ShiftType {
+  work
+  off
+  holiday
+  paid_leave
+  training
+}
+
+enum TimeOffStatus {
+  requested
+  approved
+  rejected
+  cancelled
+}
+
+/// Japanese consumption tax handling.
+enum TaxCategory {
+  standard // 標準税率 (10%)
+  reduced // 軽減税率 (8%)
+  exempt // 非課税
+  out_of_scope // 不課税
+}
+
+enum TaxMode {
+  inclusive // 内税
+  exclusive // 外税
+}
+
+enum RoundingMode {
+  floor
+  ceil
+  half_up
+}
+
+enum ConsentType {
+  terms_of_service
+  privacy_policy
+  marketing_email
+  marketing_sms
+  marketing_line
+  photo_usage
+  medical_record
+}
+
+enum ConsentStatus {
+  granted
+  withdrawn
+  pending
+}
+
+enum MedicalFieldType {
+  text
+  textarea
+  number
+  select
+  multi_select
+  checkbox
+  date
+  photo
+  signature
+  color_formula
+}
+
+enum NotificationChannel {
+  email
+  sms
+  line
+  web_push
+  in_app
+}
+
+enum NotificationStatus {
+  pending
+  sending
+  sent
+  failed
+  cancelled
+  suppressed
+}
+
+enum NotificationEvent {
+  appointment_requested
+  appointment_confirmed
+  appointment_updated
+  appointment_cancelled
+  reminder_day_before
+  reminder_hours_before
+  after_service_followup
+  next_visit_suggestion
+  ticket_expiring
+  point_expiring
+  membership_payment_failed
+  staff_new_appointment
+  waitlist_offer
+}
+
+enum CouponDiscountType {
+  fixed_amount
+  percentage
+  set_price
+}
+
+enum SaleStatus {
+  draft
+  completed
+  voided
+  refunded
+  partially_refunded
+}
+
+enum PaymentMethod {
+  cash
+  credit_card
+  qr_code
+  e_money
+  bank_transfer
+  point
+  ticket
+  gift_certificate
+  receivable
+  other
+}
+
+enum SaleItemKind {
+  service
+  product
+  option
+  designation_fee
+  discount
+  adjustment
+}
+
+enum InventoryTxType {
+  inbound
+  outbound
+  sale
+  return_in
+  disposal
+  stocktake
+  transfer_in
+  transfer_out
+}
+
+enum PurchaseOrderStatus {
+  draft
+  ordered
+  partially_received
+  received
+  cancelled
+}
+
+enum TicketStatus {
+  active
+  used_up
+  expired
+  refunded
+  cancelled
+}
+
+enum MembershipStatus {
+  active
+  paused
+  cancelled
+  payment_failed
+  expired
+}
+
+enum PointTxType {
+  earn
+  redeem
+  expire
+  adjust
+  transfer
+}
+
+enum WaitlistStatus {
+  waiting
+  offered
+  accepted
+  declined
+  expired
+  cancelled
+}
+
+enum ReviewStatus {
+  pending
+  published
+  hidden
+  reported
+}
+
+enum JobStatus {
+  queued
+  running
+  succeeded
+  failed
+  cancelled
+}
+
+enum WebhookDeliveryStatus {
+  pending
+  delivered
+  failed
+  dead_letter
+}
+
+enum SubscriptionStatus {
+  trialing
+  active
+  past_due
+  grace
+  cancelled
+}
+
+enum BookingApprovalMode {
+  instant // 即時予約制
+  request // 予約リクエスト制
+}
+
+// ===========================================================================
+// Platform / tenancy
+// ===========================================================================
+
+model Organization {
+  id                    String       @id @default(cuid())
+  name                  String
+  nameKana              String?
+  slug                  String       @unique
+  status                TenantStatus @default(trial)
+  /// IANA timezone used as the default for new stores.
+  timezone              String       @default("Asia/Tokyo")
+  locale                Locale       @default(ja)
+  currency              String       @default("JPY")
+  /// Qualified-invoice issuer registration number (適格請求書発行事業者登録番号).
+  /// Stored as free text; format validation is the operator's responsibility.
+  invoiceRegistrationNo String?
+  billingEmail          String?
+  phone                 String?
+  postalCode            String?
+  address               String?
+
+  createdAt DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @db.Timestamptz(3)
+  createdBy String?
+  updatedBy String?
+  deletedAt DateTime? @db.Timestamptz(3)
+  version   Int       @default(1)
+
+  brands               Brand[]
+  stores               Store[]
+  staff                Staff[]
+  roles                Role[]
+  userRoles            UserRole[]
+  customers            Customer[]
+  customerTags         CustomerTag[]
+  serviceCategories    ServiceCategory[]
+  services             Service[]
+  resourceTypes        ResourceType[]
+  resources            Resource[]
+  appointments         Appointment[]
+  coupons              Coupon[]
+  medicalRecords       MedicalRecord[]
+  medicalTemplates     MedicalRecordTemplate[]
+  products             Product[]
+  suppliers            Supplier[]
+  sales                Sale[]
+  tickets              Ticket[]
+  membershipPlans      MembershipPlan[]
+  pointAccounts        PointAccount[]
+  messageTemplates     MessageTemplate[]
+  notifications        Notification[]
+  campaigns            MarketingCampaign[]
+  segments             MarketingSegment[]
+  reviews              Review[]
+  surveys              Survey[]
+  importJobs           ImportJob[]
+  exportJobs           ExportJob[]
+  webhookEndpoints     WebhookEndpoint[]
+  apiKeys              ApiKey[]
+  auditLogs            AuditLog[]
+  subscriptions        Subscription[]
+  invoices             Invoice[]
+  featureFlags         FeatureFlag[]
+  waitlists            Waitlist[]
+  cashRegisterSessions CashRegisterSession[]
+  customerMergeHistory CustomerMergeHistory[]
+  idempotencyRecords   IdempotencyRecord[]
+
+  @@index([status, deletedAt])
+}
+
+model Brand {
+  id             String  @id @default(cuid())
+  organizationId String
+  name           String
+  slug           String
+  /// Hex colour used to theme the admin UI for this brand.
+  primaryColor   String? @db.VarChar(9)
+  logoUrl        String?
+  description    String?
+
+  createdAt DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @db.Timestamptz(3)
+  createdBy String?
+  updatedBy String?
+  deletedAt DateTime? @db.Timestamptz(3)
+  version   Int       @default(1)
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  stores       Store[]
+
+  @@unique([organizationId, slug])
+  @@index([organizationId, deletedAt])
+}
+
+model Store {
+  id             String       @id @default(cuid())
+  organizationId String
+  brandId        String?
+  /// Used in the public booking URL: /booking/[storeSlug]
+  slug           String       @unique
+  name           String
+  nameKana       String?
+  industry       IndustryType @default(hair)
+  status         TenantStatus @default(active)
+  timezone       String       @default("Asia/Tokyo")
+  locale         Locale       @default(ja)
+  currency       String       @default("JPY")
+
+  phone       String?
+  email       String?
+  postalCode  String?
+  prefecture  String?
+  city        String?
+  addressLine String?
+  accessNote  String?
+  description String?
+
+  // --- Booking policy ------------------------------------------------------
+  approvalMode          BookingApprovalMode @default(instant)
+  /// Minutes before start time after which online booking closes.
+  bookingCutoffMinutes  Int                 @default(120)
+  /// Earliest bookable offset from now, in minutes.
+  minAdvanceMinutes     Int                 @default(0)
+  /// How far ahead customers may book, in days.
+  maxAdvanceDays        Int                 @default(60)
+  /// Granularity of offered start times, in minutes.
+  slotIntervalMinutes   Int                 @default(15)
+  /// Extra buffer inserted after every appointment, in minutes.
+  bufferMinutes         Int                 @default(0)
+  /// Deadline for customer-initiated cancellation, in hours before start.
+  cancelDeadlineHours   Int                 @default(24)
+  allowGuestBooking     Boolean             @default(true)
+  allowStaffDesignation Boolean             @default(true)
+
+  // --- Accounting defaults -------------------------------------------------
+  taxMode               TaxMode      @default(inclusive)
+  rounding              RoundingMode @default(floor)
+  /// Qualified invoice registration number for this store, when it differs
+  /// from the organization's.
+  invoiceRegistrationNo String?
+
+  cancellationPolicy String?
+  termsUrl           String?
+  privacyUrl         String?
+
+  isPubliclyListed Boolean @default(true)
+
+  createdAt DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @db.Timestamptz(3)
+  createdBy String?
+  updatedBy String?
+  deletedAt DateTime? @db.Timestamptz(3)
+  version   Int       @default(1)
+
+  organization         Organization            @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  brand                Brand?                  @relation(fields: [brandId], references: [id], onDelete: SetNull)
+  businessHours        StoreBusinessHour[]
+  holidays             StoreHoliday[]
+  staffStores          StaffStore[]
+  resources            Resource[]
+  services             Service[]
+  storeServicePrices   StoreServicePrice[]
+  appointments         Appointment[]
+  shifts               StaffShift[]
+  timeOffs             StaffTimeOff[]
+  medicalRecords       MedicalRecord[]
+  medicalTemplates     MedicalRecordTemplate[]
+  sales                Sale[]
+  inventories          Inventory[]
+  cashRegisterSessions CashRegisterSession[]
+  waitlists            Waitlist[]
+  coupons              Coupon[]
+  notifications        Notification[]
+  reviews              Review[]
+  auditLogs            AuditLog[]
+  userRoles            UserRole[]
+  messageTemplates     MessageTemplate[]
+  tickets              Ticket[]
+  purchaseOrders       PurchaseOrder[]
+  customers            Customer[]              @relation("CustomerHomeStore")
+
+  @@index([organizationId, deletedAt])
+  @@index([brandId])
+}
+
+model StoreBusinessHour {
+  id               String  @id @default(cuid())
+  storeId          String
+  /// 0 = Sunday … 6 = Saturday
+  dayOfWeek        Int
+  /// Minutes from midnight in the store's local timezone (e.g. 10:00 -> 600).
+  openMinute       Int
+  closeMinute      Int
+  /// Optional midday closure.
+  breakStartMinute Int?
+  breakEndMinute   Int?
+  isClosed         Boolean @default(false)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@unique([storeId, dayOfWeek])
+  @@index([storeId])
+}
+
+model StoreHoliday {
+  id          String   @id @default(cuid())
+  storeId     String
+  /// Local calendar date (no time component is meaningful).
+  date        DateTime @db.Date
+  reason      String?
+  /// When false the store is open with modified hours instead of closed.
+  isClosed    Boolean  @default(true)
+  openMinute  Int?
+  closeMinute Int?
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@unique([storeId, date])
+  @@index([storeId, date])
+}
+
+// ===========================================================================
+// Identity, roles & permissions
+// ===========================================================================
+
+model User {
+  id              String    @id @default(cuid())
+  email           String    @unique
+  emailNormalized String    @unique
+  /// scrypt hash; format: scrypt$N$r$p$salt$hash
+  passwordHash    String?
+  name            String
+  locale          Locale    @default(ja)
+  isPlatformAdmin Boolean   @default(false)
+  emailVerifiedAt DateTime? @db.Timestamptz(3)
+
+  // --- Brute-force protection ---------------------------------------------
+  failedLoginCount Int       @default(0)
+  lockedUntil      DateTime? @db.Timestamptz(3)
+  lastLoginAt      DateTime? @db.Timestamptz(3)
+
+  /// Reserved for Phase 2. Passkeys and TOTP secrets are stored in dedicated
+  /// tables when implemented; this flag drives the UI only.
+  mfaEnabled Boolean @default(false)
+
+  createdAt DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @db.Timestamptz(3)
+  deletedAt DateTime? @db.Timestamptz(3)
+  version   Int       @default(1)
+
+  sessions  UserSession[]
+  userRoles UserRole[]
+  staff     Staff[]
+  auditLogs AuditLog[]
+
+  @@index([deletedAt])
+}
+
+model UserSession {
+  id             String  @id @default(cuid())
+  userId         String
+  /// SHA-256 of the session token. The raw token only ever exists in the
+  /// user's cookie — a database leak must not yield usable sessions.
+  tokenHash      String  @unique
+  /// The organization this session is currently acting within. Never taken
+  /// from the client request.
+  organizationId String?
+  /// Currently selected store for store-scoped screens.
+  activeStoreId  String?
+
+  ipAddress   String?
+  userAgent   String?
+  /// Coarse device label shown on the "active devices" screen.
+  deviceLabel String?
+
+  expiresAt     DateTime  @db.Timestamptz(3)
+  lastSeenAt    DateTime  @default(now()) @db.Timestamptz(3)
+  revokedAt     DateTime? @db.Timestamptz(3)
+  revokedReason String?
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, revokedAt])
+  @@index([expiresAt])
+}
+
+model Permission {
+  /// Stable key such as `reservation.write`.
+  key         String @id
+  description String
+  category    String
+
+  rolePermissions RolePermission[]
+}
+
+model Role {
+  id             String  @id @default(cuid())
+  organizationId String?
+  /// Stable identifier for seeded roles (`store_manager`, `receptionist`, …).
+  key            String
+  name           String
+  description    String?
+  /// System roles are seeded and cannot be deleted by tenants.
+  isSystem       Boolean @default(false)
+
+  // --- Field-level masking (independent of permissions) --------------------
+  maskCustomerPhone     Boolean @default(false)
+  maskCustomerEmail     Boolean @default(false)
+  maskSalesAmount       Boolean @default(false)
+  maskMedicalPhoto      Boolean @default(false)
+  maskStaffCompensation Boolean @default(true)
+  /// When true the holder only sees appointments/customers they are assigned to.
+  restrictToOwnRecords  Boolean @default(false)
+
+  createdAt DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @db.Timestamptz(3)
+  deletedAt DateTime? @db.Timestamptz(3)
+
+  organization    Organization?    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  rolePermissions RolePermission[]
+  userRoles       UserRole[]
+
+  @@unique([organizationId, key])
+  @@index([organizationId])
+}
+
+model RolePermission {
+  roleId        String
+  permissionKey String
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionKey], references: [key], onDelete: Cascade)
+
+  @@id([roleId, permissionKey])
+  @@index([permissionKey])
+}
+
+model UserRole {
+  id             String  @id @default(cuid())
+  userId         String
+  roleId         String
+  organizationId String
+  /// null = the role applies to every store in the organization.
+  storeId        String?
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  createdBy String?
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role         Role         @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  store        Store?       @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId, organizationId, storeId])
+  @@index([userId, organizationId])
+  @@index([organizationId, storeId])
+}
+
+// ===========================================================================
+// Staff
+// ===========================================================================
+
+model Staff {
+  id             String  @id @default(cuid())
+  organizationId String
+  /// Optional link to a login account. Staff without a user cannot sign in.
+  userId         String?
+
+  code        String?
+  name        String
+  nameKana    String?
+  displayName String
+  photoUrl    String?
+  title       String?
+  bio         String?
+
+  employmentType       EmploymentType @default(full_time)
+  /// Designation fee charged when a customer requests this staff member,
+  /// in minor currency units.
+  designationFee       Int            @default(0)
+  /// Monthly sales target, in minor currency units.
+  salesTarget          Int?
+  /// Commission rate in basis points (1000 = 10.00%).
+  commissionBps        Int?
+  /// Maximum concurrent appointments this staff member can handle.
+  maxConcurrent        Int            @default(1)
+  /// Optional cap on appointments per day.
+  maxDailyAppointments Int?
+
+  isPubliclyVisible Boolean @default(true)
+  isBookable        Boolean @default(true)
+  displayOrder      Int     @default(0)
+
+  hiredOn DateTime? @db.Date
+  leftOn  DateTime? @db.Date
+
+  createdAt DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @db.Timestamptz(3)
+  createdBy String?
+  updatedBy String?
+  deletedAt DateTime? @db.Timestamptz(3)
+  version   Int       @default(1)
+
+  organization     Organization          @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user             User?                 @relation(fields: [userId], references: [id], onDelete: SetNull)
+  stores           StaffStore[]
+  skills           StaffSkill[]
+  shifts           StaffShift[]
+  timeOffs         StaffTimeOff[]
+  appointmentStaff AppointmentStaff[]
+  serviceStaff     ServiceStaff[]
+  medicalRecords   MedicalRecord[]
+  saleItems        SaleItem[]
+  customers        Customer[]            @relation("CustomerPrimaryStaff")
+  waitlists        Waitlist[]
+  cashSessions     CashRegisterSession[]
+
+  @@unique([organizationId, code])
+  @@index([organizationId, deletedAt])
+  @@index([userId])
+}
+
+model StaffStore {
+  id        String  @id @default(cuid())
+  staffId   String
+  storeId   String
+  /// The staff member's home store; used for default filters and reporting.
+  isPrimary Boolean @default(false)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+
+  staff Staff @relation(fields: [staffId], references: [id], onDelete: Cascade)
+  store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@unique([staffId, storeId])
+  @@index([storeId])
+}
+
+model StaffSkill {
+  id                String @id @default(cuid())
+  staffId           String
+  serviceId         String
+  /// Multiplier in basis points applied to the service duration for this
+  /// staff member (10000 = 100%, i.e. standard speed).
+  durationFactorBps Int    @default(10000)
+
+  staff   Staff   @relation(fields: [staffId], references: [id], onDelete: Cascade)
+  service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@unique([staffId, serviceId])
+  @@index([serviceId])
+}
+
+model StaffShift {
+  id               String    @id @default(cuid())
+  staffId          String
+  storeId          String
+  /// Local calendar date in the store's timezone.
+  date             DateTime  @db.Date
+  type             ShiftType @default(work)
+  /// Minutes from midnight, store-local.
+  startMinute      Int
+  endMinute        Int
+  breakStartMinute Int?
+  breakEndMinute   Int?
+  note             String?
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+  createdBy String?
+  updatedBy String?
+
+  staff Staff @relation(fields: [staffId], references: [id], onDelete: Cascade)
+  store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@unique([staffId, storeId, date])
+  @@index([storeId, date])
+}
+
+model StaffTimeOff {
+  id      String        @id @default(cuid())
+  staffId String
+  storeId String
+  startAt DateTime      @db.Timestamptz(3)
+  endAt   DateTime      @db.Timestamptz(3)
+  reason  String?
+  status  TimeOffStatus @default(requested)
+  isPaid  Boolean       @default(false)
+
+  approvedBy String?
+  approvedAt DateTime? @db.Timestamptz(3)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  staff Staff @relation(fields: [staffId], references: [id], onDelete: Cascade)
+  store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@index([staffId, startAt, endAt])
+  @@index([storeId, startAt])
+}
+
+// ===========================================================================
+// Resources (chairs, beds, rooms, equipment)
+// ===========================================================================
+
+model ResourceType {
+  id             String       @id @default(cuid())
+  organizationId String
+  key            String
+  name           String
+  kind           ResourceKind @default(other)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  organization     Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  resources        Resource[]
+  serviceResources ServiceResource[]
+
+  @@unique([organizationId, key])
+  @@index([organizationId])
+}
+
+model Resource {
+  id             String  @id @default(cuid())
+  organizationId String
+  storeId        String
+  resourceTypeId String
+  name           String
+  /// How many simultaneous occupants this resource supports. Values above 1
+  /// are modelled as separate rows so the exclusion constraint stays simple.
+  capacity       Int     @default(1)
+  displayOrder   Int     @default(0)
+  isActive       Boolean @default(true)
+
+  createdAt DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @db.Timestamptz(3)
+  deletedAt DateTime? @db.Timestamptz(3)
+
+  organization         Organization          @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  store                Store                 @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  resourceType         ResourceType          @relation(fields: [resourceTypeId], references: [id], onDelete: Restrict)
+  appointmentResources AppointmentResource[]
+
+  @@index([storeId, isActive])
+  @@index([organizationId])
+}
+
+// ===========================================================================
+// Customers
+// ===========================================================================
+
+model Customer {
+  id             String  @id @default(cuid())
+  organizationId String
+  /// Store the customer usually visits. Customer records themselves are
+  /// organization-scoped so multi-store chains can share them.
+  homeStoreId    String?
+
+  code              String?
+  name              String
+  nameKana          String?
+  /// E.164 where possible, digits-only fallback. Used for duplicate detection.
+  phoneNormalized   String?
+  phone             String?
+  /// Lower-cased, dot/plus-normalised address. Used for duplicate detection.
+  emailNormalized   String?
+  email             String?
+  birthDate         DateTime? @db.Date
+  gender            Gender    @default(undisclosed)
+  postalCode        String?
+  occupation        String?
+  /// How the customer first heard about the salon.
+  acquisitionSource String?
+  primaryStaffId    String?
+
+  note        String?
+  allergyNote String?
+  cautionNote String?
+
+  // --- Denormalised aggregates, refreshed on sale/appointment completion ---
+  firstVisitAt DateTime? @db.Timestamptz(3)
+  lastVisitAt  DateTime? @db.Timestamptz(3)
+  visitCount   Int       @default(0)
+  totalSpent   Int       @default(0)
+  cancelCount  Int       @default(0)
+  noShowCount  Int       @default(0)
+
+  /// Set when the record was absorbed by another customer during a merge.
+  mergedIntoId String?
+
+  createdAt    DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt    DateTime  @updatedAt @db.Timestamptz(3)
+  createdBy    String?
+  updatedBy    String?
+  deletedAt    DateTime? @db.Timestamptz(3)
+  /// Set when the customer requested erasure. Identifying fields are
+  /// overwritten while accounting rows are retained.
+  anonymizedAt DateTime? @db.Timestamptz(3)
+  version      Int       @default(1)
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  homeStore    Store?       @relation("CustomerHomeStore", fields: [homeStoreId], references: [id], onDelete: SetNull)
+  primaryStaff Staff?       @relation("CustomerPrimaryStaff", fields: [primaryStaffId], references: [id], onDelete: SetNull)
+
+  addresses       CustomerAddress[]
+  tagAssignments  CustomerTagAssignment[]
+  consents        CustomerConsent[]
+  appointments    Appointment[]
+  medicalRecords  MedicalRecord[]
+  sales           Sale[]
+  tickets         Ticket[]
+  pointAccount    PointAccount?
+  memberships     MembershipSubscription[]
+  waitlists       Waitlist[]
+  reviews         Review[]
+  notifications   Notification[]
+  surveyResponses SurveyResponse[]
+  couponUsages    CouponUsage[]
+  mergedFrom      CustomerMergeHistory[]   @relation("MergeTarget")
+  mergeSources    CustomerMergeHistory[]   @relation("MergeSource")
+
+  @@unique([organizationId, code])
+  @@index([organizationId, deletedAt])
+  @@index([organizationId, phoneNormalized])
+  @@index([organizationId, emailNormalized])
+  @@index([organizationId, nameKana])
+  @@index([organizationId, lastVisitAt])
+}
+
+model CustomerAddress {
+  id          String  @id @default(cuid())
+  customerId  String
+  label       String?
+  postalCode  String?
+  prefecture  String?
+  city        String?
+  addressLine String?
+  isPrimary   Boolean @default(true)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@index([customerId])
+}
+
+model CustomerTag {
+  id             String  @id @default(cuid())
+  organizationId String
+  name           String
+  color          String? @db.VarChar(9)
+  description    String?
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  organization Organization            @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  assignments  CustomerTagAssignment[]
+
+  @@unique([organizationId, name])
+}
+
+model CustomerTagAssignment {
+  customerId String
+  tagId      String
+  createdAt  DateTime @default(now()) @db.Timestamptz(3)
+  createdBy  String?
+
+  customer Customer    @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  tag      CustomerTag @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([customerId, tagId])
+  @@index([tagId])
+}
+
+model CustomerConsent {
+  id              String        @id @default(cuid())
+  customerId      String
+  type            ConsentType
+  status          ConsentStatus @default(pending)
+  /// Version of the document the customer agreed to.
+  documentVersion String?
+  grantedAt       DateTime?     @db.Timestamptz(3)
+  withdrawnAt     DateTime?     @db.Timestamptz(3)
+  /// Recorded for evidence of consent. Retained only for the consent record.
+  sourceIp        String?
+  sourceUserAgent String?
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@unique([customerId, type])
+  @@index([customerId])
+}
+
+model CustomerMergeHistory {
+  id               String    @id @default(cuid())
+  organizationId   String
+  /// The record that survived.
+  targetCustomerId String
+  /// The record that was absorbed.
+  sourceCustomerId String
+  /// Snapshot of the absorbed record for reversal/audit purposes.
+  sourceSnapshot   Json
+  mergedBy         String?
+  mergedAt         DateTime  @default(now()) @db.Timestamptz(3)
+  revertedAt       DateTime? @db.Timestamptz(3)
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  targetCustomer Customer     @relation("MergeTarget", fields: [targetCustomerId], references: [id], onDelete: Cascade)
+  sourceCustomer Customer     @relation("MergeSource", fields: [sourceCustomerId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, mergedAt])
+  @@index([targetCustomerId])
+}
+
+// ===========================================================================
+// Services (menu)
+// ===========================================================================
+
+model ServiceCategory {
+  id             String  @id @default(cuid())
+  organizationId String
+  name           String
+  description    String?
+  displayOrder   Int     @default(0)
+
+  createdAt DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @db.Timestamptz(3)
+  deletedAt DateTime? @db.Timestamptz(3)
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  services     Service[]
+
+  @@index([organizationId, deletedAt])
+}
+
+model Service {
+  id             String  @id @default(cuid())
+  organizationId String
+  /// null = available at every store in the organization.
+  storeId        String?
+  categoryId     String
+
+  name        String
+  description String?
+  imageUrl    String?
+
+  /// List price in minor currency units.
+  price       Int
+  /// Cost of goods, for margin reporting.
+  cost        Int?
+  taxCategory TaxCategory @default(standard)
+  taxMode     TaxMode     @default(inclusive)
+
+  /// Time the customer is occupied, in minutes.
+  durationMinutes       Int
+  /// Staff-only setup time before the service starts.
+  prepMinutes           Int  @default(0)
+  /// Staff-only teardown time after the service ends.
+  cleanupMinutes        Int  @default(0)
+  /// Portion in the middle where the customer waits without staff attention
+  /// (e.g. colour processing). Staff are released for this window while the
+  /// resource stays occupied.
+  unattendedStartMinute Int?
+  unattendedMinutes     Int?
+
+  isOnlineBookable  Boolean   @default(true)
+  allowsDesignation Boolean   @default(true)
+  firstVisitOnly    Boolean   @default(false)
+  repeatVisitOnly   Boolean   @default(false)
+  /// null = no gender restriction.
+  genderRestriction Gender?
+  publishedFrom     DateTime? @db.Timestamptz(3)
+  publishedUntil    DateTime? @db.Timestamptz(3)
+  displayOrder      Int       @default(0)
+  isActive          Boolean   @default(true)
+  /// Commission rate in basis points paid to the performing staff member.
+  commissionBps     Int?
+
+  createdAt DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @db.Timestamptz(3)
+  createdBy String?
+  updatedBy String?
+  deletedAt DateTime? @db.Timestamptz(3)
+  version   Int       @default(1)
+
+  organization        Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  store               Store?               @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  category            ServiceCategory      @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  options             ServiceOption[]
+  serviceStaff        ServiceStaff[]
+  serviceResources    ServiceResource[]
+  staffSkills         StaffSkill[]
+  storePrices         StoreServicePrice[]
+  appointmentServices AppointmentService[]
+  saleItems           SaleItem[]
+  waitlists           Waitlist[]
+
+  @@index([organizationId, deletedAt])
+  @@index([storeId, isActive])
+  @@index([categoryId])
+}
+
+model ServiceOption {
+  id              String      @id @default(cuid())
+  serviceId       String
+  name            String
+  price           Int
+  durationMinutes Int         @default(0)
+  taxCategory     TaxCategory @default(standard)
+  displayOrder    Int         @default(0)
+  isActive        Boolean     @default(true)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  service             Service                    @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  appointmentServices AppointmentServiceOption[]
+
+  @@index([serviceId])
+}
+
+model ServiceStaff {
+  serviceId String
+  staffId   String
+
+  service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  staff   Staff   @relation(fields: [staffId], references: [id], onDelete: Cascade)
+
+  @@id([serviceId, staffId])
+  @@index([staffId])
+}
+
+model ServiceResource {
+  id                    String  @id @default(cuid())
+  serviceId             String
+  resourceTypeId        String
+  /// How many resources of this type the service occupies simultaneously.
+  quantity              Int     @default(1)
+  /// When true the resource stays occupied during the unattended window.
+  holdsDuringUnattended Boolean @default(true)
+
+  service      Service      @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  resourceType ResourceType @relation(fields: [resourceTypeId], references: [id], onDelete: Cascade)
+
+  @@unique([serviceId, resourceTypeId])
+  @@index([resourceTypeId])
+}
+
+model StoreServicePrice {
+  id        String  @id @default(cuid())
+  storeId   String
+  serviceId String
+  price     Int
+  isActive  Boolean @default(true)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  store   Store   @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@unique([storeId, serviceId])
+  @@index([serviceId])
+}
+
+// ===========================================================================
+// Coupons
+// ===========================================================================
+
+model Coupon {
+  id             String  @id @default(cuid())
+  organizationId String
+  /// null = valid at every store.
+  storeId        String?
+  code           String?
+  name           String
+  description    String?
+
+  discountType  CouponDiscountType
+  /// Fixed amount in minor units, or basis points for percentage discounts.
+  discountValue Int
+
+  firstVisitOnly  Boolean @default(false)
+  repeatVisitOnly Boolean @default(false)
+  /// Bitmask of allowed weekdays; bit 0 = Sunday. 127 = every day.
+  weekdayMask     Int     @default(127)
+  /// Store-local minutes from midnight bounding when the coupon may be used.
+  startMinute     Int?
+  endMinute       Int?
+  minSubtotal     Int?
+  /// Maximum redemptions overall (null = unlimited).
+  maxRedemptions  Int?
+  /// Maximum redemptions per customer.
+  maxPerCustomer  Int?
+  /// Total discount budget in minor units.
+  budgetAmount    Int?
+  usedCount       Int     @default(0)
+  usedAmount      Int     @default(0)
+  stackable       Boolean @default(false)
+  autoApply       Boolean @default(false)
+
+  validFrom  DateTime? @db.Timestamptz(3)
+  validUntil DateTime? @db.Timestamptz(3)
+  isActive   Boolean   @default(true)
+
+  createdAt DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @db.Timestamptz(3)
+  deletedAt DateTime? @db.Timestamptz(3)
+
+  organization Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  store        Store?        @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  usages       CouponUsage[]
+
+  @@unique([organizationId, code])
+  @@index([organizationId, isActive])
+}
+
+model CouponUsage {
+  id             String  @id @default(cuid())
+  couponId       String
+  customerId     String?
+  appointmentId  String?
+  saleId         String?
+  discountAmount Int
+
+  usedAt DateTime @default(now()) @db.Timestamptz(3)
+
+  coupon      Coupon       @relation(fields: [couponId], references: [id], onDelete: Cascade)
+  customer    Customer?    @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  appointment Appointment? @relation(fields: [appointmentId], references: [id], onDelete: SetNull)
+  sale        Sale?        @relation(fields: [saleId], references: [id], onDelete: SetNull)
+
+  @@index([couponId, usedAt])
+  @@index([customerId])
+}
+
+// ===========================================================================
+// Appointments — the core of the product
+// ===========================================================================
+
+model Appointment {
+  id             String  @id @default(cuid())
+  organizationId String
+  storeId        String
+  customerId     String?
+
+  /// Human-readable reference shown to customers (e.g. "A-20260803-0007").
+  reference String @unique
+
+  status AppointmentStatus @default(confirmed)
+  source AppointmentSource @default(staff_entry)
+
+  /// Overall customer-facing window. Individual staff/resource occupancy is
+  /// held in AppointmentStaff / AppointmentResource, which may be narrower.
+  startAt DateTime @db.Timestamptz(3)
+  endAt   DateTime @db.Timestamptz(3)
+
+  /// true when the customer requested a specific staff member.
+  isDesignated Boolean @default(false)
+
+  /// Amounts are snapshots taken at booking time, in minor currency units.
+  subtotalAmount Int @default(0)
+  discountAmount Int @default(0)
+  totalAmount    Int @default(0)
+
+  customerNote String?
+  staffNote    String?
+  cancelReason String?
+
+  requestedAt      DateTime? @db.Timestamptz(3)
+  confirmedAt      DateTime? @db.Timestamptz(3)
+  checkedInAt      DateTime? @db.Timestamptz(3)
+  serviceStartedAt DateTime? @db.Timestamptz(3)
+  completedAt      DateTime? @db.Timestamptz(3)
+  cancelledAt      DateTime? @db.Timestamptz(3)
+  /// Deadline for the store to accept a `pending` request.
+  approvalDueAt    DateTime? @db.Timestamptz(3)
+
+  /// Guest bookings keep contact details here until a Customer is created.
+  guestName  String?
+  guestPhone String?
+  guestEmail String?
+
+  createdAt DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @db.Timestamptz(3)
+  createdBy String?
+  updatedBy String?
+  deletedAt DateTime? @db.Timestamptz(3)
+  version   Int       @default(1)
+
+  organization   Organization               @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  store          Store                      @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  customer       Customer?                  @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  services       AppointmentService[]
+  staffSlots     AppointmentStaff[]
+  resourceSlots  AppointmentResource[]
+  statusHistory  AppointmentStatusHistory[]
+  medicalRecords MedicalRecord[]
+  sale           Sale?
+  couponUsages   CouponUsage[]
+  notifications  Notification[]
+
+  @@index([storeId, startAt])
+  @@index([organizationId, startAt])
+  @@index([customerId, startAt])
+  @@index([storeId, status, startAt])
+}
+
+model AppointmentService {
+  id            String @id @default(cuid())
+  appointmentId String
+  serviceId     String
+  /// Order within a multi-service appointment.
+  sequence      Int    @default(0)
+
+  /// Snapshots taken at booking time so later menu edits do not rewrite history.
+  nameSnapshot    String
+  priceSnapshot   Int
+  durationMinutes Int
+  taxCategory     TaxCategory @default(standard)
+
+  startAt DateTime @db.Timestamptz(3)
+  endAt   DateTime @db.Timestamptz(3)
+
+  appointment Appointment                @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  service     Service                    @relation(fields: [serviceId], references: [id], onDelete: Restrict)
+  options     AppointmentServiceOption[]
+
+  @@index([appointmentId])
+  @@index([serviceId])
+}
+
+model AppointmentServiceOption {
+  id                   String @id @default(cuid())
+  appointmentServiceId String
+  serviceOptionId      String
+  nameSnapshot         String
+  priceSnapshot        Int
+  durationMinutes      Int    @default(0)
+
+  appointmentService AppointmentService @relation(fields: [appointmentServiceId], references: [id], onDelete: Cascade)
+  serviceOption      ServiceOption      @relation(fields: [serviceOptionId], references: [id], onDelete: Restrict)
+
+  @@index([appointmentServiceId])
+}
+
+/// One row per contiguous block of a staff member's time.
+///
+/// A single appointment may produce several rows when the service has an
+/// unattended window (e.g. colour processing), which releases the staff
+/// member without releasing the chair.
+///
+/// Rows with `kind != service` have no appointment and represent breaks,
+/// manual ledger blocks, or approved time off. They participate in the same
+/// exclusion constraint, so they hard-block new bookings.
+model AppointmentStaff {
+  id             String  @id @default(cuid())
+  organizationId String
+  storeId        String
+  appointmentId  String?
+  staffId        String
+
+  kind StaffSlotKind @default(service)
+
+  startAt DateTime @db.Timestamptz(3)
+  endAt   DateTime @db.Timestamptz(3)
+
+  /// Cleared instead of deleted when an appointment is cancelled, so the slot
+  /// stops blocking while the history survives. The exclusion constraint is
+  /// declared `WHERE (isActive)`.
+  isActive Boolean @default(true)
+
+  /// The staff member the customer specifically asked for.
+  isDesignated Boolean @default(false)
+  /// Ordering for multi-step services.
+  sequence     Int     @default(0)
+  note         String?
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  appointment Appointment? @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  staff       Staff        @relation(fields: [staffId], references: [id], onDelete: Cascade)
+
+  @@index([staffId, startAt, endAt])
+  @@index([appointmentId])
+  @@index([storeId, startAt])
+}
+
+/// One row per contiguous block of a resource's time. Mirrors
+/// AppointmentStaff and is protected by the same kind of exclusion constraint.
+model AppointmentResource {
+  id             String  @id @default(cuid())
+  organizationId String
+  storeId        String
+  appointmentId  String?
+  resourceId     String
+
+  startAt  DateTime @db.Timestamptz(3)
+  endAt    DateTime @db.Timestamptz(3)
+  isActive Boolean  @default(true)
+  sequence Int      @default(0)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  appointment Appointment? @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  resource    Resource     @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+
+  @@index([resourceId, startAt, endAt])
+  @@index([appointmentId])
+  @@index([storeId, startAt])
+}
+
+model AppointmentStatusHistory {
+  id            String             @id @default(cuid())
+  appointmentId String
+  fromStatus    AppointmentStatus?
+  toStatus      AppointmentStatus
+  reason        String?
+  actorId       String?
+  actorLabel    String?
+  createdAt     DateTime           @default(now()) @db.Timestamptz(3)
+
+  appointment Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+
+  @@index([appointmentId, createdAt])
+}
+
+model Waitlist {
+  id             String  @id @default(cuid())
+  organizationId String
+  storeId        String
+  customerId     String
+  serviceId      String?
+  staffId        String?
+
+  /// Earliest and latest acceptable start time.
+  desiredFrom DateTime @db.Timestamptz(3)
+  desiredTo   DateTime @db.Timestamptz(3)
+  /// Bitmask of acceptable weekdays; bit 0 = Sunday.
+  weekdayMask Int      @default(127)
+
+  status           WaitlistStatus      @default(waiting)
+  priority         Int                 @default(0)
+  preferredChannel NotificationChannel @default(email)
+
+  offeredAt      DateTime? @db.Timestamptz(3)
+  offerExpiresAt DateTime? @db.Timestamptz(3)
+  respondedAt    DateTime? @db.Timestamptz(3)
+  note           String?
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  store        Store        @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  customer     Customer     @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  service      Service?     @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+  staff        Staff?       @relation(fields: [staffId], references: [id], onDelete: SetNull)
+
+  @@index([storeId, status, desiredFrom])
+  @@index([customerId])
+}
+
+// ===========================================================================
+// Medical records (電子カルテ)
+// ===========================================================================
+
+model MedicalRecordTemplate {
+  id             String       @id @default(cuid())
+  organizationId String
+  /// null = shared across every store in the organization.
+  storeId        String?
+  industry       IndustryType
+  name           String
+  description    String?
+  isDefault      Boolean      @default(false)
+  isActive       Boolean      @default(true)
+
+  createdAt DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @db.Timestamptz(3)
+  deletedAt DateTime? @db.Timestamptz(3)
+
+  organization Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  store        Store?               @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  fields       MedicalRecordField[]
+  records      MedicalRecord[]
+
+  @@index([organizationId, industry])
+}
+
+model MedicalRecordField {
+  id           String           @id @default(cuid())
+  templateId   String
+  key          String
+  label        String
+  type         MedicalFieldType
+  /// Grouping shown as a section heading in the UI.
+  section      String?
+  helpText     String?
+  placeholder  String?
+  /// Options for select / multi_select, as a JSON array of {value,label}.
+  options      Json?
+  isRequired   Boolean          @default(false)
+  /// Sensitive fields are hidden from roles with maskMedicalPhoto or when the
+  /// viewer lacks medical_record.read.
+  isSensitive  Boolean          @default(false)
+  displayOrder Int              @default(0)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  template  MedicalRecordTemplate   @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  responses MedicalRecordResponse[]
+
+  @@unique([templateId, key])
+  @@index([templateId, displayOrder])
+}
+
+model MedicalRecord {
+  id             String  @id @default(cuid())
+  organizationId String
+  storeId        String
+  customerId     String
+  appointmentId  String?
+  templateId     String
+  staffId        String?
+
+  visitedAt DateTime @db.Timestamptz(3)
+
+  /// Free-text summary fields shared by every industry.
+  serviceSummary  String?
+  productsUsed    String?
+  cautionNote     String?
+  customerRequest String?
+  result          String?
+  nextProposal    String?
+  staffNote       String?
+
+  /// Base64-encoded signature image captured on a touch device, or null.
+  signatureData String?
+  signedAt      DateTime? @db.Timestamptz(3)
+
+  createdAt DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @db.Timestamptz(3)
+  createdBy String?
+  updatedBy String?
+  deletedAt DateTime? @db.Timestamptz(3)
+  version   Int       @default(1)
+
+  organization Organization            @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  store        Store                   @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  customer     Customer                @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  appointment  Appointment?            @relation(fields: [appointmentId], references: [id], onDelete: SetNull)
+  template     MedicalRecordTemplate   @relation(fields: [templateId], references: [id], onDelete: Restrict)
+  staff        Staff?                  @relation(fields: [staffId], references: [id], onDelete: SetNull)
+  responses    MedicalRecordResponse[]
+  photos       MedicalRecordPhoto[]
+
+  @@index([customerId, visitedAt])
+  @@index([storeId, visitedAt])
+  @@index([appointmentId])
+}
+
+model MedicalRecordResponse {
+  id       String @id @default(cuid())
+  recordId String
+  fieldId  String
+  /// Value stored as JSON so a single column serves every field type.
+  value    Json?
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  record MedicalRecord      @relation(fields: [recordId], references: [id], onDelete: Cascade)
+  field  MedicalRecordField @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+
+  @@unique([recordId, fieldId])
+  @@index([fieldId])
+}
+
+model MedicalRecordPhoto {
+  id           String  @id @default(cuid())
+  recordId     String
+  /// Storage key, never a public URL. Delivery always goes through a
+  /// short-lived signed URL.
+  storageKey   String
+  caption      String?
+  /// e.g. "before", "after", "left", "right"
+  slot         String?
+  mimeType     String
+  byteSize     Int
+  width        Int?
+  height       Int?
+  displayOrder Int     @default(0)
+
+  createdAt DateTime  @default(now()) @db.Timestamptz(3)
+  createdBy String?
+  deletedAt DateTime? @db.Timestamptz(3)
+
+  record MedicalRecord @relation(fields: [recordId], references: [id], onDelete: Cascade)
+
+  @@index([recordId])
+}
+
+// ===========================================================================
+// Products & inventory
+// ===========================================================================
+
+model Product {
+  id             String      @id @default(cuid())
+  organizationId String
+  sku            String
+  janCode        String?
+  name           String
+  description    String?
+  categoryName   String?
+  /// Retail items are sold to customers; supply items are consumed in service.
+  isRetail       Boolean     @default(true)
+  purchasePrice  Int         @default(0)
+  sellingPrice   Int         @default(0)
+  taxCategory    TaxCategory @default(standard)
+  supplierId     String?
+  isActive       Boolean     @default(true)
+
+  createdAt DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @db.Timestamptz(3)
+  deletedAt DateTime? @db.Timestamptz(3)
+
+  organization Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  supplier     Supplier?           @relation(fields: [supplierId], references: [id], onDelete: SetNull)
+  inventories  Inventory[]
+  saleItems    SaleItem[]
+  poItems      PurchaseOrderItem[]
+
+  @@unique([organizationId, sku])
+  @@index([organizationId, isActive])
+}
+
+model Inventory {
+  id           String @id @default(cuid())
+  storeId      String
+  productId    String
+  quantity     Int    @default(0)
+  /// Reorder threshold; an alert is raised at or below this level.
+  reorderPoint Int    @default(0)
+
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  store        Store                  @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  product      Product                @relation(fields: [productId], references: [id], onDelete: Cascade)
+  transactions InventoryTransaction[]
+
+  @@unique([storeId, productId])
+  @@index([productId])
+}
+
+model InventoryTransaction {
+  id            String          @id @default(cuid())
+  inventoryId   String
+  type          InventoryTxType
+  /// Signed change applied to the on-hand quantity.
+  quantityDelta Int
+  quantityAfter Int
+  unitCost      Int?
+  note          String?
+  referenceId   String?
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  createdBy String?
+
+  inventory Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
+
+  @@index([inventoryId, createdAt])
+}
+
+model Supplier {
+  id             String  @id @default(cuid())
+  organizationId String
+  name           String
+  contactName    String?
+  phone          String?
+  email          String?
+  note           String?
+
+  createdAt DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @db.Timestamptz(3)
+  deletedAt DateTime? @db.Timestamptz(3)
+
+  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  products       Product[]
+  purchaseOrders PurchaseOrder[]
+
+  @@index([organizationId])
+}
+
+model PurchaseOrder {
+  id          String              @id @default(cuid())
+  storeId     String
+  supplierId  String
+  reference   String              @unique
+  status      PurchaseOrderStatus @default(draft)
+  orderedAt   DateTime?           @db.Timestamptz(3)
+  expectedAt  DateTime?           @db.Timestamptz(3)
+  receivedAt  DateTime?           @db.Timestamptz(3)
+  totalAmount Int                 @default(0)
+  note        String?
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  store    Store               @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  supplier Supplier            @relation(fields: [supplierId], references: [id], onDelete: Restrict)
+  items    PurchaseOrderItem[]
+
+  @@index([storeId, status])
+}
+
+model PurchaseOrderItem {
+  id               String @id @default(cuid())
+  purchaseOrderId  String
+  productId        String
+  quantity         Int
+  receivedQuantity Int    @default(0)
+  unitCost         Int
+
+  purchaseOrder PurchaseOrder @relation(fields: [purchaseOrderId], references: [id], onDelete: Cascade)
+  product       Product       @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@index([purchaseOrderId])
+  @@index([productId])
+}
+
+// ===========================================================================
+// Sales / POS
+// ===========================================================================
+
+model CashRegisterSession {
+  id             String    @id @default(cuid())
+  organizationId String
+  storeId        String
+  openedById     String?
+  openedAt       DateTime  @default(now()) @db.Timestamptz(3)
+  closedAt       DateTime? @db.Timestamptz(3)
+  openingFloat   Int       @default(0)
+  /// Cash counted at close.
+  countedCash    Int?
+  /// countedCash minus expected cash. Negative means a shortfall.
+  cashVariance   Int?
+  note           String?
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  store        Store        @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  openedBy     Staff?       @relation(fields: [openedById], references: [id], onDelete: SetNull)
+  sales        Sale[]
+
+  @@index([storeId, openedAt])
+}
+
+model Sale {
+  id             String  @id @default(cuid())
+  organizationId String
+  storeId        String
+  customerId     String?
+  appointmentId  String? @unique
+  cashSessionId  String?
+
+  reference String     @unique
+  status    SaleStatus @default(draft)
+
+  /// All amounts are in minor currency units.
+  subtotalAmount   Int @default(0)
+  discountAmount   Int @default(0)
+  taxAmount        Int @default(0)
+  totalAmount      Int @default(0)
+  paidAmount       Int @default(0)
+  changeAmount     Int @default(0)
+  /// Outstanding balance (売掛金) when the customer has not paid in full.
+  receivableAmount Int @default(0)
+
+  taxMode  TaxMode      @default(inclusive)
+  rounding RoundingMode @default(floor)
+
+  soldAt   DateTime  @default(now()) @db.Timestamptz(3)
+  voidedAt DateTime? @db.Timestamptz(3)
+  note     String?
+
+  createdAt DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @db.Timestamptz(3)
+  createdBy String?
+  updatedBy String?
+  deletedAt DateTime? @db.Timestamptz(3)
+  version   Int       @default(1)
+
+  organization Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  store        Store                @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  customer     Customer?            @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  appointment  Appointment?         @relation(fields: [appointmentId], references: [id], onDelete: SetNull)
+  cashSession  CashRegisterSession? @relation(fields: [cashSessionId], references: [id], onDelete: SetNull)
+  items        SaleItem[]
+  payments     Payment[]
+  refunds      Refund[]
+  couponUsages CouponUsage[]
+  ticketUsages TicketUsage[]
+  pointTx      PointTransaction[]
+
+  @@index([storeId, soldAt])
+  @@index([organizationId, soldAt])
+  @@index([customerId, soldAt])
+}
+
+model SaleItem {
+  id     String       @id @default(cuid())
+  saleId String
+  kind   SaleItemKind
+
+  serviceId String?
+  productId String?
+  /// Staff member credited with this line for commission and reporting.
+  staffId   String?
+
+  name        String
+  unitPrice   Int
+  quantity    Int         @default(1)
+  discount    Int         @default(0)
+  lineTotal   Int
+  taxCategory TaxCategory @default(standard)
+  /// Tax attributed to this line after rounding.
+  taxAmount   Int         @default(0)
+
+  sale    Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  service Service? @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+  product Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  staff   Staff?   @relation(fields: [staffId], references: [id], onDelete: SetNull)
+
+  @@index([saleId])
+  @@index([serviceId])
+  @@index([productId])
+  @@index([staffId])
+}
+
+model Payment {
+  id            String        @id @default(cuid())
+  saleId        String
+  method        PaymentMethod
+  amount        Int
+  /// Token returned by the payment provider. Raw card data is never stored.
+  providerToken String?
+  providerName  String?
+  note          String?
+
+  paidAt DateTime @default(now()) @db.Timestamptz(3)
+
+  sale    Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  refunds Refund[]
+
+  @@index([saleId])
+}
+
+model Refund {
+  id        String  @id @default(cuid())
+  saleId    String
+  paymentId String?
+  amount    Int
+  reason    String?
+
+  refundedAt DateTime @default(now()) @db.Timestamptz(3)
+  refundedBy String?
+
+  sale    Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  payment Payment? @relation(fields: [paymentId], references: [id], onDelete: SetNull)
+
+  @@index([saleId, refundedAt])
+}
+
+// ===========================================================================
+// Tickets, memberships, points
+// ===========================================================================
+
+model Ticket {
+  id             String       @id @default(cuid())
+  organizationId String
+  storeId        String?
+  customerId     String
+  name           String
+  /// JSON array of service ids this ticket may be redeemed against.
+  serviceIds     Json?
+  price          Int
+  totalUses      Int
+  remainingUses  Int
+  status         TicketStatus @default(active)
+  transferable   Boolean      @default(false)
+  refundPolicy   String?
+  purchasedAt    DateTime     @default(now()) @db.Timestamptz(3)
+  expiresAt      DateTime?    @db.Timestamptz(3)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  organization Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  store        Store?        @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  customer     Customer      @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  usages       TicketUsage[]
+
+  @@index([customerId, status])
+  @@index([organizationId, expiresAt])
+}
+
+model TicketUsage {
+  id       String   @id @default(cuid())
+  ticketId String
+  saleId   String?
+  uses     Int      @default(1)
+  usedAt   DateTime @default(now()) @db.Timestamptz(3)
+  note     String?
+
+  ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  sale   Sale?  @relation(fields: [saleId], references: [id], onDelete: SetNull)
+
+  @@index([ticketId, usedAt])
+}
+
+model MembershipPlan {
+  id              String  @id @default(cuid())
+  organizationId  String
+  name            String
+  description     String?
+  monthlyPrice    Int
+  /// Maximum redemptions per month; null = unlimited.
+  monthlyUseLimit Int?
+  serviceIds      Json?
+  isActive        Boolean @default(true)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  organization  Organization             @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  subscriptions MembershipSubscription[]
+
+  @@index([organizationId, isActive])
+}
+
+model MembershipSubscription {
+  id             String           @id @default(cuid())
+  planId         String
+  customerId     String
+  status         MembershipStatus @default(active)
+  startedAt      DateTime         @default(now()) @db.Timestamptz(3)
+  renewsAt       DateTime?        @db.Timestamptz(3)
+  pausedAt       DateTime?        @db.Timestamptz(3)
+  cancelledAt    DateTime?        @db.Timestamptz(3)
+  usedThisPeriod Int              @default(0)
+  /// Payment provider subscription reference. No card data is stored here.
+  providerRef    String?
+  failureCount   Int              @default(0)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  plan     MembershipPlan @relation(fields: [planId], references: [id], onDelete: Restrict)
+  customer Customer       @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@index([customerId, status])
+  @@index([planId, status])
+}
+
+model PointAccount {
+  id             String @id @default(cuid())
+  organizationId String
+  customerId     String @unique
+  balance        Int    @default(0)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  organization Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  customer     Customer           @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  transactions PointTransaction[]
+
+  @@index([organizationId])
+}
+
+model PointTransaction {
+  id           String      @id @default(cuid())
+  accountId    String
+  type         PointTxType
+  /// Signed change applied to the balance.
+  amount       Int
+  balanceAfter Int
+  saleId       String?
+  note         String?
+  expiresAt    DateTime?   @db.Timestamptz(3)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  createdBy String?
+
+  account PointAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  sale    Sale?        @relation(fields: [saleId], references: [id], onDelete: SetNull)
+
+  @@index([accountId, createdAt])
+  @@index([expiresAt])
+}
+
+// ===========================================================================
+// Messaging, notifications & marketing
+// ===========================================================================
+
+model MessageTemplate {
+  id             String              @id @default(cuid())
+  organizationId String
+  storeId        String?
+  event          NotificationEvent
+  channel        NotificationChannel
+  locale         Locale
+  subject        String?
+  /// Body with `{{placeholder}}` tokens resolved by the renderer. Only a fixed
+  /// allow-list of tokens is substituted; no arbitrary code is evaluated.
+  body           String
+  isActive       Boolean             @default(true)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  store        Store?       @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, storeId, event, channel, locale])
+  @@index([organizationId, event])
+}
+
+model Notification {
+  id             String  @id @default(cuid())
+  organizationId String
+  storeId        String?
+  customerId     String?
+  appointmentId  String?
+
+  event   NotificationEvent
+  channel NotificationChannel
+  locale  Locale              @default(ja)
+
+  /// Prevents the same logical notification being queued twice.
+  idempotencyKey String @unique
+
+  /// Snapshot of the rendered message.
+  recipient String
+  subject   String?
+  body      String
+
+  status      NotificationStatus @default(pending)
+  scheduledAt DateTime           @default(now()) @db.Timestamptz(3)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  organization Organization           @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  store        Store?                 @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  customer     Customer?              @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  appointment  Appointment?           @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  deliveries   NotificationDelivery[]
+
+  @@index([status, scheduledAt])
+  @@index([organizationId, createdAt])
+  @@index([appointmentId])
+}
+
+model NotificationDelivery {
+  id                String             @id @default(cuid())
+  notificationId    String
+  attempt           Int                @default(1)
+  status            NotificationStatus
+  providerName      String?
+  providerMessageId String?
+  errorMessage      String?
+  startedAt         DateTime           @default(now()) @db.Timestamptz(3)
+  finishedAt        DateTime?          @db.Timestamptz(3)
+  /// Exponential backoff target for the next attempt.
+  nextRetryAt       DateTime?          @db.Timestamptz(3)
+
+  notification Notification @relation(fields: [notificationId], references: [id], onDelete: Cascade)
+
+  @@index([notificationId, attempt])
+  @@index([nextRetryAt])
+}
+
+model MarketingSegment {
+  id             String  @id @default(cuid())
+  organizationId String
+  name           String
+  description    String?
+  /// Declarative filter definition evaluated by the segment builder. Stored as
+  /// structured JSON, never as raw SQL.
+  definition     Json
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  organization Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  campaigns    MarketingCampaign[]
+
+  @@index([organizationId])
+}
+
+model MarketingCampaign {
+  id             String              @id @default(cuid())
+  organizationId String
+  segmentId      String?
+  name           String
+  channel        NotificationChannel
+  subject        String?
+  body           String
+  scheduledAt    DateTime?           @db.Timestamptz(3)
+  sentAt         DateTime?           @db.Timestamptz(3)
+  status         JobStatus           @default(queued)
+  /// Hard cap on recipients for this send.
+  maxRecipients  Int?
+  sentCount      Int                 @default(0)
+  failedCount    Int                 @default(0)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+  createdBy String?
+
+  organization Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  segment      MarketingSegment? @relation(fields: [segmentId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, status])
+}
+
+// ===========================================================================
+// Reviews & surveys (first-party only)
+// ===========================================================================
+
+model Review {
+  id             String       @id @default(cuid())
+  organizationId String
+  storeId        String
+  customerId     String?
+  /// 1–5
+  rating         Int
+  staffRating    Int?
+  serviceRating  Int?
+  /// Net Promoter Score answer, 0–10.
+  npsScore       Int?
+  comment        String?
+  status         ReviewStatus @default(pending)
+  storeReply     String?
+  repliedAt      DateTime?    @db.Timestamptz(3)
+  reportedReason String?
+
+  createdAt DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime  @updatedAt @db.Timestamptz(3)
+  deletedAt DateTime? @db.Timestamptz(3)
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  store        Store        @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  customer     Customer?    @relation(fields: [customerId], references: [id], onDelete: SetNull)
+
+  @@index([storeId, status, createdAt])
+}
+
+model Survey {
+  id             String  @id @default(cuid())
+  organizationId String
+  name           String
+  description    String?
+  /// JSON array of question definitions.
+  questions      Json
+  isActive       Boolean @default(true)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  organization Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  responses    SurveyResponse[]
+
+  @@index([organizationId, isActive])
+}
+
+model SurveyResponse {
+  id         String  @id @default(cuid())
+  surveyId   String
+  customerId String?
+  answers    Json
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+
+  survey   Survey    @relation(fields: [surveyId], references: [id], onDelete: Cascade)
+  customer Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
+
+  @@index([surveyId, createdAt])
+}
+
+// ===========================================================================
+// Import / export, integrations
+// ===========================================================================
+
+model ImportJob {
+  id             String    @id @default(cuid())
+  organizationId String
+  entity         String
+  fileName       String
+  encoding       String    @default("UTF-8")
+  status         JobStatus @default(queued)
+  totalRows      Int       @default(0)
+  succeededRows  Int       @default(0)
+  failedRows     Int       @default(0)
+  /// Column mapping chosen by the operator.
+  mapping        Json?
+  /// Row-level error report.
+  errors         Json?
+  startedAt      DateTime? @db.Timestamptz(3)
+  finishedAt     DateTime? @db.Timestamptz(3)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  createdBy String?
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, createdAt])
+}
+
+model ExportJob {
+  id             String    @id @default(cuid())
+  organizationId String
+  entity         String
+  format         String    @default("csv")
+  status         JobStatus @default(queued)
+  filters        Json?
+  rowCount       Int       @default(0)
+  storageKey     String?
+  expiresAt      DateTime? @db.Timestamptz(3)
+  startedAt      DateTime? @db.Timestamptz(3)
+  finishedAt     DateTime? @db.Timestamptz(3)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  createdBy String?
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, createdAt])
+}
+
+model WebhookEndpoint {
+  id              String    @id @default(cuid())
+  organizationId  String
+  url             String
+  description     String?
+  /// HMAC signing secret. Rotation keeps the previous secret valid briefly.
+  secret          String
+  previousSecret  String?
+  secretRotatedAt DateTime? @db.Timestamptz(3)
+  /// JSON array of subscribed event names.
+  events          Json
+  isActive        Boolean   @default(true)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  organization Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  deliveries   WebhookDelivery[]
+
+  @@index([organizationId, isActive])
+}
+
+model WebhookDelivery {
+  id             String                @id @default(cuid())
+  endpointId     String
+  event          String
+  payload        Json
+  /// Set on the request so receivers can discard duplicates.
+  eventId        String                @unique
+  status         WebhookDeliveryStatus @default(pending)
+  attempt        Int                   @default(0)
+  responseStatus Int?
+  responseBody   String?
+  nextRetryAt    DateTime?             @db.Timestamptz(3)
+
+  createdAt   DateTime  @default(now()) @db.Timestamptz(3)
+  deliveredAt DateTime? @db.Timestamptz(3)
+
+  endpoint WebhookEndpoint @relation(fields: [endpointId], references: [id], onDelete: Cascade)
+
+  @@index([endpointId, status])
+  @@index([nextRetryAt])
+}
+
+model ApiKey {
+  id             String    @id @default(cuid())
+  organizationId String
+  name           String
+  /// SHA-256 of the key. The plaintext is shown once at creation only.
+  keyHash        String    @unique
+  /// First characters of the key, for identification in the UI.
+  keyPrefix      String
+  /// JSON array of permission keys granted to this key.
+  scopes         Json
+  lastUsedAt     DateTime? @db.Timestamptz(3)
+  expiresAt      DateTime? @db.Timestamptz(3)
+  revokedAt      DateTime? @db.Timestamptz(3)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  createdBy String?
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, revokedAt])
+}
+
+// ===========================================================================
+// Audit, billing, flags
+// ===========================================================================
+
+model AuditLog {
+  id             String  @id @default(cuid())
+  organizationId String?
+  storeId        String?
+  actorId        String?
+  /// Denormalised so the log stays readable after the actor is deleted.
+  actorLabel     String?
+
+  action     String
+  entityType String
+  entityId   String?
+
+  /// Field-level snapshots. Secrets, passwords, tokens and card numbers are
+  /// stripped by the redaction list in src/server/observability/audit.ts.
+  before Json?
+  after  Json?
+
+  ipAddress String?
+  userAgent String?
+  requestId String?
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  store        Store?        @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  actor        User?         @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, createdAt])
+  @@index([entityType, entityId])
+  @@index([actorId, createdAt])
+  @@index([action, createdAt])
+}
+
+model Subscription {
+  id                 String             @id @default(cuid())
+  organizationId     String
+  /// Plan key resolved against the plan catalogue in src/config/plans.ts,
+  /// which reads prices from configuration rather than hardcoding them.
+  planKey            String
+  status             SubscriptionStatus @default(trialing)
+  /// "monthly" | "yearly"
+  billingCycle       String             @default("monthly")
+  trialEndsAt        DateTime?          @db.Timestamptz(3)
+  currentPeriodStart DateTime?          @db.Timestamptz(3)
+  currentPeriodEnd   DateTime?          @db.Timestamptz(3)
+  graceEndsAt        DateTime?          @db.Timestamptz(3)
+  cancelledAt        DateTime?          @db.Timestamptz(3)
+  providerRef        String?
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  invoices     Invoice[]
+
+  @@index([organizationId, status])
+}
+
+model Invoice {
+  id             String    @id @default(cuid())
+  organizationId String
+  subscriptionId String?
+  number         String    @unique
+  status         String    @default("open")
+  subtotalAmount Int
+  taxAmount      Int
+  totalAmount    Int
+  issuedAt       DateTime  @default(now()) @db.Timestamptz(3)
+  dueAt          DateTime? @db.Timestamptz(3)
+  paidAt         DateTime? @db.Timestamptz(3)
+  providerRef    String?
+
+  organization Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  subscription Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, issuedAt])
+}
+
+model FeatureFlag {
+  id             String  @id @default(cuid())
+  /// null = a platform-wide default that tenants inherit.
+  organizationId String?
+  key            String
+  isEnabled      Boolean @default(false)
+  /// Optional structured value (limits, thresholds) for entitlement checks.
+  value          Json?
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, key])
+  @@index([key])
+}
+
+/// Deduplicates unsafe requests. The response body of the first successful
+/// request is replayed for retries carrying the same key.
+model IdempotencyRecord {
+  id             String  @id @default(cuid())
+  organizationId String?
+  /// Scope prevents a key minted for one endpoint being replayed on another.
+  scope          String
+  key            String
+  /// Hash of the request body; a mismatch means the key was reused wrongly.
+  requestHash    String
+  status         String  @default("in_flight")
+  responseStatus Int?
+  responseBody   Json?
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  expiresAt DateTime @db.Timestamptz(3)
+
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([scope, key])
+  @@index([expiresAt])
+}

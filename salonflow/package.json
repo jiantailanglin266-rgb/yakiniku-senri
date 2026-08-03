@@ -1,0 +1,62 @@
+{
+  "name": "salonflow",
+  "version": "0.1.0",
+  "private": true,
+  "description": "SalonFlow - Integrated salon management SaaS (independent app; unrelated to the yakiniku LP in the repository root)",
+  "scripts": {
+    "dev": "next dev --port 3100",
+    "build": "next build",
+    "start": "next start --port 3100",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:unit": "vitest run tests/unit",
+    "test:integration": "vitest run tests/integration",
+    "test:watch": "vitest",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:push": "prisma db push",
+    "db:seed": "tsx prisma/seed/index.ts",
+    "db:reset": "prisma migrate reset --force",
+    "format": "prettier --write \"**/*.{ts,tsx,mts,mjs,css,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,mts,mjs,css,json,md}\""
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed/index.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.1",
+    "@tanstack/react-table": "^8.21.3",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
+    "lucide-react": "^1.28.0",
+    "next": "16.2.12",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "recharts": "^2.15.4",
+    "tailwind-merge": "^3.3.1",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^7.0.0",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^6.0.5",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.12",
+    "jsdom": "^30.0.1",
+    "prettier": "^3.9.6",
+    "prisma": "^6.19.1",
+    "tailwindcss": "^4",
+    "tsx": "^4.20.6",
+    "typescript": "^5",
+    "vitest": "^4.1.10"
+  }
+}
