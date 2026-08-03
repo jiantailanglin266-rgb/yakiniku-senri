@@ -62,7 +62,7 @@ export const socialLinks: SocialLink[] = [
     label: "食べログ",
     description: `${store.name}の食べログページ（外部サイト）`,
     href:
-      process.env.NEXT_PUBLIC_TABELOG_URL || "https://tabelog.com/tokyo/A1317/A131710/13013081/",
+      process.env.NEXT_PUBLIC_TABELOG_URL || "https://tabelog.com/tokyo/A1317/A131709/13013081/",
     icon: "utensils",
   },
 ];
