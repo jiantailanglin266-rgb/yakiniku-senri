@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 
 import { PageBody, PageHero, RelatedLinks } from "@/components/ai-port/layout/PageShell";
+import { AiMediaBackdrop } from "@/components/ai-port/media/AiMediaBackdrop";
 import { ToolGrid } from "@/components/ai-port/tools/ToolCard";
 import { Disclaimer, GlassCard } from "@/components/ai-port/ui/Primitives";
 import { JsonLd } from "@/components/ui/JsonLd";
@@ -73,6 +74,15 @@ export default async function GuideDetailPage({ params }: Params) {
         title={article.title}
         description={article.lead}
         crumbs={crumbs}
+        visual={
+          <AiMediaBackdrop
+            kind="guide"
+            slug={article.slug}
+            theme="guide"
+            seed={getArticles().findIndex((entry) => entry.slug === article.slug) + 3}
+            priority
+          />
+        }
       >
         <p className="text-ai-dim flex flex-wrap items-center gap-3 text-[0.74rem]">
           <span translate="no">公開 {article.published}</span>

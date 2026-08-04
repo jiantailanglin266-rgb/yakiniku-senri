@@ -3,6 +3,7 @@ import { ArrowUpRight, CalendarDays } from "lucide-react";
 
 import { Reveal } from "@/components/ai-port/effects/Reveal";
 import { PageBody, PageHero, RelatedLinks } from "@/components/ai-port/layout/PageShell";
+import { AiMediaThumb } from "@/components/ai-port/media/AiMediaBackdrop";
 import { Badge, Disclaimer, GlassCard } from "@/components/ai-port/ui/Primitives";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { aiEvents, eventKindLabel } from "@/data/ai-port/events";
@@ -62,6 +63,18 @@ export default function EventsPage() {
           {aiEvents.map((event, index) => (
             <Reveal key={event.id} as="li" delay={index * 50}>
               <GlassCard className="group relative flex h-full flex-col p-6">
+                {/*
+                  会場都市の風景など、確認済みの画像があれば表示します。
+                  イベント本体の写真は肖像権・撮影条件が絡むため対象にしていません。
+                */}
+                <AiMediaThumb
+                  kind="event"
+                  slug={event.id}
+                  theme={event.online ? "business" : "travel"}
+                  seed={index + 1}
+                  className="-mx-6 -mt-6 mb-5 rounded-t-xl"
+                />
+
                 <div className="flex items-start justify-between gap-3">
                   <Badge accent={event.online ? "mint" : "amber"}>
                     {eventKindLabel[event.kind]}

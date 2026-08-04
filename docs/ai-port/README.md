@@ -257,3 +257,22 @@ DBスキーマ案は `docs/ai-port/db-schema.sql` にあります。
 | 広告枠を追加           | `src/data/ai-port/ads.ts`（`sponsored: true` でPR表示）               |
 
 いずれもサイトマップ・検索インデックス・llms.txt に自動で反映されます。
+
+---
+
+## 13. 画像
+
+画像の取得・ライセンス判定・クレジット表示は、サイト共通の `src/media/` が担当します。
+AI PORT 側は掲載枠を置くだけです。
+
+| やりたいこと       | 使うもの                                        |
+| ------------------ | ----------------------------------------------- |
+| 見出しの背景       | `<AiMediaBackdrop kind="topic" slug={...} />`   |
+| カードのサムネイル | `<AiMediaThumb kind="event" slug={...} />`      |
+| 本文中の図版       | `<WikimediaFigure />`（`src/media/components`） |
+| 出典の確認         | `/ai-port/image-credits`                        |
+
+ライセンス確認済みの画像が無い枠は、外部素材を使わない装飾表現に落ちます。
+比率を固定しているため、画像の有無でレイアウトは変わりません。
+
+判定のルールと運用は [docs/media/README.md](../media/README.md) を参照してください。

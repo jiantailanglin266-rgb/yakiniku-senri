@@ -16,7 +16,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-import { cardportBasePath } from "@/cardport/config/site";
+import { cardportAsset, cardportBasePath } from "@/cardport/config/site";
 import {
   getLocaleDefinition,
   localeDefinitions,
@@ -114,6 +114,19 @@ export function LanguageSwitcher({ locale, label }: { locale: Locale; label: str
               );
             })}
           </ul>
+
+          {/* MIT は著作権表示の保持が条件です。旗を使う画面から辿れるようにしています。 */}
+          <p className="text-cp-dim border-cp-line/60 mt-1 border-t px-2.5 pt-2 pb-1 text-[0.62rem] leading-[1.7]">
+            国旗素材：
+            <a
+              href={cardportAsset("/licenses/flag-icons-LICENSE.txt")}
+              target="_blank"
+              rel="noopener noreferrer license"
+              className="hover:text-cp-cyan underline underline-offset-2"
+            >
+              flag-icons（MIT）
+            </a>
+          </p>
         </div>
       ) : null}
     </div>
