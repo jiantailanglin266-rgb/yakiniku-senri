@@ -6,16 +6,25 @@
  * コンポーネント側にこれらの値を直接書かないでください。
  */
 
+import { siteUrl } from "@/data/site";
+
 const env = (key: string, fallback: string): string => {
   const value = process.env[key];
   return value && value.length > 0 ? value : fallback;
 };
 
-/** 末尾スラッシュを取り除いた公開URL */
-export const cardportUrl = env("NEXT_PUBLIC_CARDPORT_URL", "https://cardport.example").replace(
-  /\/$/,
-  "",
-);
+/**
+ * 末尾スラッシュを取り除いた公開URL。
+ *
+ * ■ 独自ドメインを取るまでは、実際に配信しているURLに揃えます
+ *   既定値を `https://cardport.example` にしていたため、環境変数を置かないまま
+ *   デプロイすると、存在しないドメインの canonical とサイトマップが出ていました
+ *   （静的エクスポートで 1,598 件）。
+ *   実在しないURLを検索エンジンに申告することになるため、
+ *   既定は「いま配信しているURL」にします。
+ *   独自ドメインが決まったら `NEXT_PUBLIC_CARDPORT_URL` で上書きしてください。
+ */
+export const cardportUrl = env("NEXT_PUBLIC_CARDPORT_URL", siteUrl).replace(/\/$/, "");
 
 /**
  * サブディレクトリ配信（GitHub Pages のプロジェクトページ等）のベースパス。

@@ -27,6 +27,7 @@ import { faqJsonLd, itemListJsonLd } from "@/cardport/lib/structured-data";
 
 import { Hero } from "@/cardport/components/home/Hero";
 import { CampaignTicker } from "@/cardport/components/home/CampaignTicker";
+import { KeywordMarquee } from "@/cardport/components/home/KeywordMarquee";
 import {
   CategoryChips,
   FaqList,
@@ -286,6 +287,9 @@ export default async function CardPortHome({ params }: { params: Promise<{ local
         />
         <FeatureGrid locale={locale} limit={12} />
       </Section>
+
+      {/* 扱っている話題の帯（装飾）。セクションの切れ目に置いています */}
+      <KeywordMarquee locale={locale} />
 
       {/* 8. 最新クレジットカードニュース */}
       <Section labelledBy="cardnews-heading">
