@@ -19,6 +19,10 @@ import { streamingServices } from "@/sports/data/streaming";
 import { web3Services } from "@/sports/data/web3";
 import { diagnoses } from "@/sports/data/diagnoses";
 import { usingMockData } from "@/sports/lib/api";
+import { MediaReviewQueue } from "@/media/components";
+import { wikimediaAssets, assetRejections } from "@/media/data/assets";
+import { getMediaLabels } from "@/media/i18n/labels";
+import { isPublishable } from "@/media/lib/eligibility";
 
 import { Badge, Breadcrumbs, JsonLd, SectionHeading } from "@/sports/components/ui/primitives";
 import { breadcrumbJsonLd } from "@/sports/lib/structured-data";
@@ -56,6 +60,47 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
     { label: "HOME", path: "/" },
     { label: dict.navAdmin, path: "/admin" },
   ];
+
+  // 画像の承認状況。数えているだけで、ここから公開状態を変えることはできません
+  const byStatus = (status: string) =>
+    wikimediaAssets.filter((asset) => asset.verificationStatus === status).length;
+  const imageReview = [
+    {
+      key: "fetched",
+      label: locale === "ja" ? "取得済み" : "Fetched",
+      count: wikimediaAssets.length,
+    },
+    {
+      key: "published",
+      label: locale === "ja" ? "公開中" : "Published",
+      count: wikimediaAssets.filter(isPublishable).length,
+    },
+    {
+      key: "needs_review",
+      label: locale === "ja" ? "確認待ち" : "Needs review",
+      count: byStatus("needs_review"),
+    },
+    {
+      key: "rights_risk",
+      label: locale === "ja" ? "追加権利あり" : "Rights risk",
+      count: byStatus("rights_risk"),
+    },
+    {
+      key: "license_unknown",
+      label: locale === "ja" ? "ライセンス不明" : "Licence unknown",
+      count: byStatus("license_unknown"),
+    },
+    {
+      key: "rejected",
+      label: locale === "ja" ? "除外" : "Rejected",
+      count: byStatus("rejected") + assetRejections.length,
+    },
+  ];
+
+  // 未承認のものだけを確認キューに出します（承認済みは出典ページで確認できます）
+  const pendingMediaAssets = wikimediaAssets
+    .filter((asset) => asset.verificationStatus !== "approved")
+    .sort((a, b) => a.fileName.localeCompare(b.fileName));
 
   const collections = [
     { key: "sports", label: dict.sectionSports, count: sports.length, path: "/leagues" },
@@ -259,6 +304,39 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
               ))}
             </tbody>
           </table>
+        </div>
+      </section>
+
+      <section aria-labelledby="ad-images" className="mb-12">
+        <SectionHeading
+          id="ad-images"
+          eyebrow="IMAGE REVIEW"
+          title={locale === "ja" ? "画像の承認状況" : "Image review queue"}
+          description={
+            locale === "ja"
+              ? "node scripts/wikimedia-sync.mjs で取得した候補の判定結果です。取得できたことは、掲載してよい根拠になりません。承認はデータの更新（＝コードレビュー）で行い、画面から直接公開できる導線は設けていません。"
+              : "Verification state of candidates fetched by scripts/wikimedia-sync.mjs. Successful retrieval is not permission to publish. Approval happens in the data, through code review — there is deliberately no publish button here."
+          }
+        />
+        <ul className="mb-3 grid gap-3 sm:grid-cols-3 lg:grid-cols-6">
+          {imageReview.map((item) => (
+            <li key={item.key} className="sp-solid p-4">
+              <p className="text-ink-faint text-[0.6875rem]">{item.label}</p>
+              <p className="sp-mono text-ink mt-1 text-lg font-bold">{item.count}</p>
+            </li>
+          ))}
+        </ul>
+        <div className="sp-solid overflow-hidden p-4">
+          <MediaReviewQueue
+            assets={pendingMediaAssets}
+            locale={locale}
+            labels={getMediaLabels(locale)}
+          />
+          <p className="mt-3 text-xs">
+            <Link href={href(locale, "/image-credits")} className="text-cyan hover:underline">
+              {dict.footerImageCredits}
+            </Link>
+          </p>
         </div>
       </section>
 

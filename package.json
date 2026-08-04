@@ -15,7 +15,8 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,mts,mjs,css,json,md}\"",
     "placeholders": "node scripts/generate-placeholders.mjs",
     "cardport:assets": "node scripts/generate-cardport-assets.mjs",
-    "sports:assets": "node scripts/generate-sports-assets.mjs"
+    "sports:assets": "node scripts/generate-sports-assets.mjs",
+    "media:sync": "node scripts/wikimedia-sync.mjs"
   },
   "dependencies": {
     "framer-motion": "^12.43.0",

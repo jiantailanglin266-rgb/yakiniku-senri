@@ -16,6 +16,9 @@ import { LeagueCard, NewsCard, PlayerCard } from "@/sports/components/cards/Card
 import { WatchOptions } from "@/sports/components/streaming/StreamingTable";
 import { Badge, Breadcrumbs, JsonLd, SectionHeading } from "@/sports/components/ui/primitives";
 import { breadcrumbJsonLd, howToJsonLd } from "@/sports/lib/structured-data";
+import { MediaSlot } from "@/media/components";
+import { pageKey } from "@/media/data/usages";
+import { mediaSeed, sportTheme } from "@/sports/lib/media";
 
 export function generateStaticParams() {
   return localeCodes.flatMap((locale) => sports.map((sport) => ({ locale, slug: sport.slug })));
@@ -77,13 +80,40 @@ export default async function SportDetailPage({
     <>
       <Breadcrumbs locale={locale} trail={trail} />
 
-      <header className="mb-10">
-        <p className="sp-eyebrow mb-2">SPORT</p>
-        <h1 className="text-ink flex items-center gap-3 text-3xl font-extrabold sm:text-4xl">
-          <span aria-hidden="true">{sport.glyph}</span>
-          {t(sport.name)}
-        </h1>
-        <p className="text-ink-dim mt-3 max-w-2xl text-sm leading-relaxed">{t(sport.primer)}</p>
+      {/*
+        ライセンス確認済みの画像があればヒーローに使い、無ければ装飾表現にします。
+        画像が入った場合もクレジットは MediaSlot の内部で必ず表示されます。
+      */}
+      <header className="border-edge relative isolate mb-10 overflow-hidden rounded-2xl border">
+        {/*
+          背景側。前面の見出しは後続の要素なので、そのまま上に重なります。
+          高さだけを指定すると比率から幅が逆算されて横幅が足りなくなるため、
+          幅と高さの両方をここで固定します。
+        */}
+        <div className="absolute inset-0 [&_figure]:size-full [&_figure>div]:size-full [&>div]:size-full">
+          <MediaSlot
+            pageKey={pageKey("sportsport", "sport", sport.slug)}
+            slot="hero"
+            locale={locale}
+            theme={sportTheme(sport.id, "neutral")}
+            seed={mediaSeed(sport.slug)}
+            sizes="100vw"
+            showCaption={false}
+            className="size-full"
+          />
+        </div>
+        {/*
+          文字を読める濃さは確保しつつ、右側は背景が見える濃度にしています。
+          全面を暗くすると、画像を入れても入れなくても同じ見た目になってしまいます。
+        */}
+        <div className="from-void via-void/75 relative min-h-56 bg-linear-to-r to-transparent px-5 py-12 sm:min-h-64 sm:px-8 sm:py-16">
+          <p className="sp-eyebrow mb-2">SPORT</p>
+          <h1 className="text-ink flex items-center gap-3 text-3xl font-extrabold sm:text-4xl">
+            <span aria-hidden="true">{sport.glyph}</span>
+            {t(sport.name)}
+          </h1>
+          <p className="text-ink-dim mt-3 max-w-2xl text-sm leading-relaxed">{t(sport.primer)}</p>
+        </div>
       </header>
 
       {/* 競技設定（この競技の表示ルール） */}

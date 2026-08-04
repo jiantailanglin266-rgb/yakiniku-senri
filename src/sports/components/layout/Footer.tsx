@@ -62,6 +62,7 @@ export function Footer({ locale }: { locale: Locale }) {
         { path: "/legal/terms", label: dict.footerTerms },
         { path: "/legal/cookie", label: dict.footerCookie },
         { path: "/legal/copyright", label: dict.footerCopyright },
+        { path: "/image-credits", label: dict.footerImageCredits },
         { path: "/legal/contact", label: dict.footerContact },
         { path: "/legal/correction", label: dict.footerCorrection },
         { path: "/sitemap", label: dict.footerSitemap },

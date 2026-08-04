@@ -7,10 +7,11 @@ import type { LicenseCode } from "../types";
 
 const toneByCode = (code: LicenseCode): string => {
   const license = getLicense(code);
-  if (license.isPublicDomain) return "border-cp-emerald/45 bg-cp-emerald/12 text-cp-emerald";
-  if (!license.autoUsable) return "border-cp-danger/45 bg-cp-danger/12 text-cp-danger";
-  if (license.shareAlikeRequired) return "border-cp-amber/45 bg-cp-amber/12 text-cp-amber";
-  return "border-cp-cyan/45 bg-cp-cyan/12 text-cp-cyan";
+  if (license.isPublicDomain)
+    return "border-media-emerald/45 bg-media-emerald/12 text-media-emerald";
+  if (!license.autoUsable) return "border-media-danger/45 bg-media-danger/12 text-media-danger";
+  if (license.shareAlikeRequired) return "border-media-amber/45 bg-media-amber/12 text-media-amber";
+  return "border-media-cyan/45 bg-media-cyan/12 text-media-cyan";
 };
 
 export function ImageLicenseBadge({ code, className }: { code: LicenseCode; className?: string }) {

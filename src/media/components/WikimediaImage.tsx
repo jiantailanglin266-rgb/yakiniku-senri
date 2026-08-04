@@ -97,7 +97,7 @@ export function WikimediaImage({
       ) : null}
 
       {caption ? (
-        <figcaption className="text-cp-mist px-1 pt-2 text-[0.76rem] leading-relaxed">
+        <figcaption className="text-media-mist px-1 pt-2 text-[0.76rem] leading-relaxed">
           {caption}
         </figcaption>
       ) : null}

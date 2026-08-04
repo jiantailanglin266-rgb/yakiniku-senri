@@ -223,6 +223,7 @@ export type Dictionary = {
   footerTerms: string;
   footerCookie: string;
   footerCopyright: string;
+  footerImageCredits: string;
   footerContact: string;
   footerCorrection: string;
   footerSitemap: string;
@@ -437,6 +438,7 @@ export const ja: Dictionary = {
   footerTerms: "利用規約",
   footerCookie: "Cookieポリシー",
   footerCopyright: "著作権・画像利用方針",
+  footerImageCredits: "画像出典・ライセンス",
   footerContact: "お問い合わせ",
   footerCorrection: "情報修正依頼",
   footerSitemap: "サイトマップ",
@@ -653,6 +655,7 @@ export const en: Dictionary = {
   footerTerms: "Terms of use",
   footerCookie: "Cookie policy",
   footerCopyright: "Copyright & image policy",
+  footerImageCredits: "Image credits",
   footerContact: "Contact",
   footerCorrection: "Report a correction",
   footerSitemap: "Sitemap",

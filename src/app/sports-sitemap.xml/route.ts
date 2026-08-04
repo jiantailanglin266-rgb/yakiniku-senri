@@ -45,6 +45,7 @@ export function sitemapEntries(): Entry[] {
     { path: "/guide", changefreq: "monthly", priority: 0.6 },
     { path: "/faq", changefreq: "monthly", priority: 0.5 },
     { path: "/sitemap", changefreq: "weekly", priority: 0.3 },
+    { path: "/image-credits", changefreq: "weekly", priority: 0.3 },
 
     ...matches.map((match) => ({
       path: `/matches/${match.slug}`,
