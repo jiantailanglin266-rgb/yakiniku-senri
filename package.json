@@ -14,6 +14,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,mts,mjs,css,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,mts,mjs,css,json,md}\"",
     "placeholders": "node scripts/generate-placeholders.mjs",
+    "cardport:assets": "node scripts/generate-cardport-assets.mjs",
     "sports:assets": "node scripts/generate-sports-assets.mjs"
   },
   "dependencies": {
