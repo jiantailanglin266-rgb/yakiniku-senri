@@ -12,6 +12,7 @@ import { Figure } from "@/components/ui/Figure";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 import { MenuCard } from "@/components/menu/MenuCard";
 import { store } from "@/data/store";
+import { socialLinks } from "@/data/site";
 import { mainNav } from "@/data/navigation";
 import { recommendedItems } from "@/data/menu";
 
@@ -32,6 +33,27 @@ describe("GlobalHeader", () => {
     const links = screen.getAllByRole("link", { name: /電話で予約する/ });
     expect(links.length).toBeGreaterThan(0);
     expect(links[0]).toHaveAttribute("href", store.phoneHref);
+  });
+
+  it("フッターと同じSNSリンクをヘッダーにも並べる", () => {
+    const { container } = render(<GlobalHeader />);
+    // スマートフォン用の一覧。フッターと同じ並び・同じ件数であることを確認します
+    const list = container.querySelector("header ul.lg\\:hidden");
+    expect(list).toBeTruthy();
+    expect(Array.from(list!.querySelectorAll("a")).map((a) => a.getAttribute("href"))).toEqual(
+      socialLinks.map((link) => link.href),
+    );
+  });
+
+  it("電話予約ボタンをスマートフォンでは隠す", () => {
+    render(<GlobalHeader />);
+    const button = screen
+      .getAllByRole("link", { name: /電話で予約する/ })
+      .find((link) => link.closest("header"));
+    // cn() は単純連結のため className の hidden が効きません。
+    // ラッパー側で出し分けているので、その指定が消えていないことを確かめます
+    expect(button?.parentElement?.className).toContain("hidden");
+    expect(button?.parentElement?.className).toContain("md:contents");
   });
 });
 
