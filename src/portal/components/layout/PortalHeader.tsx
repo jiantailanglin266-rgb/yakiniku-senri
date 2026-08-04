@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { localePath } from "@/portal/i18n/config";
 import { mainNav } from "@/portal/data/site-content";
 import { brand } from "@/portal/lib/site";
-import { BrandLogo } from "./BrandLogo";
 import { navLabel } from "@/portal/lib/format";
 import type { Dictionary } from "@/portal/i18n/dictionaries";
 import { GlobalSearch } from "./GlobalSearch";
@@ -71,11 +70,19 @@ export function PortalHeader({ locale, dict }: { locale: string; dict: Dictionar
           className="flex shrink-0 items-center gap-2"
           aria-label={brand.name}
         >
-          <BrandLogo
-            withMark
-            videoClassName="h-10 sm:h-12"
-            textClassName="text-sm tracking-tight sm:text-base"
-          />
+          <span aria-hidden="true" className="relative grid size-8 place-items-center">
+            <span className="absolute inset-0 rounded-lg bg-linear-to-br from-(--color-cyan) via-(--color-blue) to-(--color-magenta) opacity-90" />
+            <span className="absolute inset-[2px] rounded-[6px] bg-(--color-void)" />
+            <span className="relative font-mono text-xs font-bold text-(--color-cyan)">CP</span>
+          </span>
+          <span className="font-display text-sm font-semibold tracking-tight sm:text-base">
+            <span className="text-gradient">{brand.nameParts[0]}</span>
+            {brand.nameParts[1] ? (
+              <span className="ms-1 text-(--color-ink-soft)">
+                {brand.nameParts.slice(1).join(" ")}
+              </span>
+            ) : null}
+          </span>
         </Link>
 
         <nav aria-label={dict.nav.market} className="hidden items-center gap-0.5 xl:flex">

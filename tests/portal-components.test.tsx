@@ -8,7 +8,7 @@ vi.mock("next/navigation", async () =>
   (await import("./helpers/next-mocks")).navigationMock("/ja"),
 );
 
-import { BrandLogo } from "@/portal/components/layout/BrandLogo";
+import { HeroLogoVideo } from "@/portal/components/home/HeroLogoVideo";
 import { brand } from "@/portal/lib/site";
 import { getDictionary } from "@/portal/i18n/dictionaries";
 import { locales } from "@/portal/i18n/config";
@@ -250,28 +250,66 @@ describe("診断", () => {
   });
 });
 
-describe("動画ロゴ", () => {
-  it("動画が使えないときは、差し替え前と同じ文字ロゴに戻る", () => {
+describe("ファーストビューの動くロゴ", () => {
+  it("動画が使えないときは、サイト名の文字表示に戻る", () => {
     // 読み込み失敗でロゴが消えたままになると、サイトの識別ができなくなります
-    render(<BrandLogo withMark />);
+    render(<HeroLogoVideo />);
     const video = document.querySelector("video");
     expect(video).not.toBeNull();
 
     fireEvent.error(video!);
 
     expect(document.querySelector("video")).toBeNull();
-    expect(screen.getByText("CRYPTO")).toBeInTheDocument();
-    expect(screen.getByText("PORT")).toBeInTheDocument();
-    expect(screen.getByText("CP")).toBeInTheDocument();
+    expect(screen.getByText(brand.name)).toBeInTheDocument();
   });
 
-  it("動画は装飾として扱い、サイト名は必ず読み上げられる", () => {
-    render(<BrandLogo />);
-    const video = document.querySelector("video");
-    expect(video?.getAttribute("aria-hidden")).toBe("true");
-    // 音の出る自動再生はブラウザが許可しないため、消音とインライン再生は必須です
-    expect(video).toHaveAttribute("loop");
-    expect(video).toHaveAttribute("preload", "auto");
+  it("継ぎ目を作らないため、動画を2枚重ねている", () => {
+    // 1枚を loop させると、最終フレームから先頭へ飛ぶ瞬間に映像が途切れます
+    render(<HeroLogoVideo />);
+    expect(document.querySelectorAll("video")).toHaveLength(2);
+  });
+
+  it("終わりが近づくと、もう1枚へ入れ替わる（継ぎ目のないループ）", async () => {
+    render(<HeroLogoVideo />);
+    const videos = [...document.querySelectorAll("video")] as HTMLVideoElement[];
+
+    // 再生中は1枚目が前面
+    expect(videos[0].className).toContain("opacity-100");
+    expect(videos[1].className).toContain("opacity-0");
+
+    // 「残り0.3秒」の状態を作って timeupdate を起こします
+    for (const video of videos) {
+      Object.defineProperty(video, "duration", { value: 5.062, configurable: true });
+      video.play = () => Promise.resolve();
+    }
+    Object.defineProperty(videos[0], "currentTime", { value: 4.8, configurable: true });
+    fireEvent.timeUpdate(videos[0]);
+
+    const after = [...document.querySelectorAll("video")] as HTMLVideoElement[];
+    expect(after[1].className).toContain("opacity-100");
+    expect(after[0].className).toContain("opacity-0");
+  });
+
+  it("まだ終わりでなければ入れ替えない", () => {
+    render(<HeroLogoVideo />);
+    const videos = [...document.querySelectorAll("video")] as HTMLVideoElement[];
+    for (const video of videos) {
+      Object.defineProperty(video, "duration", { value: 5.062, configurable: true });
+      video.play = () => Promise.resolve();
+    }
+    Object.defineProperty(videos[0], "currentTime", { value: 1.0, configurable: true });
+    fireEvent.timeUpdate(videos[0]);
+
+    const after = [...document.querySelectorAll("video")] as HTMLVideoElement[];
+    expect(after[0].className).toContain("opacity-100");
+  });
+
+  it("消音・インライン再生で、サイト名は必ず読み上げられる", () => {
+    render(<HeroLogoVideo />);
+    const videos = [...document.querySelectorAll("video")];
+    // 音の出る自動再生はブラウザが許可しないため、消音は必須です
+    for (const video of videos) expect(video).toHaveAttribute("preload", "auto");
+    expect(videos[0].getAttribute("autoplay")).not.toBeNull();
     expect(screen.getByText(brand.name, { selector: ".sr-only" })).toBeInTheDocument();
   });
 });
