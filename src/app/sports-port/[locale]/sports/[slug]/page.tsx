@@ -85,8 +85,12 @@ export default async function SportDetailPage({
         （WikimediaHero が creditPlacement="overlay" を強制します）。
       */}
       <header className="border-edge relative isolate mb-10 overflow-hidden rounded-2xl border">
-        {/* 背景側。前面の見出しは後続の要素なので、そのまま上に重なります */}
-        <div className="absolute inset-0 [&_figure]:h-full [&_figure>div]:h-full [&>div]:h-full">
+        {/*
+          背景側。前面の見出しは後続の要素なので、そのまま上に重なります。
+          高さだけを指定すると、比率指定から幅が逆算されて横幅が足りなくなるため、
+          幅と高さの両方をここで固定します。
+        */}
+        <div className="absolute inset-0 [&_figure]:size-full [&_figure>div]:size-full [&>div]:size-full">
           <WikimediaHero
             asset={assetForPage(`/sports/${sport.slug}`, "hero")}
             locale={locale}
@@ -94,7 +98,7 @@ export default async function SportDetailPage({
             fallbackSeed={sport.slug}
             fallbackAccent={sport.accent}
             // 記号は見出しの隣に出しているので、背景では重ねません
-            className="h-full"
+            className="size-full"
           />
         </div>
         {/*
