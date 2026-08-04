@@ -111,6 +111,28 @@ export const siteAssetCredits: SiteAssetCredit[] = [
       "運営者から提供された画像です。各銘柄のロゴ意匠と英語のキャッチコピー（THE PEOPLE'S COIN など）、右肩上がりのチャートを背景に描いた装飾画像であり、価格の見通しを示すものではありません。値動きの数値は描かれていません。画像内の文字は読み上げに乗らないため alt は空にし、リンク名は銘柄名で与えています。",
   },
   {
+    id: "cryptoport-logo-video",
+    label: "CRYPTO PORT のファーストビューの動くロゴ（1点）",
+    origin: "first-party",
+    path: "public/videos/crypto-port-logo.webm",
+    fileCount: 1,
+    authorName: "サイト運営者",
+    authorUrl: null,
+    sourceName: "運営者から提供された MP4（白背景・H.264・864×496・5.06秒）",
+    sourceUrl: null,
+    licenseCode: "自作",
+    licenseName: "サイト運営者が権利を持つ素材",
+    licenseUrl: null,
+    licenseTextPath: null,
+    isModified: true,
+    modificationDescription:
+      "白背景を抜いて透明にし（colorkey 0xFFFFFF）、下側の余白を切り落として 864×348 とし、アルファチャンネルを保てる VP9 の WebM へ変換しました。絵柄そのものは変えていません。",
+    usedOn: ["CRYPTO PORT トップページのファーストビュー"],
+    verifiedAt: "2026-08-04",
+    verificationNote:
+      "画面に描かれているのは CRYPTX のロゴマークと「CRYPTO X FUTURE」の文字だけで、価格や実績の表示はありません。元の MP4 は白背景のため暗い画面では白い箱として見えます。差し替え用の代替として置かないでください。",
+  },
+  {
     id: "flag-icons",
     label: "言語切り替えの国旗（42点）",
     origin: "third-party",

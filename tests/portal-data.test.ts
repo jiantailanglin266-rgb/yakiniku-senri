@@ -15,6 +15,7 @@ import { legalPages } from "@/portal/data/legal";
 import { groupedNews, news, relatedByStory, trendingNews } from "@/portal/data/news";
 import { footerNav, mainNav, siteFaq } from "@/portal/data/site-content";
 import { coinBanners } from "@/portal/data/coin-banners";
+import { brandLogoVideo } from "@/portal/lib/site";
 import { navLabel } from "@/portal/lib/format";
 
 /**
@@ -563,5 +564,24 @@ describe("銘柄バナーのマーキー", () => {
     for (const banner of coinBanners) {
       expect(banner.label.trim().length, banner.slug).toBeGreaterThan(0);
     }
+  });
+});
+
+describe("ファーストビューの動くロゴ", () => {
+  it("ファイルが存在する", () => {
+    // パスを間違えると、ロゴが出ずに文字表示へ落ちます
+    const file = path.join(publicDir, brandLogoVideo.replace(/^\//, ""));
+    expect(existsSync(file), brandLogoVideo).toBe(true);
+  });
+
+  it("透過を保てる WebM を指している", () => {
+    // 暗い背景に置くため、ロゴの背景は透明である必要があります。
+    // MP4/H.264 はアルファチャンネルを持てないので、白い箱として出てしまいます。
+    expect(brandLogoVideo.endsWith(".webm")).toBe(true);
+  });
+
+  it("背景つきの MP4 が残っていない", () => {
+    // 代替として置かれると、再生できたブラウザで白い箱が出ます
+    expect(existsSync(path.join(publicDir, "videos/crypto-port-logo.mp4"))).toBe(false);
   });
 });

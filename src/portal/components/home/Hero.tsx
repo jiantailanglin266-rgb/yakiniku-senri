@@ -76,8 +76,8 @@ export function Hero({
 
       <div className="relative mx-auto max-w-[110rem] px-4 sm:px-6">
         <div className="max-w-3xl">
-          {/* 動くロゴ。見出しの上に置きます */}
-          <HeroLogoVideo className="mb-5 block h-16 w-auto max-w-[22rem] sm:h-20 sm:max-w-[28rem]" />
+          {/* 動くロゴ。見出しの上に置きます。高さは動画の比率から決まります */}
+          <HeroLogoVideo className="mb-6 block w-full max-w-[19rem] sm:max-w-[28rem] lg:max-w-[34rem]" />
           <p className="eyebrow mb-4">{dict.hero.eyebrow}</p>
           <h1 className="text-4xl leading-[1.15] font-semibold sm:text-5xl lg:text-6xl">
             <span className="text-gradient">{dict.hero.title}</span>
