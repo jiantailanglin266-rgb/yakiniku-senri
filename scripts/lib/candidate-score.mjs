@@ -255,7 +255,27 @@ const EXCLUDED_SUBJECTS = [
     Visa と Mastercard のカードを写した写真でした。
   */
   { key: "logo", terms: ["logo", "wordmark", "brandmark", "trademark", "with trademark"] },
-  { key: "person", terms: ["portrait of", "headshot", "selfie"] },
+  { key: "person", terms: ["portrait of", "headshot", "selfie", "people with ", "people in "] },
+  /*
+    パノラマの自由が無い国の建築物・屋外美術。
+
+    Commons は「NoFoP-<国名>」というカテゴリで、その国に
+    パノラマの自由が無いことを明示します。ライセンスが CC BY でも、
+    写っている建築物・彫刻の権利は別に残るという意味です。
+
+    実例: Burj Khalifa (16260269606).jpg は CC BY-SA 2.0 ですが、
+          categories に NoFoP-United Arab Emirates を持ちます。
+          ファイル名からも説明文からも分かりません。
+  */
+  { key: "panorama", terms: ["nofop-"] },
+  /*
+    美術作品（彫刻・壁画）。作者の著作権が別に残ります。
+
+    実例: Satoshi Nakamoto.jpg は人物写真ではなく銅像の写真で、
+          categories は Bust of Satoshi Nakamoto (Budapest) です。
+          「人物」の語彙では拾えません。
+  */
+  { key: "artwork", terms: ["statue of", "bust of", "sculpture", "mural"] },
 ];
 
 /** 候補から外すべき被写体を返します（空なら問題なし） */
