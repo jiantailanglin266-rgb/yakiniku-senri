@@ -71,7 +71,7 @@ export function PortalHeader() {
             className="group flex shrink-0 items-center gap-2.5"
             aria-label={`${aiPortName} ホーム`}
           >
-            <PortalLogo className="size-8" />
+            <PortalLogo className="h-8" />
             <span className="min-w-0">
               <span className="font-ai-display text-ai-white block text-[0.95rem] leading-none font-semibold tracking-[0.14em]">
                 AI PORT
