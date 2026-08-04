@@ -20,7 +20,7 @@ describe("斜めのキーワード帯", () => {
       ...toolCategories.map((category) => category.nameEn),
     ]);
 
-    const words = [...container.querySelectorAll("span.bg-clip-text")].map((node) =>
+    const words = [...container.querySelectorAll(".ai-marquee span")].map((node) =>
       node.textContent?.trim(),
     );
 
@@ -42,7 +42,7 @@ describe("斜めのキーワード帯", () => {
     const { container } = render(<KeywordMarquee />);
     // 1行ぶん（＝継ぎ目対策の複製を除いた集合）に重複が無いこと
     const row = container.querySelector(".ai-marquee > div");
-    const words = [...(row?.querySelectorAll("span.bg-clip-text") ?? [])].map(
+    const words = [...(row?.querySelectorAll("span") ?? [])].map(
       (node) => node.textContent?.trim() ?? "",
     );
     expect(new Set(words).size).toBe(words.length);
@@ -74,5 +74,40 @@ describe("斜めのキーワード帯", () => {
     expect(frame?.className).toContain("overflow-hidden");
     expect(frame?.className).not.toContain("ai-diagonal-rows");
     expect(container.querySelector(".ai-diagonal-rows")).not.toBeNull();
+  });
+});
+
+describe("描画コスト", () => {
+  /*
+    1つの帯に約200個のピルが並びます。1個あたりの負荷がそのまま200倍になるため、
+    重い指定が紛れ込んでいないことを機械的に確かめます。
+    実際に backdrop-blur でスクロールが重くなりました。
+  */
+  it("ピルに背景ぼかし・グラデーション文字・影を使わない", () => {
+    const { container } = render(<KeywordMarquee />);
+    const pills = [...container.querySelectorAll(".ai-marquee span")];
+    expect(pills.length).toBeGreaterThan(50);
+
+    for (const pill of pills) {
+      const cls = pill.className;
+      expect(cls, "backdrop-blur は 200 個ぶんの負荷になります").not.toContain("backdrop-blur");
+      expect(cls, "bg-clip-text は要素ごとに合成レイヤーを作ります").not.toContain("bg-clip-text");
+      expect(cls, "影のぼかしも要素数ぶん効きます").not.toMatch(/\bshadow-/);
+      expect(cls, "filter は要素数ぶん効きます").not.toMatch(/\bblur-/);
+    }
+  });
+
+  it("詰めた版は行数を減らす（ピルの総数を減らす）", () => {
+    const { container: full } = render(<KeywordMarquee />);
+    const { container: compact } = render(<KeywordMarquee compact />);
+    const rows = (c: HTMLElement) => c.querySelectorAll(".ai-marquee").length;
+    expect(rows(compact)).toBeLessThan(rows(full));
+  });
+
+  it("傾きの向きを変えられる（同じページに2本置いても使い回しに見えない）", () => {
+    const { container: left } = render(<KeywordMarquee />);
+    const { container: right } = render(<KeywordMarquee tilt="right" />);
+    expect(left.firstElementChild?.className).not.toContain("ai-diagonal-right");
+    expect(right.firstElementChild?.className).toContain("ai-diagonal-right");
   });
 });
