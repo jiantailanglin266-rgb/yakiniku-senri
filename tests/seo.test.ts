@@ -8,6 +8,7 @@ import {
   faqJsonLd,
   organizationJsonLd,
   restaurantJsonLd,
+  videoJsonLd,
   websiteJsonLd,
 } from "@/lib/structured-data";
 import sitemap from "@/app/sitemap";
@@ -66,6 +67,46 @@ describe("構造化データ", () => {
     expect(faqJsonLd.mainEntity).toHaveLength(faqs.length);
     expect(faqJsonLd.mainEntity[0].name).toBe(faqs[0].question);
     expect(faqJsonLd.mainEntity[0].acceptedAnswer.text).toBe(faqs[0].answer);
+  });
+
+  it("VideoObject が動画の実ファイルを指す", () => {
+    if (!videoJsonLd) return;
+    expect(videoJsonLd["@type"]).toBe("VideoObject");
+    expect(videoJsonLd.duration).toMatch(/^PT\d+S$/);
+    expect(videoJsonLd.uploadDate).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    expect(videoJsonLd.thumbnailUrl[0].startsWith(`${siteUrl}/`)).toBe(true);
+  });
+
+  it("アセットのURLで先頭のパスが重複しない（ベースパスの二重付与）", () => {
+    /** 例: /senri/senri/videos/... を弾きます */
+    const hasDuplicatedHead = (url: string) => {
+      const segments = new URL(url).pathname.split("/").filter(Boolean);
+      return segments.length >= 2 && segments[0] === segments[1];
+    };
+    const urls = [
+      ...restaurantJsonLd.image,
+      restaurantJsonLd.logo,
+      ...(videoJsonLd ? [...videoJsonLd.thumbnailUrl, videoJsonLd.contentUrl] : []),
+    ].filter((url): url is string => Boolean(url));
+
+    expect(urls.length).toBeGreaterThan(0);
+    for (const url of urls) expect(hasDuplicatedHead(url)).toBe(false);
+  });
+
+  it("サブディレクトリ配信でもベースパスが二重に付かない", async () => {
+    vi.stubEnv("NEXT_PUBLIC_BASE_PATH", "/senri");
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://example.github.io/senri");
+    vi.resetModules();
+    try {
+      const { withBasePath } = await import("@/lib/base-path");
+      const { absoluteUrl } = await import("@/data/site");
+      expect(absoluteUrl(withBasePath("/videos/brand-movie.mp4"))).toBe(
+        "https://example.github.io/senri/videos/brand-movie.mp4",
+      );
+    } finally {
+      vi.unstubAllEnvs();
+      vi.resetModules();
+    }
   });
 
   it("BreadcrumbList の position が 1 から連番になる", () => {
