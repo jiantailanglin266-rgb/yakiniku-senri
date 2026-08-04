@@ -8,7 +8,11 @@
  *
  * ■ 動画の差し替え方法
  *   brandMovie.youtubeId に YouTube の動画ID、または brandMovie.mp4 に /videos/xxx.mp4 を指定します。
- *   どちらも未設定の場合は、ポスター画像のみが表示されます（再生ボタンは出ません）。
+ *   どちらも未設定の場合は、ポスター画像のみが表示されます。
+ *
+ *   FV直下の枠では**消音のループ自動再生**をします。ブラウザは音の出る動画の
+ *   自動再生を許可しないため、mp4 は音声トラックなしで書き出してください
+ *   （例: ffmpeg -i 元動画 -an -vf scale=1280:-2 -c:v libx264 -crf 26 -movflags +faststart 出力.mp4）。
  */
 
 import { withBasePath } from "@/lib/base-path";

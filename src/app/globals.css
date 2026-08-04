@@ -251,6 +251,7 @@ font {
   isolation: isolate;
 }
 .media-frame img,
+.media-frame video,
 .media-frame .media-placeholder {
   filter: saturate(0.92) contrast(1.04) brightness(0.98);
 }

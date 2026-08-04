@@ -1,8 +1,7 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
-import { Play, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useReducedMotion } from "framer-motion";
 import { Figure } from "@/components/ui/Figure";
 import { VerticalText } from "@/components/ui/VerticalText";
 import { SmokeLayer } from "@/components/effects/SmokeLayer";
@@ -18,34 +17,54 @@ type BrandMovieConfig = {
 
 /**
  * ファーストビュー直下のブランドムービー枠。
- * - youtubeId / mp4 のいずれかが設定されている場合のみ再生ボタンとモーダルを表示します
- * - どちらも未設定なら、ポスター画像のみを表示します（押せないダミーボタンは出しません）
- * - 自動再生は行いません。モーダル内の再生のみ、ユーザー操作を起点とします
+ *
+ * ■ 再生ボタンを押さずにループ再生します
+ *   枠の中でそのまま流し続けます。モーダルもオーバーレイも開かないため、
+ *   再生中もページの見た目・スクロール・レイアウトは一切変わりません。
+ *
+ * ■ 自動再生を成立させる条件
+ *   ブラウザは「消音」でなければ自動再生を許可しません（muted / playsInline は必須）。
+ *   動画ファイル自体も音声トラックなしで書き出しています。
+ *
+ * ■ 読み込みを遅らせています
+ *   枠が画面に近づくまで <video> を作りません。
+ *   ファーストビューだけ見て離脱する方に動画のダウンロードを負担させないためです。
+ *
+ * ■ prefers-reduced-motion では自動再生しません
+ *   代わりに操作バーを出し、見たい方が自分で再生できるようにします。
+ *   枠の大きさは変わらないため、レイアウトは同じです。
  */
 export function BrandMovie({ movie = defaultMovie }: { movie?: BrandMovieConfig }) {
-  const [open, setOpen] = useState(false);
+  const reduced = useReducedMotion();
+  const [inView, setInView] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
-  const dialogRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLButtonElement>(null);
+  const frameRef = useRef<HTMLDivElement>(null);
   const hasVideo = Boolean(movie.youtubeId || movie.mp4);
 
+  // 枠が画面に近づいたときだけ動画を読み込みます
   useEffect(() => {
-    if (!open) return;
-    document.body.style.overflow = "hidden";
-    dialogRef.current?.querySelector<HTMLElement>("button")?.focus();
+    const frame = frameRef.current;
+    if (!hasVideo || !frame || inView) return;
 
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setOpen(false);
-        triggerRef.current?.focus();
-      }
-    };
-    document.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = "";
-    };
-  }, [open]);
+    if (typeof IntersectionObserver !== "function") {
+      // 未対応環境では遅延読み込みをあきらめ、通常どおり再生します
+      const timer = setTimeout(() => setInView(true), 0);
+      return () => clearTimeout(timer);
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      // 画面に入る少し手前から読み始め、到達時には映像が出ている状態にします
+      { rootMargin: "300px 0px" },
+    );
+    observer.observe(frame);
+    return () => observer.disconnect();
+  }, [hasVideo, inView]);
 
   return (
     <section
@@ -73,28 +92,41 @@ export function BrandMovie({ movie = defaultMovie }: { movie?: BrandMovieConfig 
             </h2>
           </div>
 
-          <div className="mt-10 aspect-[16/9] w-full sm:aspect-[2.35/1]">
-            <div className="relative h-full w-full">
-              <Figure
-                media={movie.poster}
-                className="h-full w-full"
-                sizes="(max-width: 1024px) 100vw, 1200px"
-                label="movie"
-                soft
-              />
-              {hasVideo ? (
-                <button
-                  ref={triggerRef}
-                  type="button"
-                  onClick={() => setOpen(true)}
-                  className="group absolute inset-0 grid place-items-center"
-                >
-                  <span className="border-gold/60 group-hover:border-gold grid size-20 place-items-center rounded-full border bg-black/40 backdrop-blur-sm transition-all duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-105 group-hover:bg-black/60 sm:size-24">
-                    <Play aria-hidden="true" className="text-gold-light ml-1 size-7" />
-                  </span>
-                  <span className="sr-only">ブランドムービーを再生する</span>
-                </button>
-              ) : null}
+          <div ref={frameRef} className="mt-10 aspect-[16/9] w-full sm:aspect-[2.35/1]">
+            {/* 枠の見た目（色調整・縁のマスク）は画像のときと共通です */}
+            <div className="media-frame media-soft h-full w-full">
+              {hasVideo && inView ? (
+                movie.youtubeId ? (
+                  <iframe
+                    src={`https://www.youtube-nocookie.com/embed/${movie.youtubeId}?autoplay=1&mute=1&loop=1&playlist=${movie.youtubeId}&controls=0&rel=0&playsinline=1&modestbranding=1`}
+                    title="焼肉 千里 ブランドムービー"
+                    allow="autoplay; encrypted-media; picture-in-picture"
+                    className="absolute inset-0 h-full w-full border-0"
+                  />
+                ) : (
+                  <video
+                    src={movie.mp4}
+                    poster={movie.poster.src || undefined}
+                    aria-label={movie.title}
+                    autoPlay={!reduced}
+                    controls={Boolean(reduced)}
+                    loop
+                    muted
+                    playsInline
+                    preload="auto"
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                )
+              ) : (
+                /* 読み込み前・動画未設定のときはポスター画像を出します */
+                <Figure
+                  media={movie.poster}
+                  className="absolute inset-0 h-full w-full"
+                  sizes="(max-width: 1024px) 100vw, 1200px"
+                  label="movie"
+                  plain
+                />
+              )}
             </div>
           </div>
 
@@ -107,62 +139,6 @@ export function BrandMovie({ movie = defaultMovie }: { movie?: BrandMovieConfig 
 
         <VerticalText text="世田谷で六十余年" direction="up" targetRef={sectionRef} />
       </div>
-
-      <AnimatePresence>
-        {open ? (
-          <motion.div
-            className="fixed inset-0 z-[105] grid place-items-center bg-black/92 p-4 backdrop-blur-sm"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <button
-              type="button"
-              aria-label="動画を閉じる"
-              onClick={() => setOpen(false)}
-              className="absolute inset-0 h-full w-full"
-            />
-            <div
-              ref={dialogRef}
-              role="dialog"
-              aria-modal="true"
-              aria-label="ブランドムービー"
-              className="relative w-full max-w-5xl"
-            >
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                className="text-ivory hover:text-gold absolute -top-14 right-0 grid size-11 place-items-center transition-colors duration-500"
-              >
-                <X aria-hidden="true" className="size-6" />
-                <span className="sr-only">動画を閉じる</span>
-              </button>
-              <div className="aspect-video w-full overflow-hidden bg-black">
-                {movie.youtubeId ? (
-                  <iframe
-                    src={`https://www.youtube-nocookie.com/embed/${movie.youtubeId}?autoplay=1&rel=0`}
-                    title="焼肉 千里 ブランドムービー"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="h-full w-full"
-                  />
-                ) : (
-                  <video
-                    src={movie.mp4}
-                    poster={movie.poster.src || undefined}
-                    controls
-                    autoPlay
-                    muted
-                    playsInline
-                    className="h-full w-full"
-                  />
-                )}
-              </div>
-            </div>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
     </section>
   );
 }
