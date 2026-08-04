@@ -19,6 +19,7 @@ import { JsonLd } from "@/portal/components/ui/JsonLd";
 import { WikimediaFigure } from "@/media/components";
 import { pageImagesJsonLd } from "@/media/lib/structured-data";
 import { portalPageKey } from "@/portal/lib/media";
+import { PortalPhoto } from "@/portal/components/media/PortalPhoto";
 
 export function generateStaticParams() {
   return staticLocales().flatMap((locale) =>
@@ -132,6 +133,15 @@ export default async function LearnDetailPage(props: {
               ))}
             </ul>
           </section>
+
+          {/* 取得済みの写真があるときだけ出ます（無ければ何も足しません） */}
+          <PortalPhoto
+            kind="learn"
+            slug={article.slug}
+            alt={t(article.title, locale)}
+            locale={locale}
+            className="mb-8"
+          />
 
           <section className="mb-8">
             <h2 className="mb-3 text-xl font-semibold">{dict.learn.definition}</h2>

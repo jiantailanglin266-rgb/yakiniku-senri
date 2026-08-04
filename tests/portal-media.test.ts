@@ -4,12 +4,15 @@
  * ライセンス判定そのものは `tests/media-license.test.ts` が見ています。
  * ここで守るのは「ポータル側が独自の抜け道を作っていないこと」です。
  */
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
 import { MEDIA_SITE, mediaSeed, newsFallbackTheme, portalPageKey } from "@/portal/lib/media";
 import { newsCategories } from "@/portal/data/news";
+import { coins } from "@/portal/data/coins";
+import { learnArticles } from "@/portal/data/learn";
+import { photoCredit, portalPhoto } from "@/portal/lib/photos";
 import { footerNav } from "@/portal/data/site-content";
 import { portalSitemap } from "@/portal/lib/sitemap";
 import { healthIssues } from "@/portal/lib/admin";
@@ -141,5 +144,65 @@ describe("取得対象リスト", () => {
   it("掲載枠キーが重複していない", () => {
     const keys = requests.map((request) => `${request.pageKey}#${request.slot}`);
     expect(new Set(keys).size).toBe(keys.length);
+  });
+});
+
+describe("一括クレジット方式の写真（mountain-peak 方式）", () => {
+  const targets = JSON.parse(
+    readFileSync(path.join(process.cwd(), "src/portal/data/photo-targets.json"), "utf8"),
+  ) as { key: string; query: string }[];
+  const manifest = JSON.parse(
+    readFileSync(path.join(process.cwd(), "src/portal/data/photo-manifest.json"), "utf8"),
+  ) as Record<string, { file: string; commonsFile: string; width: number; height: number }>;
+
+  it("取得対象のキーが重複していない", () => {
+    const keys = targets.map((target) => target.key);
+    expect(new Set(keys).size).toBe(keys.length);
+  });
+
+  it("取得対象は実在する銘柄・記事を指す", () => {
+    const known = new Set([
+      ...coins.map((coin) => `coin:${coin.slug}`),
+      ...learnArticles.map((article) => `learn:${article.slug}`),
+    ]);
+    for (const target of targets) {
+      expect(known.has(target.key), target.key).toBe(true);
+    }
+  });
+
+  it("マニフェストには実体ファイルがあるものだけが載る", () => {
+    // 実体が無いのに <img> を出すと 404 が並ぶため、両者を一致させます
+    for (const [key, entry] of Object.entries(manifest)) {
+      const file = path.join(process.cwd(), "public/images/portal", entry.file);
+      expect(existsSync(file), `${key} -> ${entry.file}`).toBe(true);
+    }
+  });
+
+  it("マニフェストに無いページは写真を描画しない", () => {
+    const missing = coins.find((coin) => !manifest[`coin:${coin.slug}`]);
+    if (missing) expect(portalPhoto("coin", missing.slug)).toBeNull();
+  });
+
+  it("出所をたどれるよう Commons のファイル名を残している", () => {
+    for (const [key, entry] of Object.entries(manifest)) {
+      expect(entry.commonsFile, key).toMatch(/^File:/);
+    }
+  });
+
+  it("一括クレジットにライセンス名と出典が含まれる", () => {
+    for (const locale of ["ja", "en"]) {
+      expect(photoCredit(locale)).toContain("Wikimedia Commons");
+      expect(photoCredit(locale)).toContain("CC BY-SA 4.0");
+    }
+  });
+
+  it("共通メディア基盤の判定経路とは混ざらない", () => {
+    // PortalPhoto は src/media を import しません。
+    // 混ざると「個別確認済み」と「未確認」の区別が付かなくなります
+    const source = readFileSync(
+      path.join(process.cwd(), "src/portal/components/media/PortalPhoto.tsx"),
+      "utf8",
+    );
+    expect(source).not.toContain("@/media");
   });
 });
