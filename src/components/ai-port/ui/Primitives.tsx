@@ -1,6 +1,13 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { withBasePath } from "@/lib/base-path";
+import {
+  SECTION_BANNER_ASPECT,
+  SECTION_BANNER_SIZE,
+  sectionBanner,
+} from "@/data/ai-port/section-banners";
 import { accentClass, accentText, type Accent } from "@/data/ai-port/taxonomy";
 
 /* ------------------------------------------------------------
@@ -55,13 +62,64 @@ export function SectionHeading({
   description,
   action,
   className,
+  /**
+   * 見出しを画像に差し替えるときのキー（public/images/ai-port/sections/<キー>.jpg）。
+   *
+   * ⚠ 画像には見出しと説明文が焼き込まれています。
+   *   翻訳・クローラー・読み上げのために、文字側は sr-only で残します。
+   *   画像が無ければ、従来どおりの文字の見出しに戻ります。
+   */
+  banner,
 }: {
   eyebrow: string;
   title: React.ReactNode;
   description?: string;
   action?: { href: string; label: string };
   className?: string;
+  banner?: string;
 }) {
+  const bannerSrc = banner ? sectionBanner(banner) : null;
+
+  if (bannerSrc) {
+    return (
+      <div className={cn("flex flex-wrap items-end justify-between gap-x-8 gap-y-5", className)}>
+        <div className="min-w-0 flex-1">
+          {/*
+            画面には画像だけを出しますが、文字は機械に読めるよう残します。
+            画像側は装飾（alt=""）なので、読み上げが二重になりません。
+          */}
+          <span className="sr-only">
+            <span>{eyebrow}</span>
+            <h2>{title}</h2>
+            {description ? <p>{description}</p> : null}
+          </span>
+
+          <Image
+            src={withBasePath(bannerSrc)}
+            alt=""
+            width={SECTION_BANNER_SIZE.width}
+            height={SECTION_BANNER_SIZE.height}
+            sizes="(min-width: 1024px) 62rem, 100vw"
+            className={cn("h-auto w-full rounded-2xl object-cover", SECTION_BANNER_ASPECT)}
+          />
+        </div>
+
+        {action ? (
+          <Link
+            href={action.href}
+            className="group text-ai-mist hover:text-ai-cyan inline-flex shrink-0 items-center gap-2 text-[0.82rem] transition-colors"
+          >
+            {action.label}
+            <ArrowRight
+              aria-hidden="true"
+              className="size-4 transition-transform duration-500 group-hover:translate-x-1"
+            />
+          </Link>
+        ) : null}
+      </div>
+    );
+  }
+
   return (
     <div className={cn("flex flex-wrap items-end justify-between gap-x-8 gap-y-5", className)}>
       <div className="max-w-2xl min-w-0">
