@@ -19,6 +19,8 @@ import { streamingServices } from "@/sports/data/streaming";
 import { web3Services } from "@/sports/data/web3";
 import { diagnoses } from "@/sports/data/diagnoses";
 import { usingMockData } from "@/sports/lib/api";
+import { wikimediaAssets, wikimediaRejections, wikimediaSyncedAt } from "@/wikimedia/data/assets";
+import { evaluateAsset } from "@/wikimedia/licenses";
 
 import { Badge, Breadcrumbs, JsonLd, SectionHeading } from "@/sports/components/ui/primitives";
 import { breadcrumbJsonLd } from "@/sports/lib/structured-data";
@@ -55,6 +57,42 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
   const trail = [
     { label: "HOME", path: "/" },
     { label: dict.navAdmin, path: "/admin" },
+  ];
+
+  // 画像の承認状況。数えているだけで、ここから公開状態を変えることはできません
+  const byStatus = (status: string) =>
+    wikimediaAssets.filter((asset) => asset.verificationStatus === status).length;
+  const imageReview = [
+    {
+      key: "fetched",
+      label: locale === "ja" ? "取得済み" : "Fetched",
+      count: wikimediaAssets.length,
+    },
+    {
+      key: "published",
+      label: locale === "ja" ? "公開中" : "Published",
+      count: wikimediaAssets.filter((asset) => evaluateAsset(asset).allowed).length,
+    },
+    {
+      key: "needs_review",
+      label: locale === "ja" ? "確認待ち" : "Needs review",
+      count: byStatus("needs_review"),
+    },
+    {
+      key: "rights_risk",
+      label: locale === "ja" ? "追加権利あり" : "Rights risk",
+      count: byStatus("rights_risk"),
+    },
+    {
+      key: "license_unknown",
+      label: locale === "ja" ? "ライセンス不明" : "Licence unknown",
+      count: byStatus("license_unknown"),
+    },
+    {
+      key: "rejected",
+      label: locale === "ja" ? "同期時に除外" : "Rejected at sync",
+      count: byStatus("rejected") + wikimediaRejections.length,
+    },
   ];
 
   const collections = [
@@ -259,6 +297,45 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
               ))}
             </tbody>
           </table>
+        </div>
+      </section>
+
+      <section aria-labelledby="ad-images" className="mb-12">
+        <SectionHeading
+          id="ad-images"
+          eyebrow="IMAGE REVIEW"
+          title={locale === "ja" ? "画像の承認状況" : "Image review queue"}
+          description={
+            locale === "ja"
+              ? "npm run wikimedia:sync で取得した候補の判定結果です。承認は src/wikimedia/data/reviews.json への追記（＝コードレビュー）で行います。画面から直接公開できる導線は意図的に設けていません。"
+              : "Verification state of candidates fetched by npm run wikimedia:sync. Approval happens by editing src/wikimedia/data/reviews.json, so every publication passes code review. There is deliberately no publish button here."
+          }
+        />
+        <ul className="mb-3 grid gap-3 sm:grid-cols-3 lg:grid-cols-6">
+          {imageReview.map((item) => (
+            <li key={item.key} className="sp-solid p-4">
+              <p className="text-ink-faint text-[0.6875rem]">{item.label}</p>
+              <p className="sp-mono text-ink mt-1 text-lg font-bold">{item.count}</p>
+            </li>
+          ))}
+        </ul>
+        <div className="sp-solid text-ink-soft p-4 text-xs leading-relaxed">
+          <p>
+            {locale === "ja" ? "最終同期" : "Last sync"}:{" "}
+            <span className="sp-mono" translate="no">
+              {wikimediaSyncedAt ? wikimediaSyncedAt.slice(0, 19).replace("T", " ") : "—"}
+            </span>
+          </p>
+          <p className="text-ink-dim mt-2">
+            {locale === "ja"
+              ? "承認済みの画像は、ライセンス・作者・出典が揃っているものだけです。1つでも欠けると WikimediaImage が描画を拒否し、生成ビジュアルに切り替わります。"
+              : "Only assets with a licence, an author and a source are approved. If any of the three is missing, WikimediaImage refuses to render and falls back to a generated visual."}
+          </p>
+          <p className="mt-2">
+            <Link href={href(locale, "/image-credits")} className="text-cyan hover:underline">
+              {dict.footerImageCredits}
+            </Link>
+          </p>
         </div>
       </section>
 

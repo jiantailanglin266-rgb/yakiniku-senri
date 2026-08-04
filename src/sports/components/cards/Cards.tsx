@@ -13,6 +13,8 @@ import { getSport } from "../../data/sports";
 import { getLeague } from "../../data/leagues";
 import { getTeam } from "../../data/teams";
 import { authorsById } from "../../data/news";
+import { WikimediaCardImage } from "@/wikimedia/components/WikimediaImage";
+import { assetForPage } from "@/wikimedia/data/assets";
 
 /* ------------------------------------------------------------------
    ニュース
@@ -53,39 +55,57 @@ export function NewsCard({ article, locale }: { article: NewsArticle; locale: st
   const author = authorsById.get(article.authorId);
 
   return (
-    <article className="sp-solid sp-tilt flex h-full flex-col p-4">
-      <div className="mb-2 flex flex-wrap items-center gap-1.5">
-        <Badge tone={article.priority >= 5 ? "live" : "neutral"}>
-          {text(categoryLabel[article.category], locale)}
-        </Badge>
-        <Badge tone={confidenceTone(article.confidence)}>
-          {confidenceLabel(article.confidence, locale)}
-        </Badge>
-        {sport ? (
-          <span className="sp-mono text-[0.625rem]" style={{ color: sport.accent }}>
-            {sport.glyph} {text(sport.name, locale)}
+    <article className="sp-solid sp-tilt flex h-full flex-col overflow-hidden">
+      {/*
+        承認済みの Wikimedia 画像があればそれを、無ければ生成ビジュアルを出します。
+        報道写真は権利関係が重く、確認が済むまでは生成ビジュアルのままにします。
+      */}
+      <Link href={href(locale, `/news/${article.slug}`)} className="border-edge block border-b">
+        <WikimediaCardImage
+          asset={assetForPage(`/news/${article.slug}`, "card")}
+          locale={locale}
+          ratio="16/9"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          fallbackSeed={article.slug}
+          fallbackAccent={sport?.accent ?? "#22d3ee"}
+          fallbackGlyph={sport?.glyph}
+        />
+      </Link>
+
+      <div className="flex flex-1 flex-col p-4">
+        <div className="mb-2 flex flex-wrap items-center gap-1.5">
+          <Badge tone={article.priority >= 5 ? "live" : "neutral"}>
+            {text(categoryLabel[article.category], locale)}
+          </Badge>
+          <Badge tone={confidenceTone(article.confidence)}>
+            {confidenceLabel(article.confidence, locale)}
+          </Badge>
+          {sport ? (
+            <span className="sp-mono text-[0.625rem]" style={{ color: sport.accent }}>
+              {sport.glyph} {text(sport.name, locale)}
+            </span>
+          ) : null}
+        </div>
+
+        <h3 className="text-ink text-base leading-snug font-bold">
+          <Link
+            href={href(locale, `/news/${article.slug}`)}
+            className="hover:text-cyan transition-colors"
+          >
+            {text(article.title, locale)}
+          </Link>
+        </h3>
+        <p className="text-ink-dim mt-2 line-clamp-3 flex-1 text-sm">
+          {text(article.summary, locale)}
+        </p>
+
+        <div className="border-edge text-ink-faint mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 border-t pt-3 text-[0.6875rem]">
+          <LocalTime iso={article.publishedAt} locale={locale} className="sp-mono" />
+          <span>
+            {dict.readingTime}: {article.readingMinutes} min
           </span>
-        ) : null}
-      </div>
-
-      <h3 className="text-ink text-base leading-snug font-bold">
-        <Link
-          href={href(locale, `/news/${article.slug}`)}
-          className="hover:text-cyan transition-colors"
-        >
-          {text(article.title, locale)}
-        </Link>
-      </h3>
-      <p className="text-ink-dim mt-2 line-clamp-3 flex-1 text-sm">
-        {text(article.summary, locale)}
-      </p>
-
-      <div className="border-edge text-ink-faint mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 border-t pt-3 text-[0.6875rem]">
-        <LocalTime iso={article.publishedAt} locale={locale} className="sp-mono" />
-        <span>
-          {dict.readingTime}: {article.readingMinutes} min
-        </span>
-        {author ? <span className="truncate">{text(author.name, locale)}</span> : null}
+          {author ? <span className="truncate">{text(author.name, locale)}</span> : null}
+        </div>
       </div>
     </article>
   );
@@ -99,15 +119,20 @@ export function VideoCard({ video, locale }: { video: VideoItem; locale: string 
   return (
     <article className="sp-solid sp-tilt flex h-full flex-col overflow-hidden">
       <Link href={href(locale, `/videos/${video.slug}`)} className="block">
-        <div
-          className="sp-holo border-edge relative grid aspect-video place-items-center border-b"
-          style={{
-            background: `radial-gradient(60% 80% at 50% 40%, ${sport?.accent ?? "#22d3ee"}22, transparent 70%)`,
-          }}
-        >
-          <span className="text-4xl" aria-hidden="true">
-            {sport?.glyph ?? "▶"}
-          </span>
+        <div className="border-edge relative border-b">
+          {/*
+            承認済みの Wikimedia 画像があればそれを、無ければ生成ビジュアルを出します。
+            関連性の低い画像を装飾目的で並べない方針のため、既定は生成ビジュアルです。
+          */}
+          <WikimediaCardImage
+            asset={assetForPage(`/videos/${video.slug}`, "card")}
+            locale={locale}
+            ratio="16/9"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            fallbackSeed={video.slug}
+            fallbackAccent={sport?.accent ?? "#22d3ee"}
+            fallbackGlyph={sport?.glyph ?? "▶"}
+          />
           <span className="sp-mono bg-void/80 text-ink absolute right-2 bottom-2 rounded-sm px-1.5 py-0.5 text-[0.625rem]">
             {formatDuration(video.durationSec)}
           </span>

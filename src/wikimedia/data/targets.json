@@ -1,0 +1,152 @@
+{
+  "$comment": [
+    "画像を探す対象の一覧です。npm run wikimedia:sync が読み込みます。",
+    "ここに書くのは『何を探すか』だけで、ライセンスや作者は一切書きません。",
+    "それらは Commons API から取得した値だけを使います（推測で書かないため）。",
+    "",
+    "subjectRisk には、被写体からあらかじめ想定される追加権利を書きます。",
+    "存命人物・商標・建築著作物などが写る可能性がある対象は、",
+    "ライセンスが自由でも自動公開されず needs_review に落ちます。",
+    "",
+    "検索語は、人物ではなく『競技そのもの・用具・無人の会場』を狙っています。",
+    "肖像権とパブリシティ権の問題を最初から避けるためです。"
+  ],
+  "defaults": {
+    "slot": "hero",
+    "minWidth": 1600,
+    "minHeight": 900,
+    "limit": 12
+  },
+  "targets": [
+    {
+      "path": "/sports/football",
+      "queries": [
+        "association football ball on pitch",
+        "empty football stadium",
+        "football goal net"
+      ],
+      "keywords": ["football", "soccer", "pitch", "stadium"],
+      "subjectRisk": ["architecture"]
+    },
+    {
+      "path": "/sports/baseball",
+      "queries": ["baseball field empty", "baseball glove and ball", "baseball diamond"],
+      "keywords": ["baseball", "field", "diamond"],
+      "subjectRisk": ["architecture"]
+    },
+    {
+      "path": "/sports/basketball",
+      "queries": ["basketball hoop", "basketball court empty", "basketball ball"],
+      "keywords": ["basketball", "court", "hoop"],
+      "subjectRisk": []
+    },
+    {
+      "path": "/sports/american-football",
+      "queries": ["american football ball", "american football field empty", "gridiron field"],
+      "keywords": ["american football", "gridiron", "field"],
+      "subjectRisk": ["architecture"]
+    },
+    {
+      "path": "/sports/ice-hockey",
+      "queries": ["ice hockey rink empty", "ice hockey puck", "hockey goal net"],
+      "keywords": ["ice hockey", "rink", "puck"],
+      "subjectRisk": []
+    },
+    {
+      "path": "/sports/tennis",
+      "queries": ["tennis court empty", "tennis ball and racket", "clay tennis court"],
+      "keywords": ["tennis", "court", "racket"],
+      "subjectRisk": []
+    },
+    {
+      "path": "/sports/golf",
+      "queries": ["golf course fairway", "golf ball on tee", "golf green flag"],
+      "keywords": ["golf", "course", "fairway", "green"],
+      "subjectRisk": []
+    },
+    {
+      "path": "/sports/f1",
+      "queries": ["formula one circuit aerial", "race track asphalt", "starting grid circuit"],
+      "keywords": ["circuit", "race track", "grid"],
+      "subjectRisk": ["trademark", "product"]
+    },
+    {
+      "path": "/sports/motogp",
+      "queries": ["motorcycle racing circuit", "road racing motorcycle", "race track curve"],
+      "keywords": ["motorcycle", "circuit", "racing"],
+      "subjectRisk": ["trademark", "product"]
+    },
+    {
+      "path": "/sports/boxing",
+      "queries": ["boxing ring empty", "boxing gloves", "boxing gym"],
+      "keywords": ["boxing", "ring", "gloves"],
+      "subjectRisk": []
+    },
+    {
+      "path": "/sports/mma",
+      "queries": ["mixed martial arts cage empty", "mma gloves", "octagon cage"],
+      "keywords": ["mixed martial arts", "cage", "gloves"],
+      "subjectRisk": ["trademark"]
+    },
+    {
+      "path": "/sports/pro-wrestling",
+      "queries": ["professional wrestling ring empty", "wrestling ring ropes", "wrestling arena"],
+      "keywords": ["wrestling", "ring", "arena"],
+      "subjectRisk": ["trademark"]
+    },
+    {
+      "path": "/sports/rugby",
+      "queries": ["rugby ball", "rugby goal posts", "rugby pitch empty"],
+      "keywords": ["rugby", "pitch", "posts"],
+      "subjectRisk": []
+    },
+    {
+      "path": "/sports/cricket",
+      "queries": ["cricket ground empty", "cricket bat and ball", "cricket stumps"],
+      "keywords": ["cricket", "ground", "stumps"],
+      "subjectRisk": ["architecture"]
+    },
+    {
+      "path": "/sports/volleyball",
+      "queries": ["volleyball court empty", "volleyball ball", "volleyball net"],
+      "keywords": ["volleyball", "court", "net"],
+      "subjectRisk": []
+    },
+    {
+      "path": "/sports/table-tennis",
+      "queries": ["table tennis table", "table tennis racket and ball", "ping pong table"],
+      "keywords": ["table tennis", "ping pong", "racket"],
+      "subjectRisk": []
+    },
+    {
+      "path": "/sports/badminton",
+      "queries": ["badminton court empty", "shuttlecock", "badminton racket"],
+      "keywords": ["badminton", "shuttlecock", "court"],
+      "subjectRisk": []
+    },
+    {
+      "path": "/sports/horse-racing",
+      "queries": ["horse racing track empty", "racecourse grandstand", "horse racing turf"],
+      "keywords": ["racecourse", "horse racing", "turf"],
+      "subjectRisk": ["architecture"]
+    },
+    {
+      "path": "/sports/esports",
+      "queries": ["esports arena empty", "computer keyboard gaming", "esports stage"],
+      "keywords": ["esports", "arena", "gaming"],
+      "subjectRisk": ["trademark", "product", "indoor"]
+    },
+    {
+      "path": "/sports/olympics",
+      "queries": ["olympic stadium exterior", "athletics track empty", "running track lanes"],
+      "keywords": ["stadium", "athletics", "track"],
+      "subjectRisk": ["trademark", "architecture"]
+    },
+    {
+      "path": "/sports/winter-sports",
+      "queries": ["ski slope", "ski jump hill", "snowboard halfpipe"],
+      "keywords": ["ski", "snow", "slope"],
+      "subjectRisk": []
+    }
+  ]
+}
