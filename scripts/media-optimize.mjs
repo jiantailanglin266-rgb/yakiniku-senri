@@ -29,6 +29,7 @@
  */
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { writeJsonFormatted } from "./lib/write-json.mjs";
 import path from "node:path";
 import process from "node:process";
 
@@ -140,27 +141,19 @@ async function main() {
         画像と同じ場所に、作者・ライセンス・出典を置きます。
         ファイルだけがコピーされてもクレジットが辿れるようにするためです。
       */
-      await writeFile(
-        path.join(dir, "meta.json"),
-        `${JSON.stringify(
-          {
-            fileName: asset.fileName,
-            author: asset.authorName,
-            authorUrl: asset.authorUrl,
-            license: asset.licenseCode,
-            licenseUrl: asset.licenseUrl,
-            commonsUrl: asset.commonsPageUrl,
-            originalUrl: asset.originalUrl,
-            retrievedAt: asset.retrievedAt,
-            width: metadata.width ?? asset.width,
-            height: metadata.height ?? asset.height,
-            note: "この画像の作者表示・ライセンス表示は、掲載時に必ず画像と一緒に出してください。",
-          },
-          null,
-          2,
-        )}\n`,
-        "utf8",
-      );
+      await writeJsonFormatted(path.join(dir, "meta.json"), {
+        fileName: asset.fileName,
+        author: asset.authorName,
+        authorUrl: asset.authorUrl,
+        license: asset.licenseCode,
+        licenseUrl: asset.licenseUrl,
+        commonsUrl: asset.commonsPageUrl,
+        originalUrl: asset.originalUrl,
+        retrievedAt: asset.retrievedAt,
+        width: metadata.width ?? asset.width,
+        height: metadata.height ?? asset.height,
+        note: "この画像の作者表示・ライセンス表示は、掲載時に必ず画像と一緒に出してください。",
+      });
 
       asset.localPath = `${publicDir}/original${extension}`;
       asset.blurDataURL = blurDataURL;
@@ -190,7 +183,7 @@ async function main() {
     return;
   }
 
-  await writeFile(ASSETS_PATH, `${JSON.stringify({ ...raw, assets }, null, 2)}\n`, "utf8");
+  await writeJsonFormatted(ASSETS_PATH, { ...raw, assets });
   console.log(`更新しました: ${path.relative(ROOT, ASSETS_PATH)}`);
 }
 
