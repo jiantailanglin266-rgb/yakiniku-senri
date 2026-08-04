@@ -32,6 +32,7 @@ import { NewsCard } from "@/portal/components/news/NewsCard";
 import { WikimediaFigure } from "@/media/components";
 import { pageImagesJsonLd } from "@/media/lib/structured-data";
 import { portalPageKey } from "@/portal/lib/media";
+import { PortalPhoto } from "@/portal/components/media/PortalPhoto";
 import { Badge, GlassCard, NeonLink, NoticeBox } from "@/portal/components/ui/primitives";
 import { FaqList } from "@/portal/components/ui/sections";
 import { JsonLd } from "@/portal/components/ui/JsonLd";
@@ -200,6 +201,16 @@ export default async function CoinDetailPage(props: {
             />
           </div>
         ) : null}
+
+        {/* 取得済みの写真があるときだけ出ます（無ければ何も足しません） */}
+        <PortalPhoto
+          kind="coin"
+          slug={coin.slug}
+          alt={t(coin.name, locale)}
+          locale={locale}
+          className="mb-8"
+          priority
+        />
 
         <PriceChartPanel
           series={series}

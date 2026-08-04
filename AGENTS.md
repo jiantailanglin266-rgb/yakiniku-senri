@@ -138,3 +138,17 @@ CARD PORT では、以下を**出力しない**ことをテストで機械的に
   （国旗は5サイトすべての言語切り替えから辿れます）。
 
 詳細は [docs/media/README.md](docs/media/README.md) を参照してください。
+
+### 例外：CRYPTO PORT の一括クレジット写真
+
+CRYPTO PORT の解説記事・銘柄ページの写真だけは、運営判断により
+**上記の個別クレジット方式ではなく、サイト共通の一括表記**で運用しています
+（既存の mountain-peak と方式を揃えるため）。
+
+- 対象は `public/images/portal/` に置いた画像のみ
+- 表示は `PortalPhoto` コンポーネントに限定し、`src/media` の判定経路とは混ぜません
+- 画像ごとのライセンス・作者は確認していません。制約は
+  [docs/portal/06-photos.md](docs/portal/06-photos.md) に明記しています
+
+**この例外を他サイトへ広げないでください。** 他の4サイトは従来どおり
+`src/media` の個別判定を通します。
