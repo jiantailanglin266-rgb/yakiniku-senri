@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { Reveal } from "@/components/ai-port/effects/Reveal";
 import { HeroSection } from "@/components/ai-port/home/HeroSection";
+import { KeywordMarquee } from "@/components/ai-port/home/KeywordMarquee";
 import { RankingBoard } from "@/components/ai-port/home/RankingBoard";
 import {
   CareersSection,
@@ -171,6 +172,9 @@ export default async function AiPortHome() {
           <CompareTable />
         </div>
       </Section>
+
+      {/* 扱っている分野を、斜めの帯で見せます（装飾。語はトピックとツール分類から） */}
+      <KeywordMarquee />
 
       <YoutubeSection videos={videos} />
       <EventsSection />

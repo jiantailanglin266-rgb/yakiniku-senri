@@ -449,6 +449,81 @@
 }
 
 /* ------------------------------------------------------------
+   斜めのキーワード帯
+
+   ■ なぜ「外枠で切り、中身を回す」のか
+     帯ごと回すと、傾けた角が枠からはみ出して四隅に三角の隙間ができます。
+     外枠は水平のまま overflow を切り、内側の行だけを回します。
+     さらに拡大しておくことで、回転で生じる隙間を画面外へ追い出します。
+
+   ■ 行ごとに向きを変えています
+     同じ向きだけだと「1枚の板」に見えます。
+     隣り合う行を逆へ流すと、視差が出て奥行きが生まれます。
+
+   ■ 動きは transform と background-position だけ
+     色は各ピルに焼き込んだ静的なグラデーションで出します。
+     ピル1つずつに色アニメーションを掛けると、要素数ぶん再描画が走り、
+     スクロールがカクつきます。動かすのは背景の1枚だけに絞っています。
+   ------------------------------------------------------------ */
+.ai-diagonal {
+  /* 画面幅で傾きを変えます。狭い画面で強く傾けると、行が短く見えて間延びします */
+  --ai-diagonal-tilt: -4deg;
+  --ai-diagonal-scale: 1.16;
+}
+
+@media (min-width: 640px) {
+  .ai-diagonal {
+    --ai-diagonal-tilt: -6deg;
+    --ai-diagonal-scale: 1.14;
+  }
+}
+
+.ai-diagonal-rows {
+  transform: rotate(var(--ai-diagonal-tilt)) scale(var(--ai-diagonal-scale));
+  transform-origin: center;
+}
+
+/* 逆向きに流す行。`.ai-marquee` と併用します */
+.ai-marquee-reverse {
+  animation-direction: reverse;
+}
+
+/* 帯の背景。色をゆっくり流します（動かすのはこの1枚だけ） */
+.ai-diagonal-glow {
+  background: linear-gradient(
+    115deg,
+    color-mix(in oklab, var(--color-ai-cyan) 22%, transparent) 0%,
+    color-mix(in oklab, var(--color-ai-blue) 26%, transparent) 22%,
+    color-mix(in oklab, var(--color-ai-violet) 28%, transparent) 46%,
+    color-mix(in oklab, var(--color-ai-pink) 26%, transparent) 68%,
+    color-mix(in oklab, var(--color-ai-amber) 20%, transparent) 84%,
+    color-mix(in oklab, var(--color-ai-cyan) 22%, transparent) 100%
+  );
+  background-size: 300% 100%;
+  animation: ai-diagonal-hue 24s linear infinite;
+}
+
+@keyframes ai-diagonal-hue {
+  to {
+    background-position: 300% 0;
+  }
+}
+
+/* 背景に浮かべる光。transform だけを動かすのでレイアウトを揺らしません */
+.ai-diagonal-blob {
+  animation: ai-diagonal-drift 18s ease-in-out infinite alternate;
+}
+
+@keyframes ai-diagonal-drift {
+  from {
+    transform: translate3d(-6%, -4%, 0) scale(1);
+  }
+  to {
+    transform: translate3d(6%, 5%, 0) scale(1.15);
+  }
+}
+
+/* ------------------------------------------------------------
    モーション削減 — 装飾の動きだけ止め、内容は必ず見える状態にします
    ------------------------------------------------------------ */
 @media (prefers-reduced-motion: reduce) {
@@ -456,7 +531,9 @@
   .ai-grid,
   .ai-marquee,
   .ai-pulse,
-  .ai-gradient-flow {
+  .ai-gradient-flow,
+  .ai-diagonal-glow,
+  .ai-diagonal-blob {
     animation: none !important;
   }
 
