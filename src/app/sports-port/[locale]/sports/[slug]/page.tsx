@@ -18,6 +18,7 @@ import { Badge, Breadcrumbs, JsonLd, SectionHeading } from "@/sports/components/
 import { breadcrumbJsonLd, howToJsonLd } from "@/sports/lib/structured-data";
 import { MediaSlot } from "@/media/components";
 import { pageKey } from "@/media/data/usages";
+import { mediaSeed, sportTheme } from "@/sports/lib/media";
 
 export function generateStaticParams() {
   return localeCodes.flatMap((locale) => sports.map((sport) => ({ locale, slug: sport.slug })));
@@ -94,8 +95,8 @@ export default async function SportDetailPage({
             pageKey={pageKey("sportsport", "sport", sport.slug)}
             slot="hero"
             locale={locale}
-            theme="neutral"
-            seed={sport.statKeys.length + sport.periodCount}
+            theme={sportTheme(sport.id, "neutral")}
+            seed={mediaSeed(sport.slug)}
             sizes="100vw"
             showCaption={false}
             className="size-full"

@@ -15,6 +15,7 @@ import { getTeam } from "../../data/teams";
 import { authorsById } from "../../data/news";
 import { MediaSlot } from "@/media/components";
 import { pageKey } from "@/media/data/usages";
+import { mediaSeed, sportTheme } from "../../lib/media";
 
 /* ------------------------------------------------------------------
    ニュース
@@ -35,20 +36,6 @@ const categoryLabel: Record<string, { ja: string; en: string }> = {
   web3: { ja: "Web3.0", en: "Web3" },
   esports: { ja: "eスポーツ", en: "Esports" },
 };
-
-/**
- * 装飾の見た目を、スラッグから決定的に決めるための種。
- *
- * 乱数を使うと、再ビルドのたびに絵柄が変わり、
- * サーバー描画とクライアント描画でも食い違います。
- */
-function seedFrom(slug: string): number {
-  let hash = 0;
-  for (let index = 0; index < slug.length; index += 1) {
-    hash = (hash * 31 + slug.charCodeAt(index)) % 1000;
-  }
-  return hash;
-}
 
 export function confidenceTone(confidence: NewsArticle["confidence"]) {
   return confidence === "official" ? "success" : confidence === "report" ? "accent" : "caution";
@@ -79,8 +66,8 @@ export function NewsCard({ article, locale }: { article: NewsArticle; locale: st
           pageKey={pageKey("sportsport", "news", article.slug)}
           slot="card"
           locale={locale}
-          theme="news"
-          seed={seedFrom(article.slug)}
+          theme={sportTheme(article.sportId, "news")}
+          seed={mediaSeed(article.slug)}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           showCaption={false}
           className="aspect-[16/9]"
@@ -142,8 +129,8 @@ export function VideoCard({ video, locale }: { video: VideoItem; locale: string 
             pageKey={pageKey("sportsport", "video", video.slug)}
             slot="card"
             locale={locale}
-            theme="video"
-            seed={seedFrom(video.slug)}
+            theme={sportTheme(video.sportId, "video")}
+            seed={mediaSeed(video.slug)}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             showCaption={false}
             className="aspect-[16/9]"
