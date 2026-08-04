@@ -47,15 +47,17 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 ---
 
-## 4. このリポジトリは2つのサイトを配信しています
+## 4. このリポジトリは4つのサイトを配信しています
 
-| サイト    | URL               | 外枠                         |
-| --------- | ----------------- | ---------------------------- |
-| 焼肉 千里 | `/`（従来どおり） | `src/app/(senri)/layout.tsx` |
-| AI PORT   | `/ai-port`        | `src/app/ai-port/layout.tsx` |
+| サイト      | URL                  | 外枠                                   |
+| ----------- | -------------------- | -------------------------------------- |
+| 焼肉 千里   | `/`（従来どおり）    | `src/app/(senri)/layout.tsx`           |
+| AI PORT     | `/ai-port`           | `src/app/ai-port/layout.tsx`           |
+| CRYPTO PORT | `/<言語>/`           | `src/app/(portal)/[locale]/layout.tsx` |
+| CARD PORT   | `/card-port/<言語>/` | `src/app/card-port/layout.tsx`         |
 
 ルートレイアウト（`src/app/layout.tsx`）は `<html>` / `<body>` と共通フォントだけを持ちます。
-ルートグループ `(senri)` は**URLに現れない**ため、既存サイトのURLは1つも変わっていません。
+ルートグループ `(senri)` `(portal)` は**URLに現れない**ため、既存サイトのURLは1つも変わっていません。
 
 ### 触ってはいけない設計（追加分）
 
@@ -66,6 +68,8 @@ This version has breaking changes — APIs, conventions, and file structure may 
 | AI PORT のCSSトークンの `ai-` 接頭辞            | 接頭辞を外すと千里側のトークンと衝突し、既存サイトの配色が壊れます      |
 | `route.node.ts` という拡張子と `pageExtensions` | 静的エクスポート（GitHub Pages）でのビルドを成立させるための仕組みです  |
 | AI PORT でも言語切り替えを常時設置              | §1の固定要件は AI PORT 側にも適用されます                               |
+| CARD PORT のCSSトークンの `cp-` 接頭辞          | 接頭辞を外すと千里側の `--color-gold` / `--font-display` と衝突します   |
+| `/<言語>/` は CRYPTO PORT のもの                | CARD PORT を `/<言語>/` に置くとルートが重複してビルドが通りません      |
 
 ### AI PORT の事実性ルール（§3の具体化）
 
@@ -82,3 +86,19 @@ AI PORT では、以下を**出力しない**ことをテストで機械的に�
 空欄にすると「なし」と読まれ、事実と異なる印象を与えるためです。
 
 詳細は [docs/ai-port/README.md](docs/ai-port/README.md) を参照してください。
+
+### CARD PORT の事実性ルール（§3の具体化）
+
+CARD PORT では、以下を**出力しない**ことをテストで機械的に守っています
+（`tests/cardport-data.test.ts` / `tests/cardport-logic.test.ts`）。
+
+- 実データのない `AggregateRating` / `Review` / 受賞歴・メディア掲載実績
+- 「必ず審査に通る」「誰でも発行できる」など、審査・特典を保証する表現
+- 適用条件・期限・対象者を欠いたキャンペーン表示
+- 実在するカードの商標・ロゴ・券面意匠（掲載データはすべて架空です）
+
+順位算出コード（`src/cardport/lib/scoring.ts`）は、アフィリエイト管理コード
+（`src/cardport/lib/affiliate.ts`）を import しません。
+広告の報酬額が順位に影響しないことを、依存関係のレベルで担保しています。
+
+詳細は [docs/cardport/README.md](docs/cardport/README.md) を参照してください。
