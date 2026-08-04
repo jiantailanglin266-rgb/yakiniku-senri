@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { Check, Globe } from "lucide-react";
-import { findLanguage, languages } from "@/data/languages";
+import Image from "next/image";
+import { Check } from "lucide-react";
+import { findLanguage, flagSrc, languages } from "@/data/languages";
 import {
   applyLanguage,
   getServerLanguage,
@@ -58,7 +59,14 @@ export function LanguageSwitcher({ className }: { className?: string }) {
         aria-label={`表示言語を選択（現在：${currentLanguage.labelJa}）`}
         className="text-gray hover:text-gold flex h-11 items-center gap-1.5 rounded px-2 transition-colors duration-500"
       >
-        <Globe aria-hidden="true" className="size-[1.05rem]" />
+        {/* 旗は装飾。読み上げは button の aria-label が担います */}
+        <Image
+          src={flagSrc(currentLanguage)}
+          alt=""
+          width={48}
+          height={36}
+          className="ring-ivory/25 h-3.5 w-[1.15rem] rounded-[1px] object-cover ring-1"
+        />
         <span className="font-display text-[0.68rem] tracking-[0.14em]">
           {currentLanguage.code.toUpperCase()}
         </span>
@@ -90,16 +98,25 @@ export function LanguageSwitcher({ className }: { className?: string }) {
                   selected ? "text-gold" : "text-ivory/85 hover:text-gold hover:bg-white/5",
                 )}
               >
-                <span>{language.label}</span>
+                <span className="flex min-w-0 items-center gap-2.5">
+                  <Image
+                    src={flagSrc(language)}
+                    alt=""
+                    width={48}
+                    height={36}
+                    className="ring-ivory/20 h-3.5 w-[1.15rem] shrink-0 rounded-[1px] object-cover ring-1"
+                  />
+                  <span className="truncate">{language.label}</span>
+                </span>
                 {selected ? <Check aria-hidden="true" className="size-3.5 shrink-0" /> : null}
               </button>
             );
           })}
 
           <p className="text-gray-dark border-ivory/10 mt-1 border-t px-4 pt-2.5 pb-1 text-[0.66rem] leading-[1.8]">
-            日本語以外は機械翻訳です。
+            日本語以外は機械翻訳です。正確な情報は日本語表示をご確認ください。
             <br />
-            正確な情報は日本語表示をご確認ください。
+            国旗は言語の目印で、国を限定するものではありません。
           </p>
         </div>
       ) : null}

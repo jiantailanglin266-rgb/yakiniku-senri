@@ -9,11 +9,22 @@
  *   英語話者に「Japanese」ではなく、韓国語話者に「한국어」と見せるためです。
  */
 
+import { withBasePath } from "@/lib/base-path";
+
 export type LanguageCode = string;
 
 export type Language = {
   /** Google 翻訳の言語コード */
   code: LanguageCode;
+  /**
+   * 国旗に使う国・地域コード（ISO 3166-1 alpha-2）。
+   *
+   * ⚠ 言語と国は1対1ではありません。
+   *   英語は英国・米国など、スペイン語はスペイン・中南米など複数の国で話されます。
+   *   ここでは言語切り替えUIの慣例としてもっとも一般的な国を選んでいます。
+   *   旗だけでは誤解を招くため、UIでは必ず言語名を併記してください。
+   */
+  country: string;
   /** その言語での言語名（自称） */
   label: string;
   /** 日本語での言語名（管理・aria-label 用） */
@@ -26,48 +37,48 @@ export type Language = {
 export const SOURCE_LANGUAGE: LanguageCode = "ja";
 
 export const languages: Language[] = [
-  { code: "ja", label: "日本語", labelJa: "日本語" },
-  { code: "en", label: "English", labelJa: "英語" },
-  { code: "zh-CN", label: "简体中文", labelJa: "中国語（簡体字）" },
-  { code: "zh-TW", label: "繁體中文", labelJa: "中国語（繁体字）" },
-  { code: "ko", label: "한국어", labelJa: "韓国語" },
-  { code: "th", label: "ไทย", labelJa: "タイ語" },
-  { code: "vi", label: "Tiếng Việt", labelJa: "ベトナム語" },
-  { code: "id", label: "Bahasa Indonesia", labelJa: "インドネシア語" },
-  { code: "ms", label: "Bahasa Melayu", labelJa: "マレー語" },
-  { code: "tl", label: "Filipino", labelJa: "フィリピン語" },
-  { code: "hi", label: "हिन्दी", labelJa: "ヒンディー語" },
-  { code: "bn", label: "বাংলা", labelJa: "ベンガル語" },
-  { code: "ta", label: "தமிழ்", labelJa: "タミル語" },
-  { code: "ne", label: "नेपाली", labelJa: "ネパール語" },
-  { code: "my", label: "မြန်မာဘာသာ", labelJa: "ミャンマー語" },
-  { code: "km", label: "ខ្មែរ", labelJa: "クメール語" },
-  { code: "mn", label: "Монгол", labelJa: "モンゴル語" },
-  { code: "es", label: "Español", labelJa: "スペイン語" },
-  { code: "pt", label: "Português", labelJa: "ポルトガル語" },
-  { code: "fr", label: "Français", labelJa: "フランス語" },
-  { code: "de", label: "Deutsch", labelJa: "ドイツ語" },
-  { code: "it", label: "Italiano", labelJa: "イタリア語" },
-  { code: "nl", label: "Nederlands", labelJa: "オランダ語" },
-  { code: "ru", label: "Русский", labelJa: "ロシア語" },
-  { code: "uk", label: "Українська", labelJa: "ウクライナ語" },
-  { code: "pl", label: "Polski", labelJa: "ポーランド語" },
-  { code: "cs", label: "Čeština", labelJa: "チェコ語" },
-  { code: "sk", label: "Slovenčina", labelJa: "スロバキア語" },
-  { code: "hu", label: "Magyar", labelJa: "ハンガリー語" },
-  { code: "ro", label: "Română", labelJa: "ルーマニア語" },
-  { code: "bg", label: "Български", labelJa: "ブルガリア語" },
-  { code: "hr", label: "Hrvatski", labelJa: "クロアチア語" },
-  { code: "el", label: "Ελληνικά", labelJa: "ギリシャ語" },
-  { code: "tr", label: "Türkçe", labelJa: "トルコ語" },
-  { code: "sv", label: "Svenska", labelJa: "スウェーデン語" },
-  { code: "da", label: "Dansk", labelJa: "デンマーク語" },
-  { code: "no", label: "Norsk", labelJa: "ノルウェー語" },
-  { code: "fi", label: "Suomi", labelJa: "フィンランド語" },
-  { code: "ar", label: "العربية", labelJa: "アラビア語", rtl: true },
-  { code: "he", label: "עברית", labelJa: "ヘブライ語", rtl: true },
-  { code: "fa", label: "فارسی", labelJa: "ペルシャ語", rtl: true },
-  { code: "ur", label: "اردو", labelJa: "ウルドゥー語", rtl: true },
+  { code: "ja", country: "jp", label: "日本語", labelJa: "日本語" },
+  { code: "en", country: "gb", label: "English", labelJa: "英語" },
+  { code: "zh-CN", country: "cn", label: "简体中文", labelJa: "中国語（簡体字）" },
+  { code: "zh-TW", country: "tw", label: "繁體中文", labelJa: "中国語（繁体字）" },
+  { code: "ko", country: "kr", label: "한국어", labelJa: "韓国語" },
+  { code: "th", country: "th", label: "ไทย", labelJa: "タイ語" },
+  { code: "vi", country: "vn", label: "Tiếng Việt", labelJa: "ベトナム語" },
+  { code: "id", country: "id", label: "Bahasa Indonesia", labelJa: "インドネシア語" },
+  { code: "ms", country: "my", label: "Bahasa Melayu", labelJa: "マレー語" },
+  { code: "tl", country: "ph", label: "Filipino", labelJa: "フィリピン語" },
+  { code: "hi", country: "in", label: "हिन्दी", labelJa: "ヒンディー語" },
+  { code: "bn", country: "bd", label: "বাংলা", labelJa: "ベンガル語" },
+  { code: "ta", country: "lk", label: "தமிழ்", labelJa: "タミル語" },
+  { code: "ne", country: "np", label: "नेपाली", labelJa: "ネパール語" },
+  { code: "my", country: "mm", label: "မြန်မာဘာသာ", labelJa: "ミャンマー語" },
+  { code: "km", country: "kh", label: "ខ្មែរ", labelJa: "クメール語" },
+  { code: "mn", country: "mn", label: "Монгол", labelJa: "モンゴル語" },
+  { code: "es", country: "es", label: "Español", labelJa: "スペイン語" },
+  { code: "pt", country: "pt", label: "Português", labelJa: "ポルトガル語" },
+  { code: "fr", country: "fr", label: "Français", labelJa: "フランス語" },
+  { code: "de", country: "de", label: "Deutsch", labelJa: "ドイツ語" },
+  { code: "it", country: "it", label: "Italiano", labelJa: "イタリア語" },
+  { code: "nl", country: "nl", label: "Nederlands", labelJa: "オランダ語" },
+  { code: "ru", country: "ru", label: "Русский", labelJa: "ロシア語" },
+  { code: "uk", country: "ua", label: "Українська", labelJa: "ウクライナ語" },
+  { code: "pl", country: "pl", label: "Polski", labelJa: "ポーランド語" },
+  { code: "cs", country: "cz", label: "Čeština", labelJa: "チェコ語" },
+  { code: "sk", country: "sk", label: "Slovenčina", labelJa: "スロバキア語" },
+  { code: "hu", country: "hu", label: "Magyar", labelJa: "ハンガリー語" },
+  { code: "ro", country: "ro", label: "Română", labelJa: "ルーマニア語" },
+  { code: "bg", country: "bg", label: "Български", labelJa: "ブルガリア語" },
+  { code: "hr", country: "hr", label: "Hrvatski", labelJa: "クロアチア語" },
+  { code: "el", country: "gr", label: "Ελληνικά", labelJa: "ギリシャ語" },
+  { code: "tr", country: "tr", label: "Türkçe", labelJa: "トルコ語" },
+  { code: "sv", country: "se", label: "Svenska", labelJa: "スウェーデン語" },
+  { code: "da", country: "dk", label: "Dansk", labelJa: "デンマーク語" },
+  { code: "no", country: "no", label: "Norsk", labelJa: "ノルウェー語" },
+  { code: "fi", country: "fi", label: "Suomi", labelJa: "フィンランド語" },
+  { code: "ar", country: "sa", label: "العربية", labelJa: "アラビア語", rtl: true },
+  { code: "he", country: "il", label: "עברית", labelJa: "ヘブライ語", rtl: true },
+  { code: "fa", country: "ir", label: "فارسی", labelJa: "ペルシャ語", rtl: true },
+  { code: "ur", country: "pk", label: "اردو", labelJa: "ウルドゥー語", rtl: true },
 ];
 
 /** Google 翻訳ウィジェットへ渡す対象言語（原文の日本語を除く） */
@@ -79,4 +90,9 @@ export const includedLanguages = languages
 export function findLanguage(code: string | null | undefined): Language | undefined {
   if (!code) return undefined;
   return languages.find((language) => language.code === code);
+}
+
+/** 国旗画像のパス（サブディレクトリ配信に対応） */
+export function flagSrc(language: Language): string {
+  return withBasePath(`/images/flags/${language.country}.webp`);
 }
