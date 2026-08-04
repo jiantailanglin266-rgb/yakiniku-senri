@@ -4,12 +4,26 @@
  *
  * ⚠ 外部リンクURLは公開前に必ず実際のアカウント・ページをご確認ください。
  */
+import { basePath } from "@/lib/base-path";
 import { store } from "./store";
 
 export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://yakinikusenri.com").replace(
   /\/$/,
   "",
 );
+
+/**
+ * サイト内パスを絶対URLへ変換します（構造化データ・OGP用）。
+ *
+ * サブディレクトリ配信では siteUrl の末尾と `withBasePath()` を通した
+ * 画像パスの先頭に、同じベースパスが二重で入ります。
+ * そのままつなぐと `/senri/senri/images/...` となり参照できません。
+ * ここで重複を取り除きます。
+ */
+export function absoluteUrl(path: string): string {
+  const isDuplicated = basePath !== "" && siteUrl.endsWith(basePath) && path.startsWith(basePath);
+  return `${siteUrl}${isDuplicated ? path.slice(basePath.length) : path}`;
+}
 
 export const siteName = process.env.NEXT_PUBLIC_SITE_NAME || store.name;
 
