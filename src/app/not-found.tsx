@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { LinkButton } from "@/components/ui/Button";
 import { ReservationButton } from "@/components/ui/ReservationButton";
 import { SmokeLayer } from "@/components/effects/SmokeLayer";
+import { SenriShell } from "@/components/layout/SenriShell";
 import { mainNav } from "@/data/navigation";
 import Link from "next/link";
 
@@ -12,6 +13,15 @@ export const metadata: Metadata = {
 };
 
 export default function NotFound() {
+  // ルート直下の 404 は `(senri)` のレイアウトを通らないため、外枠を明示的に付けます
+  return (
+    <SenriShell>
+      <NotFoundBody />
+    </SenriShell>
+  );
+}
+
+function NotFoundBody() {
   return (
     <section className="relative flex min-h-[80svh] items-center overflow-hidden py-28">
       <SmokeLayer className="opacity-60" />

@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { mainNav, utilityNav } from "@/data/navigation";
 import { getNews } from "@/data/news";
 import { siteUrl } from "@/data/site";
+import { aiPortSitemapEntries } from "@/lib/ai-port/sitemap";
 
 export const dynamic = "force-static";
 
@@ -34,5 +35,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
-  return [...staticPages, ...newsPages];
+  // AI PORT（/ai-port 配下）のURLも同じサイトマップにまとめます。
+  // 分けると、どちらかの登録漏れに気づきにくくなります。
+  return [...staticPages, ...newsPages, ...aiPortSitemapEntries()];
 }
