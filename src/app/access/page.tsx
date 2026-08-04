@@ -16,7 +16,7 @@ const crumbs = [
 ];
 
 export const metadata: Metadata = pageMetadata({
-  title: "アクセス・店舗情報",
+  title: "アクセス・営業時間｜駒澤大学駅 徒歩10分",
   description: `${store.name}（${store.addressFull}／電話 ${store.phone}）へのアクセス。東急田園都市線「駒澤大学駅」より徒歩10分、東急世田谷線「若林駅」より徒歩7分、東急バス「駒留」より徒歩1分。営業時間・定休日もご確認いただけます。`,
   path: "/access",
 });

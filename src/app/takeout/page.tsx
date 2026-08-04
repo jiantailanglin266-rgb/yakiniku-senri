@@ -19,7 +19,7 @@ const crumbs = [
 ];
 
 export const metadata: Metadata = pageMetadata({
-  title: "テイクアウト",
+  title: "焼肉テイクアウト｜世田谷・上馬",
   description:
     "焼肉 千里のテイクアウト。バーベキューやホームパーティー、誕生日会、ご家族でのお食事に。ご注文・ご相談はお電話にて承っております。",
   path: "/takeout",

@@ -16,7 +16,7 @@ const crumbs = [
 ];
 
 export const metadata: Metadata = pageMetadata({
-  title: "当店について",
+  title: "当店について｜世田谷・上馬の老舗焼肉",
   description: `${store.founded}年創業、世田谷・上馬の老舗焼肉店「${store.name}」の歩み。二代目、三代目へと受け継がれた秘伝のタレと、変わらない味についてご紹介します。`,
   path: "/about",
 });

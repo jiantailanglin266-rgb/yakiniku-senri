@@ -5,7 +5,7 @@ import { ReservationCTA } from "@/components/home/ReservationCTA";
 import { MenuBrowser } from "@/components/menu/MenuBrowser";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { pageMetadata } from "@/lib/seo";
-import { breadcrumbJsonLd } from "@/lib/structured-data";
+import { breadcrumbJsonLd, menuJsonLd } from "@/lib/structured-data";
 import { media } from "@/data/media";
 
 const crumbs = [
@@ -14,7 +14,7 @@ const crumbs = [
 ];
 
 export const metadata: Metadata = pageMetadata({
-  title: "お品書き",
+  title: "お品書き｜焼肉メニューと価格",
   description:
     "焼肉 千里のお品書き。秘伝のタレをもみ込んだ名物「もみシリーズ」、上ロースや銘柄牛特上カルビなどの牛肉、石焼チーズフォンデュをはじめとした一品料理をご用意しています。",
   path: "/menu",
@@ -40,7 +40,7 @@ export default function MenuPage() {
       <RelatedLinks currentPath="/menu" />
       <ReservationCTA />
 
-      <JsonLd data={breadcrumbJsonLd(crumbs)} />
+      <JsonLd data={[breadcrumbJsonLd(crumbs), menuJsonLd]} />
     </>
   );
 }
