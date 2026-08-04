@@ -11,9 +11,7 @@ import { store } from "@/data/store";
  * ルートレイアウト。
  *
  * `<html>` / `<body>` と共通フォントだけを持ちます。
- * ブランド固有の外枠（ヘッダー・フッター・背景）は各ルートグループのレイアウトにあります。
- *   - `(senri)/layout.tsx` … 焼肉 千里
- *   - `ai-port/layout.tsx` … AI PORT
+ * ヘッダー・フッター・背景は `(senri)/layout.tsx` にあります。
  */
 
 const notoSerifJp = Noto_Serif_JP({

@@ -148,11 +148,8 @@ describe("sitemap / robots", () => {
     // 申告するURLは、すべて自ホストのものに限ります
     for (const url of sitemaps) expect(url?.startsWith(siteUrl)).toBe(true);
 
-    // 除外しているのは各ポータルの検索結果・管理画面・APIだけで、
-    // 焼肉 千里 側のページは1つもブロックされていないこと
+    // ポータル分離後、このサイトにクロールを止めたいページはありません
     const disallow = (rule?.disallow ?? []) as string[];
-    expect(
-      disallow.every((path) => path.startsWith("/ai-port") || path.startsWith("/sports-port")),
-    ).toBe(true);
+    expect(disallow).toHaveLength(0);
   });
 });
