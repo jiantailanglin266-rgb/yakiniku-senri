@@ -1,14 +1,10 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 
+import sharp from "sharp";
 import { describe, expect, it } from "vitest";
 
-import {
-  SECTION_BANNER_ASPECT,
-  SECTION_BANNER_KEYS,
-  SECTION_BANNER_SIZE,
-  sectionBanner,
-} from "@/data/ai-port/section-banners";
+import { SECTION_BANNER_KEYS, sectionBanner } from "@/data/ai-port/section-banners";
 
 /* ============================================================
    セクション見出しの画像。
@@ -21,27 +17,33 @@ import {
    キーだけ足してファイルを置き忘れると、このテストが落ちます。
    ============================================================ */
 
+const publicPath = (src: string) => join(process.cwd(), "public", src);
+
 describe("セクション見出しの画像", () => {
   it("一覧に載せたキーは、実ファイルが存在する", () => {
     for (const key of SECTION_BANNER_KEYS) {
-      const src = sectionBanner(key);
-      expect(src, `${key} のパスが解決できません`).not.toBeNull();
+      const banner = sectionBanner(key);
+      expect(banner, `${key} が解決できません`).not.toBeNull();
+      expect(existsSync(publicPath(banner!.src)), `${banner!.src} が public/ にありません`).toBe(
+        true,
+      );
+    }
+  });
 
-      // src は public/ からの絶対パス（例: /images/ai-port/sections/news.jpg）
-      const file = join(process.cwd(), "public", src!);
-      expect(existsSync(file), `${src} が public/ にありません`).toBe(true);
+  it("書いてある実寸が、実ファイルと一致する", async () => {
+    // ここがずれると、読み込み中に高さが動きます（CLS）。
+    for (const key of SECTION_BANNER_KEYS) {
+      const banner = sectionBanner(key)!;
+      const meta = await sharp(publicPath(banner.src)).metadata();
+      expect({ width: meta.width, height: meta.height }, `${banner.src} の実寸が違います`).toEqual({
+        width: banner.width,
+        height: banner.height,
+      });
     }
   });
 
   it("一覧に無いキーは null を返す（文字の見出しに戻る）", () => {
     // 画像を置き忘れたまま公開しても、表示が壊れないことの確認です。
     expect(sectionBanner("この-キーは-存在しない")).toBeNull();
-  });
-
-  it("比率と実寸が一致している", () => {
-    // ここがずれると、読み込み中に高さが動きます（CLS）。
-    expect(SECTION_BANNER_ASPECT).toBe(
-      `aspect-[${SECTION_BANNER_SIZE.width}/${SECTION_BANNER_SIZE.height}]`,
-    );
   });
 });
