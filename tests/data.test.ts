@@ -1,3 +1,5 @@
+import { existsSync } from "node:fs";
+import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { store } from "@/data/store";
 import { socialLinks, ownerSiteUrl, googleMapsUrl } from "@/data/site";
@@ -172,5 +174,16 @@ describe("英字マーキー", () => {
         expect(word).toMatch(/^[A-Z0-9 &.'-]+$/);
       }
     }
+  });
+});
+
+describe("404ページの配置", () => {
+  // `(senri)` の中に置くと `/_not-found` から参照されず、静的書き出しの
+  // 404.html が Next.js 既定の英語ページになります。GitHub Pages では
+  // 未知のURLがすべてこの 404.html を返すため、4サイト共通で影響します。
+  it("app 直下にあり、ルートグループの中に重複していない", () => {
+    const appDir = path.join(process.cwd(), "src", "app");
+    expect(existsSync(path.join(appDir, "not-found.tsx"))).toBe(true);
+    expect(existsSync(path.join(appDir, "(senri)", "not-found.tsx"))).toBe(false);
   });
 });

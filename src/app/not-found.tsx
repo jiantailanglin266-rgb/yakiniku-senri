@@ -13,7 +13,9 @@ export const metadata: Metadata = {
 };
 
 export default function NotFound() {
-  // ルート直下の 404 は `(senri)` のレイアウトを通らないため、外枠を明示的に付けます
+  // ルート直下に置きます。`(senri)` の中に置くと `/_not-found` から参照されず、
+  // 静的書き出しの 404.html が Next.js 既定の英語ページになります。
+  // ルートレイアウトは <html>/<body> だけなので、外枠は自分で付けます
   return (
     <SenriShell>
       <NotFoundBody />

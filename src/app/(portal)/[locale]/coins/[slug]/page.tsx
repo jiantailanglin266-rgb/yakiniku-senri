@@ -29,6 +29,9 @@ import { PriceChange } from "@/portal/components/market/charts";
 import { PriceChartPanel } from "@/portal/components/market/PriceChartPanel";
 import { DataFreshness } from "@/portal/components/market/DataFreshness";
 import { NewsCard } from "@/portal/components/news/NewsCard";
+import { WikimediaFigure } from "@/media/components";
+import { pageImagesJsonLd } from "@/media/lib/structured-data";
+import { portalPageKey } from "@/portal/lib/media";
 import { Badge, GlassCard, NeonLink, NoticeBox } from "@/portal/components/ui/primitives";
 import { FaqList } from "@/portal/components/ui/sections";
 import { JsonLd } from "@/portal/components/ui/JsonLd";
@@ -211,6 +214,9 @@ export default async function CoinDetailPage(props: {
             <section>
               <h2 className="mb-3 text-xl font-semibold">{dict.learn.definition}</h2>
               <p className="text-(--color-ink-soft)">{t(coin.description, locale)}</p>
+              {/* 図版はライセンス確認済みの画像があるときだけ出ます。
+                  無いときは何も表示しません（装飾目的の画像は本文に挟みません） */}
+              <WikimediaFigure pageKey={portalPageKey("coin", coin.slug)} locale={locale} />
             </section>
 
             <section>
@@ -361,7 +367,14 @@ export default async function CoinDetailPage(props: {
         </div>
       </Container>
 
-      <JsonLd data={[breadcrumbJsonLd(locale, trail), faqJsonLd(locale, faq)]} />
+      <JsonLd
+        data={[
+          breadcrumbJsonLd(locale, trail),
+          faqJsonLd(locale, faq),
+          // 画面に出している画像だけを ImageObject として出します
+          ...(pageImagesJsonLd(portalPageKey("coin", coin.slug), locale) ?? []),
+        ]}
+      />
     </Section>
   );
 }
