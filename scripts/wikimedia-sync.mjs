@@ -440,13 +440,25 @@ async function main() {
     「消えた」ではなく「なぜ載せないのか」が残るようにするためです。
   */
   let newlyRejected = 0;
+  let risksRecorded = 0;
   for (const asset of assetById.values()) {
+    /*
+      被写体のリスクは、取り直さなくても記録できます（判定はカテゴリと
+      ファイル名から行うため）。既存の画像にも付けておかないと、
+      管理画面は「要確認」とだけ出して、何を確認すべきかを示せません。
+    */
+    const risks = detectRightsRisks(asset);
+    if (risks.length > 0 && (asset.rightsRisks ?? []).length === 0) {
+      assetById.set(asset.id, { ...asset, rightsRisks: risks });
+      risksRecorded += 1;
+    }
+
     if (asset.verificationStatus === "rejected") continue;
     const subjects = detectExcludedSubjects(asset);
     if (subjects.length === 0) continue;
 
     assetById.set(asset.id, {
-      ...asset,
+      ...(assetById.get(asset.id) ?? asset),
       verificationStatus: "rejected",
       verifiedAt: null,
       usageStatus: "suspended",
@@ -458,9 +470,13 @@ async function main() {
     newlyRejected += 1;
     console.log(`  ✗ 既存を却下: ${asset.fileName}（${subjects.join(", ")}）`);
   }
-  if (newlyRejected > 0) {
-    console.log(`既存 ${newlyRejected} 件を却下しました（削除はしていません）。\n`);
+  if (risksRecorded > 0) {
+    console.log(`既存 ${risksRecorded} 件に被写体リスクを記録しました。`);
   }
+  if (newlyRejected > 0) {
+    console.log(`既存 ${newlyRejected} 件を却下しました（削除はしていません）。`);
+  }
+  if (risksRecorded > 0 || newlyRejected > 0) console.log("");
 
   const summary = {
     searched: 0,
