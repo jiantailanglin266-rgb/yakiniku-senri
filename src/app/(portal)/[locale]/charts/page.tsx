@@ -13,6 +13,7 @@ import type { PricePoint } from "@/portal/lib/types";
 
 import { Breadcrumbs, Container, PageHeader, Section } from "@/portal/components/layout/Shell";
 import { LiveChart } from "@/portal/components/market/LiveChart";
+import { TradingTerminal } from "@/portal/components/market/TradingTerminal";
 import { CoinMark } from "@/portal/components/market/CoinCard";
 import { PriceChange } from "@/portal/components/market/charts";
 import { DataFreshness } from "@/portal/components/market/DataFreshness";
@@ -83,6 +84,21 @@ export default async function ChartsPage(props: { params: Promise<{ locale: stri
         </NoticeBox>
 
         <LiveChart coins={CHART_COINS} locale={locale} dict={dict} initialSeries={initialSeries} />
+
+        {/*
+          板情報つきの取引画面。
+          上の LiveChart（CoinGecko・約60秒間隔）とは別系統で、
+          こちらは取引所へ接続したまま受け取ります。更新の速さが違うので、
+          どちらの数字なのかが分かるよう見出しを分けています。
+        */}
+        <div className="mt-16">
+          <SectionHeading
+            eyebrow="Order book"
+            title={dict.market.terminal.title}
+            lead={dict.market.terminal.lead}
+          />
+          <TradingTerminal coins={coins} locale={locale} dict={dict} />
+        </div>
 
         <div className="mt-16">
           <SectionHeading
