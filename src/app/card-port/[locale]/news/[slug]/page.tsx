@@ -15,6 +15,9 @@ import { getContentLocales, isLocale, type Locale } from "@/cardport/i18n/locale
 import { routes } from "@/cardport/lib/routes";
 import { cardportMetadata } from "@/cardport/lib/seo";
 import { newsArticleJsonLd } from "@/cardport/lib/structured-data";
+import { WikimediaFigure } from "@/media/components";
+import { pageImagesJsonLd } from "@/media/lib/structured-data";
+import { pageKey } from "@/media/data/usages";
 
 export function generateStaticParams() {
   return getContentLocales().flatMap((locale) =>
@@ -59,6 +62,7 @@ export default async function NewsArticlePage({
 
   const dictionary = getDictionary(locale);
   const author = getAuthor(article.authorId);
+  const articleImages = pageImagesJsonLd(pageKey("cardport", "news", article.slug), locale);
   const supervisor = article.supervisorId ? getAuthor(article.supervisorId) : undefined;
   const relatedCards = getCardsByIds(article.relatedCardIds);
   const sameStory = article.storyKey
@@ -121,6 +125,12 @@ export default async function NewsArticlePage({
     >
       <div className="grid gap-10 lg:grid-cols-[1fr_20rem]">
         <article className="max-w-3xl">
+          {/*
+            記事の図版。ライセンス確認済みの画像が無ければ何も描画しません。
+            ニュースに関連の薄い写真を添えると、事実の印象を歪めるためです。
+          */}
+          <WikimediaFigure pageKey={pageKey("cardport", "news", article.slug)} locale={locale} />
+
           {pickList(article.body, locale).map((paragraph) => (
             <p key={paragraph} className="text-cp-mist mb-5 text-[0.9rem] leading-[1.95]">
               {paragraph}
@@ -199,6 +209,8 @@ export default async function NewsArticlePage({
       </div>
 
       <JsonLd data={newsArticleJsonLd(article, locale)} />
+      {/* 画面に出している画像がある場合だけ ImageObject を出します */}
+      {articleImages ? <JsonLd data={articleImages} /> : null}
     </PageShell>
   );
 }

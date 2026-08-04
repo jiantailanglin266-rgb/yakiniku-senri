@@ -28,6 +28,8 @@ import {
 } from "@/cardport/i18n/locales";
 import { pick } from "@/cardport/i18n/localized";
 import { routes } from "./routes";
+import { pageImageSitemapEntries } from "@/media/lib/structured-data";
+import { pageKey as mediaPageKey } from "@/media/data/usages";
 
 export type SitemapEntry = {
   /** 言語プレフィックスを除いたパス生成関数 */
@@ -41,6 +43,11 @@ export type SitemapEntry = {
    * サイトマップにも生成しない言語のURLを載せないようにします。
    */
   locales?: Locale[];
+  /**
+   * 画像サイトマップ用のページキー（`cardport:news:<slug>` など）。
+   * ライセンス確認済みの画像が割り当てられている場合だけ `<image:image>` を出します。
+   */
+  pageKey?: string;
 };
 
 /** 全ページの一覧。ページを追加したらここにも足してください */
@@ -85,6 +92,7 @@ export function sitemapEntries(): SitemapEntry[] {
       changeFrequency: "weekly" as const,
       priority: 0.9,
       locales: contentLocales,
+      pageKey: mediaPageKey("cardport", "card", card.slug),
     })),
     ...diagnoses.map((diagnosis) => ({
       build: (locale: Locale) => routes.diagnosis(locale, diagnosis.slug),
@@ -102,6 +110,7 @@ export function sitemapEntries(): SitemapEntry[] {
       priority: 0.7,
     })),
     ...news.map((article) => ({
+      pageKey: mediaPageKey("cardport", "news", article.slug),
       build: (locale: Locale) => routes.newsArticle(locale, article.slug),
       lastModified: article.updatedAt,
       changeFrequency: "monthly" as const,
@@ -116,12 +125,14 @@ export function sitemapEntries(): SitemapEntry[] {
       locales: contentLocales,
     })),
     ...web3Services.map((service) => ({
+      pageKey: mediaPageKey("cardport", "web3", service.slug),
       build: (locale: Locale) => routes.web3Service(locale, service.slug),
       changeFrequency: "monthly" as const,
       priority: 0.6,
       locales: contentLocales,
     })),
     ...guides.map((guide) => ({
+      pageKey: mediaPageKey("cardport", "guide", guide.slug),
       build: (locale: Locale) => routes.guide(locale, guide.slug),
       lastModified: guide.updatedOn,
       changeFrequency: "monthly" as const,
@@ -163,6 +174,25 @@ export function buildSitemapXml(): string {
         )
         .join("\n");
 
+      /*
+        画像サイトマップ。ライセンス確認済みの画像が割り当てられている枠だけを出します。
+        確認前の画像は resolvePageImages() が返さないため、ここへ漏れません。
+      */
+      const images = entry.pageKey ? pageImageSitemapEntries(entry.pageKey, locale) : [];
+      const imageTags = images
+        .map((image) =>
+          [
+            "    <image:image>",
+            `      <image:loc>${escapeXml(image.loc)}</image:loc>`,
+            `      <image:title>${escapeXml(image.title)}</image:title>`,
+            image.caption ? `      <image:caption>${escapeXml(image.caption)}</image:caption>` : "",
+            "    </image:image>",
+          ]
+            .filter(Boolean)
+            .join("\n"),
+        )
+        .join("\n");
+
       urls.push(
         [
           "  <url>",
@@ -174,6 +204,7 @@ export function buildSitemapXml(): string {
           `    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(
             cardportAbsoluteUrl(entry.build("ja")),
           )}" />`,
+          imageTags,
           "  </url>",
         ]
           .filter(Boolean)
@@ -183,7 +214,7 @@ export function buildSitemapXml(): string {
   }
 
   return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 ${urls.join("\n")}
 </urlset>
 `;
