@@ -9,6 +9,7 @@ import { diagnoses } from "@/data/ai-port/diagnosis";
 import { relativeTime, type NewsItem } from "@/lib/ai-port/news";
 import { HeroSearch } from "./HeroSearch";
 import { HeroOrb } from "./HeroOrb";
+import { HeroLogoVideo } from "./HeroLogoVideo";
 
 /**
  * トップページのヒーロー。
@@ -28,6 +29,9 @@ export function HeroSection({ news }: { news: NewsItem[] }) {
     <section className="relative overflow-hidden">
       <div className="mx-auto grid max-w-[88rem] gap-14 px-5 pt-16 pb-14 sm:px-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-center lg:pt-24 lg:pb-20">
         <div className="min-w-0">
+          {/* 動くロゴ。見出しの上に置きます（出せない環境では何も出しません） */}
+          <HeroLogoVideo className="mb-6 block h-16 w-auto sm:h-20" />
+
           <p className="font-ai-mono text-ai-haze flex items-center gap-2.5 text-[0.66rem] tracking-[0.26em] uppercase">
             <span className="relative flex size-2">
               <span className="bg-ai-cyan absolute inset-0 animate-ping rounded-full opacity-70" />

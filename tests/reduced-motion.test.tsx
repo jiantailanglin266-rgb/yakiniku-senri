@@ -10,6 +10,7 @@ import { BrandMovie } from "@/components/home/BrandMovie";
 import { Reveal } from "@/components/ui/Reveal";
 import { LoadingScreen } from "@/components/effects/LoadingScreen";
 import { PageTransition } from "@/components/effects/PageTransition";
+import { HeroLogoVideo as AiHeroLogoVideo } from "@/components/ai-port/home/HeroLogoVideo";
 
 enableReducedMotion();
 
@@ -83,5 +84,14 @@ describe("prefers-reduced-motion: reduce", () => {
     } finally {
       vi.unstubAllGlobals();
     }
+  });
+});
+
+describe("prefers-reduced-motion: AI PORT のファーストビュー", () => {
+  it("動くロゴを再生しない", () => {
+    // 動きを抑える設定では、自動再生する動画そのものを出しません。
+    // ここは装飾で、サイトの名乗りは eyebrow と見出しが担っています。
+    render(<AiHeroLogoVideo />);
+    expect(document.querySelector("video")).toBeNull();
   });
 });
