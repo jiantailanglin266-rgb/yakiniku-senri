@@ -43,7 +43,12 @@ import {
   searchCommons,
   sleep,
 } from "./lib/wikimedia-client.mjs";
-import { CANDIDATE_THRESHOLD, rankCandidates, scoreCandidate } from "./lib/candidate-score.mjs";
+import {
+  CANDIDATE_THRESHOLD,
+  detectExcludedSubjects,
+  rankCandidates,
+  scoreCandidate,
+} from "./lib/candidate-score.mjs";
 import { evaluateAutoApproval, getApprovalConfig } from "./lib/media-approval.mjs";
 import { altTextFor, wikipediaTitlesFor } from "./lib/media-keywords.mjs";
 
@@ -81,6 +86,46 @@ function plainText(value) {
   return text.length > 0 ? text : null;
 }
 
+/**
+ * 作者名の整理。
+ *
+ * ■ 重複を畳みます
+ *   Commons の Artist は表示用と非表示用を重ねて持つことがあります。
+ *     Unknown author<span style="display:none">Unknown author</span>
+ *   タグを剥がすと「Unknown author Unknown author」になります。
+ *
+ * ■ 「作者不明」を作者名として扱いません
+ *   "Unknown author" を authorName に入れると、
+ *   作者が判明しているかのように見え、自動承認の条件も通ってしまいます。
+ *   分からないものは null のままにします。
+ */
+function normalizeAuthor(value) {
+  const text = plainText(value);
+  if (!text) return null;
+
+  // 同じ語が2回続く場合は1回に畳みます
+  const half = Math.floor(text.length / 2);
+  const collapsed =
+    text.length % 2 === 1 && text.slice(0, half) === text.slice(half + 1)
+      ? text.slice(0, half)
+      : text;
+
+  const lower = collapsed.toLowerCase().replace(/[.\s]+$/, "");
+  const unknownPatterns = [
+    "unknown",
+    "unknown author",
+    "author unknown",
+    "anonymous",
+    "not provided",
+    "no author",
+    "作者不明",
+    "不明",
+  ];
+  if (unknownPatterns.includes(lower)) return null;
+
+  return collapsed;
+}
+
 /** extmetadata の HTML から、最初のリンク先を拾います */
 function firstHref(value) {
   if (typeof value !== "string") return null;
@@ -94,6 +139,17 @@ function firstHref(value) {
 
 function meta(extmetadata, key) {
   return extmetadata?.[key]?.value ?? null;
+}
+
+/**
+ * ファイルURLから追跡パラメータを落とします。
+ * Commons は utm_source などを付けて返しますが、
+ * 保存して掲載URLに使う値としては不要です（画像は付けなくても取得できます）。
+ */
+function cleanUrl(value) {
+  if (typeof value !== "string" || !value) return "";
+  const index = value.indexOf("?");
+  return index === -1 ? value : value.slice(0, index);
 }
 
 function assetIdFor(title) {
@@ -128,9 +184,9 @@ function toRawAsset(page) {
     title: String(page.title),
     description: plainText(meta(ext, "ImageDescription")),
 
-    originalUrl: info.url ?? "",
-    thumbnailUrl: info.thumburl ?? null,
-    commonsPageUrl: info.descriptionurl ?? "",
+    originalUrl: cleanUrl(info.url),
+    thumbnailUrl: info.thumburl ? cleanUrl(info.thumburl) : null,
+    commonsPageUrl: cleanUrl(info.descriptionurl),
 
     mimeType: info.mime ?? "",
     width,
@@ -138,7 +194,7 @@ function toRawAsset(page) {
     aspectRatio: width / height,
 
     // 取得できなければ null。ここで推測しません
-    authorName: plainText(meta(ext, "Artist")),
+    authorName: normalizeAuthor(meta(ext, "Artist")),
     authorUrl: firstHref(meta(ext, "Artist")),
     sourceName: plainText(meta(ext, "Credit")),
     sourceUrl: firstHref(meta(ext, "Credit")),
@@ -461,7 +517,15 @@ async function main() {
     await sleep(clientConfig.intervalMs);
     if (!pages) continue;
 
-    const raws = pages.map(toRawAsset).filter(Boolean);
+    /*
+      SVG は図版であって写真ではありません。写真枠に入れると、
+      拡大しても内容が変わらない模式図が本文の図版として並びます。
+      検索経由でも混ざるため、ここで一律に落とします。
+    */
+    const raws = pages
+      .map(toRawAsset)
+      .filter(Boolean)
+      .filter((raw) => !/\.svg$/i.test(raw.fileName) && raw.mimeType !== "image/svg+xml");
 
     /*
       記事の代表画像は、関連度の足切りを免除します。
@@ -469,7 +533,10 @@ async function main() {
       全文検索のヒットと同じ基準で機械的に落とすのは不適切です。
       ただし解像度・ライセンス・被写体リスクの判定は、このあと同じように通します。
     */
-    const leadRaws = raws.filter((raw) => leadTitles.has(raw.title));
+    const leadRaws = raws
+      .filter((raw) => leadTitles.has(raw.title))
+      // 代表画像でも、実在ブランド・ロゴ・人物は候補にしません
+      .filter((raw) => detectExcludedSubjects(raw).length === 0);
     const ranked = rankCandidates(raws, request, { usedFileNames });
     summary.belowThreshold += raws.length - ranked.length - leadRaws.length;
 
@@ -514,6 +581,7 @@ async function main() {
         licenseCode,
         score: best.total,
         config: approvalConfig,
+        viaLeadImage: Boolean(best.viaLeadImage),
       });
       finalNotes.push(...decision.notes);
       if (decision.approved) finalStatus = "approved";

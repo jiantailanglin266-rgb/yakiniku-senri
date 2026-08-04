@@ -93,7 +93,7 @@ export function detectBlockingSubjects(raw) {
  * @returns {{approved: boolean, notes: string[]}}
  *   approved が false のとき、呼び出し側は needs_review 以下のままにします。
  */
-export function evaluateAutoApproval({ raw, licenseCode, score, config }) {
+export function evaluateAutoApproval({ raw, licenseCode, score, config, viaLeadImage = false }) {
   const notes = [];
 
   if (!config.enabled) {
@@ -108,7 +108,17 @@ export function evaluateAutoApproval({ raw, licenseCode, score, config }) {
     return { approved: false, notes };
   }
 
-  if (score < config.minScore) {
+  /*
+    関連度の点数は「検索語との文字列的な近さ」でしかありません。
+    記事の代表画像は、その記事を説明するために人が選んだ1枚なので、
+    点数が低くても関連性は担保されています（点数のほうが当てにならない）。
+    そのため代表画像では、この足切りを適用しません。
+
+    ■ 緩めているのは関連性の判定だけです
+      ライセンス・解像度・作者・出典・被写体リスクの確認は、
+      このあと同じように通します。権利に関わる条件は1つも外していません。
+  */
+  if (!viaLeadImage && score < config.minScore) {
     notes.push(`関連度 ${score} 点が自動承認の基準（${config.minScore} 点）に届きません。`);
     return { approved: false, notes };
   }
@@ -145,7 +155,7 @@ export function evaluateAutoApproval({ raw, licenseCode, score, config }) {
   }
 
   notes.push(
-    `${licenseCode}・関連度 ${score} 点・解像度 ${raw.width}×${raw.height}・作者と出典あり・被写体リスクなしのため自動承認しました。`,
+    `${licenseCode}・${viaLeadImage ? "記事の代表画像" : `関連度 ${score} 点`}・解像度 ${raw.width}×${raw.height}・作者と出典あり・被写体リスクなしのため自動承認しました。`,
   );
   return { approved: true, notes };
 }
