@@ -319,6 +319,59 @@ describe("実データから見つかった問題", () => {
     );
   });
 
+  it("パノラマの自由が無い国の建築物は候補にしない（Commons のカテゴリで判定）", async () => {
+    const { detectExcludedSubjects, rankCandidates } =
+      await import("../scripts/lib/candidate-score.mjs");
+    /*
+      実際に「AI不動産」の候補に選ばれていた画像です。
+      ライセンスは CC BY-SA 2.0 で、ファイル名からも説明文からも問題は分かりません。
+      Commons が categories に NoFoP-United Arab Emirates を付けており、
+      それが「その国にはパノラマの自由が無い」という唯一の手がかりでした。
+    */
+    const burjKhalifa = makeRaw({
+      fileName: "Burj Khalifa (16260269606).jpg",
+      title: "File:Burj Khalifa (16260269606).jpg",
+      description: "Burj Khalifa",
+      categories: [
+        "CC-BY-SA-2.0",
+        "Incidental views of Burj Khalifa",
+        "NoFoP-United Arab Emirates",
+      ],
+    });
+    expect(detectExcludedSubjects(burjKhalifa)).toContain("panorama");
+    expect(rankCandidates([burjKhalifa], { ...request, query: "city skyline buildings" })).toEqual(
+      [],
+    );
+  });
+
+  it("彫刻・銅像は候補にしない（人物の語彙では拾えない）", async () => {
+    const { detectExcludedSubjects } = await import("../scripts/lib/candidate-score.mjs");
+    /*
+      実際に「ブロックチェーン」の候補に選ばれていた画像です。
+      人物写真ではなく銅像でした。「portrait of」「headshot」では拾えません。
+      彫刻には作者の著作権が別に残ります。
+    */
+    const statue = makeRaw({
+      fileName: "Satoshi Nakamoto.jpg",
+      title: "File:Satoshi Nakamoto.jpg",
+      description: "Statue of Satoshi Nakamoto. III. ker. Zahony utca, Budapest.",
+      categories: ["Bust of Satoshi Nakamoto (Budapest)", "FoP-Hungary"],
+    });
+    expect(detectExcludedSubjects(statue)).toContain("artwork");
+  });
+
+  it("人が写っていることをカテゴリが示す画像は候補にしない", async () => {
+    const { detectExcludedSubjects } = await import("../scripts/lib/candidate-score.mjs");
+    // 実際に「AI動画」の候補に選ばれていた画像です
+    const crew = makeRaw({
+      fileName: "Camera crew at Candlestick Park 8-29-08.JPG",
+      title: "File:Camera crew at Candlestick Park 8-29-08.JPG",
+      description: "A camera crew filming a game",
+      categories: ["People with television cameras in the United States", "EFP cameras"],
+    });
+    expect(detectExcludedSubjects(crew)).toContain("person");
+  });
+
   it("記事の代表画像は、関連度の点数で自動承認を止めない", () => {
     const config = {
       enabled: true,
