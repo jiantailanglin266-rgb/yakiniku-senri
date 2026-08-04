@@ -29,6 +29,7 @@
  */
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { writeJson } from "./lib/write-json.mjs";
 import path from "node:path";
 import process from "node:process";
 
@@ -190,7 +191,7 @@ async function main() {
     return;
   }
 
-  await writeFile(ASSETS_PATH, `${JSON.stringify({ ...raw, assets }, null, 2)}\n`, "utf8");
+  await writeJson(ASSETS_PATH, { ...raw, assets });
   console.log(`更新しました: ${path.relative(ROOT, ASSETS_PATH)}`);
 }
 

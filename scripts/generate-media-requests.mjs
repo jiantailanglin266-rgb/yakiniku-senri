@@ -19,7 +19,8 @@
  *
  * 出力: src/media/data/requests.generated.json
  */
-import { readFile, writeFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
+import { writeJson } from "./lib/write-json.mjs";
 import path from "node:path";
 import process from "node:process";
 
@@ -326,19 +327,11 @@ async function main() {
     return;
   }
 
-  await writeFile(
-    OUTPUT_PATH,
-    `${JSON.stringify(
-      {
-        generatedAt: new Date().toISOString(),
-        note: "scripts/generate-media-requests.mjs が生成します。手で編集しないでください。手書きの指示は requests.json に書いてください。",
-        requests: kept,
-      },
-      null,
-      2,
-    )}\n`,
-    "utf8",
-  );
+  await writeJson(OUTPUT_PATH, {
+    generatedAt: new Date().toISOString(),
+    note: "scripts/generate-media-requests.mjs が生成します。手で編集しないでください。手書きの指示は requests.json に書いてください。",
+    requests: kept,
+  });
   console.log(`\n更新しました: ${path.relative(ROOT, OUTPUT_PATH)}`);
 }
 

@@ -29,7 +29,8 @@
  *   node scripts/wikimedia-sync.mjs --write --only=cardport:guide:points-basics
  *   node scripts/wikimedia-sync.mjs --write --limit=20
  */
-import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { readFile, mkdir } from "node:fs/promises";
+import { writeJson } from "./lib/write-json.mjs";
 import path from "node:path";
 import process from "node:process";
 
@@ -594,41 +595,25 @@ async function main() {
   await mkdir(path.dirname(ASSETS_PATH), { recursive: true });
   const generatedAt = new Date().toISOString();
 
-  await writeFile(
-    ASSETS_PATH,
-    `${JSON.stringify(
-      {
-        generatedAt,
-        note: "scripts/wikimedia-sync.mjs が生成します。手で編集しないでください。",
-        assets: [...assetById.values()].sort((a, b) => a.id.localeCompare(b.id)),
-        localizations: [...localizationByKey.values()].sort(
-          (a, b) => a.assetId.localeCompare(b.assetId) || a.locale.localeCompare(b.locale),
-        ),
-      },
-      null,
-      2,
-    )}\n`,
-    "utf8",
-  );
+  await writeJson(ASSETS_PATH, {
+    generatedAt,
+    note: "scripts/wikimedia-sync.mjs が生成します。手で編集しないでください。",
+    assets: [...assetById.values()].sort((a, b) => a.id.localeCompare(b.id)),
+    localizations: [...localizationByKey.values()].sort(
+      (a, b) => a.assetId.localeCompare(b.assetId) || a.locale.localeCompare(b.locale),
+    ),
+  });
 
-  await writeFile(
-    USAGES_PATH,
-    `${JSON.stringify(
-      {
-        generatedAt,
-        note: "scripts/wikimedia-sync.mjs が生成します。手で編集しないでください。",
-        usages: [...usageByKey.values()].sort(
-          (a, b) =>
-            a.pageKey.localeCompare(b.pageKey) ||
-            a.slot.localeCompare(b.slot) ||
-            a.priority - b.priority,
-        ),
-      },
-      null,
-      2,
-    )}\n`,
-    "utf8",
-  );
+  await writeJson(USAGES_PATH, {
+    generatedAt,
+    note: "scripts/wikimedia-sync.mjs が生成します。手で編集しないでください。",
+    usages: [...usageByKey.values()].sort(
+      (a, b) =>
+        a.pageKey.localeCompare(b.pageKey) ||
+        a.slot.localeCompare(b.slot) ||
+        a.priority - b.priority,
+    ),
+  });
 
   console.log(`\n更新しました:`);
   console.log(`  ${path.relative(ROOT, ASSETS_PATH)}`);
