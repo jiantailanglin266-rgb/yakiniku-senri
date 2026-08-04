@@ -7,6 +7,7 @@ import { GlobalFooter } from "@/components/layout/GlobalFooter";
 import { MobileFixedBar } from "@/components/layout/MobileFixedBar";
 import { SkipLink } from "@/components/layout/SkipLink";
 import { PageTransition } from "@/components/effects/PageTransition";
+import { GoogleTranslate } from "@/components/i18n/GoogleTranslate";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { organizationJsonLd, restaurantJsonLd, websiteJsonLd } from "@/lib/structured-data";
 import { defaultDescription } from "@/lib/seo";
@@ -112,6 +113,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <GlobalFooter />
         <MobileFixedBar />
 
+        <GoogleTranslate />
         <JsonLd data={[websiteJsonLd, organizationJsonLd, restaurantJsonLd]} />
       </body>
     </html>
