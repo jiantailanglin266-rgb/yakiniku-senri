@@ -7,6 +7,7 @@ import { GlobalFooter } from "@/components/layout/GlobalFooter";
 import { MobileFixedBar } from "@/components/layout/MobileFixedBar";
 import { SkipLink } from "@/components/layout/SkipLink";
 import { PageTransition } from "@/components/effects/PageTransition";
+import { ChatBot } from "@/components/chat/ChatBot";
 import { GoogleTranslate } from "@/components/i18n/GoogleTranslate";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { organizationJsonLd, restaurantJsonLd, websiteJsonLd } from "@/lib/structured-data";
@@ -113,6 +114,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <GlobalFooter />
         <MobileFixedBar />
 
+        <ChatBot />
         <GoogleTranslate />
         <JsonLd data={[websiteJsonLd, organizationJsonLd, restaurantJsonLd]} />
       </body>
