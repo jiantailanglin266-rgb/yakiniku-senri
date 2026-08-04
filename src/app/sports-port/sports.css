@@ -337,6 +337,32 @@
   }
 }
 
+@keyframes sp-hue {
+  from {
+    filter: hue-rotate(0deg);
+  }
+  to {
+    filter: hue-rotate(360deg);
+  }
+}
+
+/*
+  色が巡る帯。背景の位置を動かすので、要素そのものは動きません
+  （transform を使うと、上に載る文字の描画が毎フレーム走ります）。
+*/
+@keyframes sp-prism {
+  from {
+    background-position:
+      0% 50%,
+      100% 50%;
+  }
+  to {
+    background-position:
+      100% 50%,
+      0% 50%;
+  }
+}
+
 @keyframes sp-pulse-live {
   0%,
   100% {
@@ -397,6 +423,47 @@
   to {
     background-position: -6rem 0;
   }
+}
+
+/*
+  カラフルなグラデーション面。
+
+  sp-aurora より前面に置き、彩度の高い色を大きく動かします。
+  文字の下に敷くため、上に載せる要素にはコントラストを確保してください
+  （このリポジトリでは、スコア・チーム名は必ず不透明な面の上に置きます）。
+*/
+@utility sp-prism {
+  position: absolute;
+  inset: -20%;
+  z-index: -2;
+  pointer-events: none;
+  opacity: 0.5;
+  background:
+    conic-gradient(
+      from 210deg at 25% 30%,
+      color-mix(in oklab, var(--color-magenta) 60%, transparent),
+      color-mix(in oklab, var(--color-violet) 55%, transparent),
+      color-mix(in oklab, var(--color-cyan) 55%, transparent),
+      color-mix(in oklab, var(--color-neon) 45%, transparent),
+      color-mix(in oklab, var(--color-flame) 50%, transparent),
+      color-mix(in oklab, var(--color-magenta) 60%, transparent)
+    ),
+    conic-gradient(
+      from 30deg at 78% 68%,
+      color-mix(in oklab, var(--color-indigo) 55%, transparent),
+      color-mix(in oklab, var(--color-cyan) 45%, transparent),
+      transparent 55%
+    );
+  background-size:
+    200% 200%,
+    180% 180%;
+  filter: blur(3.5rem) saturate(1.25);
+}
+
+@utility sp-anim-prism {
+  animation:
+    sp-prism 28s var(--ease-drive) infinite alternate,
+    sp-hue 46s linear infinite;
 }
 
 @utility sp-anim-marquee {

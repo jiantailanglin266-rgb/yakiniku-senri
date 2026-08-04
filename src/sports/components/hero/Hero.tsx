@@ -14,6 +14,7 @@ import { getLeague } from "../../data/leagues";
 import { getSport } from "../../data/sports";
 import type { Match } from "../../types";
 import { HeroStage } from "./HeroStage";
+import { DiagonalMarquee } from "./DiagonalMarquee";
 import { Badge, Crest, LiveDot } from "../ui/primitives";
 import { LocalTime } from "../ui/LocalTime";
 
@@ -46,8 +47,19 @@ export function Hero({
 
   return (
     <section className="sp-stage relative -mx-4 mb-14 overflow-hidden px-4 py-14 sm:-mx-6 sm:px-6 sm:py-20">
+      {/*
+        背景の層。手前に来るほど z-index が大きくなります。
+          sp-prism         色が巡るグラデーション（最背面）
+          sp-floodlight    照明
+          sp-pitch         ピッチのライン
+          DiagonalMarquee  斜めに流れるキーワード
+        いずれも装飾で、読み上げ対象から外しています。
+        この上に載る見出し・CTAは不透明な文字色を保ってください。
+      */}
+      <div className="sp-prism sp-anim-prism" aria-hidden="true" />
       <div className="sp-floodlight" aria-hidden="true" />
       <div className="sp-pitch" aria-hidden="true" />
+      <DiagonalMarquee locale={locale.code} />
       <HeroStage />
 
       <div className="relative grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:items-center">
