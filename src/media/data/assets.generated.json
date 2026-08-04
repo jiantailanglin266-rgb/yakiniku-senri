@@ -232,7 +232,7 @@
           "hidden": ""
         }
       },
-      "licenseCode": "CC-BY-3.0",
+      "licenseCode": "CC-BY-SA-3.0",
       "localPath": null,
       "optimized": null,
       "blurDataURL": null,
@@ -524,7 +524,7 @@
           "hidden": ""
         }
       },
-      "licenseCode": "CC-BY-4.0",
+      "licenseCode": "CC-BY-SA-4.0",
       "localPath": null,
       "optimized": null,
       "blurDataURL": null,
@@ -783,14 +783,15 @@
       "objectPosition": "center",
       "rightsRisks": [],
       "usageStatus": "in_use",
-      "verificationStatus": "needs_review",
+      "verificationStatus": "approved",
       "verificationNotes": [
         "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
         "Commons の全文検索から採用（関連度 86 点）",
         "採点の内訳: {\"query\":30,\"alternate\":0,\"title\":0,\"description\":8,\"categories\":3,\"wikidata\":0,\"resolution\":14,\"landscape\":6,\"aspect\":9,\"license\":10,\"metadata\":6,\"penalty\":0}",
-        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。"
+        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。",
+        "人が確認して承認しました（被写体の権利を含む）。1887年の版画。PD-US expired。存命人物は写っていません。"
       ],
-      "verifiedAt": null,
+      "verifiedAt": "2026-08-04T15:45:00.000Z",
       "relevanceScore": 86
     },
     {
@@ -927,14 +928,15 @@
       "objectPosition": "center",
       "rightsRisks": [],
       "usageStatus": "in_use",
-      "verificationStatus": "needs_review",
+      "verificationStatus": "approved",
       "verificationNotes": [
         "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
         "Commons の全文検索から採用（関連度 84 点）",
         "採点の内訳: {\"query\":30,\"alternate\":0,\"title\":0,\"description\":5,\"categories\":3,\"wikidata\":0,\"resolution\":14,\"landscape\":6,\"aspect\":8,\"license\":10,\"metadata\":8,\"penalty\":0}",
-        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。"
+        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。",
+        "人が確認して承認しました（被写体の権利を含む）。公園の遊具。人物・商標なし。CC0。"
       ],
-      "verifiedAt": null,
+      "verifiedAt": "2026-08-04T15:45:00.000Z",
       "relevanceScore": 84
     },
     {
@@ -1046,14 +1048,15 @@
       "objectPosition": "center",
       "rightsRisks": [],
       "usageStatus": "in_use",
-      "verificationStatus": "needs_review",
+      "verificationStatus": "approved",
       "verificationNotes": [
         "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
         "Commons の全文検索から採用（関連度 87 点）",
         "採点の内訳: {\"query\":30,\"alternate\":0,\"title\":12,\"description\":8,\"categories\":4,\"wikidata\":0,\"resolution\":14,\"landscape\":0,\"aspect\":4,\"license\":7,\"metadata\":8,\"penalty\":0}",
-        "CC-BY-2.0 は自動承認の対象外です（対象: PD, CC0）。作者表示の運用確認が必要です。"
+        "CC-BY-2.0 は自動承認の対象外です（対象: PD, CC0）。作者表示の運用確認が必要です。",
+        "人が確認して承認しました（被写体の権利を含む）。ゴールと夕景。人物・商標なし。"
       ],
-      "verifiedAt": null,
+      "verifiedAt": "2026-08-04T15:45:00.000Z",
       "relevanceScore": 87
     },
     {
@@ -1176,14 +1179,15 @@
       "objectPosition": "center",
       "rightsRisks": [],
       "usageStatus": "in_use",
-      "verificationStatus": "needs_review",
+      "verificationStatus": "approved",
       "verificationNotes": [
         "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
         "Commons の全文検索から採用（関連度 87 点）",
         "採点の内訳: {\"query\":30,\"alternate\":0,\"title\":12,\"description\":8,\"categories\":4,\"wikidata\":0,\"resolution\":14,\"landscape\":6,\"aspect\":10,\"license\":5,\"metadata\":8,\"penalty\":-10}",
-        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。"
+        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。",
+        "人が確認して承認しました（被写体の権利を含む）。屋外のバスケットゴール。人物・商標なし。"
       ],
-      "verifiedAt": null,
+      "verifiedAt": "2026-08-04T15:45:00.000Z",
       "relevanceScore": 87
     },
     {
@@ -1430,7 +1434,7 @@
           "hidden": ""
         }
       },
-      "licenseCode": "CC-BY-2.0",
+      "licenseCode": "CC-BY-SA-2.0",
       "localPath": null,
       "optimized": null,
       "blurDataURL": null,
@@ -1571,7 +1575,7 @@
           "hidden": ""
         }
       },
-      "licenseCode": "CC-BY-3.0",
+      "licenseCode": "CC-BY-SA-3.0",
       "localPath": null,
       "optimized": null,
       "blurDataURL": null,
@@ -1720,7 +1724,7 @@
           "hidden": ""
         }
       },
-      "licenseCode": "CC-BY-4.0",
+      "licenseCode": "CC-BY-SA-4.0",
       "localPath": null,
       "optimized": null,
       "blurDataURL": null,
@@ -1729,14 +1733,15 @@
       "objectPosition": "center",
       "rightsRisks": [],
       "usageStatus": "in_use",
-      "verificationStatus": "needs_review",
+      "verificationStatus": "approved",
       "verificationNotes": [
         "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
         "Commons の全文検索から採用（関連度 81 点）",
         "採点の内訳: {\"query\":30,\"alternate\":0,\"title\":0,\"description\":8,\"categories\":3,\"wikidata\":0,\"resolution\":14,\"landscape\":6,\"aspect\":7,\"license\":5,\"metadata\":8,\"penalty\":0}",
-        "CC-BY-4.0 は自動承認の対象外です（対象: PD, CC0）。作者表示の運用確認が必要です。"
+        "CC-BY-4.0 は自動承認の対象外です（対象: PD, CC0）。作者表示の運用確認が必要です。",
+        "人が確認して承認しました（被写体の権利を含む）。無人のクレーコート。人物・商標なし。"
       ],
-      "verifiedAt": null,
+      "verifiedAt": "2026-08-04T15:45:00.000Z",
       "relevanceScore": 81
     },
     {
@@ -1853,7 +1858,7 @@
           "hidden": ""
         }
       },
-      "licenseCode": "CC-BY-3.0",
+      "licenseCode": "CC-BY-SA-3.0",
       "localPath": null,
       "optimized": null,
       "blurDataURL": null,
@@ -1985,7 +1990,7 @@
           "hidden": ""
         }
       },
-      "licenseCode": "CC-BY-3.0",
+      "licenseCode": "CC-BY-SA-3.0",
       "localPath": null,
       "optimized": null,
       "blurDataURL": null,
@@ -2134,7 +2139,7 @@
           "hidden": ""
         }
       },
-      "licenseCode": "CC-BY-2.5",
+      "licenseCode": "CC-BY-SA-2.5",
       "localPath": null,
       "optimized": null,
       "blurDataURL": null,
@@ -2283,7 +2288,7 @@
           "hidden": ""
         }
       },
-      "licenseCode": "CC-BY-4.0",
+      "licenseCode": "CC-BY-SA-4.0",
       "localPath": null,
       "optimized": null,
       "blurDataURL": null,
@@ -2554,7 +2559,7 @@
           "hidden": ""
         }
       },
-      "licenseCode": "CC-BY-4.0",
+      "licenseCode": "CC-BY-SA-4.0",
       "localPath": null,
       "optimized": null,
       "blurDataURL": null,
@@ -2563,14 +2568,15 @@
       "objectPosition": "center",
       "rightsRisks": [],
       "usageStatus": "in_use",
-      "verificationStatus": "needs_review",
+      "verificationStatus": "approved",
       "verificationNotes": [
         "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
         "Commons の全文検索から採用（関連度 83 点）",
         "採点の内訳: {\"query\":30,\"alternate\":0,\"title\":0,\"description\":8,\"categories\":3,\"wikidata\":0,\"resolution\":14,\"landscape\":6,\"aspect\":9,\"license\":5,\"metadata\":8,\"penalty\":0}",
-        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。"
+        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。",
+        "人が確認して承認しました（被写体の権利を含む）。無人のクレーコート。人物・商標なし。"
       ],
-      "verifiedAt": null,
+      "verifiedAt": "2026-08-04T15:45:00.000Z",
       "relevanceScore": 83
     },
     {
@@ -2669,7 +2675,7 @@
           "hidden": ""
         }
       },
-      "licenseCode": "CC-BY-3.0",
+      "licenseCode": "CC-BY-SA-3.0",
       "localPath": null,
       "optimized": null,
       "blurDataURL": null,
@@ -3174,7 +3180,7 @@
           "hidden": ""
         }
       },
-      "licenseCode": "CC-BY-4.0",
+      "licenseCode": "CC-BY-SA-4.0",
       "localPath": null,
       "optimized": null,
       "blurDataURL": null,
@@ -3318,9 +3324,10 @@
         "Wikipedia 記事の代表画像として取得（関連度 39 点）",
         "採点の内訳: {\"query\":15,\"alternate\":0,\"title\":0,\"description\":0,\"categories\":4,\"wikidata\":0,\"resolution\":14,\"landscape\":6,\"aspect\":9,\"license\":10,\"metadata\":6,\"penalty\":-25}",
         "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。",
-        "[2026-08-04T15:31:30.509Z] 判定規則の見直しにより却下しました（brand, logo）。ライセンスとは別に、商標権・肖像権が及ぶ被写体です。"
+        "[2026-08-04T15:31:30.509Z] 判定規則の見直しにより却下しました（brand, logo）。ライセンスとは別に、商標権・肖像権が及ぶ被写体です。",
+        "人が確認して却下しました。実在するクレジットカードの券面と商標（カテゴリに Visa (credit card) / With trademark / Membership cards）。写真自体は PD でも、券面意匠と商標は別の権利です。CARD PORT の掲載方針にも反します。"
       ],
-      "verifiedAt": null,
+      "verifiedAt": "2026-08-04T15:45:00.000Z",
       "relevanceScore": 39
     },
     {
@@ -3443,7 +3450,7 @@
           "hidden": ""
         }
       },
-      "licenseCode": "CC-BY-3.0",
+      "licenseCode": "CC-BY-SA-3.0",
       "localPath": null,
       "optimized": null,
       "blurDataURL": null,
@@ -3584,7 +3591,7 @@
           "hidden": ""
         }
       },
-      "licenseCode": "CC-BY-3.0",
+      "licenseCode": "CC-BY-SA-3.0",
       "localPath": null,
       "optimized": null,
       "blurDataURL": null,
@@ -3593,14 +3600,15 @@
       "objectPosition": "center",
       "rightsRisks": [],
       "usageStatus": "in_use",
-      "verificationStatus": "needs_review",
+      "verificationStatus": "approved",
       "verificationNotes": [
         "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
         "Commons の全文検索から採用（関連度 95 点）",
         "採点の内訳: {\"query\":30,\"alternate\":0,\"title\":12,\"description\":5,\"categories\":8,\"wikidata\":0,\"resolution\":14,\"landscape\":6,\"aspect\":7,\"license\":5,\"metadata\":8,\"penalty\":0}",
-        "CC-BY-3.0 は自動承認の対象外です（対象: PD, CC0）。作者表示の運用確認が必要です。"
+        "CC-BY-3.0 は自動承認の対象外です（対象: PD, CC0）。作者表示の運用確認が必要です。",
+        "人が確認して承認しました（被写体の権利を含む）。公共の卓球台。ドイツのパノラマの自由の範囲内。人物なし。"
       ],
-      "verifiedAt": null,
+      "verifiedAt": "2026-08-04T15:45:00.000Z",
       "relevanceScore": 95
     },
     {
@@ -3849,7 +3857,7 @@
           "hidden": ""
         }
       },
-      "licenseCode": "CC-BY-2.0",
+      "licenseCode": "CC-BY-SA-2.0",
       "localPath": null,
       "optimized": null,
       "blurDataURL": null,
@@ -3858,14 +3866,15 @@
       "objectPosition": "center",
       "rightsRisks": [],
       "usageStatus": "in_use",
-      "verificationStatus": "needs_review",
+      "verificationStatus": "approved",
       "verificationNotes": [
         "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
         "Commons の全文検索から採用（関連度 81 点）",
         "採点の内訳: {\"query\":30,\"alternate\":0,\"title\":12,\"description\":8,\"categories\":0,\"wikidata\":0,\"resolution\":14,\"landscape\":6,\"aspect\":8,\"license\":5,\"metadata\":8,\"penalty\":-10}",
-        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。"
+        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。",
+        "人が確認して承認しました（被写体の権利を含む）。無人のサーキット。人物・商標なし。"
       ],
-      "verifiedAt": null,
+      "verifiedAt": "2026-08-04T15:45:00.000Z",
       "relevanceScore": 81
     },
     {
@@ -4359,7 +4368,7 @@
           "hidden": ""
         }
       },
-      "licenseCode": "CC-BY-3.0",
+      "licenseCode": "CC-BY-SA-3.0",
       "localPath": null,
       "optimized": null,
       "blurDataURL": null,
@@ -4621,7 +4630,7 @@
           "hidden": ""
         }
       },
-      "licenseCode": "CC-BY-2.5",
+      "licenseCode": "CC-BY-SA-2.5",
       "localPath": null,
       "optimized": null,
       "blurDataURL": null,
@@ -4630,14 +4639,15 @@
       "objectPosition": "center",
       "rightsRisks": [],
       "usageStatus": "in_use",
-      "verificationStatus": "needs_review",
+      "verificationStatus": "approved",
       "verificationNotes": [
         "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
         "Commons の全文検索から採用（関連度 95 点）",
         "採点の内訳: {\"query\":30,\"alternate\":0,\"title\":12,\"description\":8,\"categories\":4,\"wikidata\":0,\"resolution\":14,\"landscape\":6,\"aspect\":8,\"license\":5,\"metadata\":8,\"penalty\":0}",
-        "CC-BY-2.5 は自動承認の対象外です（対象: PD, CC0）。作者表示の運用確認が必要です。"
+        "CC-BY-2.5 は自動承認の対象外です（対象: PD, CC0）。作者表示の運用確認が必要です。",
+        "人が確認して承認しました（被写体の権利を含む）。無人のゲレンデ。建築物・人物なし。"
       ],
-      "verifiedAt": null,
+      "verifiedAt": "2026-08-04T15:45:00.000Z",
       "relevanceScore": 95
     },
     {
@@ -4744,7 +4754,7 @@
           "hidden": ""
         }
       },
-      "licenseCode": "CC-BY-4.0",
+      "licenseCode": "CC-BY-SA-4.0",
       "localPath": null,
       "optimized": null,
       "blurDataURL": null,
@@ -4753,14 +4763,15 @@
       "objectPosition": "center",
       "rightsRisks": [],
       "usageStatus": "in_use",
-      "verificationStatus": "needs_review",
+      "verificationStatus": "approved",
       "verificationNotes": [
         "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
         "Commons の全文検索から採用（関連度 81 点）",
         "採点の内訳: {\"query\":30,\"alternate\":0,\"title\":0,\"description\":5,\"categories\":5,\"wikidata\":0,\"resolution\":14,\"landscape\":6,\"aspect\":8,\"license\":5,\"metadata\":8,\"penalty\":0}",
-        "CC-BY-4.0 は自動承認の対象外です（対象: PD, CC0）。作者表示の運用確認が必要です。"
+        "CC-BY-4.0 は自動承認の対象外です（対象: PD, CC0）。作者表示の運用確認が必要です。",
+        "人が確認して承認しました（被写体の権利を含む）。無人の野球場。米国では建築物の撮影が認められています（合衆国著作権法120条）。"
       ],
-      "verifiedAt": null,
+      "verifiedAt": "2026-08-04T15:45:00.000Z",
       "relevanceScore": 81
     },
     {
@@ -5002,7 +5013,7 @@
           "hidden": ""
         }
       },
-      "licenseCode": "CC-BY-4.0",
+      "licenseCode": "CC-BY-SA-4.0",
       "localPath": null,
       "optimized": null,
       "blurDataURL": null,
@@ -5132,7 +5143,7 @@
           "hidden": ""
         }
       },
-      "licenseCode": "CC-BY-4.0",
+      "licenseCode": "CC-BY-SA-4.0",
       "localPath": null,
       "optimized": null,
       "blurDataURL": null,
@@ -5141,14 +5152,15 @@
       "objectPosition": "center",
       "rightsRisks": [],
       "usageStatus": "in_use",
-      "verificationStatus": "needs_review",
+      "verificationStatus": "approved",
       "verificationNotes": [
         "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
         "Commons の全文検索から採用（関連度 85 点）",
         "採点の内訳: {\"query\":30,\"alternate\":0,\"title\":12,\"description\":8,\"categories\":4,\"wikidata\":0,\"resolution\":14,\"landscape\":6,\"aspect\":8,\"license\":5,\"metadata\":8,\"penalty\":-10}",
-        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。"
+        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。",
+        "人が確認して承認しました（被写体の権利を含む）。ラグビーボール単体。人物・商標なし。"
       ],
-      "verifiedAt": null,
+      "verifiedAt": "2026-08-04T15:45:00.000Z",
       "relevanceScore": 85
     },
     {
@@ -5382,7 +5394,7 @@
           "hidden": ""
         }
       },
-      "licenseCode": "CC-BY-4.0",
+      "licenseCode": "CC-BY-SA-4.0",
       "localPath": null,
       "optimized": null,
       "blurDataURL": null,
@@ -5391,14 +5403,15 @@
       "objectPosition": "center",
       "rightsRisks": [],
       "usageStatus": "in_use",
-      "verificationStatus": "needs_review",
+      "verificationStatus": "approved",
       "verificationNotes": [
         "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
         "Commons の全文検索から採用（関連度 95 点）",
         "採点の内訳: {\"query\":30,\"alternate\":0,\"title\":12,\"description\":8,\"categories\":4,\"wikidata\":0,\"resolution\":14,\"landscape\":6,\"aspect\":8,\"license\":5,\"metadata\":8,\"penalty\":0}",
-        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。"
+        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。",
+        "人が確認して承認しました（被写体の権利を含む）。ゴールを見上げた構図。人物・商標なし。"
       ],
-      "verifiedAt": null,
+      "verifiedAt": "2026-08-04T15:45:00.000Z",
       "relevanceScore": 95
     },
     {
@@ -5505,7 +5518,7 @@
           "hidden": ""
         }
       },
-      "licenseCode": "CC-BY-SA-2.1",
+      "licenseCode": "UNKNOWN",
       "localPath": null,
       "optimized": null,
       "blurDataURL": null,
