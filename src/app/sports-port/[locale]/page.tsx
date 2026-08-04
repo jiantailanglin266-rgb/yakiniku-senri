@@ -146,7 +146,12 @@ export default async function SportsHome({ params }: { params: Promise<{ locale:
       {/* 3. 本日の注目試合 */}
       <section aria-labelledby="s-featured" className="mb-14">
         <SectionHeading id="s-featured" eyebrow="FEATURED" title={dict.sectionFeatured} />
-        <div className="grid gap-4 lg:grid-cols-2">
+        {/*
+          グリッドの子は既定で min-width:auto のため、中身の最小幅がそのまま
+          外へ出ます。スマホでカードが画面幅を超え、ページ全体が横スクロール
+          していました。子を縮められるようにします。
+        */}
+        <div className="grid gap-4 lg:grid-cols-2 [&>*]:min-w-0">
           {[...live, ...upcoming].slice(0, 4).map((match, index) => (
             <Reveal key={match.id} delay={index * 0.06}>
               <FeaturedMatch match={match} locale={locale} />
