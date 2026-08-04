@@ -59,10 +59,25 @@ const aliases: Record<string, LicenseCode> = {
  * バージョンが取れない場合は最新版と決めつけず、バージョン無しのコードへ寄せます。
  */
 function matchCreativeCommons(key: string): LicenseCode | null {
-  const nc = /(^|-)nc(-|$)/.test(key) || key.includes("noncommercial");
-  const nd = /(^|-)nd(-|$)/.test(key) || key.includes("noderiv");
-  const sa = /(^|-)sa(-|$)/.test(key) || key.includes("sharealike");
-  const by = /(^|-)by(-|$)/.test(key) || key.includes("attribution");
+  /*
+    正式名称は語がハイフンで分かれます（normalizeKey が空白を "-" にするため）。
+
+      "Creative Commons Attribution-Share Alike 4.0"
+        → "creative-commons-attribution-share-alike-4.0"
+
+    このとき "sharealike" では一致せず、"-sa-" も現れないため、
+    継承（ShareAlike）を見落として CC BY と判定していました。
+    実際に Commons から取得した5件が CC BY-SA を CC BY と誤判定されています。
+    NonCommercial / NoDerivatives も同じ形（"non-commercial" / "no-derivative-works"）
+    を取りこぼすため、より危険です。
+
+    ハイフンを落とした形でも照合します。
+  */
+  const compact = key.replace(/-/g, "");
+  const nc = /(^|-)nc(-|$)/.test(key) || compact.includes("noncommercial");
+  const nd = /(^|-)nd(-|$)/.test(key) || compact.includes("noderiv");
+  const sa = /(^|-)sa(-|$)/.test(key) || compact.includes("sharealike");
+  const by = /(^|-)by(-|$)/.test(key) || compact.includes("attribution");
 
   if (!by && !sa && !nc && !nd) return null;
 
