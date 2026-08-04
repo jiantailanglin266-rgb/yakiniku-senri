@@ -97,7 +97,11 @@ export default async function SportDetailPage({
             className="h-full"
           />
         </div>
-        <div className="from-void via-void/80 relative bg-linear-to-r to-transparent px-5 py-12 sm:px-8 sm:py-16">
+        {/*
+          文字を読める濃さは確保しつつ、右側は背景が見える濃度にしています。
+          全面を暗くすると、画像を入れても入れなくても同じ見た目になってしまいます。
+        */}
+        <div className="from-void via-void/75 relative min-h-56 bg-linear-to-r to-transparent px-5 py-12 sm:min-h-64 sm:px-8 sm:py-16">
           <p className="sp-eyebrow mb-2">SPORT</p>
           <h1 className="text-ink flex items-center gap-3 text-3xl font-extrabold sm:text-4xl">
             <span aria-hidden="true">{sport.glyph}</span>
