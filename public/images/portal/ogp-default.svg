@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="CRYPTO PORT">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#05070f"/>
+      <stop offset="55%" stop-color="#0b1024"/>
+      <stop offset="100%" stop-color="#04050a"/>
+    </linearGradient>
+    <radialGradient id="glowA" cx="18%" cy="22%" r="55%">
+      <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.42"/>
+      <stop offset="100%" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowB" cx="82%" cy="28%" r="55%">
+      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowC" cx="62%" cy="92%" r="50%">
+      <stop offset="0%" stop-color="#d946ef" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#d946ef" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="word" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#67e8f9"/>
+      <stop offset="45%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#d946ef"/>
+    </linearGradient>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" fill="none" stroke="#94a3b8" stroke-opacity="0.09" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <mask id="gridMask"><rect width="1200" height="630" fill="url(#fade)"/></mask>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#grid)" mask="url(#gridMask)"/>
+  <rect width="1200" height="630" fill="url(#glowA)"/>
+  <rect width="1200" height="630" fill="url(#glowB)"/>
+  <rect width="1200" height="630" fill="url(#glowC)"/>
+
+  <!-- ブロックチェーン風のネットワーク -->
+  <g stroke="#22d3ee" stroke-opacity="0.35" stroke-width="1.2" fill="none">
+    <path d="M120 470 L260 400 L400 452 L540 372 L690 428 L840 350 L1000 410"/>
+    <path d="M180 520 L330 470 L470 512 L620 440"/>
+  </g>
+  <g fill="#67e8f9">
+    <circle cx="120" cy="470" r="4"/><circle cx="260" cy="400" r="4"/><circle cx="400" cy="452" r="4"/>
+    <circle cx="540" cy="372" r="4"/><circle cx="690" cy="428" r="4"/><circle cx="840" cy="350" r="4"/>
+    <circle cx="1000" cy="410" r="4"/>
+  </g>
+
+  <!-- コイン -->
+  <g transform="translate(980 168)">
+    <circle r="86" fill="#0b1024" stroke="#f7931a" stroke-width="4" stroke-opacity="0.9"/>
+    <circle r="86" fill="#f7931a" fill-opacity="0.14"/>
+    <text y="18" text-anchor="middle" font-family="ui-monospace, monospace" font-size="46" font-weight="700" fill="#f7931a">BTC</text>
+  </g>
+
+  <text x="90" y="228" font-family="'Space Grotesk', system-ui, sans-serif" font-size="26" letter-spacing="7" fill="#67e8f9">NEXT-GENERATION WEB3 TERMINAL</text>
+  <text x="86" y="330" font-family="'Space Grotesk', system-ui, sans-serif" font-size="104" font-weight="700" fill="url(#word)">CRYPTO PORT</text>
+  <text x="90" y="392" font-family="system-ui, sans-serif" font-size="30" fill="#b6c0e0">未来の資産を、ひとつの画面に。</text>
+
+  <rect x="90" y="560" width="1020" height="1" fill="#94a3b8" fill-opacity="0.2"/>
+  <text x="90" y="596" font-family="system-ui, sans-serif" font-size="21" fill="#7d88ab">News · Prices · Exchanges · Wallets · Web3 Tools</text>
+</svg>

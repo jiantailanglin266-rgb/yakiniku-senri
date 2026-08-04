@@ -13,7 +13,7 @@ import {
 } from "@/lib/structured-data";
 import sitemap from "@/app/sitemap";
 import robots from "@/app/robots";
-import { metadata as rootMetadata } from "@/app/layout";
+import { metadata as rootMetadata } from "@/app/(senri)/layout";
 import { siteUrl } from "@/data/site";
 import { store } from "@/data/store";
 import { faqs } from "@/data/content";

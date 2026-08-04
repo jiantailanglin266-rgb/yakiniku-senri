@@ -2,9 +2,16 @@ import type { MetadataRoute } from "next";
 import { mainNav, utilityNav } from "@/data/navigation";
 import { getNews } from "@/data/news";
 import { siteUrl } from "@/data/site";
+import { portalSitemap } from "@/portal/lib/sitemap";
 
 export const dynamic = "force-static";
 
+/**
+ * このリポジトリには2つのサイトが同居しています。
+ * サイトマップはドメイン単位のファイルなので、両方のURLをここでまとめて出力します。
+ *   - 焼肉 千里（ルート直下の静的パス）
+ *   - CRYPTO PORT（/<言語>/ 以下。言語別 alternates つき）
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
   // ビルドのたびに現在時刻を入れると全URLが「毎回更新された」ことになり、
   // クロールの優先度判断を誤らせます。最新のお知らせの日付を基準にします。
@@ -34,5 +41,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
-  return [...staticPages, ...newsPages];
+  return [...staticPages, ...newsPages, ...portalSitemap()];
 }
