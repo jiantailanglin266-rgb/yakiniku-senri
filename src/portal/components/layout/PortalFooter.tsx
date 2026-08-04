@@ -2,7 +2,7 @@ import Link from "next/link";
 import { localePath } from "@/portal/i18n/config";
 import { footerNav } from "@/portal/data/site-content";
 import { brand, socialEntries } from "@/portal/lib/site";
-import { t } from "@/portal/lib/format";
+import { navLabel, t } from "@/portal/lib/format";
 import type { Dictionary } from "@/portal/i18n/dictionaries";
 import { NoticeBox } from "@/portal/components/ui/primitives";
 
@@ -63,7 +63,7 @@ export function PortalFooter({ locale, dict }: { locale: string; dict: Dictionar
                       href={localePath(locale, item.href)}
                       className="text-sm text-(--color-ink-dim) transition-colors hover:text-(--color-ink)"
                     >
-                      {t(item.label, locale)}
+                      {navLabel(item, locale, dict)}
                     </Link>
                   </li>
                 ))}

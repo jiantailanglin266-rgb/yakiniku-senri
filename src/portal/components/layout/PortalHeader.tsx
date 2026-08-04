@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { localePath } from "@/portal/i18n/config";
 import { mainNav } from "@/portal/data/site-content";
 import { brand } from "@/portal/lib/site";
-import { t } from "@/portal/lib/format";
+import { navLabel } from "@/portal/lib/format";
 import type { Dictionary } from "@/portal/i18n/dictionaries";
 import { GlobalSearch } from "./GlobalSearch";
 import { LocaleSwitcher } from "./LocaleSwitcher";
@@ -98,7 +98,7 @@ export function PortalHeader({ locale, dict }: { locale: string; dict: Dictionar
                   : "text-(--color-ink-soft) hover:text-(--color-ink)",
               ].join(" ")}
             >
-              {t(item.label, locale)}
+              {navLabel(item, locale, dict)}
             </Link>
           ))}
         </nav>
@@ -170,7 +170,7 @@ export function PortalHeader({ locale, dict }: { locale: string; dict: Dictionar
                   onClick={() => setOpen(false)}
                   className="block rounded-lg px-3 py-3 text-base transition-colors hover:bg-white/5"
                 >
-                  {t(item.label, locale)}
+                  {navLabel(item, locale, dict)}
                 </Link>
                 {item.children ? (
                   <ul className="ms-3 mb-1 border-s border-(--color-hairline) ps-3">
@@ -181,7 +181,7 @@ export function PortalHeader({ locale, dict }: { locale: string; dict: Dictionar
                           onClick={() => setOpen(false)}
                           className="block rounded-lg px-3 py-2 text-sm text-(--color-ink-soft) transition-colors hover:bg-white/5"
                         >
-                          {t(child.label, locale)}
+                          {navLabel(child, locale, dict)}
                         </Link>
                       </li>
                     ))}
