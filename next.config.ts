@@ -53,7 +53,7 @@ const nextConfig: NextConfig = {
              * Wikimedia Commons の画像。
              *
              * ライセンス確認済みの画像だけがここへ到達します
-             * （src/wikimedia/licenses.ts の evaluateAsset を通らないと描画されません）。
+             * （src/media/lib/eligibility.ts の isPublishable を通らないと描画されません）。
              * 自社ストレージへ複製する運用に切り替える場合も、
              * 元画像URL・ファイルページ・作者・ライセンスの保持は必須です。
              */
