@@ -414,22 +414,42 @@ describe("候補画像の関連度スコア", () => {
 });
 
 describe("掲載データの状態", () => {
-  it("登録済みの画像は、すべてライセンス情報を持っている", () => {
-    // 空でも通ります。データが入ったときに、推測値の混入を止めるための番人です
+  /*
+    ここで課す条件は「承認済みかどうか」で変わります。
+
+    未承認の画像には、作者やライセンスが欠けているものが**当然あります**。
+    欠けているからこそ未承認で止まっているのであって、逆ではありません。
+    すべての画像に揃っていることを求めると、取得したデータを
+    リポジトリに入れられなくなります（実際にそうなり、
+    同期ワークフローがここで落ちて取得結果が捨てられていました）。
+  */
+  it("すべての画像に、出所を辿れる情報がある", () => {
     for (const asset of wikimediaAssets) {
-      expect(asset.licenseCode).not.toBe("UNKNOWN");
-      expect(asset.commonsPageUrl).toMatch(/^https:\/\/commons\.wikimedia\.org\//);
       expect(asset.fileName.length).toBeGreaterThan(0);
+      expect(asset.commonsPageUrl).toMatch(/^https:\/\/commons\.wikimedia\.org\//);
       expect(asset.retrievedAt).toMatch(/^\d{4}-\d{2}-\d{2}/);
-      if (getLicense(asset.licenseCode).attributionRequired) {
-        expect(asset.authorName).toBeTruthy();
-      }
     }
   });
 
-  it("承認済みの画像には検証日時と根拠が残っている", () => {
+  it("承認済みの画像は、掲載に必要な条件をすべて満たしている", () => {
     for (const asset of wikimediaAssets.filter((a) => a.verificationStatus === "approved")) {
+      // ライセンスが読めない画像を承認済みにはできません
+      expect(asset.licenseCode).not.toBe("UNKNOWN");
+      // 承認は人（または自動承認）が判断した時点の記録です
       expect(asset.verifiedAt).toBeTruthy();
+      // 作者表示が必要なライセンスなら、作者が無ければクレジットを出せません
+      if (getLicense(asset.licenseCode).attributionRequired) {
+        expect(asset.authorName).toBeTruthy();
+      }
+      // 描画側の関門と一致していること
+      expect(isPublishable(asset)).toBe(true);
+    }
+  });
+
+  it("未承認の画像は、条件が欠けていても保持できる（表示はされない）", () => {
+    for (const asset of wikimediaAssets.filter((a) => a.verificationStatus !== "approved")) {
+      // 欠けていること自体は許容します。ただし表示されないことは保証します
+      expect(isPublishable(asset)).toBe(false);
     }
   });
 
