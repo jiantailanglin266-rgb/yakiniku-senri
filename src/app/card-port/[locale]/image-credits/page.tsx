@@ -21,7 +21,6 @@ import { routes } from "@/cardport/lib/routes";
 import { cardportMetadata } from "@/cardport/lib/seo";
 import { ImageLicenseBadge } from "@/media/components";
 import { wikimediaAssets, getLocalization } from "@/media/data/assets";
-import { thirdPartyAssets } from "@/media/data/third-party";
 import { getPagesUsingAsset } from "@/media/data/usages";
 import { getMediaLabels } from "@/media/i18n/labels";
 import { isPublishable } from "@/media/lib/eligibility";
@@ -75,81 +74,6 @@ export default async function ImageCreditsPage({
       title={labels.creditsTitle}
     >
       <p className="text-cp-mist max-w-3xl text-[0.86rem] leading-relaxed">{labels.creditsIntro}</p>
-
-      {thirdPartyAssets.length > 0 ? (
-        <section className="mt-8">
-          <SectionHeading
-            eyebrow="THIRD PARTY"
-            title={locale === "ja" ? "第三者素材" : "Third-party assets"}
-            accent="cyan"
-          />
-          <ul className="mt-3 grid gap-3">
-            {thirdPartyAssets.map((asset) => (
-              <li key={asset.id}>
-                <Panel as="article" className="p-4">
-                  <div className="flex flex-wrap items-baseline justify-between gap-2">
-                    {/* 素材名とライセンス名は識別子です。翻訳しません */}
-                    <h2 className="text-cp-ink text-[0.9rem] font-semibold" translate="no">
-                      {asset.name}
-                    </h2>
-                    <span className="text-cp-cyan text-[0.7rem]" translate="no">
-                      {asset.licenseName}
-                    </span>
-                  </div>
-                  <p className="text-cp-mist mt-1 text-[0.78rem] leading-relaxed">
-                    {locale === "ja" ? asset.usage.ja : asset.usage.en}
-                  </p>
-                  <dl className="mt-3 grid gap-x-4 gap-y-1 text-[0.76rem] sm:grid-cols-2">
-                    <div className="flex gap-2">
-                      <dt className="text-cp-dim w-20 shrink-0">
-                        {locale === "ja" ? "著作権表示" : "Copyright"}
-                      </dt>
-                      {/* ライセンスが保持を求める表示です。省略できません */}
-                      <dd className="text-cp-mist m-0" translate="no">
-                        {asset.copyrightNotice}
-                      </dd>
-                    </div>
-                    <div className="flex gap-2">
-                      <dt className="text-cp-dim w-20 shrink-0">{labels.source}</dt>
-                      <dd className="text-cp-mist m-0">
-                        <a
-                          href={asset.sourceUrl}
-                          target="_blank"
-                          rel="nofollow noopener noreferrer"
-                          className="break-all underline decoration-dotted underline-offset-2"
-                        >
-                          {asset.sourceUrl}
-                        </a>
-                      </dd>
-                    </div>
-                    <div className="flex gap-2">
-                      <dt className="text-cp-dim w-20 shrink-0">{labels.license}</dt>
-                      <dd className="text-cp-mist m-0">
-                        <a
-                          href={asset.licenseUrl}
-                          target="_blank"
-                          rel="nofollow noopener noreferrer"
-                          className="break-all underline decoration-dotted underline-offset-2"
-                        >
-                          {asset.licenseUrl}
-                        </a>
-                      </dd>
-                    </div>
-                    {asset.modification ? (
-                      <div className="flex gap-2">
-                        <dt className="text-cp-dim w-20 shrink-0">{labels.modified}</dt>
-                        <dd className="text-cp-mist m-0">
-                          {locale === "ja" ? asset.modification.ja : asset.modification.en}
-                        </dd>
-                      </div>
-                    ) : null}
-                  </dl>
-                </Panel>
-              </li>
-            ))}
-          </ul>
-        </section>
-      ) : null}
 
       {published.length === 0 ? (
         <div className="mt-6 max-w-3xl">
