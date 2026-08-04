@@ -46,28 +46,33 @@ Actions → Variables に `MEDIA_AUTO_APPROVE = true` を設定します。
 
 ### 2. PowerShell（Windows のお手元で）
 
-```powershell
-# 取得だけ（承認しない）
-.\scripts\media-sync.ps1
-
-# パブリックドメインと CC0 は自動承認する
-.\scripts\media-sync.ps1 -AutoApprove
-
-# まず10枠だけ試す
-.\scripts\media-sync.ps1 -AutoApprove -Limit 10
-
-# 書き込まずに確認だけ
-.\scripts\media-sync.ps1 -DryRun
-```
-
-実行が拒否される場合は、そのウィンドウだけ許可します。
+`scripts/Sync-WikimediaPhotos.ps1` がメタデータの取得を行います。
 
 ```powershell
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+cd <リポジトリのフォルダ>
+$env:MEDIA_SYNC_USER_AGENT = "YourSite/1.0 (you@example.com)"
+
+# まず書き込みなしで確認
+powershell -ExecutionPolicy Bypass -File scripts\Sync-WikimediaPhotos.ps1
+
+# 問題なければ書き込み
+powershell -ExecutionPolicy Bypass -File scripts\Sync-WikimediaPhotos.ps1 -Write
+
+# 1枠だけ試す
+powershell -ExecutionPolicy Bypass -File scripts\Sync-WikimediaPhotos.ps1 -Write -Only "cardport:guide:points-basics"
 ```
 
-Wikimedia へ到達できるかを最初に確かめ、届かなければそこで止まります
-（届かない環境で長時間走らせても意味がないためです）。
+このスクリプトは**メタデータだけ**を取ります。画像ファイルの取得・最適化と
+生成物の検証は、続けて npm から実行してください。
+
+```powershell
+npm run media:optimize -- --write
+npm run media:validate
+```
+
+`.ps1` は ASCII のみで書かれています。Windows PowerShell は BOM の無い `.ps1` を
+コンソールのコードページで読むため、本文に日本語を置くと文字化けするからです。
+記事タイトルなどの日本語は `requests.json`（UTF-8）側にあります。
 
 ### 3. npm スクリプト個別
 
