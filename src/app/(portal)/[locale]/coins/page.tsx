@@ -11,7 +11,6 @@ import { formatCompact, formatPrice, t } from "@/portal/lib/format";
 import { breadcrumbJsonLd, itemListJsonLd } from "@/portal/lib/structured-data";
 
 import { Breadcrumbs, Container, PageHeader, Section } from "@/portal/components/layout/Shell";
-import { PageVisual } from "@/portal/components/layout/PageVisual";
 import { CoinMark } from "@/portal/components/market/CoinCard";
 import { PriceChange, Sparkline } from "@/portal/components/market/charts";
 import { DataFreshness } from "@/portal/components/market/DataFreshness";
@@ -59,7 +58,6 @@ export default async function CoinsPage(props: { params: Promise<{ locale: strin
           lead={dict.market.featuredLead}
           meta={<DataFreshness snapshot={snapshot} dict={dict} locale={locale} />}
         />
-        <PageVisual name="market" locale={locale} priority />
 
         {/* 一覧は表で。スマートフォンでは列を減らして横スクロールを避けます */}
         <div className="scroll-fade -mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
