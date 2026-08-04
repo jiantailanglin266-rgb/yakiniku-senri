@@ -2,9 +2,9 @@
  * UI 文言の辞書。
  *
  * ■ 方針
- *   - 日本語と英語は人手で書きます（一次言語）。
- *   - それ以外の言語は、辞書が未整備のあいだ英語にフォールバックします。
- *     未翻訳の言語で「日本語のまま」より「英語」のほうが読める人が多いためです。
+ *   - 日本語を一次言語とし、対応13言語すべてに辞書を用意します。
+ *   - 未知の言語コードが来たときだけ英語へフォールバックします。
+ *     「日本語のまま」より「英語」のほうが読める人が多いためです。
  *   - 記事本文などの長文はここではなくコンテンツ側（src/portal/data）に持たせ、
  *     `LocalizedText` で言語ごとの上書きを受け付けます。
  *
@@ -14,6 +14,17 @@
  */
 
 import { fallbackLocale } from "./config";
+import { ko } from "./locales/ko";
+import { zhCn } from "./locales/zh-cn";
+import { zhTw } from "./locales/zh-tw";
+import { es } from "./locales/es";
+import { pt } from "./locales/pt";
+import { fr } from "./locales/fr";
+import { de } from "./locales/de";
+import { th } from "./locales/th";
+import { vi } from "./locales/vi";
+import { id } from "./locales/id";
+import { ar } from "./locales/ar";
 
 const ja = {
   common: {
@@ -594,12 +605,26 @@ const en: Dictionary = {
 
 /**
  * 言語コード → 辞書。
- * 未整備の言語はここに載せず、`getDictionary` が英語へフォールバックします。
- * 追加するときは `Dictionary` 型を満たすオブジェクトを作って登録してください。
+ *
+ * 対応している13言語すべてに辞書があります。ここに無い言語コードが来た場合だけ
+ * `getDictionary` が英語へフォールバックします。
+ * 言語を追加するときは `Dictionary` 型を満たすオブジェクトを作って登録してください
+ * （キーが1つでも欠けると型エラーになるため、翻訳漏れはビルド時に見つかります）。
  */
 const dictionaries: Record<string, Dictionary> = {
   ja: ja as unknown as Dictionary,
   en,
+  ko,
+  "zh-cn": zhCn,
+  "zh-tw": zhTw,
+  es,
+  pt,
+  fr,
+  de,
+  th,
+  vi,
+  id,
+  ar,
 };
 
 export function getDictionary(locale: string): Dictionary {
