@@ -243,3 +243,25 @@ describe("オープニング（サイトの入り口）", () => {
     expect(screen.queryByRole("status", { name: "読み込み中" })).not.toBeInTheDocument();
   });
 });
+
+describe("オープニングの映り込み防止", () => {
+  it("サーバー側の描画でも黒幕が出る（JS を待つあいだサイトを見せない）", async () => {
+    const { renderToStaticMarkup } = await import("react-dom/server");
+    const html = renderToStaticMarkup(<LoadingScreen />);
+
+    // 黒幕そのものは初期HTMLに含まれること
+    expect(html).toContain("opening-screen");
+    // ただし中身（動画・スキップ）は含めないこと。
+    // 2回目以降の訪問で黒幕がCSSで消えていても、動画を読みに行ってしまうため
+    expect(html).not.toContain("<video");
+    expect(html).not.toContain("Skip");
+  });
+
+  it("黒幕は最前面でページ全体を覆う", async () => {
+    render(<LoadingScreen />);
+    const overlay = document.querySelector(".opening-screen");
+    expect(overlay).toBeTruthy();
+    // 位置と重なり順は CSS 側（globals.css）で指定しています
+    expect(overlay).toHaveAttribute("role", "status");
+  });
+});

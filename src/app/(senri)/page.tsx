@@ -1,4 +1,3 @@
-import { LoadingScreen } from "@/components/effects/LoadingScreen";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { videoJsonLd } from "@/lib/structured-data";
 import { GradientDivider } from "@/components/ui/GradientDivider";
@@ -21,7 +20,6 @@ import { ReservationCTA } from "@/components/home/ReservationCTA";
 export default function HomePage() {
   return (
     <>
-      <LoadingScreen />
       {videoJsonLd ? <JsonLd data={videoJsonLd} /> : null}
 
       <HeroSection />

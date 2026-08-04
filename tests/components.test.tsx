@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
@@ -149,5 +151,31 @@ describe("MenuCard", () => {
     expect(screen.getByRole("heading", { name: item.name })).toBeInTheDocument();
     expect(screen.getByText(`¥${item.price.toLocaleString("ja-JP")}`)).toBeInTheDocument();
     expect(screen.getByText("おすすめ")).toBeInTheDocument();
+  });
+});
+
+describe("オープニングの置き場所", () => {
+  // PageTransition は初期表示で opacity:0 を当てます。
+  // オープニングを <main> の中に置くと、JavaScript が動き出すまで黒幕が描かれず、
+  // 動画の頭に背後のサイトが見えてしまいます。
+  it("共通シェルが <main> の外でオープニングを描く", () => {
+    const shell = readFileSync(
+      path.join(process.cwd(), "src", "components", "layout", "SenriShell.tsx"),
+      "utf-8",
+    );
+    const opening = shell.indexOf("<LoadingScreen />");
+    // コメント中の <main> ではなく、実際の要素の位置と比べます
+    const main = shell.indexOf('<main id="main">');
+    expect(opening).toBeGreaterThan(-1);
+    expect(main).toBeGreaterThan(-1);
+    expect(opening).toBeLessThan(main);
+  });
+
+  it("トップページ側では二重に描かない", () => {
+    const page = readFileSync(
+      path.join(process.cwd(), "src", "app", "(senri)", "page.tsx"),
+      "utf-8",
+    );
+    expect(page).not.toContain("LoadingScreen");
   });
 });

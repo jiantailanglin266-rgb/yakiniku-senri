@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { entranceMovie, hasEntranceMovie } from "@/data/media";
 import { store } from "@/data/store";
@@ -30,6 +31,18 @@ function readSeen(): boolean {
 }
 
 /**
+ * ブラウザ側で描画しているかどうか。
+ * サーバー側では黒幕だけを出し、動画や演出はブラウザ側で足します。
+ */
+function useIsClient(): boolean {
+  return useSyncExternalStore(
+    noopSubscribe,
+    () => true,
+    () => false,
+  );
+}
+
+/**
  * サイトの入り口（オープニング）。
  *
  * ■ 動画で始まります
@@ -56,9 +69,18 @@ export function LoadingScreen() {
   const [useVideo, setUseVideo] = useState(hasEntranceMovie);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // サーバー側は「表示済み」として扱い、初期HTMLにオープニングを含めません
-  const seen = useSyncExternalStore(noopSubscribe, readSeen, () => true);
-  const visible = !reduced && !seen && !dismissed;
+  const isClient = useIsClient();
+  // 共通シェルから呼ばれるため、トップページ以外では何も出しません
+  const isTopPage = usePathname() === "/";
+  /*
+    サーバー側は「まだ見ていない」として扱い、初期HTMLに黒幕を含めます。
+    こうしないと React が動き出すまでの数百ミリ秒だけサイトが見えてしまい、
+    動画の頭にサイトが映り込みます。
+    2回目以降と prefers-reduced-motion では、描画前にCSSで消します
+    （globals.css の .opening-screen と、SenriShell のインラインスクリプト）。
+  */
+  const seen = useSyncExternalStore(noopSubscribe, readSeen, () => false);
+  const visible = isTopPage && !reduced && !seen && !dismissed;
 
   const dismiss = useCallback(() => {
     try {
@@ -71,7 +93,8 @@ export function LoadingScreen() {
   }, []);
 
   useEffect(() => {
-    if (!visible) return;
+    // サーバー側の描画では黒幕だけを出すため、タイマーはブラウザ側でだけ動かします
+    if (!visible || !isClient) return;
     document.body.style.overflow = "hidden";
 
     const timers: number[] = [];
@@ -94,7 +117,7 @@ export function LoadingScreen() {
       for (const timer of timers) window.clearTimeout(timer);
       document.body.style.overflow = "";
     };
-  }, [visible, useVideo, dismiss]);
+  }, [visible, isClient, useVideo, dismiss]);
 
   return (
     <AnimatePresence>
@@ -104,12 +127,17 @@ export function LoadingScreen() {
           role="status"
           aria-live="polite"
           aria-label="読み込み中"
-          className="fixed inset-0 z-[100] grid place-items-center bg-black"
+          className="opening-screen grid place-items-center"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
         >
-          {useVideo ? (
+          {/*
+            サーバー側の描画では、中身のない黒幕だけを出します。
+            動画をここへ含めると、2回目以降の訪問（黒幕はCSSで非表示）でも
+            ブラウザが動画を読みに行ってしまうためです。
+          */}
+          {!isClient ? null : useVideo ? (
             <video
               ref={videoRef}
               src={entranceMovie.mp4}
@@ -170,14 +198,17 @@ export function LoadingScreen() {
             </>
           )}
 
-          <button
-            type="button"
-            onClick={dismiss}
-            className="font-display text-gray hover:text-gold absolute right-5 bottom-7 min-h-11 px-4 text-[0.68rem] tracking-[0.3em] uppercase transition-colors duration-500 sm:right-8"
-          >
-            Skip
-            <span className="sr-only">オープニングをとばしてサイトを表示する</span>
-          </button>
+          {/* 押しても何も起きないボタンを出さないよう、こちらもブラウザ側でだけ描きます */}
+          {isClient ? (
+            <button
+              type="button"
+              onClick={dismiss}
+              className="font-display text-gray hover:text-gold absolute right-5 bottom-7 min-h-11 px-4 text-[0.68rem] tracking-[0.3em] uppercase transition-colors duration-500 sm:right-8"
+            >
+              Skip
+              <span className="sr-only">オープニングをとばしてサイトを表示する</span>
+            </button>
+          ) : null}
         </motion.div>
       ) : null}
     </AnimatePresence>
