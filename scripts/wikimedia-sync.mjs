@@ -386,8 +386,22 @@ async function main() {
          ただし各言語版ローカルの非自由ファイルは fetchLeadImageTitle が捨てます
          （Commons にあるファイルだけが返ります）。
     */
+    /*
+      代表画像を使わない枠。
+
+      記事の代表画像は「その記事を説明する1枚」なので、対象によって性質が変わります。
+      山や用具の記事なら風景や物ですが、競技の記事は試合中の選手写真です。
+      実際、run 30920868384 では「無人のコート」を狙った競技20枠に対し、
+      MotoGP に実在選手の写真、ボクシング・クリケット・バレーボールにも
+      人物写真が割り当たりました（いずれも保留され公開はされていません）。
+
+      人物が写る候補は肖像権の確認が必要で、そもそも承認できません。
+      拾ってから落とすより、最初から検索だけに任せるほうが無駄がありません。
+    */
+    const useLeadImage = request.leadImage !== false;
+
     // 検索語が無くても、記事タイトルの指定だけで取得できるようにします
-    for (const query of queries.length > 0 ? queries : [null]) {
+    for (const query of useLeadImage ? (queries.length > 0 ? queries : [null]) : []) {
       /*
         指定の優先順位:
           1. requests.json に人が書いた `wikipedia`（main で運用中の書式）

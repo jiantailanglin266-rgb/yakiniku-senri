@@ -40,10 +40,7 @@
     "query": "association football ball on pitch",
     "wikidataEntityId": null,
     "limit": 5,
-    "wikipedia": {
-      "lang": "ja",
-      "titles": ["サッカー"]
-    }
+    "leadImage": false
   },
   {
     "pageKey": "sportsport:sport:baseball",
@@ -51,10 +48,7 @@
     "query": "baseball field empty",
     "wikidataEntityId": null,
     "limit": 5,
-    "wikipedia": {
-      "lang": "ja",
-      "titles": ["野球"]
-    }
+    "leadImage": false
   },
   {
     "pageKey": "sportsport:sport:basketball",
@@ -62,10 +56,7 @@
     "query": "basketball hoop",
     "wikidataEntityId": null,
     "limit": 5,
-    "wikipedia": {
-      "lang": "ja",
-      "titles": ["バスケットボール"]
-    }
+    "leadImage": false
   },
   {
     "pageKey": "sportsport:sport:american-football",
@@ -73,10 +64,7 @@
     "query": "american football ball",
     "wikidataEntityId": null,
     "limit": 5,
-    "wikipedia": {
-      "lang": "ja",
-      "titles": ["アメリカンフットボール"]
-    }
+    "leadImage": false
   },
   {
     "pageKey": "sportsport:sport:ice-hockey",
@@ -84,10 +72,7 @@
     "query": "ice hockey rink empty",
     "wikidataEntityId": null,
     "limit": 5,
-    "wikipedia": {
-      "lang": "ja",
-      "titles": ["アイスホッケー"]
-    }
+    "leadImage": false
   },
   {
     "pageKey": "sportsport:sport:tennis",
@@ -95,10 +80,7 @@
     "query": "tennis court empty",
     "wikidataEntityId": null,
     "limit": 5,
-    "wikipedia": {
-      "lang": "ja",
-      "titles": ["テニス"]
-    }
+    "leadImage": false
   },
   {
     "pageKey": "sportsport:sport:golf",
@@ -106,10 +88,7 @@
     "query": "golf course fairway",
     "wikidataEntityId": null,
     "limit": 5,
-    "wikipedia": {
-      "lang": "ja",
-      "titles": ["ゴルフ"]
-    }
+    "leadImage": false
   },
   {
     "pageKey": "sportsport:sport:f1",
@@ -117,10 +96,7 @@
     "query": "formula one circuit aerial",
     "wikidataEntityId": null,
     "limit": 5,
-    "wikipedia": {
-      "lang": "ja",
-      "titles": ["フォーミュラ1"]
-    }
+    "leadImage": false
   },
   {
     "pageKey": "sportsport:sport:motogp",
@@ -128,10 +104,7 @@
     "query": "motorcycle racing circuit",
     "wikidataEntityId": null,
     "limit": 5,
-    "wikipedia": {
-      "lang": "ja",
-      "titles": ["ロードレース世界選手権"]
-    }
+    "leadImage": false
   },
   {
     "pageKey": "sportsport:sport:boxing",
@@ -139,10 +112,7 @@
     "query": "boxing ring empty",
     "wikidataEntityId": null,
     "limit": 5,
-    "wikipedia": {
-      "lang": "ja",
-      "titles": ["ボクシング"]
-    }
+    "leadImage": false
   },
   {
     "pageKey": "sportsport:sport:mma",
@@ -150,10 +120,7 @@
     "query": "mixed martial arts cage empty",
     "wikidataEntityId": null,
     "limit": 5,
-    "wikipedia": {
-      "lang": "ja",
-      "titles": ["総合格闘技"]
-    }
+    "leadImage": false
   },
   {
     "pageKey": "sportsport:sport:pro-wrestling",
@@ -161,10 +128,7 @@
     "query": "professional wrestling ring empty",
     "wikidataEntityId": null,
     "limit": 5,
-    "wikipedia": {
-      "lang": "ja",
-      "titles": ["プロレス"]
-    }
+    "leadImage": false
   },
   {
     "pageKey": "sportsport:sport:rugby",
@@ -172,10 +136,7 @@
     "query": "rugby ball",
     "wikidataEntityId": null,
     "limit": 5,
-    "wikipedia": {
-      "lang": "ja",
-      "titles": ["ラグビー"]
-    }
+    "leadImage": false
   },
   {
     "pageKey": "sportsport:sport:cricket",
@@ -183,10 +144,7 @@
     "query": "cricket ground empty",
     "wikidataEntityId": null,
     "limit": 5,
-    "wikipedia": {
-      "lang": "ja",
-      "titles": ["クリケット"]
-    }
+    "leadImage": false
   },
   {
     "pageKey": "sportsport:sport:volleyball",
@@ -194,10 +152,7 @@
     "query": "volleyball court empty",
     "wikidataEntityId": null,
     "limit": 5,
-    "wikipedia": {
-      "lang": "ja",
-      "titles": ["バレーボール"]
-    }
+    "leadImage": false
   },
   {
     "pageKey": "sportsport:sport:table-tennis",
@@ -205,10 +160,7 @@
     "query": "table tennis table",
     "wikidataEntityId": null,
     "limit": 5,
-    "wikipedia": {
-      "lang": "ja",
-      "titles": ["卓球"]
-    }
+    "leadImage": false
   },
   {
     "pageKey": "sportsport:sport:badminton",
@@ -216,10 +168,7 @@
     "query": "badminton court empty",
     "wikidataEntityId": null,
     "limit": 5,
-    "wikipedia": {
-      "lang": "ja",
-      "titles": ["バドミントン"]
-    }
+    "leadImage": false
   },
   {
     "pageKey": "sportsport:sport:horse-racing",
@@ -227,10 +176,7 @@
     "query": "horse racing track empty",
     "wikidataEntityId": null,
     "limit": 5,
-    "wikipedia": {
-      "lang": "ja",
-      "titles": ["競馬"]
-    }
+    "leadImage": false
   },
   {
     "pageKey": "sportsport:sport:esports",
@@ -238,10 +184,7 @@
     "query": "esports arena empty",
     "wikidataEntityId": null,
     "limit": 5,
-    "wikipedia": {
-      "lang": "ja",
-      "titles": ["eスポーツ"]
-    }
+    "leadImage": false
   },
   {
     "pageKey": "sportsport:sport:olympics",
@@ -249,10 +192,7 @@
     "query": "athletics track empty",
     "wikidataEntityId": null,
     "limit": 5,
-    "wikipedia": {
-      "lang": "ja",
-      "titles": ["オリンピック"]
-    }
+    "leadImage": false
   },
   {
     "pageKey": "sportsport:sport:winter-sports",
@@ -260,10 +200,7 @@
     "query": "ski slope",
     "wikidataEntityId": null,
     "limit": 5,
-    "wikipedia": {
-      "lang": "ja",
-      "titles": ["ウィンタースポーツ", "スキー"]
-    }
+    "leadImage": false
   },
   {
     "pageKey": "cryptoport:learn:what-is-blockchain",
