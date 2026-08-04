@@ -1,4 +1,6 @@
 import { LoadingScreen } from "@/components/effects/LoadingScreen";
+import { JsonLd } from "@/components/ui/JsonLd";
+import { videoJsonLd } from "@/lib/structured-data";
 import { GradientDivider } from "@/components/ui/GradientDivider";
 import { HeroSection } from "@/components/home/HeroSection";
 import { BrandMovie } from "@/components/home/BrandMovie";
@@ -18,6 +20,7 @@ export default function HomePage() {
   return (
     <>
       <LoadingScreen />
+      {videoJsonLd ? <JsonLd data={videoJsonLd} /> : null}
 
       <HeroSection />
       <BrandMovie />

@@ -4,7 +4,7 @@
  */
 import { faqs } from "@/data/content";
 import { getPopulatedCategories } from "@/data/menu";
-import { media } from "@/data/media";
+import { brandMovie, hasBrandMovie, media } from "@/data/media";
 import { siteName, siteUrl, socialLinks, googleMapsUrl } from "@/data/site";
 import { store } from "@/data/store";
 
@@ -169,3 +169,26 @@ export function articleJsonLd(input: {
     inLanguage: "ja",
   };
 }
+
+/**
+ * ブランドムービー（VideoObject）。
+ * 動画が設定されていないときは null を返し、何も出力しません。
+ */
+export const videoJsonLd = hasBrandMovie
+  ? {
+      "@context": "https://schema.org",
+      "@type": "VideoObject",
+      "@id": `${siteUrl}/#brand-movie`,
+      name: brandMovie.title,
+      description: brandMovie.description,
+      thumbnailUrl: [`${siteUrl}${brandMovie.poster.src}`],
+      uploadDate: brandMovie.uploadDate,
+      duration: `PT${brandMovie.durationSeconds}S`,
+      ...(brandMovie.mp4 ? { contentUrl: `${siteUrl}${brandMovie.mp4}` } : {}),
+      ...(brandMovie.youtubeId
+        ? { embedUrl: `https://www.youtube-nocookie.com/embed/${brandMovie.youtubeId}` }
+        : {}),
+      publisher: { "@id": `${siteUrl}/#organization` },
+      inLanguage: "ja",
+    }
+  : null;

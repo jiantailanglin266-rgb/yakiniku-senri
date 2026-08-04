@@ -49,7 +49,7 @@ export const media = {
   ],
 
   /** ブランドムービーのポスター画像 */
-  movie: img("/images/movie/movie-poster.webp", "焼肉 千里のブランドムービー", 1920, 1080),
+  movie: img("/images/movie/movie-poster.webp", "炭火の上で焼かれる、焼肉 千里の肉", 1728, 992),
 
   story: {
     history: img("/images/story/story-history.webp", "創業当時から続く店内の様子"),
@@ -104,13 +104,24 @@ export const media = {
 } as const;
 
 export const brandMovie = {
-  /** 例: "dQw4w9WgXcQ" — YouTube動画ID */
+  /** 例: "dQw4w9WgXcQ" — YouTube動画ID。設定するとYouTube埋め込みが優先されます */
   youtubeId: "" as string,
-  /** 例: "/videos/brand-movie.mp4" */
-  mp4: withBasePath("") as string,
+  /** /public/videos/ に置いた mp4 のパス */
+  mp4: withBasePath("/videos/brand-movie.mp4") as string,
   poster: media.movie,
   title: "受け継がれてきた味と、焼肉 千里の時間。",
   label: "MOVIE",
+
+  /* ── 以下は構造化データ（VideoObject）用 ────────────────────
+     動画を差し替えたら、この3つも実際の値へ更新してください。 */
+
+  /** 動画の説明。検索結果に出ることがあります */
+  description:
+    "1965年創業、東京都世田谷区上馬の焼肉 千里のブランドムービー。炭火で焼き上げる肉と、六十年変わらない店の時間を収めています。",
+  /** 再生時間（秒）。ISO 8601 形式へ自動変換します */
+  durationSeconds: 14,
+  /** このサイトで公開した日（YYYY-MM-DD） */
+  uploadDate: "2026-08-04",
 };
 
 export const hasBrandMovie = Boolean(brandMovie.youtubeId || brandMovie.mp4);
