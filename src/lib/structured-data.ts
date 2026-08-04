@@ -5,7 +5,7 @@
 import { faqs } from "@/data/content";
 import { getPopulatedCategories } from "@/data/menu";
 import { brandMovie, hasBrandMovie, media } from "@/data/media";
-import { siteName, siteUrl, socialLinks, googleMapsUrl } from "@/data/site";
+import { absoluteUrl, siteName, siteUrl, socialLinks, googleMapsUrl } from "@/data/site";
 import { store } from "@/data/store";
 
 const restaurantId = `${siteUrl}/#restaurant`;
@@ -72,8 +72,8 @@ export const restaurantJsonLd = {
   url: siteUrl,
   telephone: store.phone,
   address: postalAddress,
-  image: media.hero.map((panel) => `${siteUrl}${panel.src}`),
-  logo: `${siteUrl}${media.logo.src}`,
+  image: media.hero.map((panel) => absoluteUrl(panel.src)),
+  logo: absoluteUrl(media.logo.src),
   servesCuisine: ["焼肉", "韓国料理"],
   foundingDate: String(store.founded),
   openingHoursSpecification,
@@ -181,10 +181,10 @@ export const videoJsonLd = hasBrandMovie
       "@id": `${siteUrl}/#brand-movie`,
       name: brandMovie.title,
       description: brandMovie.description,
-      thumbnailUrl: [`${siteUrl}${brandMovie.poster.src}`],
+      thumbnailUrl: [absoluteUrl(brandMovie.poster.src)],
       uploadDate: brandMovie.uploadDate,
       duration: `PT${brandMovie.durationSeconds}S`,
-      ...(brandMovie.mp4 ? { contentUrl: `${siteUrl}${brandMovie.mp4}` } : {}),
+      ...(brandMovie.mp4 ? { contentUrl: absoluteUrl(brandMovie.mp4) } : {}),
       ...(brandMovie.youtubeId
         ? { embedUrl: `https://www.youtube-nocookie.com/embed/${brandMovie.youtubeId}` }
         : {}),
