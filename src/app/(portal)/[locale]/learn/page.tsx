@@ -50,7 +50,7 @@ export default async function LearnPage(props: { params: Promise<{ locale: strin
     <Section className="pt-28">
       <Container>
         <Breadcrumbs trail={trail} locale={locale} dict={dict} />
-        <PageHeader eyebrow="Learn" title={dict.learn.title} lead={dict.learn.lead} />
+        <PageHeader display="Learn" title={dict.learn.title} lead={dict.learn.lead} />
 
         {/* 難易度でまとめます。上から順に読めば積み上がる構成です */}
         {levels.map((level) => {

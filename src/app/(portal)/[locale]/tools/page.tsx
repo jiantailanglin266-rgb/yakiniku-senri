@@ -41,7 +41,7 @@ export default async function ToolsPage(props: { params: Promise<{ locale: strin
     <Section className="pt-28">
       <Container>
         <Breadcrumbs trail={trail} locale={locale} dict={dict} />
-        <PageHeader eyebrow="Web3" title={dict.tools.title} lead={dict.tools.lead} />
+        <PageHeader display="Web3" title={dict.tools.title} lead={dict.tools.lead} />
 
         <NoticeBox tone="cyan" className="mb-8">
           {locale === "ja"

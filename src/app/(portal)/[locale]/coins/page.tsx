@@ -53,7 +53,7 @@ export default async function CoinsPage(props: { params: Promise<{ locale: strin
       <Container>
         <Breadcrumbs trail={trail} locale={locale} dict={dict} />
         <PageHeader
-          eyebrow="Market"
+          display="Market"
           title={dict.nav.coins}
           lead={dict.market.featuredLead}
           meta={<DataFreshness snapshot={snapshot} dict={dict} locale={locale} />}

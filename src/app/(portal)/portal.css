@@ -91,6 +91,16 @@
 }
 
 /*
+  `font-display` は Tailwind のユーティリティとして焼肉 千里 側の
+  セリフ体（--font-display）を指してしまいます。ポータルの見出し書体へ
+  差し替えます。h1〜h4 は上の指定で当たりますが、見出し以外の要素
+  （ロゴ・大きな英字）はこちらが必要です。
+*/
+.portal-root .font-display {
+  font-family: var(--font-portal-display), "Space Grotesk", system-ui, sans-serif;
+}
+
+/*
   数値は等幅で。桁が揃わないと比較表が読めません。
   `.portal-root .font-mono` は Tailwind の `.font-mono`（詳細度 0,1,0）より
   強いため、クラス名を変えずに差し替えられます。
