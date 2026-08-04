@@ -414,6 +414,40 @@ async function main() {
       .filter(Boolean),
   );
 
+  /*
+    既存データの見直し。
+
+    判定規則を厳しくしても、すでに保存された画像はそのまま残ります
+    （このスクリプトは既存を削除しません）。
+    残ったままだと、いま基準を満たさない画像が承認キューに並び続け、
+    うっかり承認される余地ができます。
+
+    削除はしませんが、**却下として記録します**。
+    「消えた」ではなく「なぜ載せないのか」が残るようにするためです。
+  */
+  let newlyRejected = 0;
+  for (const asset of assetById.values()) {
+    if (asset.verificationStatus === "rejected") continue;
+    const subjects = detectExcludedSubjects(asset);
+    if (subjects.length === 0) continue;
+
+    assetById.set(asset.id, {
+      ...asset,
+      verificationStatus: "rejected",
+      verifiedAt: null,
+      usageStatus: "suspended",
+      verificationNotes: [
+        ...(asset.verificationNotes ?? []),
+        `[${new Date().toISOString()}] 判定規則の見直しにより却下しました（${subjects.join(", ")}）。ライセンスとは別に、商標権・肖像権が及ぶ被写体です。`,
+      ],
+    });
+    newlyRejected += 1;
+    console.log(`  ✗ 既存を却下: ${asset.fileName}（${subjects.join(", ")}）`);
+  }
+  if (newlyRejected > 0) {
+    console.log(`既存 ${newlyRejected} 件を却下しました（削除はしていません）。\n`);
+  }
+
   const summary = {
     searched: 0,
     candidates: 0,
