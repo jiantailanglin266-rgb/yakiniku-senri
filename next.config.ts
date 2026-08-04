@@ -10,6 +10,15 @@ import type { NextConfig } from "next";
 const isGithubPages = process.env.GITHUB_PAGES === "true";
 const basePath = isGithubPages ? (process.env.PAGES_BASE_PATH ?? "") : "";
 
+/**
+ * SPORTS PORT のデモデータ基準日。
+ *
+ * 静的書き出しでも「今日の試合」が今日として並ぶよう、ビルド日を埋め込みます。
+ * サーバー用・クライアント用でコンパイラが2回評価されても同じ値になるよう、
+ * UTC の日単位に丸めています（丸めないとハイドレーションで時刻がずれます）。
+ */
+const referenceDay = new Date(Math.floor(Date.now() / 86_400_000) * 86_400_000).toISOString();
+
 const nextConfig: NextConfig = {
   /**
    * サーバー配信のときだけ `*.node.ts` をルートとして認識させます。
@@ -43,6 +52,9 @@ const nextConfig: NextConfig = {
       }),
   poweredByHeader: false,
   compress: true,
+  env: {
+    NEXT_PUBLIC_SPORTS_REFERENCE_DAY: process.env.NEXT_PUBLIC_SPORTS_REFERENCE_DAY ?? referenceDay,
+  },
 };
 
 export default nextConfig;
