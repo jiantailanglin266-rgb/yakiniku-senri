@@ -1,6 +1,1339 @@
 {
-  "generatedAt": null,
+  "generatedAt": "2026-08-04T15:06:42.294Z",
   "note": "scripts/wikimedia-sync.mjs が生成します。手で編集しないでください。",
-  "assets": [],
-  "localizations": []
+  "assets": [
+    {
+      "id": "wm-assoc-football-match",
+      "commonsPageId": 50126298,
+      "wikidataEntityId": null,
+      "fileName": "Assoc football match.jpg",
+      "title": "File:Assoc football match.jpg",
+      "description": "Association football match. Text below says: \"The field at each kick changes like a kaleidoscope. shifting his place to help a friend or check an adversary in thenew position of the game. Complete appreciation of a sportwhich has been brought already to an admirable pitch of skillcan only come from playing in, or, at any rate, from watchingwith a knowledge of detail, games in which good men take part.The one generally admitted drawback to the game is thefrequency of the disputes which arise over the questions 3So FOOTBALL whether this or that player was off-side when he took theball on from a friend. Long before that useful official thereferee became a regular feature of the Rugby Union game,he was a necessity in Association matches. While it iscomparatively easy in Rugby football to judge whether a ballhas been thrown forward or not, it may fairly be said to beimpossible to judge infallibly at any given moment, whilethe ball is dodging to and fro, whether a player has three ofhis opponents between himself and his adversarys goal\".",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Assoc_football_match.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Assoc_football_match.jpg/1280px-Assoc_football_match.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "commonsPageUrl": "https://commons.wikimedia.org/wiki/File:Assoc_football_match.jpg",
+      "mimeType": "image/jpeg",
+      "width": 1730,
+      "height": 920,
+      "aspectRatio": 1.8804347826086956,
+      "authorName": "Unknown author Unknown author",
+      "authorUrl": null,
+      "sourceName": "Scanned from Athletics and football - published by Shearman, Montague, London, 1887",
+      "sourceUrl": null,
+      "rawLicenses": ["Public domain", "pd", "Public domain"],
+      "licenseUrl": null,
+      "attributionText": null,
+      "copyrightStatus": "False",
+      "publicDomainRationale": null,
+      "categories": [
+        "1887 in association football",
+        "Illustrations of association football in England",
+        "PD-Art (PD UK)",
+        "PD-US missing SDC copyright status",
+        "PD US expired",
+        "Template Unknown (author)"
+      ],
+      "retrievedAt": "2026-08-04T15:06:04.655Z",
+      "metadataRaw": {
+        "DateTime": {
+          "value": "2019-12-18 15:51:35",
+          "source": "mediawiki-metadata",
+          "hidden": ""
+        },
+        "ObjectName": {
+          "value": "Assoc football match",
+          "source": "mediawiki-metadata"
+        },
+        "CommonsMetadataExtension": {
+          "value": 1.2,
+          "source": "extension",
+          "hidden": ""
+        },
+        "Categories": {
+          "value": "1887 in association football|PD-Art (PD UK)|PD US expired|Template Unknown (author)|PD-US missing SDC copyright status|Illustrations of association football in England",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "Assessments": {
+          "value": "",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "ImageDescription": {
+          "value": "Association football match. Text below says: \n\"The field at each kick changes like a kaleidoscope. shifting his place to help a friend or check an adversary in thenew position of the game. Complete appreciation of a sportwhich has been brought already to an admirable pitch of skillcan only come from playing in, or, at any rate, from watchingwith a knowledge of detail, games in which good men take part.The one generally admitted drawback to the game is thefrequency of the disputes which arise over the questions 3So FOOTBALL whether this or that player was off-side when he took theball on from a friend. Long before that useful official thereferee became a regular feature of the Rugby Union game,he was a necessity in Association matches. While it iscomparatively easy in Rugby football to judge whether a ballhas been thrown forward or not, it may fairly be said to beimpossible to judge infallibly at any given moment, whilethe ball is dodging to and fro, whether a player has three ofhis opponents between himself and his adversarys goal\".",
+          "source": "commons-desc-page"
+        },
+        "DateTimeOriginal": {
+          "value": "1887",
+          "source": "commons-desc-page"
+        },
+        "Credit": {
+          "value": "Scanned from <i>Athletics and football</i> - published by Shearman, Montague, London, 1887",
+          "source": "commons-desc-page"
+        },
+        "Artist": {
+          "value": "Unknown author<span style=\"display: none;\">Unknown author</span>",
+          "source": "commons-desc-page"
+        },
+        "LicenseShortName": {
+          "value": "Public domain",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "UsageTerms": {
+          "value": "Public domain",
+          "source": "commons-desc-page"
+        },
+        "AttributionRequired": {
+          "value": "false",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "Copyrighted": {
+          "value": "False",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "Restrictions": {
+          "value": "",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "License": {
+          "value": "pd",
+          "source": "commons-templates",
+          "hidden": ""
+        }
+      },
+      "licenseCode": "PD",
+      "localPath": null,
+      "optimized": null,
+      "blurDataURL": null,
+      "isModified": false,
+      "modificationDescription": null,
+      "objectPosition": "center",
+      "rightsRisks": [],
+      "usageStatus": "in_use",
+      "verificationStatus": "needs_review",
+      "verificationNotes": [
+        "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
+        "Commons の全文検索から採用（関連度 86 点）",
+        "採点の内訳: {\"query\":30,\"alternate\":0,\"title\":0,\"description\":8,\"categories\":3,\"wikidata\":0,\"resolution\":14,\"landscape\":6,\"aspect\":9,\"license\":10,\"metadata\":6,\"penalty\":0}",
+        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。"
+      ],
+      "verifiedAt": null,
+      "relevanceScore": 86
+    },
+    {
+      "id": "wm-baseball-themed-playground-at-fireman-s-park",
+      "commonsPageId": 118572479,
+      "wikidataEntityId": null,
+      "fileName": "Baseball-themed playground at Fireman's Park.jpg",
+      "title": "File:Baseball-themed playground at Fireman's Park.jpg",
+      "description": "This baseball-themed playground seems to be an extension of Fireman's Field, as Fireman's Field is a baseball field",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/6/61/Baseball-themed_playground_at_Fireman%27s_Park.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Baseball-themed_playground_at_Fireman%27s_Park.jpg/1280px-Baseball-themed_playground_at_Fireman%27s_Park.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "commonsPageUrl": "https://commons.wikimedia.org/wiki/File:Baseball-themed_playground_at_Fireman%27s_Park.jpg",
+      "mimeType": "image/jpeg",
+      "width": 4032,
+      "height": 3024,
+      "aspectRatio": 1.3333333333333333,
+      "authorName": "PiperMcCorkle",
+      "authorUrl": "https://commons.wikimedia.org/wiki/User:PiperMcCorkle",
+      "sourceName": "Own work",
+      "sourceUrl": null,
+      "rawLicenses": ["CC0", "cc0", "Creative Commons Zero, Public Domain Dedication"],
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "attributionText": null,
+      "copyrightStatus": "True",
+      "publicDomainRationale": null,
+      "categories": [
+        "Benches in Texas",
+        "CC-Zero",
+        "Empty benches in the United States",
+        "Files with coordinates missing SDC location of creation",
+        "Fireman's Park (Brenham, Texas)",
+        "June 2022 in Texas",
+        "On OSM",
+        "Parks in 2022",
+        "Playgrounds in Texas",
+        "Self-published work",
+        "Taken with iPhone 13 Pro Max"
+      ],
+      "retrievedAt": "2026-08-04T15:06:07.662Z",
+      "metadataRaw": {
+        "DateTime": {
+          "value": "2022-06-01 20:10:53",
+          "source": "mediawiki-metadata",
+          "hidden": ""
+        },
+        "ObjectName": {
+          "value": "Baseball-themed playground at Fireman's Park",
+          "source": "mediawiki-metadata"
+        },
+        "CommonsMetadataExtension": {
+          "value": 1.2,
+          "source": "extension",
+          "hidden": ""
+        },
+        "Categories": {
+          "value": "CC-Zero|Self-published work|Playgrounds in Texas|Empty benches in the United States|On OSM|Benches in Texas|Files with coordinates missing SDC location of creation|June 2022 in Texas|Taken with iPhone 13 Pro Max|Parks in 2022|Fireman's Park (Brenham, Texas)",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "Assessments": {
+          "value": "",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "GPSLatitude": {
+          "value": "30.172813",
+          "source": "commons-desc-page"
+        },
+        "GPSLongitude": {
+          "value": "-96.401263",
+          "source": "commons-desc-page"
+        },
+        "GPSMapDatum": {
+          "value": "WGS-84",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "ImageDescription": {
+          "value": "This baseball-themed playground seems to be an extension of Fireman's Field, as Fireman's Field is a baseball field",
+          "source": "commons-desc-page"
+        },
+        "DateTimeOriginal": {
+          "value": "2022-06-01 14:23:07",
+          "source": "commons-desc-page"
+        },
+        "Credit": {
+          "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+          "source": "commons-desc-page"
+        },
+        "Artist": {
+          "value": "<a href=\"//commons.wikimedia.org/wiki/User:PiperMcCorkle\" class=\"mw-redirect\" title=\"User:PiperMcCorkle\">PiperMcCorkle</a>",
+          "source": "commons-desc-page"
+        },
+        "LicenseShortName": {
+          "value": "CC0",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "UsageTerms": {
+          "value": "Creative Commons Zero, Public Domain Dedication",
+          "source": "commons-desc-page"
+        },
+        "AttributionRequired": {
+          "value": "false",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "LicenseUrl": {
+          "value": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+          "source": "commons-desc-page"
+        },
+        "Copyrighted": {
+          "value": "True",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "Restrictions": {
+          "value": "",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "License": {
+          "value": "cc0",
+          "source": "commons-templates",
+          "hidden": ""
+        }
+      },
+      "licenseCode": "CC0",
+      "localPath": null,
+      "optimized": null,
+      "blurDataURL": null,
+      "isModified": false,
+      "modificationDescription": null,
+      "objectPosition": "center",
+      "rightsRisks": [],
+      "usageStatus": "in_use",
+      "verificationStatus": "needs_review",
+      "verificationNotes": [
+        "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
+        "Commons の全文検索から採用（関連度 84 点）",
+        "採点の内訳: {\"query\":30,\"alternate\":0,\"title\":0,\"description\":5,\"categories\":3,\"wikidata\":0,\"resolution\":14,\"landscape\":6,\"aspect\":8,\"license\":10,\"metadata\":8,\"penalty\":0}",
+        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。"
+      ],
+      "verifiedAt": null,
+      "relevanceScore": 84
+    },
+    {
+      "id": "wm-empty-clay-tennis-court-in-melbourne-australia-looking-down-",
+      "commonsPageId": 127953448,
+      "wikidataEntityId": null,
+      "fileName": "Empty clay tennis court in Melbourne Australia looking down the middle.jpg",
+      "title": "File:Empty clay tennis court in Melbourne Australia looking down the middle.jpg",
+      "description": "Empty clay tennis court in Melbourne Australia looking down the middle",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a1/Empty_clay_tennis_court_in_Melbourne_Australia_looking_down_the_middle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Empty_clay_tennis_court_in_Melbourne_Australia_looking_down_the_middle.jpg/1280px-Empty_clay_tennis_court_in_Melbourne_Australia_looking_down_the_middle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "commonsPageUrl": "https://commons.wikimedia.org/wiki/File:Empty_clay_tennis_court_in_Melbourne_Australia_looking_down_the_middle.jpg",
+      "mimeType": "image/jpeg",
+      "width": 4606,
+      "height": 2456,
+      "aspectRatio": 1.8754071661237786,
+      "authorName": "KeepActive Australia from Melbourne, VIC, Australia",
+      "authorUrl": "https://keepactive.com.au/",
+      "sourceName": "Own work",
+      "sourceUrl": null,
+      "rawLicenses": [
+        "CC BY-SA 4.0",
+        "cc-by-sa-4.0",
+        "Creative Commons Attribution-Share Alike 4.0"
+      ],
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "attributionText": null,
+      "copyrightStatus": "True",
+      "publicDomainRationale": null,
+      "categories": [
+        "Attribution only license",
+        "CC-BY-SA-4.0",
+        "Clay tennis courts",
+        "Files with coordinates missing SDC location of creation",
+        "Self-published work",
+        "Tennis courts",
+        "Tennis courts in Australia"
+      ],
+      "retrievedAt": "2026-08-04T15:06:19.657Z",
+      "metadataRaw": {
+        "DateTime": {
+          "value": "2023-01-20 22:33:09",
+          "source": "mediawiki-metadata",
+          "hidden": ""
+        },
+        "ObjectName": {
+          "value": "Empty clay tennis court in Melbourne Australia looking down the middle",
+          "source": "mediawiki-metadata"
+        },
+        "CommonsMetadataExtension": {
+          "value": 1.2,
+          "source": "extension",
+          "hidden": ""
+        },
+        "Categories": {
+          "value": "Tennis courts|Clay tennis courts|Attribution only license|Self-published work|Tennis courts in Australia|Files with coordinates missing SDC location of creation",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "Assessments": {
+          "value": "",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "GPSLatitude": {
+          "value": "-37.826674",
+          "source": "commons-desc-page"
+        },
+        "GPSLongitude": {
+          "value": "145.209358",
+          "source": "commons-desc-page"
+        },
+        "GPSMapDatum": {
+          "value": "WGS-84",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "ImageDescription": {
+          "value": "Empty clay tennis court in Melbourne Australia looking down the middle",
+          "source": "commons-desc-page"
+        },
+        "DateTimeOriginal": {
+          "value": "2023-01-21 07:01:48",
+          "source": "commons-desc-page"
+        },
+        "Credit": {
+          "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+          "source": "commons-desc-page"
+        },
+        "Artist": {
+          "value": "<a rel=\"nofollow\" class=\"external text\" href=\"https://keepactive.com.au/\">KeepActive Australia</a> from Melbourne, VIC, Australia",
+          "source": "commons-desc-page"
+        },
+        "Permission": {
+          "value": "<p>Online use: ok to use provided KeepActive.com.au is linked back to. Offline use: the following text must appear under the photo \"Photo by: KeepActive.com.au\"\n</p>\n<table class=\"layouttemplate licensetpl\" lang=\"en\" dir=\"ltr\" cellpadding=\"0\" style=\"width: 100%; clear: both; margin: 0.5em auto; background-color: var(--background-color-success-subtle, #dff2eb); color: var(--color-base, #202122); border-width: var(--border-width-thick, 2px); border-style: solid; border-color: var(--border-color-success, #099979); border-spacing: 8px; box-sizing: border-box;\">\n<tbody><tr>\n<td style=\"width:90px;\" rowspan=\"3\"><span typeof=\"mw:File\"><span title=\"©\"><img alt=\"©\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Green_copyright.svg/120px-Green_copyright.svg.png\" decoding=\"async\" width=\"64\" height=\"64\" class=\"mw-file-element\" srcset=\"https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Green_copyright.svg/250px-Green_copyright.svg.png 2x\" data-file-width=\"197\" data-file-height=\"197\"></span></span>\n</td>\n<td>The copyright holder of this file, <a href=\"//commons.wikimedia.org/wiki/User:Keepactive\" title=\"User:Keepactive\">KeepActive</a>, allows anyone to use it <b>for any purpose, provided that</b> the copyright holder is properly attributed. Redistribution, derivative work, commercial use, and all other use is permitted.\n</td></tr>\n<tr style=\"text-align:center;\">\n<td><div style=\"font-weight: bold;display:inline;\">Attribution: <div style=\"font-size: larger;display:inline;\" class=\"licensetpl_attr\">Attribution Link Requirements - Online usage: A link back to KeepActive.com.au. Offline usage: the following text must appear under the photo \"Photo by KeepActive.com.au\"\nRequired attribution text: Photo by <a rel=\"nofollow\" class=\"external text\" href=\"http://keepactive.com.au\">KeepActive.com.au</a></div></div>\n<p><span class=\"licensetpl_short\" style=\"display:none;\">Attribution</span>\n</p>\n</td></tr></tbody></table>",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "LicenseShortName": {
+          "value": "CC BY-SA 4.0",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "UsageTerms": {
+          "value": "Creative Commons Attribution-Share Alike 4.0",
+          "source": "commons-desc-page"
+        },
+        "AttributionRequired": {
+          "value": "true",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "LicenseUrl": {
+          "value": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "commons-desc-page"
+        },
+        "Copyrighted": {
+          "value": "True",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "Restrictions": {
+          "value": "",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "License": {
+          "value": "cc-by-sa-4.0",
+          "source": "commons-templates",
+          "hidden": ""
+        }
+      },
+      "licenseCode": "CC-BY-4.0",
+      "localPath": null,
+      "optimized": null,
+      "blurDataURL": null,
+      "isModified": false,
+      "modificationDescription": null,
+      "objectPosition": "center",
+      "rightsRisks": [],
+      "usageStatus": "in_use",
+      "verificationStatus": "needs_review",
+      "verificationNotes": [
+        "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
+        "Commons の全文検索から採用（関連度 83 点）",
+        "採点の内訳: {\"query\":30,\"alternate\":0,\"title\":0,\"description\":8,\"categories\":3,\"wikidata\":0,\"resolution\":14,\"landscape\":6,\"aspect\":9,\"license\":5,\"metadata\":8,\"penalty\":0}",
+        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。"
+      ],
+      "verifiedAt": null,
+      "relevanceScore": 83
+    },
+    {
+      "id": "wm-jgc-visa01s",
+      "commonsPageId": 18038296,
+      "wikidataEntityId": null,
+      "fileName": "JGC VISA01s.jpg",
+      "title": "File:JGC VISA01s.jpg",
+      "description": "JAL Global Club",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/6/60/JGC_VISA01s.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/JGC_VISA01s.jpg/1280px-JGC_VISA01s.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "commonsPageUrl": "https://commons.wikimedia.org/wiki/File:JGC_VISA01s.jpg",
+      "mimeType": "image/jpeg",
+      "width": 3616,
+      "height": 2276,
+      "aspectRatio": 1.5887521968365554,
+      "authorName": "663highland",
+      "authorUrl": "https://ja.wikipedia.org/wiki/user:663highland",
+      "sourceName": "Own work",
+      "sourceUrl": null,
+      "rawLicenses": ["Public domain", "pd", "Public domain"],
+      "licenseUrl": null,
+      "attributionText": null,
+      "copyrightStatus": "False",
+      "publicDomainRationale": null,
+      "categories": [
+        "Contact EMV enabled cards",
+        "JAL Global Club",
+        "Membership cards",
+        "PD-self",
+        "Self-published work",
+        "Visa (credit card)",
+        "With trademark"
+      ],
+      "retrievedAt": "2026-08-04T15:05:52.715Z",
+      "metadataRaw": {
+        "DateTime": {
+          "value": "2020-04-15 18:00:46",
+          "source": "mediawiki-metadata",
+          "hidden": ""
+        },
+        "ObjectName": {
+          "value": "JGC VISA01s",
+          "source": "mediawiki-metadata"
+        },
+        "CommonsMetadataExtension": {
+          "value": 1.2,
+          "source": "extension",
+          "hidden": ""
+        },
+        "Categories": {
+          "value": "Membership cards|With trademark|JAL Global Club|Visa (credit card)|Self-published work|PD-self|Contact EMV enabled cards",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "Assessments": {
+          "value": "",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "ImageDescription": {
+          "value": "<b><a href=\"https://en.wikipedia.org/wiki/Japan_Airlines#JAL_Global_Club\" class=\"extiw\" title=\"en:Japan Airlines\">JAL Global Club</a></b>",
+          "source": "commons-desc-page"
+        },
+        "DateTimeOriginal": {
+          "value": "2012-01-24",
+          "source": "commons-desc-page"
+        },
+        "Credit": {
+          "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+          "source": "commons-desc-page"
+        },
+        "Artist": {
+          "value": "<a href=\"https://ja.wikipedia.org/wiki/user:663highland\" class=\"extiw\" title=\"ja:user:663highland\">663highland</a>",
+          "source": "commons-desc-page"
+        },
+        "Permission": {
+          "value": "GFDL+creative commons2.5",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "LicenseShortName": {
+          "value": "Public domain",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "UsageTerms": {
+          "value": "Public domain",
+          "source": "commons-desc-page"
+        },
+        "AttributionRequired": {
+          "value": "false",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "Copyrighted": {
+          "value": "False",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "Restrictions": {
+          "value": "trademarked",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "License": {
+          "value": "pd",
+          "source": "commons-templates",
+          "hidden": ""
+        }
+      },
+      "licenseCode": "PD",
+      "localPath": null,
+      "optimized": null,
+      "blurDataURL": null,
+      "isModified": false,
+      "modificationDescription": null,
+      "objectPosition": "center",
+      "rightsRisks": [],
+      "usageStatus": "in_use",
+      "verificationStatus": "needs_review",
+      "verificationNotes": [
+        "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
+        "Wikipedia 記事の代表画像として取得（関連度 39 点）",
+        "採点の内訳: {\"query\":15,\"alternate\":0,\"title\":0,\"description\":0,\"categories\":4,\"wikidata\":0,\"resolution\":14,\"landscape\":6,\"aspect\":9,\"license\":10,\"metadata\":6,\"penalty\":-25}",
+        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。"
+      ],
+      "verifiedAt": null,
+      "relevanceScore": 39
+    },
+    {
+      "id": "wm-motorcycle-racing-circuit-muirton-geograph-org-uk-8169273",
+      "commonsPageId": 178344110,
+      "wikidataEntityId": null,
+      "fileName": "Motorcycle racing circuit, Muirton - geograph.org.uk - 8169273.jpg",
+      "title": "File:Motorcycle racing circuit, Muirton - geograph.org.uk - 8169273.jpg",
+      "description": "Motorcycle racing circuit, Muirton",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Motorcycle_racing_circuit%2C_Muirton_-_geograph.org.uk_-_8169273.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Motorcycle_racing_circuit%2C_Muirton_-_geograph.org.uk_-_8169273.jpg/1280px-Motorcycle_racing_circuit%2C_Muirton_-_geograph.org.uk_-_8169273.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "commonsPageUrl": "https://commons.wikimedia.org/wiki/File:Motorcycle_racing_circuit,_Muirton_-_geograph.org.uk_-_8169273.jpg",
+      "mimeType": "image/jpeg",
+      "width": 4032,
+      "height": 3024,
+      "aspectRatio": 1.3333333333333333,
+      "authorName": "Richard Webb",
+      "authorUrl": "https://www.geograph.org.uk/profile/196",
+      "sourceName": "Geograph Britain and Ireland",
+      "sourceUrl": "https://www.geograph.org.uk/photo/8169273",
+      "rawLicenses": [
+        "CC BY-SA 2.0",
+        "cc-by-sa-2.0",
+        "Creative Commons Attribution-Share Alike 2.0"
+      ],
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "attributionText": "Motorcycle racing circuit, Muirton by Richard Webb",
+      "copyrightStatus": "True",
+      "publicDomainRationale": null,
+      "categories": [
+        "CC-BY-SA-2.0",
+        "Dirleton (civil parish)",
+        "Images from Geograph Britain and Ireland"
+      ],
+      "retrievedAt": "2026-08-04T15:06:28.999Z",
+      "metadataRaw": {
+        "DateTime": {
+          "value": "2025-11-12 20:52:17",
+          "source": "mediawiki-metadata",
+          "hidden": ""
+        },
+        "ObjectName": {
+          "value": "Motorcycle racing circuit, Muirton - geograph.org.uk - 8169273",
+          "source": "mediawiki-metadata"
+        },
+        "CommonsMetadataExtension": {
+          "value": 1.2,
+          "source": "extension",
+          "hidden": ""
+        },
+        "Categories": {
+          "value": "Images from Geograph Britain and Ireland|Dirleton (civil parish)",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "Assessments": {
+          "value": "",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "GPSLatitude": {
+          "value": "56.017086",
+          "source": "commons-desc-page"
+        },
+        "GPSLongitude": {
+          "value": "-2.765245",
+          "source": "commons-desc-page"
+        },
+        "GPSMapDatum": {
+          "value": "WGS-84",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "ImageDescription": {
+          "value": "Motorcycle racing circuit, Muirton <span class=\"mw-valign-text-top noprint\" typeof=\"mw:File/Frameless\"><a href=\"//commons.wikimedia.org/wiki/File:Motorcycle_racing_circuit,_Muirton_-_geograph.org.uk_-_8169273.jpg#ooui-php-4\" title=\"Edit this at Structured Data on Commons\"><img alt=\"Edit this at Structured Data on Commons\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/OOjs_UI_icon_edit-ltr-progressive.svg/20px-OOjs_UI_icon_edit-ltr-progressive.svg.png\" decoding=\"async\" width=\"10\" height=\"10\" class=\"mw-file-element\" data-file-width=\"20\" data-file-height=\"20\"></a></span>",
+          "source": "commons-desc-page"
+        },
+        "DateTimeOriginal": {
+          "value": "2025-10-06",
+          "source": "commons-desc-page"
+        },
+        "Credit": {
+          "value": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.geograph.org.uk/photo/8169273\">Geograph Britain and Ireland</a> <span class=\"mw-valign-text-top noprint\" typeof=\"mw:File/Frameless\"><a href=\"//commons.wikimedia.org/wiki/File:Motorcycle_racing_circuit,_Muirton_-_geograph.org.uk_-_8169273.jpg#P7482\" title=\"Edit this at Structured Data on Commons\"><img alt=\"Edit this at Structured Data on Commons\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/OOjs_UI_icon_edit-ltr-progressive.svg/20px-OOjs_UI_icon_edit-ltr-progressive.svg.png\" decoding=\"async\" width=\"10\" height=\"10\" class=\"mw-file-element\" data-file-width=\"20\" data-file-height=\"20\"></a></span>",
+          "source": "commons-desc-page"
+        },
+        "Artist": {
+          "value": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.geograph.org.uk/profile/196\">Richard Webb</a> <span class=\"mw-valign-text-top noprint\" typeof=\"mw:File/Frameless\"><a href=\"//commons.wikimedia.org/wiki/File:Motorcycle_racing_circuit,_Muirton_-_geograph.org.uk_-_8169273.jpg#P170\" title=\"Edit this at Structured Data on Commons\"><img alt=\"Edit this at Structured Data on Commons\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/OOjs_UI_icon_edit-ltr-progressive.svg/20px-OOjs_UI_icon_edit-ltr-progressive.svg.png\" decoding=\"async\" width=\"10\" height=\"10\" class=\"mw-file-element\" data-file-width=\"20\" data-file-height=\"20\"></a></span>",
+          "source": "commons-desc-page"
+        },
+        "LicenseShortName": {
+          "value": "CC BY-SA 2.0",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "UsageTerms": {
+          "value": "Creative Commons Attribution-Share Alike 2.0",
+          "source": "commons-desc-page"
+        },
+        "AttributionRequired": {
+          "value": "true",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "Attribution": {
+          "value": "<i>Motorcycle racing circuit, Muirton</i> by Richard Webb",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "LicenseUrl": {
+          "value": "https://creativecommons.org/licenses/by-sa/2.0",
+          "source": "commons-desc-page"
+        },
+        "Copyrighted": {
+          "value": "True",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "Restrictions": {
+          "value": "",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "License": {
+          "value": "cc-by-sa-2.0",
+          "source": "commons-templates",
+          "hidden": ""
+        }
+      },
+      "licenseCode": "CC-BY-2.0",
+      "localPath": null,
+      "optimized": null,
+      "blurDataURL": null,
+      "isModified": false,
+      "modificationDescription": null,
+      "objectPosition": "center",
+      "rightsRisks": [],
+      "usageStatus": "in_use",
+      "verificationStatus": "needs_review",
+      "verificationNotes": [
+        "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
+        "Commons の全文検索から採用（関連度 81 点）",
+        "採点の内訳: {\"query\":30,\"alternate\":0,\"title\":12,\"description\":8,\"categories\":0,\"wikidata\":0,\"resolution\":14,\"landscape\":6,\"aspect\":8,\"license\":5,\"metadata\":8,\"penalty\":-10}",
+        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。"
+      ],
+      "verifiedAt": null,
+      "relevanceScore": 81
+    },
+    {
+      "id": "wm-mucfids",
+      "commonsPageId": 1314523,
+      "wikidataEntityId": null,
+      "fileName": "MUCFIDS.jpg",
+      "title": "File:MUCFIDS.jpg",
+      "description": "Flight information display LCD board at Munich Airport",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d0/MUCFIDS.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d0/MUCFIDS.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "commonsPageUrl": "https://commons.wikimedia.org/wiki/File:MUCFIDS.jpg",
+      "mimeType": "image/jpeg",
+      "width": 600,
+      "height": 450,
+      "aspectRatio": 1.3333333333333333,
+      "authorName": "No machine-readable author provided. The life of brian assumed (based on copyright claims).",
+      "authorUrl": "https://commons.wikimedia.org/wiki/User:The_life_of_brian",
+      "sourceName": "No machine-readable source provided. Own work assumed (based on copyright claims).",
+      "sourceUrl": null,
+      "rawLicenses": [
+        "CC BY-SA 3.0",
+        "cc-by-sa-3.0",
+        "Creative Commons Attribution-Share Alike 3.0"
+      ],
+      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "attributionText": null,
+      "copyrightStatus": "True",
+      "publicDomainRationale": null,
+      "categories": [
+        "Assumed own work",
+        "CC-BY-SA-3.0-migrated",
+        "Files with no machine-readable source",
+        "GFDL",
+        "Interior of Terminal 2 of Munich Airport",
+        "LED displays at airports",
+        "License migration completed",
+        "Self-published work",
+        "Time 13:45",
+        "Time 15:20",
+        "Time 15:25",
+        "Time 15:30",
+        "Time 15:35",
+        "Time 15:40"
+      ],
+      "retrievedAt": "2026-08-04T15:05:57.654Z",
+      "metadataRaw": {
+        "DateTime": {
+          "value": "2006-10-27 14:24:50",
+          "source": "mediawiki-metadata",
+          "hidden": ""
+        },
+        "ObjectName": {
+          "value": "MUCFIDS",
+          "source": "mediawiki-metadata"
+        },
+        "CommonsMetadataExtension": {
+          "value": 1.2,
+          "source": "extension",
+          "hidden": ""
+        },
+        "Categories": {
+          "value": "GFDL|Files with no machine-readable source|License migration completed|Interior of Terminal 2 of Munich Airport|Self-published work|Assumed own work|Time 13:45|Time 15:35|Time 15:25|LED displays at airports|Time 15:20|Time 15:30|Time 15:40",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "Assessments": {
+          "value": "",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "ImageDescription": {
+          "value": "Flight information display LCD board at <a href=\"https://en.wikipedia.org/wiki/en:Munich_Airport\" class=\"extiw\" title=\"w:en:Munich Airport\">Munich Airport</a>",
+          "source": "commons-desc-page"
+        },
+        "DateTimeOriginal": {
+          "value": "27 October 2006 (original upload date)",
+          "source": "commons-desc-page"
+        },
+        "Credit": {
+          "value": "No machine-readable source provided. Own work assumed (based on copyright claims).",
+          "source": "commons-desc-page"
+        },
+        "Artist": {
+          "value": "No machine-readable author provided. <a href=\"//commons.wikimedia.org/wiki/User:The_life_of_brian\" title=\"User:The life of brian\">The life of brian</a> assumed (based on copyright claims).",
+          "source": "commons-desc-page"
+        },
+        "LicenseShortName": {
+          "value": "CC BY-SA 3.0",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "UsageTerms": {
+          "value": "Creative Commons Attribution-Share Alike 3.0",
+          "source": "commons-desc-page"
+        },
+        "AttributionRequired": {
+          "value": "true",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "LicenseUrl": {
+          "value": "http://creativecommons.org/licenses/by-sa/3.0/",
+          "source": "commons-desc-page"
+        },
+        "Copyrighted": {
+          "value": "True",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "Restrictions": {
+          "value": "",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "License": {
+          "value": "cc-by-sa-3.0",
+          "source": "commons-templates",
+          "hidden": ""
+        }
+      },
+      "licenseCode": "CC-BY-3.0",
+      "localPath": null,
+      "optimized": null,
+      "blurDataURL": null,
+      "isModified": false,
+      "modificationDescription": null,
+      "objectPosition": "center",
+      "rightsRisks": [],
+      "usageStatus": "in_use",
+      "verificationStatus": "needs_review",
+      "verificationNotes": [
+        "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
+        "Wikipedia 記事の代表画像として取得（関連度 30 点）",
+        "採点の内訳: {\"query\":20,\"alternate\":0,\"title\":0,\"description\":5,\"categories\":3,\"wikidata\":0,\"resolution\":0,\"landscape\":6,\"aspect\":8,\"license\":5,\"metadata\":8,\"penalty\":-25}",
+        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。"
+      ],
+      "verifiedAt": null,
+      "relevanceScore": 30
+    },
+    {
+      "id": "wm-qr-code-for-mobile-english-wikipedia",
+      "commonsPageId": 12185494,
+      "wikidataEntityId": null,
+      "fileName": "QR code for mobile English Wikipedia.svg",
+      "title": "File:QR code for mobile English Wikipedia.svg",
+      "description": "qrcode for http://en.m.wikipedia.org",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/1280px-QR_code_for_mobile_English_Wikipedia.svg.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "commonsPageUrl": "https://commons.wikimedia.org/wiki/File:QR_code_for_mobile_English_Wikipedia.svg",
+      "mimeType": "image/svg+xml",
+      "width": 296,
+      "height": 296,
+      "aspectRatio": 1,
+      "authorName": "Brdall",
+      "authorUrl": "https://en.wikipedia.org/wiki/en:User:Brdall",
+      "sourceName": "Transferred from en.wikipedia to Commons by Liftarn using CommonsHelper .",
+      "sourceUrl": "https://en.wikipedia.org",
+      "rawLicenses": ["Public domain", "pd", "Public domain"],
+      "licenseUrl": null,
+      "attributionText": null,
+      "copyrightStatus": "False",
+      "publicDomainRationale": null,
+      "categories": [
+        "Files with derivative versions",
+        "PD-algorithm",
+        "PD-user",
+        "SVG Wikimedia QR codes",
+        "Version 3 QR codes"
+      ],
+      "retrievedAt": "2026-08-04T15:05:55.180Z",
+      "metadataRaw": {
+        "DateTime": {
+          "value": "2010-11-30 14:46:55",
+          "source": "mediawiki-metadata",
+          "hidden": ""
+        },
+        "ObjectName": {
+          "value": "QR code for mobile English Wikipedia",
+          "source": "mediawiki-metadata"
+        },
+        "CommonsMetadataExtension": {
+          "value": 1.2,
+          "source": "extension",
+          "hidden": ""
+        },
+        "Categories": {
+          "value": "PD-user|Files with derivative versions|PD-algorithm|SVG Wikimedia QR codes|Version 3 QR codes",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "Assessments": {
+          "value": "",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "ImageDescription": {
+          "value": "qrcode for <a class=\"external free\" data-mw-original-href=\"http://en.m.wikipedia.org\" href=\"https://en.m.wikipedia.org\">http://en.m.wikipedia.org</a>",
+          "source": "commons-desc-page"
+        },
+        "DateTimeOriginal": {
+          "value": "2009-04-07",
+          "source": "commons-desc-page"
+        },
+        "Credit": {
+          "value": "<bdi lang=\"en\" dir=\"ltr\">Transferred from <span class=\"plainlinks\"><a class=\"external text\" data-mw-original-href=\"//en.wikipedia.org\" href=\"https://en.wikipedia.org\">en.wikipedia</a></span> to Commons by <a href=\"//commons.wikimedia.org/wiki/User:Liftarn\" title=\"User:Liftarn\">Liftarn</a> using <a href=\"https://iw.toolforge.org/commonshelper/\" class=\"extiw\" title=\"toollabs:commonshelper/\">CommonsHelper</a>.</bdi>",
+          "source": "commons-desc-page"
+        },
+        "Artist": {
+          "value": "<a href=\"https://en.wikipedia.org/wiki/en:User:Brdall\" class=\"extiw\" title=\"w:en:User:Brdall\">Brdall</a>",
+          "source": "commons-desc-page"
+        },
+        "Permission": {
+          "value": "free to use and copy",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "LicenseShortName": {
+          "value": "Public domain",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "UsageTerms": {
+          "value": "Public domain",
+          "source": "commons-desc-page"
+        },
+        "AttributionRequired": {
+          "value": "false",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "Copyrighted": {
+          "value": "False",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "Restrictions": {
+          "value": "",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "License": {
+          "value": "pd",
+          "source": "commons-templates",
+          "hidden": ""
+        }
+      },
+      "licenseCode": "PD",
+      "localPath": null,
+      "optimized": null,
+      "blurDataURL": null,
+      "isModified": false,
+      "modificationDescription": null,
+      "objectPosition": "center",
+      "rightsRisks": [],
+      "usageStatus": "in_use",
+      "verificationStatus": "needs_review",
+      "verificationNotes": [
+        "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
+        "Wikipedia 記事の代表画像として取得（関連度 20 点）",
+        "採点の内訳: {\"query\":20,\"alternate\":0,\"title\":0,\"description\":0,\"categories\":3,\"wikidata\":0,\"resolution\":0,\"landscape\":0,\"aspect\":6,\"license\":10,\"metadata\":6,\"penalty\":-25}",
+        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。"
+      ],
+      "verifiedAt": null,
+      "relevanceScore": 20
+    },
+    {
+      "id": "wm-sceptre-rugby-ball",
+      "commonsPageId": 138627868,
+      "wikidataEntityId": null,
+      "fileName": "Sceptre Rugby Ball.jpg",
+      "title": "File:Sceptre Rugby Ball.jpg",
+      "description": "Sceptre Rugby Ball",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/6/6f/Sceptre_Rugby_Ball.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Sceptre_Rugby_Ball.jpg/1280px-Sceptre_Rugby_Ball.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "commonsPageUrl": "https://commons.wikimedia.org/wiki/File:Sceptre_Rugby_Ball.jpg",
+      "mimeType": "image/jpeg",
+      "width": 4320,
+      "height": 3240,
+      "aspectRatio": 1.3333333333333333,
+      "authorName": "Mr.ちゅらさん",
+      "authorUrl": "https://commons.wikimedia.org/wiki/User:Mr.%E3%81%A1%E3%82%85%E3%82%89%E3%81%95%E3%82%93",
+      "sourceName": "Own work",
+      "sourceUrl": null,
+      "rawLicenses": [
+        "CC BY-SA 4.0",
+        "cc-by-sa-4.0",
+        "Creative Commons Attribution-Share Alike 4.0"
+      ],
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "attributionText": null,
+      "copyrightStatus": "True",
+      "publicDomainRationale": null,
+      "categories": [
+        "CC-BY-SA-4.0",
+        "Hanazono Rugby Stadium",
+        "Japan photographs taken on 2023-10-08",
+        "October 2023 in Higashiosaka",
+        "Rugby union balls",
+        "Self-published work"
+      ],
+      "retrievedAt": "2026-08-04T15:06:36.249Z",
+      "metadataRaw": {
+        "DateTime": {
+          "value": "2023-10-08 21:11:25",
+          "source": "mediawiki-metadata",
+          "hidden": ""
+        },
+        "ObjectName": {
+          "value": "Sceptre Rugby Ball",
+          "source": "mediawiki-metadata"
+        },
+        "CommonsMetadataExtension": {
+          "value": 1.2,
+          "source": "extension",
+          "hidden": ""
+        },
+        "Categories": {
+          "value": "Hanazono Rugby Stadium|Rugby union balls|Self-published work|Japan photographs taken on 2023-10-08|October 2023 in Higashiosaka",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "Assessments": {
+          "value": "",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "ImageDescription": {
+          "value": "Sceptre Rugby Ball",
+          "source": "commons-desc-page"
+        },
+        "DateTimeOriginal": {
+          "value": "8 October 2023, 19:25:44",
+          "source": "commons-desc-page"
+        },
+        "Credit": {
+          "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+          "source": "commons-desc-page"
+        },
+        "Artist": {
+          "value": "<a href=\"//commons.wikimedia.org/wiki/User:Mr.%E3%81%A1%E3%82%85%E3%82%89%E3%81%95%E3%82%93\" title=\"User:Mr.ちゅらさん\">Mr.ちゅらさん</a>",
+          "source": "commons-desc-page"
+        },
+        "LicenseShortName": {
+          "value": "CC BY-SA 4.0",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "UsageTerms": {
+          "value": "Creative Commons Attribution-Share Alike 4.0",
+          "source": "commons-desc-page"
+        },
+        "AttributionRequired": {
+          "value": "true",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "LicenseUrl": {
+          "value": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "commons-desc-page"
+        },
+        "Copyrighted": {
+          "value": "True",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "Restrictions": {
+          "value": "",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "License": {
+          "value": "cc-by-sa-4.0",
+          "source": "commons-templates",
+          "hidden": ""
+        }
+      },
+      "licenseCode": "CC-BY-4.0",
+      "localPath": null,
+      "optimized": null,
+      "blurDataURL": null,
+      "isModified": false,
+      "modificationDescription": null,
+      "objectPosition": "center",
+      "rightsRisks": [],
+      "usageStatus": "in_use",
+      "verificationStatus": "needs_review",
+      "verificationNotes": [
+        "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
+        "Commons の全文検索から採用（関連度 85 点）",
+        "採点の内訳: {\"query\":30,\"alternate\":0,\"title\":12,\"description\":8,\"categories\":4,\"wikidata\":0,\"resolution\":14,\"landscape\":6,\"aspect\":8,\"license\":5,\"metadata\":8,\"penalty\":-10}",
+        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。"
+      ],
+      "verifiedAt": null,
+      "relevanceScore": 85
+    },
+    {
+      "id": "wm-view-of-basketball-hoop-from-below",
+      "commonsPageId": 136212497,
+      "wikidataEntityId": null,
+      "fileName": "View of basketball hoop from below.jpg",
+      "title": "File:View of basketball hoop from below.jpg",
+      "description": "The view from below a basketball hoop. Overhead is a shade structure.",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/8/89/View_of_basketball_hoop_from_below.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/View_of_basketball_hoop_from_below.jpg/1280px-View_of_basketball_hoop_from_below.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "commonsPageUrl": "https://commons.wikimedia.org/wiki/File:View_of_basketball_hoop_from_below.jpg",
+      "mimeType": "image/jpeg",
+      "width": 4160,
+      "height": 3120,
+      "aspectRatio": 1.3333333333333333,
+      "authorName": "Everyday English",
+      "authorUrl": "https://commons.wikimedia.org/w/index.php?title=User:Everyday_English&amp;action=edit&amp;redlink=1",
+      "sourceName": "Own work",
+      "sourceUrl": null,
+      "rawLicenses": [
+        "CC BY-SA 4.0",
+        "cc-by-sa-4.0",
+        "Creative Commons Attribution-Share Alike 4.0"
+      ],
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "attributionText": null,
+      "copyrightStatus": "True",
+      "publicDomainRationale": null,
+      "categories": ["Basketball", "CC-BY-SA-4.0", "Parks", "Self-published work"],
+      "retrievedAt": "2026-08-04T15:06:10.692Z",
+      "metadataRaw": {
+        "DateTime": {
+          "value": "2023-08-19 21:54:23",
+          "source": "mediawiki-metadata",
+          "hidden": ""
+        },
+        "ObjectName": {
+          "value": "View of basketball hoop from below",
+          "source": "mediawiki-metadata"
+        },
+        "CommonsMetadataExtension": {
+          "value": 1.2,
+          "source": "extension",
+          "hidden": ""
+        },
+        "Categories": {
+          "value": "Basketball|Parks|Self-published work",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "Assessments": {
+          "value": "",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "ImageDescription": {
+          "value": "The view from below a basketball hoop.  Overhead is a shade structure.",
+          "source": "commons-desc-page"
+        },
+        "DateTimeOriginal": {
+          "value": "2023-08-19 13:10:39",
+          "source": "commons-desc-page"
+        },
+        "Credit": {
+          "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+          "source": "commons-desc-page"
+        },
+        "Artist": {
+          "value": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:Everyday_English&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:Everyday English (page does not exist)\">Everyday English</a>",
+          "source": "commons-desc-page"
+        },
+        "LicenseShortName": {
+          "value": "CC BY-SA 4.0",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "UsageTerms": {
+          "value": "Creative Commons Attribution-Share Alike 4.0",
+          "source": "commons-desc-page"
+        },
+        "AttributionRequired": {
+          "value": "true",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "LicenseUrl": {
+          "value": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "commons-desc-page"
+        },
+        "Copyrighted": {
+          "value": "True",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "Restrictions": {
+          "value": "",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "License": {
+          "value": "cc-by-sa-4.0",
+          "source": "commons-templates",
+          "hidden": ""
+        }
+      },
+      "licenseCode": "CC-BY-4.0",
+      "localPath": null,
+      "optimized": null,
+      "blurDataURL": null,
+      "isModified": false,
+      "modificationDescription": null,
+      "objectPosition": "center",
+      "rightsRisks": [],
+      "usageStatus": "in_use",
+      "verificationStatus": "needs_review",
+      "verificationNotes": [
+        "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
+        "Commons の全文検索から採用（関連度 95 点）",
+        "採点の内訳: {\"query\":30,\"alternate\":0,\"title\":12,\"description\":8,\"categories\":4,\"wikidata\":0,\"resolution\":14,\"landscape\":6,\"aspect\":8,\"license\":5,\"metadata\":8,\"penalty\":0}",
+        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。"
+      ],
+      "verifiedAt": null,
+      "relevanceScore": 95
+    }
+  ],
+  "localizations": [
+    {
+      "assetId": "wm-assoc-football-match",
+      "locale": "en",
+      "altText": "association football ball on pitch",
+      "caption": null,
+      "description": null
+    },
+    {
+      "assetId": "wm-assoc-football-match",
+      "locale": "ja",
+      "altText": "association football ball on pitch",
+      "caption": null,
+      "description": null
+    },
+    {
+      "assetId": "wm-baseball-themed-playground-at-fireman-s-park",
+      "locale": "en",
+      "altText": "baseball field empty",
+      "caption": null,
+      "description": null
+    },
+    {
+      "assetId": "wm-baseball-themed-playground-at-fireman-s-park",
+      "locale": "ja",
+      "altText": "baseball field empty",
+      "caption": null,
+      "description": null
+    },
+    {
+      "assetId": "wm-empty-clay-tennis-court-in-melbourne-australia-looking-down-",
+      "locale": "en",
+      "altText": "tennis court empty",
+      "caption": null,
+      "description": null
+    },
+    {
+      "assetId": "wm-empty-clay-tennis-court-in-melbourne-australia-looking-down-",
+      "locale": "ja",
+      "altText": "tennis court empty",
+      "caption": null,
+      "description": null
+    },
+    {
+      "assetId": "wm-jgc-visa01s",
+      "locale": "en",
+      "altText": "An EMV chip card reader",
+      "caption": null,
+      "description": null
+    },
+    {
+      "assetId": "wm-jgc-visa01s",
+      "locale": "ja",
+      "altText": "ICチップ対応のカードリーダー",
+      "caption": null,
+      "description": null
+    },
+    {
+      "assetId": "wm-motorcycle-racing-circuit-muirton-geograph-org-uk-8169273",
+      "locale": "en",
+      "altText": "motorcycle racing circuit",
+      "caption": null,
+      "description": null
+    },
+    {
+      "assetId": "wm-motorcycle-racing-circuit-muirton-geograph-org-uk-8169273",
+      "locale": "ja",
+      "altText": "motorcycle racing circuit",
+      "caption": null,
+      "description": null
+    },
+    {
+      "assetId": "wm-mucfids",
+      "locale": "en",
+      "altText": "An airport departure board",
+      "caption": null,
+      "description": null
+    },
+    {
+      "assetId": "wm-mucfids",
+      "locale": "ja",
+      "altText": "空港の出発案内板",
+      "caption": null,
+      "description": null
+    },
+    {
+      "assetId": "wm-qr-code-for-mobile-english-wikipedia",
+      "locale": "en",
+      "altText": "A QR code payment",
+      "caption": null,
+      "description": null
+    },
+    {
+      "assetId": "wm-qr-code-for-mobile-english-wikipedia",
+      "locale": "ja",
+      "altText": "QRコードによる決済",
+      "caption": null,
+      "description": null
+    },
+    {
+      "assetId": "wm-sceptre-rugby-ball",
+      "locale": "en",
+      "altText": "rugby ball",
+      "caption": null,
+      "description": null
+    },
+    {
+      "assetId": "wm-sceptre-rugby-ball",
+      "locale": "ja",
+      "altText": "rugby ball",
+      "caption": null,
+      "description": null
+    },
+    {
+      "assetId": "wm-view-of-basketball-hoop-from-below",
+      "locale": "en",
+      "altText": "basketball hoop",
+      "caption": null,
+      "description": null
+    },
+    {
+      "assetId": "wm-view-of-basketball-hoop-from-below",
+      "locale": "ja",
+      "altText": "basketball hoop",
+      "caption": null,
+      "description": null
+    }
+  ]
 }
