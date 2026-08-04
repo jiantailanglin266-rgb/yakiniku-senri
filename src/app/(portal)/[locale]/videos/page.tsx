@@ -10,6 +10,7 @@ import { formatDate, formatDuration, t } from "@/portal/lib/format";
 import { breadcrumbJsonLd, itemListJsonLd } from "@/portal/lib/structured-data";
 
 import { Breadcrumbs, Container, PageHeader, Section } from "@/portal/components/layout/Shell";
+import { PageVisual } from "@/portal/components/layout/PageVisual";
 import { Badge, GlassCard, NoticeBox, SectionHeading } from "@/portal/components/ui/primitives";
 import { JsonLd } from "@/portal/components/ui/JsonLd";
 import { MediaSlot } from "@/media/components";
@@ -89,6 +90,7 @@ export default async function VideosPage(props: { params: Promise<{ locale: stri
       <Container>
         <Breadcrumbs trail={trail} locale={locale} dict={dict} />
         <PageHeader display="YouTube" title={dict.videos.title} lead={dict.videos.lead} />
+        <PageVisual name="videos" locale={locale} priority />
 
         <NoticeBox tone="cyan" className="mb-8">
           {locale === "ja"

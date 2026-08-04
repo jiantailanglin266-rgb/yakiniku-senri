@@ -65,6 +65,30 @@ export type SiteAssetCredit = {
 
 export const siteAssetCredits: SiteAssetCredit[] = [
   {
+    id: "cryptoport-page-visuals",
+    label: "CRYPTO PORT の各ページのイメージ画像（10点）",
+    origin: "first-party",
+    path: "public/images/portal/pages/",
+    fileCount: 10,
+    authorName: "サイト運営者",
+    authorUrl: null,
+    sourceName: "運営者が生成AIで作成し、提供を受けたもの",
+    sourceUrl: null,
+    licenseCode: "自作",
+    licenseName: "サイト運営者が権利を持つ素材",
+    licenseUrl: null,
+    licenseTextPath: null,
+    isModified: true,
+    modificationDescription: "掲載サイズに合わせ、幅1600pxの WebP へ変換（リサイズと形式変換のみ）",
+    usedOn: [
+      "CRYPTO PORT 通貨一覧 / ニュース / 取引所 / ウォレット / Web3ツール / 動画 / 診断 / キャンペーン / FAQ",
+      "CRYPTO PORT トップページの急上昇ニュース",
+    ],
+    verifiedAt: "2026-08-04",
+    verificationNote:
+      "運営者から提供された画像です。画面デザインのイメージであり、画像内に描かれている価格・評価・手数料・キャンペーン金額は実際のデータではありません。実在の取引所名・ウォレット名が描かれているため、数値として読まれないよう、掲載箇所には必ず注記（PageVisual の figcaption）を添えています。",
+  },
+  {
     id: "flag-icons",
     label: "言語切り替えの国旗（42点）",
     origin: "third-party",

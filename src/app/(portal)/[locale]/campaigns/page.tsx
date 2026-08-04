@@ -9,6 +9,7 @@ import { t, tList } from "@/portal/lib/format";
 import { breadcrumbJsonLd } from "@/portal/lib/structured-data";
 
 import { Breadcrumbs, Container, PageHeader, Section } from "@/portal/components/layout/Shell";
+import { PageVisual } from "@/portal/components/layout/PageVisual";
 import { EmptyState, GlassCard, NoticeBox } from "@/portal/components/ui/primitives";
 import { JsonLd } from "@/portal/components/ui/JsonLd";
 
@@ -43,6 +44,7 @@ export default async function CampaignsPage(props: { params: Promise<{ locale: s
       <Container>
         <Breadcrumbs trail={trail} locale={locale} dict={dict} />
         <PageHeader display="Campaigns" title={dict.campaigns.title} lead={dict.campaigns.lead} />
+        <PageVisual name="campaigns" locale={locale} priority />
 
         {/*
           終了済み・存在しない特典を載せると景品表示法上の問題になります。
