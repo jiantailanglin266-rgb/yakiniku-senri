@@ -179,7 +179,7 @@ node scripts/wikimedia-sync.mjs --write
   （0件のいまは1件も出ません。画面と構造化データを常に一致させるためです）
 - DBスキーマ（7テーブル + 制約 + トリガ + RLS）
 - 国旗素材（flag-icons / MIT）の著作権表示と、5サイトからの導線
-- テスト TESTCOUNT件
+- テスト 72件
 
 ## 5. 実装していない範囲
 
