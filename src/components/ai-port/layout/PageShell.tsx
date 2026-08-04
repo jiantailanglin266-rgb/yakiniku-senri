@@ -19,6 +19,7 @@ export function PageHero({
   description,
   crumbs,
   children,
+  visual,
 }: {
   eyebrow: string;
   title: string;
@@ -27,9 +28,17 @@ export function PageHero({
   description?: string;
   crumbs: Crumb[];
   children?: React.ReactNode;
+  /**
+   * 見出しの背景ビジュアル（<AiMediaBackdrop /> を想定）。
+   * ライセンス確認済みの画像が無いときは装飾に落ちるため、
+   * 渡しても渡さなくてもレイアウトは変わりません。
+   */
+  visual?: React.ReactNode;
 }) {
   return (
     <header className="relative overflow-hidden border-b border-white/8">
+      {visual}
+
       <div
         aria-hidden="true"
         className="from-ai-violet/12 pointer-events-none absolute -top-32 right-[8%] size-80 rounded-full bg-gradient-to-br to-transparent blur-3xl"

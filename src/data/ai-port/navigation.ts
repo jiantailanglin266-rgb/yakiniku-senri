@@ -72,6 +72,7 @@ export const aiSecondaryNav: AiNavItem[] = [
 export const aiUtilityNav: AiNavItem[] = [
   { href: aiPortPath("/about"), label: "運営者情報・編集方針", labelEn: "ABOUT" },
   { href: aiPortPath("/disclosure"), label: "広告掲載について", labelEn: "DISCLOSURE" },
+  { href: aiPortPath("/image-credits"), label: "画像の出典とライセンス", labelEn: "CREDITS" },
   { href: aiPortPath("/rss.xml"), label: "RSS", labelEn: "RSS" },
 ];
 

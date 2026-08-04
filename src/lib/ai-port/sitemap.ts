@@ -45,6 +45,7 @@ export function aiPortSitemapEntries(): MetadataRoute.Sitemap {
     { path: "/schools", priority: 0.6, changeFrequency: "monthly" },
     { path: "/about", priority: 0.5, changeFrequency: "yearly" },
     { path: "/disclosure", priority: 0.4, changeFrequency: "yearly" },
+    { path: "/image-credits", priority: 0.4, changeFrequency: "monthly" },
   ];
 
   return [
