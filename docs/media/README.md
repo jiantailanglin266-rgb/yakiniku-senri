@@ -6,24 +6,33 @@
 
 ---
 
-## 0. 現在の状態（重要）
+## 0. 画像はどこで取るか
 
-**このリポジトリには、現時点で掲載可能な Wikimedia 画像が 1 件もありません。**
+**取得は GitHub Actions（または手元のPC）で行います。開発環境では取得できません。**
 
-理由は、開発環境から Wikimedia のすべてのホスト（`commons.wikimedia.org` /
-`upload.wikimedia.org` / `www.wikidata.org` / `query.wikidata.org` / `api.wikimedia.org`）へ
-**HTTP 403 で到達できない**ためです。
+Claude Code などのサンドボックスからは、Wikimedia のすべてのホスト
+（`commons.wikimedia.org` / `upload.wikimedia.org` / `www.wikidata.org` /
+`query.wikidata.org` / `api.wikimedia.org`）へ **HTTP 403 で到達できません**。
+403 は再試行せず、ログに残して次へ進みます。
 
-そのうえで、次の判断をしています。
+| 実行場所                     | 取得   | 備考                                        |
+| ---------------------------- | ------ | ------------------------------------------- |
+| GitHub Actions               | ✅     | `media-sync.yml`。Push すると自動で走ります |
+| 手元のPC（PowerShell / npm） | ✅     | `scripts/media-sync.ps1`                    |
+| 開発サンドボックス           | ❌ 403 | 実装とテストはできます                      |
 
-- **推測でファイル名・作者・ライセンスを埋めた「それらしいモックデータ」は作りません。**
-  作者名やライセンスを推測で書くことは、このサブシステムが防ごうとしている行為そのものです。
-- `src/media/data/assets.ts` は**空のまま**にしています。
-- 画像が無い枠は、外部素材を使わない装飾表現（`FallbackVisual`）へ落ちます。
-  そのため、画像が 0 件でも画面は成立します。
+実行方法は [automation.md](automation.md) にまとめています。
 
-ネットワークが通る環境で `node scripts/wikimedia-sync.mjs --write` を実行すると、
-候補が `needs_review` として貯まります。人が承認した時点で表示が始まります。
+### 取得できないときも画面は成立します
+
+画像の無い枠は、外部素材を使わない装飾表現（`FallbackVisual`）へ落ちます。
+レイアウトは崩れません。
+
+### 推測でデータを埋めません
+
+**ファイル名・作者・ライセンスを推測で書いた「それらしいモックデータ」は作りません。**
+それは、このサブシステムが防ごうとしている行為そのものです。
+取得できていない項目は `null` のままにします。
 
 ---
 
@@ -138,13 +147,14 @@ import { WikimediaFigure } from "@/media/components";
 
 ### 画像を取得する
 
-```bash
-# 1. 取得したい画像を src/media/data/requests.json に書く
-# 2. まず書き込みなしで確認
-node scripts/wikimedia-sync.mjs --dry-run
+普段は **GitHub Actions に任せます**（記事を Push するだけ）。
+手動で動かす場合は [automation.md](automation.md) を参照してください。
 
-# 3. 問題なければ書き込み（src/media/data/assets.generated.json）
-node scripts/wikimedia-sync.mjs --write
+```bash
+npm run media:requests -- --write   # 必要な画像枠を組み立てる
+npm run media:sync -- --write       # 取得して判定する
+npm run media:optimize -- --write   # 承認済みをダウンロードして最適化
+npm run media:validate              # 生成物を検証
 ```
 
 Windows では PowerShell 版が使えます。処理内容・出力先・判定は Node 版と同じです。
@@ -159,13 +169,21 @@ powershell -ExecutionPolicy Bypass -File scripts\Sync-WikimediaPhotos.ps1 -Write
 コンソールのコードページで読むため、本文に日本語を置くと文字化けするからです。
 記事タイトルなどの日本語は `requests.json`（UTF-8）側に置いています。
 
-- スクリプトは **`approved` を付けません**。すべて `needs_review` 以下で止まります。
+- 自動承認は既定で無効です。有効にしてもパブリックドメインと CC0 だけで、
+  被写体の権利リスクが検出されないものに限ります。それ以外は `needs_review` で止まります。
 - **既存の画像を削除しません。** 同じIDが来たら更新、来なければそのまま残します。
 - 一度人が承認した画像の状態は、再取得で巻き戻しません。
 
 ### 承認する
 
 `/card-port/<言語>/admin` の「画像の確認キュー」で、状態と判定理由を確認します。
+状態・ファイル名・作者・掲載ページで絞り込めます。
+
+**未承認の画像はここでもプレビューしません。** `/admin` は検索避けをしていますが、
+URL を知っていれば誰でも開けます。確認前の画像をそこに描画することは、
+確認前の画像を公開することと同じです。
+中身は Commons のファイルページで確認してください
+（ライセンステンプレート・肖像権の注意書き・撮影国も、そちらにしかありません）。
 
 静的配信では書き込み先が無いため、承認ボタンは置いていません
 （動かないボタンを置くと「承認済み」と誤解されるためです）。
