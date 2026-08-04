@@ -188,9 +188,53 @@ export function scoreCandidate(raw, request, context = {}) {
   return { total, breakdown, reasons };
 }
 
+/**
+ * 候補にしてはいけない被写体。
+ *
+ * ■ 減点ではなく除外にしている理由
+ *   実在ブランドのカード券面・企業ロゴ・人物は、点数がいくら高くても
+ *   掲載できません。商標権と肖像権はライセンスと別の話で、
+ *   点数の高さで埋め合わせられるものではないからです。
+ *
+ *   実際、実在の Visa ブランドカードの写真が 80 点を超えて
+ *   「クレジットカードの基本」の候補に選ばれていました。
+ *   掲載カードがすべて架空のこのサイトでは、載せてはいけない画像です。
+ */
+const EXCLUDED_SUBJECTS = [
+  {
+    key: "brand",
+    terms: [
+      "visa",
+      "mastercard",
+      "american express",
+      "amex",
+      "jcb",
+      "unionpay",
+      "paypal",
+      "apple pay",
+      "google pay",
+      "alipay",
+      "wechat pay",
+    ],
+  },
+  { key: "logo", terms: ["logo", "wordmark", "brandmark", "trademark"] },
+  { key: "person", terms: ["portrait of", "headshot", "selfie"] },
+];
+
+/** 候補から外すべき被写体を返します（空なら問題なし） */
+export function detectExcludedSubjects(raw) {
+  const text = [raw.fileName, raw.title, raw.description ?? "", (raw.categories ?? []).join(" ")]
+    .join(" ")
+    .toLowerCase();
+  return EXCLUDED_SUBJECTS.filter((rule) => rule.terms.some((term) => text.includes(term))).map(
+    (rule) => rule.key,
+  );
+}
+
 /** 採点して、しきい値を超えたものだけを高い順に返します */
 export function rankCandidates(raws, request, context = {}) {
   return raws
+    .filter((raw) => detectExcludedSubjects(raw).length === 0)
     .map((raw) => ({ raw, ...scoreCandidate(raw, request, context) }))
     .filter((entry) => entry.total >= CANDIDATE_THRESHOLD)
     .sort((a, b) => b.total - a.total || a.raw.fileName.localeCompare(b.raw.fileName));
