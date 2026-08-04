@@ -111,6 +111,14 @@ export type WikimediaAsset = {
   commonsPageUrl: string;
   /** 自社ストレージへ保存した場合のパス。未保存なら null */
   localPath: string | null;
+  /**
+   * 生成済みの派生ファイル（WebP / AVIF / サムネイル）。
+   * 静的書き出し（GitHub Pages）では next/image の最適化APIが使えないため、
+   * ビルド前に生成しておいたものをここに記録します。
+   */
+  optimized: OptimizedVariants | null;
+  /** 読み込み中に出す極小プレビュー（data URI）。CLS と体感速度のためだけに使います */
+  blurDataURL: string | null;
 
   mimeType: string;
   width: number;
@@ -159,6 +167,23 @@ export type WikimediaAsset = {
   metadataRaw: Record<string, unknown> | null;
 };
 
+/**
+ * ローカルへ保存した派生ファイル。
+ * 元画像（`originalUrl`）は Wikimedia のものであり、
+ * 派生を作っても作者・ライセンスの表示義務は変わりません。
+ */
+export type OptimizedVariants = {
+  /** 例: "/media/wikimedia/<id>/original.webp" */
+  webp: string | null;
+  avif: string | null;
+  /** 一覧用の小さい版 */
+  thumbnailWebp: string | null;
+  /** 派生を作った日時 */
+  generatedAt: string;
+  /** 元ファイルの内容ハッシュ。差し替え検知に使います */
+  sourceHash: string | null;
+};
+
 export type ObjectPosition =
   "center" | "top" | "bottom" | "left" | "right" | { x: number; y: number };
 
@@ -184,7 +209,20 @@ export type AssetUsage = {
   priority: number;
 };
 
-export type ImageSlot = "hero" | "card" | "thumbnail" | "inline" | "background" | "ogp" | "avatar";
+export type ImageSlot =
+  | "hero"
+  | "card"
+  | "thumbnail"
+  | "inline"
+  | "background"
+  | "ogp"
+  | "avatar"
+  /** 記事内の複数枚まとめ */
+  | "gallery"
+  /** 比較記事の見出し脇 */
+  | "comparison"
+  /** 関連記事カード */
+  | "related";
 
 /** 用途別の推奨サイズ。元画像がこれを大きく下回る場合は使いません */
 export const slotSizes: Record<ImageSlot, { width: number; height: number; minWidth: number }> = {
@@ -195,6 +233,9 @@ export const slotSizes: Record<ImageSlot, { width: number; height: number; minWi
   background: { width: 1920, height: 1080, minWidth: 1280 },
   ogp: { width: 1200, height: 630, minWidth: 1200 },
   avatar: { width: 800, height: 1000, minWidth: 400 },
+  gallery: { width: 900, height: 600, minWidth: 600 },
+  comparison: { width: 1200, height: 675, minWidth: 800 },
+  related: { width: 480, height: 270, minWidth: 400 },
 };
 
 /** 却下の記録。同じ画像を何度も候補に挙げないために残します */

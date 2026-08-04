@@ -51,7 +51,18 @@ export function resolveImage(
 
 /** 記事末尾・出典一覧に出すため、1ページで使ったすべての画像を集めます */
 export function resolvePageImages(pageKey: string, locale: string): ResolvedImage[] {
-  const slots: ImageSlot[] = ["hero", "card", "thumbnail", "inline", "background", "ogp", "avatar"];
+  const slots: ImageSlot[] = [
+    "hero",
+    "card",
+    "thumbnail",
+    "inline",
+    "gallery",
+    "comparison",
+    "related",
+    "background",
+    "ogp",
+    "avatar",
+  ];
   const seen = new Set<string>();
   const results: ResolvedImage[] = [];
 

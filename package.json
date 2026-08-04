@@ -16,7 +16,11 @@
     "placeholders": "node scripts/generate-placeholders.mjs",
     "cardport:assets": "node scripts/generate-cardport-assets.mjs",
     "sports:assets": "node scripts/generate-sports-assets.mjs",
-    "media:sync": "node scripts/wikimedia-sync.mjs"
+    "media:requests": "node --experimental-strip-types scripts/generate-media-requests.mjs",
+    "media:sync": "node scripts/wikimedia-sync.mjs",
+    "media:optimize": "node scripts/media-optimize.mjs",
+    "media:revalidate": "node scripts/media-revalidate.mjs",
+    "media:validate": "node scripts/media-validate.mjs"
   },
   "dependencies": {
     "framer-motion": "^12.43.0",

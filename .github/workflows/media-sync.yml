@@ -1,0 +1,173 @@
+name: Sync Wikimedia images
+
+# ------------------------------------------------------------------
+# 画像の取得は、このワークフローだけで行います。
+#
+# 開発環境（Claude Code などのサンドボックス）からは Wikimedia のホストへ
+# 到達できないことがあります。取得の入口を1か所にまとめることで、
+# 「どこで取ったか分からない画像」が混ざらないようにしています。
+#
+# 既定では 1 件も自動承認しません。
+# 自動承認は、リポジトリ変数 MEDIA_AUTO_APPROVE を "true" にしたときだけ働き、
+# そのときもパブリックドメインと CC0 に限られます。
+# ------------------------------------------------------------------
+
+on:
+  workflow_dispatch:
+    inputs:
+      auto_approve:
+        description: "パブリックドメイン / CC0 を自動承認する"
+        type: boolean
+        default: false
+      limit:
+        description: "処理する枠の上限（空なら全部）"
+        type: string
+        default: "20"
+      revalidate:
+        description: "掲載中の画像を再確認する"
+        type: boolean
+        default: false
+
+  schedule:
+    # 毎週月曜 03:15 UTC（日本時間 12:15）に、掲載中の画像を再確認します
+    - cron: "15 3 * * 1"
+
+  push:
+    branches: [main]
+    paths:
+      # 記事が増えたら、必要な画像も変わります
+      - "src/cardport/data/news.ts"
+      - "src/cardport/data/guides.ts"
+      - "src/cardport/data/cards.ts"
+      - "src/cardport/data/categories.ts"
+      - "src/cardport/data/web3.ts"
+      - "src/cardport/data/videos.ts"
+      - "src/cardport/data/payments.ts"
+      # 取得したい画像の指示が変わったとき
+      - "src/media/data/requests.json"
+      - "scripts/wikimedia-sync.mjs"
+      - "scripts/lib/media-keywords.mjs"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: media-sync
+  # 途中で止めると、取得済みと未取得が混ざった状態になります
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # ------------------------------------------------------------
+      # 1. どのページにどんな画像が要るかを組み立てる
+      # ------------------------------------------------------------
+      - name: Generate image requests
+        run: npm run media:requests -- --write
+
+      # ------------------------------------------------------------
+      # 2. Commons から取得して判定する
+      #    自動承認は既定で無効。有効でも PD / CC0 だけ
+      # ------------------------------------------------------------
+      - name: Sync from Wikimedia Commons
+        if: ${{ github.event_name != 'schedule' }}
+        env:
+          MEDIA_SYNC_USER_AGENT: >-
+            CardPortMediaSync/2.0
+            (https://github.com/${{ github.repository }}; contact via repository issues)
+          MEDIA_AUTO_APPROVE: ${{ inputs.auto_approve || vars.MEDIA_AUTO_APPROVE || 'false' }}
+          MEDIA_AUTO_APPROVE_LICENSES: ${{ vars.MEDIA_AUTO_APPROVE_LICENSES || 'PD,CC0' }}
+          MEDIA_AUTO_APPROVE_SCORE: ${{ vars.MEDIA_AUTO_APPROVE_SCORE || '80' }}
+          MEDIA_AUTO_APPROVE_MIN_WIDTH: ${{ vars.MEDIA_AUTO_APPROVE_MIN_WIDTH || '1200' }}
+          MEDIA_AUTO_APPROVE_MIN_HEIGHT: ${{ vars.MEDIA_AUTO_APPROVE_MIN_HEIGHT || '675' }}
+        run: npm run media:sync -- --write --limit=${{ inputs.limit || '20' }}
+
+      # ------------------------------------------------------------
+      # 3. 掲載中の画像を再確認する（週次、または手動指定時）
+      #    ライセンス変更・削除・URL変更があれば needs_review へ戻します
+      # ------------------------------------------------------------
+      - name: Re-verify published images
+        if: ${{ github.event_name == 'schedule' || inputs.revalidate }}
+        env:
+          MEDIA_SYNC_USER_AGENT: >-
+            CardPortMediaSync/2.0
+            (https://github.com/${{ github.repository }}; contact via repository issues)
+        run: npm run media:revalidate -- --write
+
+      # ------------------------------------------------------------
+      # 4. 承認済みだけをダウンロードして最適化する
+      #    静的配信では next/image の最適化APIが使えないため、ここで作ります
+      # ------------------------------------------------------------
+      - name: Download and optimize approved images
+        run: npm run media:optimize -- --write
+
+      # ------------------------------------------------------------
+      # 5. 生成物の検証
+      #    ここで落ちたら commit しません。壊れたデータを main に入れないためです
+      # ------------------------------------------------------------
+      - name: Validate generated data
+        run: npm run media:validate
+
+      - name: Quality checks
+        run: |
+          npm run typecheck
+          npm run lint
+          npm run test
+          npm run format:check
+
+      - name: Build (static export)
+        env:
+          GITHUB_PAGES: "true"
+          PAGES_BASE_PATH: /${{ github.event.repository.name }}
+          NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
+          NEXT_PUBLIC_SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+        run: npm run build
+
+      # ------------------------------------------------------------
+      # 6. 変更があればコミットする
+      #    deploy-pages.yml が main への push で走るので、
+      #    ここで push すればデプロイまで繋がります
+      # ------------------------------------------------------------
+      - name: Commit generated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/media/data/assets.generated.json \
+                  src/media/data/usages.generated.json \
+                  src/media/data/requests.generated.json \
+                  public/media/wikimedia || true
+          if git diff --cached --quiet; then
+            echo "変更はありません。"
+            exit 0
+          fi
+          git commit -m "chore(media): Wikimedia Commons の画像データを更新
+
+          自動実行: ${{ github.event_name }}
+          自動承認: ${{ inputs.auto_approve || vars.MEDIA_AUTO_APPROVE || 'false' }}
+
+          このコミットは scripts/wikimedia-sync.mjs / media-optimize.mjs が
+          生成したものです。承認されていない画像は表示されません。"
+          git push
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "## Wikimedia 画像同期"
+            echo ""
+            echo "- 起動: ${{ github.event_name }}"
+            echo "- 自動承認: ${{ inputs.auto_approve || vars.MEDIA_AUTO_APPROVE || 'false' }}"
+            echo ""
+            echo "詳細は各ステップのログを参照してください。"
+          } >> "$GITHUB_STEP_SUMMARY"
