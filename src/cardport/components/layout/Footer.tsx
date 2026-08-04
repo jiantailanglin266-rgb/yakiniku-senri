@@ -11,6 +11,7 @@ import { footerPolicyLinks, primaryNav, secondaryNav } from "@/cardport/data/nav
 import type { Dictionary } from "@/cardport/i18n";
 import type { Locale } from "@/cardport/i18n/locales";
 import { routes } from "@/cardport/lib/routes";
+import { getMediaLabels } from "@/media/i18n/labels";
 
 export function Footer({ locale, dictionary }: { locale: Locale; dictionary: Dictionary }) {
   const social = [
@@ -114,6 +115,15 @@ export function Footer({ locale, dictionary }: { locale: Locale; dictionary: Dic
                   </Link>
                 </li>
               ))}
+              {/* 画像の作者表示をまとめて確認できるページ。常設します */}
+              <li>
+                <Link
+                  href={routes.imageCredits(locale)}
+                  className="text-cp-mist hover:text-cp-cyan text-[0.74rem] transition-colors"
+                >
+                  {getMediaLabels(locale).creditsTitle}
+                </Link>
+              </li>
             </ul>
           </nav>
         </div>
