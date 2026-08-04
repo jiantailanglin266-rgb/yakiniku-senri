@@ -56,7 +56,14 @@ export function WikimediaImage({
   if (!isPublishable(asset)) return null;
 
   const target = slotSizes[slot];
-  const src = asset.localPath ?? asset.originalUrl;
+  /*
+    表示に使うファイルの優先順位。
+      1. 生成済み WebP（静的書き出しでは next/image の最適化APIが使えないため）
+      2. ローカルへ保存した原本
+      3. Wikimedia の原本（未保存のとき）
+    どれを使っても、作者・ライセンスの表示義務は変わりません。
+  */
+  const src = asset.optimized?.webp ?? asset.localPath ?? asset.originalUrl;
 
   return (
     <figure className={["relative m-0 overflow-hidden", className ?? ""].join(" ")}>
@@ -68,6 +75,9 @@ export function WikimediaImage({
           priority={priority}
           loading={priority ? undefined : "lazy"}
           sizes={sizes ?? "(min-width: 1024px) 50vw, 100vw"}
+          // 読み込み中の下地。寸法は aspectRatio で確保済みなので CLS は起きません
+          placeholder={asset.blurDataURL ? "blur" : undefined}
+          blurDataURL={asset.blurDataURL ?? undefined}
           className="object-cover"
           style={{ objectPosition: toObjectPosition(asset.objectPosition) }}
         />

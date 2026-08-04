@@ -9,9 +9,16 @@
  *       `cardport:news:mile-award-chart-change`
  *       `cardport:category:travel`
  */
+import generated from "./usages.generated.json";
+import { mapValid, toUsage } from "./load-generated";
 import type { AssetUsage, ImageSlot } from "../types";
 
-export const assetUsages: AssetUsage[] = [];
+/**
+ * 掲載先の指定。`scripts/wikimedia-sync.mjs` が生成します。
+ * 承認されていない画像を指していても、描画側の `isPublishable()` で止まります
+ * （ここは「どこに置きたいか」だけを持ち、掲載可否は判定しません）。
+ */
+export const assetUsages: AssetUsage[] = mapValid(generated.usages, toUsage);
 
 /** 掲載先の指定から、優先度順の画像IDを返します */
 export function getUsageAssetIds(pageKey: string, slot: ImageSlot): string[] {

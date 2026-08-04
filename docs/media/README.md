@@ -207,6 +207,7 @@ powershell -ExecutionPolicy Bypass -File scripts\Sync-WikimediaPhotos.ps1 -Write
 
 ## 6. 関連ドキュメント
 
+- [automation.md](automation.md) — 取得の自動化（GitHub Actions / PowerShell / npm）
 - [image-guidelines.md](image-guidelines.md) — 画像を追加する人向けの手順
 - [license-checklist.md](license-checklist.md) — 承認前チェックリスト
 - [existing-image-audit.md](existing-image-audit.md) — 既存画像の棚卸し結果

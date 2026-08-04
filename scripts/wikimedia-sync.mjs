@@ -5,38 +5,52 @@
  * ■ このスクリプトがしないこと
  *   - Wikipedia の記事本文に出ている画像を、そのまま採用すること
  *     （記事の画像はフェアユースや各言語版ローカルアップロードを含みます。
- *       Commons に登録されたファイルだけを対象にします）
+ *       `srnamespace=6` で Commons に登録されたファイルだけを対象にします）
  *   - ライセンスが読み取れない画像を公開扱いにすること
  *   - 取得できた項目から、取得できなかった項目を推測すること
+ *   - 既存の画像を消すこと（追記と更新のみ）
+ *   - 一度人が承認・却下した状態を、再取得で巻き戻すこと
  *
  * ■ 取得と判定は別
- *   取得結果は `metadataRaw` にそのまま残し、
- *   掲載可否は `evaluateEligibility()` が別に判定します。
+ *   取得結果は `metadataRaw` にそのまま残し、掲載可否は別に判定します。
  *   API が 200 を返したことは、掲載してよい根拠になりません。
  *
+ * ■ 自動承認
+ *   既定では **1件も自動承認しません**（`MEDIA_AUTO_APPROVE` 未設定時）。
+ *   有効にしても、パブリックドメインと CC0 だけ、かつ被写体の権利リスクが
+ *   検出されないものに限ります（scripts/lib/media-approval.mjs）。
+ *
  * ■ 既定は「書き込まない」
- *   --write を付けたときだけ src/media/data/assets.generated.json を更新します。
- *   既存の画像を削除することはありません（追記と更新のみ）。
+ *   --write を付けたときだけ生成ファイルを更新します。
  *
  * 使い方:
  *   node scripts/wikimedia-sync.mjs --dry-run
  *   node scripts/wikimedia-sync.mjs --write
  *   node scripts/wikimedia-sync.mjs --write --only=cardport:guide:points-basics
+ *   node scripts/wikimedia-sync.mjs --write --limit=20
  */
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
-const COMMONS_API = "https://commons.wikimedia.org/w/api.php";
-const USER_AGENT =
-  process.env.MEDIA_SYNC_USER_AGENT ??
-  "CardPortMediaSync/1.0 (https://github.com/; contact via repository issues)";
+import {
+  createStats,
+  fetchImageInfo,
+  fetchLeadImageTitle,
+  getClientConfig,
+  safeCall,
+  searchCommons,
+  sleep,
+} from "./lib/wikimedia-client.mjs";
+import { CANDIDATE_THRESHOLD, rankCandidates, scoreCandidate } from "./lib/candidate-score.mjs";
+import { evaluateAutoApproval, getApprovalConfig } from "./lib/media-approval.mjs";
+import { altTextFor, wikipediaTitlesFor } from "./lib/media-keywords.mjs";
 
-/** 1件ずつ、間隔を空けて取得します（Wikimedia の負荷にならないように） */
-const REQUEST_INTERVAL_MS = Number(process.env.MEDIA_SYNC_INTERVAL_MS ?? 1200);
-
-const OUTPUT_PATH = path.join(process.cwd(), "src/media/data/assets.generated.json");
-const REQUEST_PATH = path.join(process.cwd(), "src/media/data/requests.json");
+const ROOT = process.cwd();
+const ASSETS_PATH = path.join(ROOT, "src/media/data/assets.generated.json");
+const USAGES_PATH = path.join(ROOT, "src/media/data/usages.generated.json");
+const MANUAL_REQUESTS = path.join(ROOT, "src/media/data/requests.json");
+const GENERATED_REQUESTS = path.join(ROOT, "src/media/data/requests.generated.json");
 
 /* ------------------------------------------------------------------ */
 /* 引数                                                                */
@@ -44,110 +58,9 @@ const REQUEST_PATH = path.join(process.cwd(), "src/media/data/requests.json");
 const args = process.argv.slice(2);
 const shouldWrite = args.includes("--write");
 const only = args.find((arg) => arg.startsWith("--only="))?.slice("--only=".length) ?? null;
-
-/* ------------------------------------------------------------------ */
-/* HTTP                                                                */
-/* ------------------------------------------------------------------ */
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-async function fetchJson(url) {
-  const response = await fetch(url, {
-    headers: { "User-Agent": USER_AGENT, Accept: "application/json" },
-  });
-  if (!response.ok) {
-    throw new Error(`HTTP ${response.status} ${response.statusText} — ${url}`);
-  }
-  return response.json();
-}
-
-/* ------------------------------------------------------------------ */
-/* Commons の検索・詳細取得                                            */
-/* ------------------------------------------------------------------ */
-
-/**
- * Wikipedia の記事から代表画像（リード画像）のファイル名を引きます。
- *
- * ■ 何をしているか
- *   `/api/rest_v1/page/summary/<題名>` の `originalimage.source` を見ます。
- *   記事タイトルから1枚を決められるので、検索語を考えるより早く、外れも少なくなります。
- *
- * ■ ここで必ず弾くもの
- *   返ってくるURLには2種類あります。
- *     .../wikipedia/commons/... → Commons のファイル
- *     .../wikipedia/ja/...      → その言語版へのローカルアップロード
- *   後者は Commons の基準（自由なライセンス）を通っていないファイルで、
- *   非フリー素材が含まれます。記事に出ているからといって使えるものではないので、
- *   パスを見て機械的に除外します。
- *
- * ■ ファイル名を返すだけです
- *   画像そのものはここでは落としません。返したファイル名を Commons のAPIに渡し、
- *   作者・ライセンス・出典を取得したうえで初めて候補になります。
- */
-async function fetchLeadImageFile(lang, title) {
-  const encoded = encodeURIComponent(title.replace(/ /g, "_"));
-  const url = new URL(`https://${lang}.wikipedia.org/api/rest_v1/page/summary/${encoded}`);
-
-  const json = await fetchJson(url);
-  const source = json?.originalimage?.source;
-  if (!source) return { file: null, reason: "記事に代表画像がありません" };
-
-  // ローカルアップロード（非フリーを含む）は対象外
-  if (!source.includes("/wikipedia/commons/")) {
-    return {
-      file: null,
-      reason: `Commons のファイルではありません（${lang} へのローカルアップロード）`,
-    };
-  }
-  if (/\.svg($|\?)/i.test(source)) {
-    return { file: null, reason: "SVG は対象外です" };
-  }
-
-  // .../commons/a/ab/Foo.jpg あるいは .../commons/thumb/a/ab/Foo.jpg/800px-Foo.jpg
-  const match = source.match(/\/wikipedia\/commons\/(?:thumb\/)?[0-9a-f]\/[0-9a-f]{2}\/([^/]+)/);
-  if (!match) return { file: null, reason: "ファイル名を判別できませんでした" };
-
-  return { file: `File:${decodeURIComponent(match[1])}`, reason: null };
-}
-
-/**
- * Commons の全文検索。
- * `srnamespace=6` はファイル名前空間で、Commons に登録されたファイルだけが対象です。
- */
-async function searchCommons(query, limit) {
-  const url = new URL(COMMONS_API);
-  url.searchParams.set("action", "query");
-  url.searchParams.set("format", "json");
-  url.searchParams.set("origin", "*");
-  url.searchParams.set("list", "search");
-  url.searchParams.set("srsearch", `${query} filetype:bitmap`);
-  url.searchParams.set("srnamespace", "6");
-  url.searchParams.set("srlimit", String(limit));
-
-  const json = await fetchJson(url);
-  return (json?.query?.search ?? []).map((hit) => hit.title);
-}
-
-/**
- * ファイルの詳細（サイズ・URL・extmetadata）。
- *
- * extmetadata は「Commons のページに書かれている内容」であって、
- * 常に正確・完全とは限りません。欠けている項目は欠けたまま扱います。
- */
-async function fetchImageInfo(titles) {
-  const url = new URL(COMMONS_API);
-  url.searchParams.set("action", "query");
-  url.searchParams.set("format", "json");
-  url.searchParams.set("origin", "*");
-  url.searchParams.set("prop", "imageinfo|categories");
-  url.searchParams.set("titles", titles.join("|"));
-  url.searchParams.set("iiprop", "url|size|mime|extmetadata|user");
-  url.searchParams.set("cllimit", "50");
-
-  const json = await fetchJson(url);
-  return Object.values(json?.query?.pages ?? {});
-}
+const maxRequests = Number(
+  args.find((arg) => arg.startsWith("--limit="))?.slice("--limit=".length),
+);
 
 /* ------------------------------------------------------------------ */
 /* 正規化（判定はしません）                                            */
@@ -161,13 +74,13 @@ function plainText(value) {
     .replace(/&nbsp;/g, " ")
     .replace(/&amp;/g, "&")
     .replace(/&quot;/g, '"')
-    .replace(/&#039;/g, "'")
+    .replace(/&#0?39;/g, "'")
     .replace(/\s+/g, " ")
     .trim();
   return text.length > 0 ? text : null;
 }
 
-/** extmetadata の HTML から、最初のリンク先を作者URLとして拾います */
+/** extmetadata の HTML から、最初のリンク先を拾います */
 function firstHref(value) {
   if (typeof value !== "string") return null;
   const match = value.match(/href="([^"]+)"/);
@@ -182,27 +95,33 @@ function meta(extmetadata, key) {
   return extmetadata?.[key]?.value ?? null;
 }
 
+function assetIdFor(title) {
+  return `wm-${String(title)
+    .replace(/^File:/, "")
+    .replace(/\.[a-z0-9]+$/i, "")
+    .replace(/[^a-zA-Z0-9]+/g, "-")
+    .toLowerCase()
+    .replace(/^-|-$/g, "")
+    .slice(0, 60)}`;
+}
+
 /**
  * API のレスポンスを、判定前の素の形へ整えます。
  * ここでは「掲載してよいか」を一切決めません。
  */
-function toRawAsset(page, request) {
+function toRawAsset(page) {
   const info = page?.imageinfo?.[0];
   if (!info) return null;
   const ext = info.extmetadata ?? {};
 
   const width = Number(info.width ?? 0);
   const height = Number(info.height ?? 0);
+  if (!width || !height) return null;
 
   return {
-    id: `wm-${String(page.title)
-      .replace(/^File:/, "")
-      .replace(/[^a-zA-Z0-9]+/g, "-")
-      .toLowerCase()
-      .replace(/^-|-$/g, "")
-      .slice(0, 60)}`,
+    id: assetIdFor(page.title),
     commonsPageId: typeof page.pageid === "number" ? page.pageid : null,
-    wikidataEntityId: request.wikidataEntityId ?? null,
+    wikidataEntityId: null,
 
     fileName: String(page.title).replace(/^File:/, ""),
     title: String(page.title),
@@ -211,12 +130,11 @@ function toRawAsset(page, request) {
     originalUrl: info.url ?? "",
     thumbnailUrl: info.thumburl ?? null,
     commonsPageUrl: info.descriptionurl ?? "",
-    localPath: null,
 
     mimeType: info.mime ?? "",
     width,
     height,
-    aspectRatio: height > 0 ? width / height : 0,
+    aspectRatio: width / height,
 
     // 取得できなければ null。ここで推測しません
     authorName: plainText(meta(ext, "Artist")),
@@ -225,11 +143,9 @@ function toRawAsset(page, request) {
     sourceUrl: firstHref(meta(ext, "Credit")),
 
     /** 判定前の生のライセンス表記。複数返ることがあります */
-    rawLicenses: [
-      meta(ext, "LicenseShortName"),
-      meta(ext, "License"),
-      meta(ext, "UsageTerms"),
-    ].filter(Boolean),
+    rawLicenses: [meta(ext, "LicenseShortName"), meta(ext, "License"), meta(ext, "UsageTerms")]
+      .map(plainText)
+      .filter(Boolean),
     licenseUrl: plainText(meta(ext, "LicenseUrl")),
     attributionText: plainText(meta(ext, "Attribution")),
     copyrightStatus: plainText(meta(ext, "Copyrighted")),
@@ -245,15 +161,14 @@ function toRawAsset(page, request) {
 }
 
 /* ------------------------------------------------------------------ */
-/* 判定（src/media のロジックと同じ規則を、依存なしで再実装）          */
+/* ライセンス判定（src/media/lib/license.ts と同じ規則）                */
 /* ------------------------------------------------------------------ */
 /*
- * このスクリプトは .mjs で、TypeScript を直接 import できません。
- * そのため判定は「保守的な側」だけをここに置き、最終的な承認は
- * 管理画面（人の目）に委ねます。ここで approved を付けることはしません。
+ * このスクリプトは .mjs で、TypeScript の実装をそのまま呼べません。
+ * 判定が食い違わないよう、規則をテストで突き合わせています
+ * （tests/media-pipeline.test.ts）。
+ * 少しでも読めない場合は UNKNOWN に倒し、掲載しない側へ寄せます。
  */
-
-/** 明らかに掲載できないライセンス表記。1つでも当たれば候補から外します */
 const BLOCKING_PATTERNS = [
   /non-?commercial/i,
   /\bnc\b/i,
@@ -264,197 +179,460 @@ const BLOCKING_PATTERNS = [
   /non-?free/i,
 ];
 
-/** 機械的に読み取れるライセンス表記 */
-const READABLE_PATTERNS = [
-  /^cc[\s_-]?0/i,
-  /^public\s*domain/i,
-  /^pd[-\s]/i,
-  /^cc\s*by(-sa)?\s*\d\.\d$/i,
-];
+function normalizeLicense(raw) {
+  if (!raw) return "UNKNOWN";
+  const key = String(raw)
+    .toLowerCase()
+    .replace(/[_\s]+/g, "-")
+    .replace(/[^a-z0-9.\-+]/g, "")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+  if (!key) return "UNKNOWN";
 
-function classify(raw) {
-  const notes = [];
-  const licenses = raw.rawLicenses ?? [];
-
-  if (licenses.length === 0) {
-    notes.push("ライセンス表記を取得できませんでした。推測せず保留します。");
-    return { status: "license_unknown", notes };
+  if (BLOCKING_PATTERNS.some((pattern) => pattern.test(key))) {
+    if (/nc/.test(key)) return /sa/.test(key) ? "CC-BY-NC-SA" : "CC-BY-NC";
+    if (/nd/.test(key)) return "CC-BY-ND";
+    if (/fair/.test(key)) return "FAIR-USE";
+    return "ALL-RIGHTS-RESERVED";
   }
 
-  if (licenses.some((value) => BLOCKING_PATTERNS.some((pattern) => pattern.test(value)))) {
-    notes.push(`掲載できないライセンス表記が含まれています: ${licenses.join(" / ")}`);
+  if (/^cc0/.test(key) || /cc-zero/.test(key) || /creative-commons-zero/.test(key)) return "CC0";
+  if (/^public-domain/.test(key) || /^pd(-|$)/.test(key) || key === "no-restrictions") return "PD";
+  if (/^gfdl/.test(key) || /gnu-free-documentation/.test(key)) return "GFDL";
+
+  const sa = /(^|-)sa(-|$)/.test(key) || key.includes("sharealike");
+  const by = /(^|-)by(-|$)/.test(key) || key.includes("attribution");
+  if (by || sa) {
+    const version = key.match(/(\d\.\d)/)?.[1];
+    // バージョンが読めない CC は最新版と決めつけません
+    if (!version) return "UNKNOWN";
+    return sa ? `CC-BY-SA-${version}` : `CC-BY-${version}`;
+  }
+
+  return "UNKNOWN";
+}
+
+const AUTO_USABLE = new Set([
+  "PD",
+  "CC0",
+  "CC-BY-1.0",
+  "CC-BY-2.0",
+  "CC-BY-2.5",
+  "CC-BY-3.0",
+  "CC-BY-4.0",
+  "CC-BY-SA-1.0",
+  "CC-BY-SA-2.0",
+  "CC-BY-SA-2.5",
+  "CC-BY-SA-3.0",
+  "CC-BY-SA-4.0",
+]);
+
+/** 複数表記から、もっとも制約の少ないものを選びます */
+function pickLicense(rawLicenses) {
+  const codes = rawLicenses.map(normalizeLicense);
+  if (codes.length === 0) return { code: "UNKNOWN", hadUnknown: true };
+  const rank = (code) => {
+    if (!AUTO_USABLE.has(code)) return 100;
+    if (code === "PD" || code === "CC0") return 0;
+    if (code.startsWith("CC-BY-SA")) return 2;
+    return 1;
+  };
+  const best = [...codes].sort((a, b) => rank(a) - rank(b))[0];
+  return { code: best, hadUnknown: codes.includes("UNKNOWN") };
+}
+
+/**
+ * 掲載可否の初期状態。approved はここでは付けません
+ * （自動承認は evaluateAutoApproval が別に判断します）。
+ */
+function classify(raw, licenseCode) {
+  const notes = [];
+
+  if (licenseCode === "UNKNOWN") {
+    notes.push(
+      `ライセンス表記を機械的に特定できませんでした（${raw.rawLicenses.join(" / ") || "表記なし"}）。推測で公開しません。`,
+    );
+    return { status: "license_unknown", notes };
+  }
+  if (!AUTO_USABLE.has(licenseCode)) {
+    notes.push(`${licenseCode} は商用利用または改変が許可されていません。`);
     return { status: "rejected", notes };
   }
-
-  if (!licenses.some((value) => READABLE_PATTERNS.some((pattern) => pattern.test(value.trim())))) {
-    notes.push(`ライセンス表記を機械的に特定できませんでした: ${licenses.join(" / ")}`);
-    return { status: "license_unknown", notes };
-  }
-
   if (!raw.commonsPageUrl) {
     notes.push("Commons のファイルページURLを取得できませんでした。");
     return { status: "needs_review", notes };
   }
-
-  if (!raw.authorName) {
-    notes.push("作者情報を取得できませんでした。作者表示が必要か人が確認してください。");
+  if (!raw.authorName && licenseCode !== "PD" && licenseCode !== "CC0") {
+    notes.push("作者表示が必要なライセンスですが、作者情報を取得できませんでした。");
     return { status: "needs_review", notes };
   }
 
-  // ここまで通っても approved にはしません。
-  // 肖像・商標・建築著作物などライセンス外の権利は、人が確認する必要があります。
   notes.push(
-    "ライセンス表記は読み取れました。掲載可否（被写体の権利を含む）は管理画面で確認してください。",
+    "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
   );
   return { status: "needs_review", notes };
 }
 
 /* ------------------------------------------------------------------ */
+/* 入出力                                                              */
+/* ------------------------------------------------------------------ */
+async function readJson(file, fallback) {
+  try {
+    return JSON.parse(await readFile(file, "utf8"));
+  } catch {
+    return fallback;
+  }
+}
+
+async function loadRequests() {
+  const manual = await readJson(MANUAL_REQUESTS, []);
+  const generated = await readJson(GENERATED_REQUESTS, { requests: [] });
+
+  const manualList = (Array.isArray(manual) ? manual : []).map((entry) => ({
+    limit: 6,
+    priority: 0,
+    slot: "inline",
+    ...entry,
+    // 手書きに最低幅の指定が無ければ、枠の要件を使います
+    minimumWidth: entry.minimumWidth ?? 800,
+    aspectRatio: entry.aspectRatio ?? 16 / 9,
+    manual: true,
+  }));
+
+  const manualKeys = new Set(manualList.map((entry) => `${entry.pageKey}::${entry.slot}`));
+  const generatedList = (generated.requests ?? []).filter(
+    (entry) => !manualKeys.has(`${entry.pageKey}::${entry.slot}`),
+  );
+
+  // 手書きを先に処理します（同じ画像が競合したとき、手書き側が先に確保します）
+  return [...manualList, ...generatedList];
+}
+
+/* ------------------------------------------------------------------ */
 /* 実行                                                                */
 /* ------------------------------------------------------------------ */
-async function loadRequests() {
-  try {
-    const text = await readFile(REQUEST_PATH, "utf8");
-    return JSON.parse(text);
-  } catch {
-    console.error(
-      `取得したい画像の一覧が見つかりません: ${path.relative(process.cwd(), REQUEST_PATH)}`,
-    );
-    console.error(
-      '書式: [{ "pageKey": "cardport:guide:points-basics", "slot": "inline", ' +
-        '"query": "contactless payment terminal", "wikidataEntityId": null }]',
-    );
-    return [];
-  }
-}
-
-async function loadExisting() {
-  try {
-    return JSON.parse(await readFile(OUTPUT_PATH, "utf8"));
-  } catch {
-    return { assets: [], generatedAt: null };
-  }
-}
-
 async function main() {
-  const requests = await loadRequests();
-  const targets = only ? requests.filter((request) => request.pageKey === only) : requests;
+  const clientConfig = getClientConfig();
+  const approvalConfig = getApprovalConfig();
+  const stats = createStats();
+
+  const allRequests = await loadRequests();
+  let targets = only ? allRequests.filter((request) => request.pageKey === only) : allRequests;
+  if (Number.isFinite(maxRequests) && maxRequests > 0) targets = targets.slice(0, maxRequests);
 
   if (targets.length === 0) {
-    console.log("対象がありません。");
+    console.log("対象がありません。npm run media:requests で一覧を生成してください。");
     return;
   }
 
-  const existing = await loadExisting();
-  // 既存を消しません。同じIDが来たら更新、来なければそのまま残します
-  const byId = new Map(existing.assets.map((asset) => [asset.id, asset]));
+  console.log(`対象 ${targets.length} 件 / 候補しきい値 ${CANDIDATE_THRESHOLD} 点`);
+  console.log(
+    approvalConfig.enabled
+      ? `自動承認: 有効（${approvalConfig.licenses.join(", ")} / ${approvalConfig.minScore}点以上 / ${approvalConfig.minWidth}×${approvalConfig.minHeight}以上）`
+      : "自動承認: 無効（すべて人の確認へ回します）",
+  );
 
-  const summary = { fetched: 0, skipped: 0, byStatus: {} };
+  const existingAssets = await readJson(ASSETS_PATH, { assets: [], localizations: [] });
+  const existingUsages = await readJson(USAGES_PATH, { usages: [] });
+
+  // 既存を消しません。同じIDが来たら更新、来なければそのまま残します
+  const assetById = new Map((existingAssets.assets ?? []).map((asset) => [asset.id, asset]));
+  const localizationByKey = new Map(
+    (existingAssets.localizations ?? []).map((entry) => [
+      `${entry.assetId}::${entry.locale}`,
+      entry,
+    ]),
+  );
+  const usageByKey = new Map(
+    (existingUsages.usages ?? []).map((usage) => [
+      `${usage.pageKey}::${usage.slot}::${usage.assetId}`,
+      usage,
+    ]),
+  );
+
+  // 同じ画像が並ばないよう、この実行で採用したファイル名を覚えます
+  const usedFileNames = new Set(
+    (existingUsages.usages ?? [])
+      .map((usage) => assetById.get(usage.assetId)?.fileName)
+      .filter(Boolean),
+  );
+
+  const summary = {
+    searched: 0,
+    candidates: 0,
+    belowThreshold: 0,
+    autoApproved: 0,
+    needsReview: 0,
+    rejected: 0,
+    licenseUnknown: 0,
+    placed: 0,
+    noResult: 0,
+  };
 
   for (const request of targets) {
-    const label = request.wikipedia
-      ? `${request.wikipedia.lang}:${request.wikipedia.titles.join(" / ")}`
-      : `"${request.query}"`;
-    console.log(`\n▸ ${request.pageKey} (${request.slot}) — ${label}`);
+    const label = `${request.pageKey} (${request.slot})`;
+    console.log(`\n▸ ${label} — "${request.query}"`);
+    summary.searched += 1;
 
-    let titles = [];
+    const queries = [request.query, ...(request.alternateQueries ?? [])].filter(Boolean);
+    const titles = new Set();
+    /** タイトル直指定で得たファイル。検索結果より優先します */
+    const leadTitles = new Set();
 
     /*
-      記事タイトルが指定されていれば、そちらを優先します。
-      検索語より対象が定まるぶん、無関係な画像を拾いにくくなります。
-      1件も取れなければ、下の Commons 検索へ落ちます。
+      1. まず Wikipedia の記事タイトルから代表画像を取ります。
+         その概念を説明するために選ばれた1枚なので、狙った内容に当たります。
+         ただし各言語版ローカルの非自由ファイルは fetchLeadImageTitle が捨てます
+         （Commons にあるファイルだけが返ります）。
     */
-    if (request.wikipedia) {
-      for (const articleTitle of request.wikipedia.titles) {
-        try {
-          const { file, reason } = await fetchLeadImageFile(request.wikipedia.lang, articleTitle);
-          await sleep(REQUEST_INTERVAL_MS);
-          if (file) {
-            console.log(`  記事「${articleTitle}」の代表画像: ${file}`);
-            titles.push(file);
-            break;
-          }
-          console.log(`  「${articleTitle}」は対象外: ${reason}`);
-        } catch (error) {
-          console.error(`  「${articleTitle}」の取得に失敗しました: ${error.message}`);
+    // 検索語が無くても、記事タイトルの指定だけで取得できるようにします
+    for (const query of queries.length > 0 ? queries : [null]) {
+      /*
+        指定の優先順位:
+          1. requests.json に人が書いた `wikipedia`（main で運用中の書式）
+          2. 自動生成が付けた `wikipediaTitles`
+          3. 検索語からの対応表
+        人が指定したものを最優先にします。
+      */
+      const mapping =
+        request.wikipedia ?? request.wikipediaTitles ?? (query ? wikipediaTitlesFor(query) : null);
+      if (!mapping?.titles?.length) continue;
+
+      for (const articleTitle of mapping.titles) {
+        const fileTitle = await safeCall(
+          `代表画像 "${articleTitle}"`,
+          () => fetchLeadImageTitle(mapping.lang, articleTitle, clientConfig, stats),
+          stats,
+        );
+        await sleep(clientConfig.intervalMs);
+        if (fileTitle) {
+          leadTitles.add(fileTitle);
+          titles.add(fileTitle);
+          break;
         }
       }
+      if (leadTitles.size > 0) break;
     }
 
-    if (titles.length === 0 && request.query) {
-      try {
-        titles = await searchCommons(request.query, request.limit ?? 5);
-      } catch (error) {
-        console.error(`  検索に失敗しました: ${error.message}`);
-        continue;
+    /*
+      2. 記事タイトルの対応が無い、または代表画像を取れなかったときだけ全文検索します。
+         検索は当たりが悪いぶん、後段の 80 点足切りで落ちる割合が高くなります。
+    */
+    if (leadTitles.size === 0) {
+      for (const query of queries) {
+        const found = await safeCall(
+          `検索 "${query}"`,
+          () => searchCommons(query, request.limit ?? 6, clientConfig, stats),
+          stats,
+        );
+        for (const title of found ?? []) titles.add(title);
+        await sleep(clientConfig.intervalMs);
+        // 十分な候補が集まったら、予備キーワードは使いません
+        if (titles.size >= (request.limit ?? 6)) break;
       }
-      await sleep(REQUEST_INTERVAL_MS);
     }
 
-    if (titles.length === 0) {
-      console.log("  候補が見つかりませんでした（フォールバック装飾のままになります）");
+    if (titles.size === 0) {
+      console.log("  候補が見つかりませんでした（装飾表示のまま残ります）");
+      summary.noResult += 1;
       continue;
     }
 
-    let pages = [];
-    try {
-      pages = await fetchImageInfo(titles);
-    } catch (error) {
-      console.error(`  詳細の取得に失敗しました: ${error.message}`);
+    const pages = await safeCall(
+      "詳細の取得",
+      () => fetchImageInfo([...titles].slice(0, 20), clientConfig, stats),
+      stats,
+    );
+    await sleep(clientConfig.intervalMs);
+    if (!pages) continue;
+
+    const raws = pages.map(toRawAsset).filter(Boolean);
+
+    /*
+      記事の代表画像は、関連度の足切りを免除します。
+      「その記事を説明する画像」として人が選んだものなので、
+      全文検索のヒットと同じ基準で機械的に落とすのは不適切です。
+      ただし解像度・ライセンス・被写体リスクの判定は、このあと同じように通します。
+    */
+    const leadRaws = raws.filter((raw) => leadTitles.has(raw.title));
+    const ranked = rankCandidates(raws, request, { usedFileNames });
+    summary.belowThreshold += raws.length - ranked.length - leadRaws.length;
+
+    let best;
+    if (leadRaws.length > 0) {
+      const scored = leadRaws.map((raw) => ({ raw, ...scoreCandidate(raw, request) }));
+      best = scored.sort((a, b) => b.total - a.total)[0];
+      best.viaLeadImage = true;
+    } else if (ranked.length > 0) {
+      best = ranked[0];
+    } else {
+      console.log(
+        `  ${raws.length} 件のうち、${CANDIDATE_THRESHOLD} 点以上の候補はありませんでした`,
+      );
+      summary.noResult += 1;
       continue;
     }
-    await sleep(REQUEST_INTERVAL_MS);
 
-    for (const page of pages) {
-      const raw = toRawAsset(page, request);
-      if (!raw) {
-        summary.skipped += 1;
-        continue;
-      }
+    const raw = best.raw;
+    summary.candidates += 1;
 
-      const { status, notes } = classify(raw);
-      summary.fetched += 1;
-      summary.byStatus[status] = (summary.byStatus[status] ?? 0) + 1;
+    const { code: licenseCode } = pickLicense(raw.rawLicenses);
+    const { status, notes } = classify(raw, licenseCode);
 
-      const previous = byId.get(raw.id);
-      byId.set(raw.id, {
-        ...raw,
-        // 一度人が承認した画像の状態は、再取得で巻き戻しません
-        verificationStatus: previous?.verificationStatus === "approved" ? "approved" : status,
-        verificationNotes: notes,
-        verifiedAt: previous?.verifiedAt ?? null,
-        rightsRisks: previous?.rightsRisks ?? [],
-        usageStatus: previous?.usageStatus ?? "unused",
-        objectPosition: previous?.objectPosition ?? "center",
-        isModified: previous?.isModified ?? false,
-        modificationDescription: previous?.modificationDescription ?? null,
-        requestedFor: [{ pageKey: request.pageKey, slot: request.slot }],
+    const previous = assetById.get(raw.id);
+    // 一度人が決めた状態は、再取得で巻き戻しません
+    const humanDecided =
+      previous?.verificationStatus === "approved" || previous?.verificationStatus === "rejected";
+
+    let finalStatus = status;
+    const finalNotes = [
+      ...notes,
+      best.viaLeadImage
+        ? `Wikipedia 記事の代表画像として取得（関連度 ${best.total} 点）`
+        : `Commons の全文検索から採用（関連度 ${best.total} 点）`,
+      `採点の内訳: ${JSON.stringify(best.breakdown)}`,
+    ];
+
+    if (!humanDecided && status === "needs_review") {
+      const decision = evaluateAutoApproval({
+        raw,
+        licenseCode,
+        score: best.total,
+        config: approvalConfig,
       });
-
-      console.log(`  - ${raw.fileName} → ${status}`);
-      for (const note of notes) console.log(`      ${note}`);
+      finalNotes.push(...decision.notes);
+      if (decision.approved) finalStatus = "approved";
     }
+
+    if (humanDecided) finalStatus = previous.verificationStatus;
+
+    assetById.set(raw.id, {
+      ...raw,
+      licenseCode,
+      licenseUrl: raw.licenseUrl,
+      localPath: previous?.localPath ?? null,
+      optimized: previous?.optimized ?? null,
+      blurDataURL: previous?.blurDataURL ?? null,
+      isModified: previous?.isModified ?? false,
+      modificationDescription: previous?.modificationDescription ?? null,
+      objectPosition: previous?.objectPosition ?? "center",
+      rightsRisks: previous?.rightsRisks ?? [],
+      usageStatus: previous?.usageStatus ?? "in_use",
+      verificationStatus: finalStatus,
+      verificationNotes: finalNotes,
+      verifiedAt:
+        finalStatus === "approved" ? (previous?.verifiedAt ?? new Date().toISOString()) : null,
+      relevanceScore: best.total,
+    });
+
+    // 代替テキスト。手書きの指定があればそちらを優先します
+    for (const locale of ["ja", "en"]) {
+      const key = `${raw.id}::${locale}`;
+      const manualAlt = locale === "ja" ? request.altJa : request.altEn;
+      const existing = localizationByKey.get(key);
+      localizationByKey.set(key, {
+        assetId: raw.id,
+        locale,
+        altText: manualAlt ?? existing?.altText ?? altTextFor(request.query, locale),
+        caption: existing?.caption ?? null,
+        description: existing?.description ?? null,
+      });
+    }
+
+    // 掲載先
+    const usageKey = `${request.pageKey}::${request.slot}::${raw.id}`;
+    usageByKey.set(usageKey, {
+      assetId: raw.id,
+      pageKey: request.pageKey,
+      slot: request.slot,
+      priority: request.priority ?? 0,
+    });
+    usedFileNames.add(raw.fileName);
+    summary.placed += 1;
+
+    if (finalStatus === "approved") summary.autoApproved += 1;
+    else if (finalStatus === "rejected") summary.rejected += 1;
+    else if (finalStatus === "license_unknown") summary.licenseUnknown += 1;
+    else summary.needsReview += 1;
+
+    console.log(
+      `  ✓ ${raw.fileName} — ${best.viaLeadImage ? "代表画像" : "検索"} / ${best.total}点 / ${licenseCode} / ${finalStatus}`,
+    );
   }
 
-  console.log("\n=== 集計 ===");
-  console.log(`取得: ${summary.fetched} 件 / スキップ: ${summary.skipped} 件`);
-  for (const [status, count] of Object.entries(summary.byStatus)) {
-    console.log(`  ${status}: ${count}`);
+  /* ---------------------------------------------------------------- */
+  /* 集計                                                              */
+  /* ---------------------------------------------------------------- */
+  console.log("\n=== 通信 ===");
+  console.log(`リクエスト ${stats.requests} / 成功 ${stats.ok} / 失敗 ${stats.failed}`);
+  console.log(`再試行 ${stats.retried} / 429 ${stats.rateLimited} / 403 ${stats.blocked403}`);
+  if (stats.blocked403 > 0) {
+    console.log(
+      "  403 が出ています。ネットワークポリシーで遮断されている可能性があります（GitHub Actions 上で実行してください）。",
+    );
   }
-  console.log("\n※ このスクリプトは approved を付けません。掲載は管理画面で人が承認してください。");
+  for (const error of stats.errors.slice(0, 5)) {
+    console.log(`  - ${error.label ?? error.url}: ${error.message}`);
+  }
+  if (stats.errors.length > 5) console.log(`  … ほか ${stats.errors.length - 5} 件`);
+
+  console.log("\n=== 結果 ===");
+  console.log(`検索した枠: ${summary.searched}`);
+  console.log(`候補が見つからなかった枠: ${summary.noResult}`);
+  console.log(`しきい値未満で不採用: ${summary.belowThreshold}`);
+  console.log(`掲載先を割り当てた: ${summary.placed}`);
+  console.log(`  成功（自動承認・表示されます）: ${summary.autoApproved}`);
+  console.log(`  保留（要確認・表示されません）: ${summary.needsReview}`);
+  console.log(`  ライセンス不明（表示されません）: ${summary.licenseUnknown}`);
+  console.log(`  却下（表示されません）: ${summary.rejected}`);
 
   if (!shouldWrite) {
     console.log("\n--write が指定されていないため、ファイルは更新していません。");
     return;
   }
 
-  await mkdir(path.dirname(OUTPUT_PATH), { recursive: true });
+  await mkdir(path.dirname(ASSETS_PATH), { recursive: true });
+  const generatedAt = new Date().toISOString();
+
   await writeFile(
-    OUTPUT_PATH,
-    `${JSON.stringify({ generatedAt: new Date().toISOString(), assets: [...byId.values()] }, null, 2)}\n`,
+    ASSETS_PATH,
+    `${JSON.stringify(
+      {
+        generatedAt,
+        note: "scripts/wikimedia-sync.mjs が生成します。手で編集しないでください。",
+        assets: [...assetById.values()].sort((a, b) => a.id.localeCompare(b.id)),
+        localizations: [...localizationByKey.values()].sort(
+          (a, b) => a.assetId.localeCompare(b.assetId) || a.locale.localeCompare(b.locale),
+        ),
+      },
+      null,
+      2,
+    )}\n`,
     "utf8",
   );
-  console.log(`\n更新しました: ${path.relative(process.cwd(), OUTPUT_PATH)}`);
+
+  await writeFile(
+    USAGES_PATH,
+    `${JSON.stringify(
+      {
+        generatedAt,
+        note: "scripts/wikimedia-sync.mjs が生成します。手で編集しないでください。",
+        usages: [...usageByKey.values()].sort(
+          (a, b) =>
+            a.pageKey.localeCompare(b.pageKey) ||
+            a.slot.localeCompare(b.slot) ||
+            a.priority - b.priority,
+        ),
+      },
+      null,
+      2,
+    )}\n`,
+    "utf8",
+  );
+
+  console.log(`\n更新しました:`);
+  console.log(`  ${path.relative(ROOT, ASSETS_PATH)}`);
+  console.log(`  ${path.relative(ROOT, USAGES_PATH)}`);
 }
 
 main().catch((error) => {

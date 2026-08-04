@@ -29,6 +29,8 @@ function makeAsset(overrides: Partial<WikimediaAsset> = {}): WikimediaAsset {
     thumbnailUrl: null,
     commonsPageUrl: "https://commons.wikimedia.org/wiki/File:Example.jpg",
     localPath: null,
+    optimized: null,
+    blurDataURL: null,
     mimeType: "image/jpeg",
     width: 2000,
     height: 1200,
