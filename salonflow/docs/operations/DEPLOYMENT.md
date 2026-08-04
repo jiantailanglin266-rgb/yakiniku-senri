@@ -62,56 +62,91 @@ salon.example.com {
 
 ---
 
-## 2. 方式 B：Vercel + マネージド PostgreSQL
+## 2. 方式 B：Vercel + Neon
 
-### 2-1. データベース
+無料枠だけで公開できます。所要 15〜20 分。
 
-Neon / Supabase / Vercel Postgres のいずれかでインスタンスを作成し、
-接続文字列を取得します。接続プーラー経由の場合は、マイグレーション用に
-直結の URL（`DIRECT_DATABASE_URL`）も控えてください。
+### 2-1. Neon でデータベースを作る
+
+1. <https://neon.tech> にサインアップし、プロジェクトを作成
+2. リージョンは利用者に近い場所（日本なら `Asia Pacific (Singapore)` など）
+3. **Connection string を 2 種類**控える（ダッシュボードの Connection Details）
+   - **Pooled**（`-pooler` を含む）→ `DATABASE_URL` に使う
+   - **Direct**（`-pooler` を含まない）→ `DIRECT_DATABASE_URL` に使う
+4. SQL Editor で拡張を作成する
 
 ```sql
--- 拡張作成権限がない環境では、管理者に依頼して事前に作成してもらいます
 CREATE EXTENSION IF NOT EXISTS btree_gist;
 ```
 
-### 2-2. プロジェクト設定
+> **なぜ 2 種類必要か**: 通常のクエリはプーラー経由が望ましい一方、
+> マイグレーションが含む DDL はトランザクションモードのプーラーを通せません。
+> Prisma はこの 2 つを自動的に使い分けます（`prisma/schema.prisma` の `directUrl`）。
 
-このリポジトリはルートに別アプリ（焼肉店 LP）を持つため、
-**Root Directory を `salonflow` に設定する必要があります。**
+### 2-2. Vercel にインポートする
 
-| 項目             | 値                                                       |
-| ---------------- | -------------------------------------------------------- |
-| Root Directory   | `salonflow`                                              |
-| Framework Preset | Next.js                                                  |
-| Build Command    | `prisma generate && prisma migrate deploy && next build` |
-| Install Command  | （既定）                                                 |
-| Node.js Version  | 22.x                                                     |
-
-Build Command に `migrate deploy` を含めているのは、
-デプロイのたびにスキーマを最新へ揃えるためです。
-マイグレーションを手動で管理する運用にする場合は外してください。
+1. <https://vercel.com> にサインアップし、**Add New → Project**
+2. GitHub の `jiantailanglin266-rgb/yakiniku-senri` をインポート
+3. **Root Directory に `salonflow` を指定する**（ここが唯一の必須設定）
+   - Import 画面の「Root Directory」の **Edit** から `salonflow` を選ぶ
+   - このリポジトリはルートに別アプリ（焼肉店 LP）を持つため、
+     指定しないとそちらがビルドされます
+4. Framework Preset は `Next.js` が自動検出されます
+5. **Build Command は変更不要**
+   - `package.json` に `vercel-build` を定義済みで、Vercel はこれを優先します
+   - 中身: `prisma generate && prisma migrate deploy && next build`
+   - つまり**デプロイのたびにマイグレーションが自動適用**されます
 
 ### 2-3. 環境変数
 
-| 変数                  | 値                           |      必須      |
-| --------------------- | ---------------------------- | :------------: |
-| `DATABASE_URL`        | 接続文字列                   |       ○        |
-| `DIRECT_DATABASE_URL` | プーラーを介さない接続文字列 | プーラー使用時 |
-| `SESSION_SECRET`      | 32 文字以上のランダム文字列  |       ○        |
-| `APP_URL`             | `https://<本番ドメイン>`     |       ○        |
-| `PRODUCT_NAME`        | 製品名                       |                |
-| `DEFAULT_TIMEZONE`    | `Asia/Tokyo`                 |                |
-| `MAIL_TRANSPORT`      | `console`（実送信しない）    |                |
-| `DEMO_MODE`           | `false`                      |                |
-| `LOG_LEVEL`           | `info`                       |                |
+Import 画面の Environment Variables に以下を入れます（Production / Preview 両方）。
 
-### 2-4. デプロイ後
+| 変数                  | 値                                    | 必須 |
+| --------------------- | ------------------------------------- | :--: |
+| `DATABASE_URL`        | Neon の **Pooled** 接続文字列         |  ○   |
+| `DIRECT_DATABASE_URL` | Neon の **Direct** 接続文字列         |  ○   |
+| `SESSION_SECRET`      | 32 文字以上のランダム文字列           |  ○   |
+| `APP_URL`             | `https://<プロジェクト名>.vercel.app` |  ○   |
+| `DEMO_MODE`           | `true`（デモとして公開する場合）      |      |
+| `PRODUCT_NAME`        | `SalonFlow`                           |      |
+| `DEFAULT_TIMEZONE`    | `Asia/Tokyo`                          |      |
+| `MAIL_TRANSPORT`      | `console`（実送信しない）             |      |
+| `LOG_LEVEL`           | `info`                                |      |
+
+`SESSION_SECRET` の生成:
 
 ```bash
-# デモデータを入れる場合（本番では実行しない）
-DATABASE_URL="<接続文字列>" npx tsx prisma/seed/index.ts
+node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"
 ```
+
+`APP_URL` はデプロイ前にドメインが確定していないため、
+一度デプロイして URL が決まってから設定・再デプロイでも構いません。
+
+### 2-4. デモデータを入れる
+
+初回デプロイ後、手元から実行します（Vercel 上では実行しません）。
+
+```bash
+cd salonflow
+npm install
+DATABASE_URL="<Neon の Direct 接続文字列>" \
+DIRECT_DATABASE_URL="<Neon の Direct 接続文字列>" \
+  npx tsx prisma/seed/index.ts
+```
+
+実行するとログイン用アカウントと公開予約ページの URL が表示されます。
+
+### 2-5. 詰まりやすい箇所
+
+| 症状                                      | 原因と対処                                                                          |
+| ----------------------------------------- | ----------------------------------------------------------------------------------- |
+| ルートの焼肉 LP がデプロイされる          | Root Directory が `salonflow` になっていない                                        |
+| `Query Engine ... rhel-openssl-3.0.x`     | `binaryTargets` 設定済み。古いビルドキャッシュなら Redeploy（キャッシュ無効）で解消 |
+| `extension "btree_gist" is not available` | 2-1 の 4 を実行していない                                                           |
+| `prepared statement ... already exists`   | `DATABASE_URL` に Direct を入れている。Pooled に変える                              |
+| マイグレーションが `P1001` で失敗         | `DIRECT_DATABASE_URL` が未設定、または Pooled を入れている                          |
+| ログインできない                          | シード未実行。2-4 を実行する                                                        |
+| ログイン後すぐログアウトされる            | `SESSION_SECRET` が Production と Preview で食い違っている                          |
 
 ---
 

@@ -44,8 +44,11 @@ const nextConfig: NextConfig = {
    * Emit `.next/standalone` so the app can be deployed without installing
    * `node_modules` on the target — which is what makes the container image
    * small enough to be practical.
+   *
+   * Vercel builds to its own output format and does not want this, so it is
+   * switched off there rather than left to be ignored.
    */
-  output: "standalone",
+  output: process.env.VERCEL ? undefined : "standalone",
 
   /**
    * SalonFlow lives inside a repository whose root holds an unrelated app.

@@ -31,6 +31,7 @@ COPY . .
 # `next build` needs DATABASE_URL to be *parseable*, not reachable — no page is
 # statically rendered against the database, so a placeholder is enough here.
 ENV DATABASE_URL="postgresql://build:build@localhost:5432/build"
+ENV DIRECT_DATABASE_URL="postgresql://build:build@localhost:5432/build"
 ENV SESSION_SECRET="build-time-placeholder-value-32-characters-min"
 ENV NEXT_TELEMETRY_DISABLED=1
 

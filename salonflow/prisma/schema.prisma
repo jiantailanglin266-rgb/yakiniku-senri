@@ -18,11 +18,22 @@
 
 generator client {
   provider = "prisma-client-js"
+
+  // `native` covers local development and Docker. `rhel-openssl-3.0.x` is what
+  // Vercel's serverless runtime needs — without it the deployed function fails
+  // at runtime with "could not locate the Query Engine", which does not show
+  // up during the build.
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+
+  // Migrations and introspection must bypass a connection pooler: PgBouncer in
+  // transaction mode cannot run the DDL these migrations contain. Set this to
+  // the unpooled endpoint. Locally it can simply repeat DATABASE_URL.
+  directUrl = env("DIRECT_DATABASE_URL")
 }
 
 // ===========================================================================

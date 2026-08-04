@@ -8,4 +8,7 @@ beforeAll(() => {
   process.env.PRODUCT_NAME ??= "SalonFlow";
   process.env.DATABASE_URL ??=
     "postgresql://salonflow:salonflow@localhost:5432/salonflow_test?schema=public";
+  // The schema declares `directUrl`, so Prisma refuses to initialise without
+  // it. Tests talk to PostgreSQL directly, with no pooler in between.
+  process.env.DIRECT_DATABASE_URL ??= process.env.DATABASE_URL;
 });
