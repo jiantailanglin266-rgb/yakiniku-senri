@@ -1,0 +1,37 @@
+[
+  {
+    "pageKey": "cardport:guide:points-basics",
+    "slot": "inline",
+    "query": "contactless payment terminal",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "cardport:guide:credit-card-basics",
+    "slot": "inline",
+    "query": "EMV chip card reader",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "cardport:payment:qr",
+    "slot": "inline",
+    "query": "QR code payment",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "cardport:guide:mile-basics",
+    "slot": "inline",
+    "query": "airport departure board",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "cardport:web3:stablecoin",
+    "slot": "inline",
+    "query": "blockchain network diagram",
+    "wikidataEntityId": null,
+    "limit": 5
+  }
+]
