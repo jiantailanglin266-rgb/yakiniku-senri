@@ -1,6 +1,13 @@
 # デザインシステム
 
-実装は `src/app/(portal)/portal.css`（Tailwind CSS v4 の `@theme`）。
+実装は `src/app/(portal)/portal.css`。
+
+> **スコープ**: このリポジトリには3サイトが同居し、`globals.css` が全ページに効いています。
+> そのため portal.css の指定はすべて `.portal-root` の配下に閉じ、
+> Tailwind 本体は再 import していません（二重に読み込むと preflight とユーティリティが丸ごと重複します）。
+> トークンも `@theme` ではなく `.portal-root` の素のカスタムプロパティにしています
+> （`@theme` は全サイト共通スコープなので、`--font-mono` のような一般的な名前が他サイトの表示まで変えてしまうためです）。
+> 参照は Tailwind の任意値記法（`text-(--color-ink-soft)`）で行います。
 
 ---
 
@@ -108,6 +115,8 @@
 | 3Dコイン回転                         | CSS `preserve-3d`      | 追加バンドルゼロ           |
 | ニュースティッカー                   | CSS `marquee`          | hover / focus で一時停止   |
 
+> `@keyframes` の名前はすべて `cp-` で始めます。同居する他サイトの定義と衝突させないためです。
+
 ### `prefers-reduced-motion`
 
 - 装飾アニメーションは**完全停止**（`animation: none`）
@@ -137,7 +146,7 @@
 
 ## 右横書き（RTL）
 
-アラビア語では `<html dir="rtl">` になります。
+アラビア語では `.portal-root` に `dir="rtl"` が付きます（`<html>` は共通のルートレイアウトが持つため）。
 方向依存のスタイルはすべて**論理プロパティ**で書いてください。
 
 - `ms-*` / `me-*`（`ml-*` / `mr-*` ではなく）

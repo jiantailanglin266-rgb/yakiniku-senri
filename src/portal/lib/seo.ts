@@ -64,8 +64,18 @@ export function portalMetadata({
   const url = localeUrl(locale, path);
   const imageUrl = image.startsWith("http") ? image : absoluteUrl(image);
 
+  /*
+   * タイトルは `absolute` で組み立てます。
+   *
+   * `title.template` は「同じルートセグメントの page には効かない」ため、
+   * ポータルのトップページ（`[locale]/layout.tsx` と `[locale]/page.tsx` が同じ階層）
+   * だけがルートレイアウト側のテンプレート（焼肉 千里）を拾ってしまいます。
+   * 自前で組み立ててしまえば、どの階層に置いても表示が変わりません。
+   */
+  const fullTitle = title === brand.name ? title : `${title} | ${brand.name}`;
+
   return {
-    title,
+    title: { absolute: fullTitle },
     description,
     alternates: {
       canonical: url,
@@ -78,7 +88,7 @@ export function portalMetadata({
       type,
       url,
       siteName: brand.name,
-      title,
+      title: fullTitle,
       description,
       locale: config.ogLocale,
       images: [{ url: imageUrl, width: 1200, height: 630, alt: title }],
@@ -87,7 +97,7 @@ export function portalMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: fullTitle,
       description,
       images: [imageUrl],
     },

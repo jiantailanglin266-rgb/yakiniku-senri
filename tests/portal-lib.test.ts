@@ -13,7 +13,7 @@ import { normalize, search } from "@/portal/lib/search-index";
 import { answer, asksForAdvice, mentionsSecrets, retrieve } from "@/portal/lib/chat";
 import { decodeAnswers, encodeAnswers, isComplete, scoreDiagnosis } from "@/portal/lib/diagnosis";
 import { resolveLink, SPONSORED_REL } from "@/portal/lib/affiliate";
-import { alternateLanguages } from "@/portal/lib/seo";
+import { alternateLanguages, portalMetadata } from "@/portal/lib/seo";
 import { portalSitemap } from "@/portal/lib/sitemap";
 import { faqJsonLd, videoJsonLd } from "@/portal/lib/structured-data";
 import { getDiagnosis } from "@/portal/data/diagnoses";
@@ -284,6 +284,47 @@ describe("アフィリエイトリンク", () => {
 });
 
 describe("SEO", () => {
+  it("タイトルは absolute で組み立てる（同居サイトのテンプレートを拾わない）", () => {
+    /*
+     * `title.template` は同じルートセグメントの page には効きません。
+     * トップページ（[locale]/layout.tsx と [locale]/page.tsx が同階層）だけが
+     * ルートレイアウト側のテンプレートを拾ってしまうため、自前で組み立てています。
+     */
+    const home = portalMetadata({
+      locale: "ja",
+      title: "未来の資産を、ひとつの画面に。",
+      description: "x",
+    });
+    expect(home.title).toEqual({ absolute: "未来の資産を、ひとつの画面に。 | CRYPTO PORT" });
+
+    const child = portalMetadata({
+      locale: "ja",
+      path: "/coins",
+      title: "仮想通貨",
+      description: "x",
+    });
+    expect(child.title).toEqual({ absolute: "仮想通貨 | CRYPTO PORT" });
+
+    // OGP / X Card も同じ文字列に揃えます
+    expect(child.openGraph?.title).toBe("仮想通貨 | CRYPTO PORT");
+    expect(child.twitter?.title).toBe("仮想通貨 | CRYPTO PORT");
+  });
+
+  it("noindex を指定したページだけ索引から外れる", () => {
+    expect(
+      portalMetadata({
+        locale: "ja",
+        path: "/search",
+        title: "検索",
+        description: "x",
+        noindex: true,
+      }).robots,
+    ).toMatchObject({ index: false });
+    expect(
+      portalMetadata({ locale: "ja", path: "/coins", title: "仮想通貨", description: "x" }).robots,
+    ).toMatchObject({ index: true });
+  });
+
   it("hreflang に全言語と x-default が入る", () => {
     const languages = alternateLanguages("/coins");
     expect(Object.keys(languages)).toHaveLength(locales.length + 1);

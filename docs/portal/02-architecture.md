@@ -43,14 +43,14 @@ R3F を入れるとファーストビューの初期JSが数百KB増え、LCP �
 ```
 src/
 ├── app/
-│   ├── (senri)/              ← 既存サイト（焼肉 千里）。ルートレイアウト①
-│   │   ├── layout.tsx
-│   │   ├── globals.css
-│   │   └── ...
+│   ├── layout.tsx            ← ルートレイアウト（<html> / <body> のみ）
+│   ├── globals.css
+│   ├── (senri)/              ← 焼肉 千里
+│   ├── ai-port/              ← AI PORT
 │   ├── (portal)/             ← CRYPTO PORT
-│   │   ├── portal.css        ← デザインシステム
+│   │   ├── portal.css        ← デザインシステム（.portal-root 配下に閉じる）
 │   │   └── [locale]/
-│   │       ├── layout.tsx    ← ルートレイアウト②（html lang / dir を言語別に）
+│   │       ├── layout.tsx    ← lang / dir / フォント / ヘッダー / フッター
 │   │       ├── page.tsx      ← トップページ
 │   │       ├── not-found.tsx
 │   │       ├── rss.xml/route.ts
@@ -58,10 +58,10 @@ src/
 │   │       ├── videos/, learn/, diagnosis/, search/, campaigns/,
 │   │       ├── faq/, legal/[slug]/, admin/
 │   ├── api/market/route.ts   ← 市場データのサーバー側API
-│   ├── sitemap.ts            ← 両サイトのURLを出力
+│   ├── sitemap.ts            ← 3サイトすべてのURLを出力
 │   └── robots.ts
 │
-└── portal/                   ← ポータルのコード（既存サイトと混ざらないよう分離）
+└── portal/                   ← ポータルのコード（他サイトと混ざらないよう分離）
     ├── i18n/
     │   ├── config.ts         ← 13言語の定義・URL 組み立て
     │   └── dictionaries.ts   ← UI文言（ja / en を人手で。他は en へフォールバック）
@@ -97,19 +97,40 @@ src/
         └── ui/        primitives, motion, sections, links, JsonLd
 ```
 
-### なぜルートレイアウトが2つあるのか
+### 3サイトの同居のしかた
 
-このリポジトリには既存サイト（焼肉 千里）が同居しています。
-デザインシステムもフォントも `<html lang>` も別物なので、
-Next.js のルートグループによる **複数ルートレイアウト** で分離しました。
+このリポジトリには焼肉 千里・AI PORT・CRYPTO PORT が同居しています。
+ルートレイアウトは `<html lang="ja">` / `<body>` と共通フォントだけを持ち、
+ブランド固有の外枠は各サイトのレイアウトにあります。
 
-- `/`, `/menu`, `/news` … → `(senri)` のレイアウト
-- `/ja`, `/en/coins` … → `(portal)` のレイアウト
+| 分離するもの     | 方法                                                                                                  |
+| ---------------- | ----------------------------------------------------------------------------------------------------- |
+| CSS              | 各レイアウトが自分のCSSだけを import。他サイトのページには配信されない                                |
+| クラス指定       | すべて `.ai-root` / `.portal-root` の配下に閉じる（`globals.css` の body 指定をこの配下でだけ上書き） |
+| デザイントークン | `@theme` は全サイト共通スコープなので使わず、`.portal-root` の素のカスタムプロパティにする            |
+| フォント         | 各レイアウトで `next/font` を呼び、CSS変数をラッパー要素に載せる                                      |
+| タイトル         | `title.absolute` で組み立てる（後述）                                                                 |
 
-2つのサイト間を移動すると全ページ再読み込みになりますが、相互リンクを張らないため実害はありません。
-別ドメインへ切り出すときは `(portal)` ディレクトリごと移せば済みます。
+#### 言語（`lang` / `dir`）
 
----
+`<html>` はルートレイアウトが持つため、ポータルは `lang` / `dir` を
+**ポータル全体を包むラッパー要素**（`.portal-root`）に置いています。
+
+- `lang` は任意の要素に指定でき、支援技術はその配下を指定言語として読み上げます
+- `dir="rtl"` もラッパーに効くため、アラビア語のレイアウトは全体が反転します
+- 検索エンジンへの言語指定は hreflang（head の link 要素）で行っています
+
+同居している他2サイトは日本語のみのため、ルートの `lang="ja"` を変える必要はありません。
+
+#### タイトル
+
+`title.template` は **同じルートセグメントの `page.js` には効きません**。
+ポータルのトップページは `[locale]/layout.tsx` と `[locale]/page.tsx` が同じ階層のため、
+テンプレートに任せるとルートレイアウト側（焼肉 千里）のテンプレートを拾ってしまいます。
+
+そのため `portalMetadata()` は `title.absolute` で完成形を組み立てます。
+どの階層に置いても表示が変わらず、同居サイトの影響も受けません。
+（`tests/portal-lib.test.ts` で検証しています）
 
 ## API 連携方針
 

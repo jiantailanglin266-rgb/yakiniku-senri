@@ -111,45 +111,52 @@ export default async function PortalLayout(props: {
   const dict = getDictionary(locale);
 
   return (
-    <html
+    /*
+     * `lang` / `dir` をこの要素に置いています。
+     *
+     * `<html>` はルートレイアウト（`src/app/layout.tsx`）が持っており、
+     * 同居している焼肉 千里 / AI PORT はどちらも日本語のみのため `lang="ja"` で固定です。
+     * この要素がポータルの全コンテンツを包むので、支援技術は中身をこの言語として読み、
+     * `dir="rtl"` もレイアウト全体に効きます。
+     * 検索エンジンへの言語指定は hreflang（head の link）で行っています。
+     */
+    <div
       lang={config.hreflang}
       dir={localeDir(locale)}
-      className={`${display.variable} ${body.variable} ${mono.variable}`}
+      className={`portal-root ${display.variable} ${body.variable} ${mono.variable}`}
     >
-      <body className="antialiased">
-        {/* 背景レイヤー。ページ全体で1枚の連続した空間を作ります */}
-        <div className="bg-deep" aria-hidden="true" />
-        <div className="bg-aurora" aria-hidden="true" />
-        <div className="bg-grid" aria-hidden="true" />
-        <div className="bg-noise" aria-hidden="true" />
+      {/* 背景レイヤー。ページ全体で1枚の連続した空間を作ります */}
+      <div className="bg-deep" aria-hidden="true" />
+      <div className="bg-aurora" aria-hidden="true" />
+      <div className="bg-grid" aria-hidden="true" />
+      <div className="bg-noise" aria-hidden="true" />
 
-        <a
-          href="#main"
-          className="glass-strong sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-50 focus:rounded-full focus:px-4 focus:py-2 focus:text-sm"
-        >
-          {dict.common.skipToContent}
-        </a>
+      <a
+        href="#portal-main"
+        className="glass-strong sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-50 focus:rounded-full focus:px-4 focus:py-2 focus:text-sm"
+      >
+        {dict.common.skipToContent}
+      </a>
 
-        <PortalHeader locale={locale} dict={dict} />
+      <PortalHeader locale={locale} dict={dict} />
 
-        <main id="main">{props.children}</main>
+      <main id="portal-main">{props.children}</main>
 
-        <PortalFooter locale={locale} dict={dict} />
-        <CryptoChat locale={locale} dict={dict} />
+      <PortalFooter locale={locale} dict={dict} />
+      <CryptoChat locale={locale} dict={dict} />
 
-        <JsonLd data={[websiteJsonLd(locale), organizationJsonLd()]} />
+      <JsonLd data={[websiteJsonLd(locale), organizationJsonLd()]} />
 
-        {/*
-          言語別のフィード。各言語版のRSSを購読できるようにします。
-          サブディレクトリ配信でも解決できるよう、ベースパスを明示的に付与します。
-        */}
-        <link
-          rel="alternate"
-          type="application/rss+xml"
-          title={`${brand.name} — ${dict.news.title}`}
-          href={withBasePath(localePath(locale, "/rss.xml"))}
-        />
-      </body>
-    </html>
+      {/*
+        言語別のフィード。各言語版のRSSを購読できるようにします。
+        サブディレクトリ配信でも解決できるよう、ベースパスを明示的に付与します。
+      */}
+      <link
+        rel="alternate"
+        type="application/rss+xml"
+        title={`${brand.name} — ${dict.news.title}`}
+        href={withBasePath(localePath(locale, "/rss.xml"))}
+      />
+    </div>
   );
 }

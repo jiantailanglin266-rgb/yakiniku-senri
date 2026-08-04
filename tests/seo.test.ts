@@ -13,7 +13,7 @@ import {
 } from "@/lib/structured-data";
 import sitemap from "@/app/sitemap";
 import robots from "@/app/robots";
-import { metadata as rootMetadata } from "@/app/(senri)/layout";
+import { metadata as rootMetadata } from "@/app/layout";
 import { siteUrl } from "@/data/site";
 import { store } from "@/data/store";
 import { faqs } from "@/data/content";
@@ -135,9 +135,17 @@ describe("sitemap / robots", () => {
     expect(new Set(urls).size).toBe(urls.length);
   });
 
-  it("robots.txt が全ページを許可し sitemap を指す", () => {
+  it("robots.txt が焼肉 千里 の全ページを許可し sitemap を指す", () => {
     const result = robots();
-    expect(result.rules).toEqual([{ userAgent: "*", allow: "/" }]);
+    const rule = Array.isArray(result.rules) ? result.rules[0] : result.rules;
+
+    expect(rule?.userAgent).toBe("*");
+    expect(rule?.allow).toBe("/");
     expect(result.sitemap).toBe(`${siteUrl}/sitemap.xml`);
+
+    // 除外しているのは AI PORT の検索結果ページとAPIだけで、
+    // 焼肉 千里 側のページは1つもブロックされていないこと
+    const disallow = (rule?.disallow ?? []) as string[];
+    expect(disallow.every((path) => path.startsWith("/ai-port"))).toBe(true);
   });
 });
