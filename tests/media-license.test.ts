@@ -414,15 +414,32 @@ describe("候補画像の関連度スコア", () => {
 });
 
 describe("掲載データの状態", () => {
-  it("登録済みの画像は、すべてライセンス情報を持っている", () => {
-    // 空でも通ります。データが入ったときに、推測値の混入を止めるための番人です
+  /*
+    確認キューには、情報が欠けた候補が入ります。
+    作者が取れないから needs_review に落とすのであって、
+    「保存されている＝完全」ではありません。
+    ここで全件に完全性を求めると、取得が成功するほど確実に落ちます
+    （実際に run 30921485172 / 30921898164 がこれで停止し、
+    取得済みのデータが1件も保存されませんでした）。
+
+    そこで2つに分けます。
+      - 全件: 出所をたどれること（どの状態でも辿れないものは保存しない）
+      - 掲載可能なもの: ライセンスと作者まで揃っていること
+  */
+  it("登録済みの画像は、状態にかかわらず出所をたどれる", () => {
     for (const asset of wikimediaAssets) {
-      expect(asset.licenseCode).not.toBe("UNKNOWN");
-      expect(asset.commonsPageUrl).toMatch(/^https:\/\/commons\.wikimedia\.org\//);
-      expect(asset.fileName.length).toBeGreaterThan(0);
-      expect(asset.retrievedAt).toMatch(/^\d{4}-\d{2}-\d{2}/);
+      expect(asset.commonsPageUrl, asset.fileName).toMatch(/^https:\/\/commons\.wikimedia\.org\//);
+      expect(asset.fileName.length, asset.fileName).toBeGreaterThan(0);
+      expect(asset.retrievedAt, asset.fileName).toMatch(/^\d{4}-\d{2}-\d{2}/);
+    }
+  });
+
+  it("掲載可能な画像は、ライセンスと作者が揃っている（推測値の混入防止）", () => {
+    // 空でも通ります。データが入ったときの番人です
+    for (const asset of wikimediaAssets.filter(isPublishable)) {
+      expect(asset.licenseCode, asset.fileName).not.toBe("UNKNOWN");
       if (getLicense(asset.licenseCode).attributionRequired) {
-        expect(asset.authorName).toBeTruthy();
+        expect(asset.authorName, asset.fileName).toBeTruthy();
       }
     }
   });
