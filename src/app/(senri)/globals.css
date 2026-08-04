@@ -1,0 +1,491 @@
+@import "tailwindcss";
+
+/* ============================================================
+   デザインシステム — 焼肉 千里
+   黒 / 金 / 白を基調とした、老舗焼肉店のブランドカラー。
+   ============================================================ */
+@theme {
+  --color-black: #080808;
+  --color-black-soft: #111111;
+  --color-charcoal: #1a1a1a;
+  --color-charcoal-light: #232323;
+  --color-gold: #c7a253;
+  --color-gold-light: #e5ca83;
+  --color-gold-dark: #8f6b28;
+  --color-white: #ffffff;
+  --color-ivory: #f7f3e8;
+  --color-gray: #a7a7a7;
+  --color-gray-dark: #6d6d6d;
+  --color-red-dark: #5f0b0b;
+  --color-ember: #b9381e;
+
+  --font-serif-jp: var(--font-noto-serif-jp), "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --font-sans-jp: var(--font-noto-sans-jp), "Hiragino Sans", "Yu Gothic", sans-serif;
+  --font-display: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+
+  --ease-craft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --breakpoint-xs: 24rem;
+}
+
+/* ------------------------------------------------------------
+   ベース
+   ------------------------------------------------------------ */
+@layer base {
+  :root {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+    /* 固定ヘッダー分のアンカーオフセット */
+    scroll-padding-top: 5.5rem;
+  }
+
+  html,
+  body {
+    /* 横スクロール防止 */
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  body {
+    background-color: transparent;
+    color: var(--color-ivory);
+    font-family: var(--font-sans-jp);
+    font-feature-settings: "palt";
+    letter-spacing: 0.02em;
+    line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-gold-dark);
+    color: var(--color-white);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold-light);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-serif-jp);
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: 0.06em;
+  }
+}
+
+/* 印刷用（お品書きの印刷に対応） */
+@media print {
+  :root {
+    color-scheme: light;
+  }
+  body {
+    background: #fff !important;
+    color: #111 !important;
+  }
+  .bg-canvas,
+  .bg-ornament,
+  .bg-grain,
+  .no-print {
+    display: none !important;
+  }
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.75em;
+    color: #555;
+  }
+}
+
+/* ------------------------------------------------------------
+   処方A — ページ全体を1枚の連続背景に
+   すべてのセクションは background:transparent。境界の色飛びが起きない。
+   ------------------------------------------------------------ */
+.bg-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  pointer-events: none;
+  background:
+    /* 金の光だまり — 対角に2点だけ置いて、金の気配を全体に回す */
+    radial-gradient(72% 52% at 10% 2%, rgba(199, 162, 83, 0.1) 0%, rgba(199, 162, 83, 0) 58%),
+    radial-gradient(64% 46% at 93% 90%, rgba(199, 162, 83, 0.07) 0%, rgba(199, 162, 83, 0) 60%),
+    /* 炭火の赤 — 右上に深い緋色、足元に熾火の温度。どちらも「うっすら」 */
+    radial-gradient(104% 70% at 80% 6%, rgba(95, 11, 11, 0.22) 0%, rgba(95, 11, 11, 0) 62%),
+    radial-gradient(92% 58% at 50% 106%, rgba(185, 56, 30, 0.13) 0%, rgba(185, 56, 30, 0) 60%),
+    /* 以下は既存の地の色 */
+    radial-gradient(120% 60% at 50% -10%, #16110c 0%, rgba(22, 17, 12, 0) 60%),
+    radial-gradient(90% 55% at 110% 32%, #1a120e 0%, rgba(26, 18, 14, 0) 58%),
+    radial-gradient(80% 55% at -10% 70%, #140f0d 0%, rgba(20, 15, 13, 0) 60%),
+    linear-gradient(180deg, #0a0908 0%, #0d0b0a 38%, #100c0a 64%, #080808 100%);
+}
+
+/* 処方A2 — 金の地紋（七宝つなぎ）
+   画面中央は完全に抜き、周縁だけに現れる「額装」として効かせる。
+   本文が乗る中央帯には一切かからないので、可読性は落ちない。 */
+.bg-ornament {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cg fill='none' stroke='%23c7a253' stroke-width='0.9' stroke-opacity='0.5'%3E%3Ccircle cx='0' cy='0' r='30'/%3E%3Ccircle cx='60' cy='0' r='30'/%3E%3Ccircle cx='0' cy='60' r='30'/%3E%3Ccircle cx='60' cy='60' r='30'/%3E%3Ccircle cx='30' cy='30' r='30'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 88px 88px;
+  -webkit-mask-image: radial-gradient(116% 88% at 50% 50%, transparent 34%, #000 100%);
+  mask-image: radial-gradient(116% 88% at 50% 50%, transparent 34%, #000 100%);
+}
+
+/* 処方B — バンディング除去（SVG fractalNoise を overlay で撹拌） */
+.bg-grain {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+/* ------------------------------------------------------------
+   自動翻訳（Google 翻訳ウィジェット）の見た目の後始末
+
+   ウィジェットは画面上部に自前のバーを差し込み、body に top を付けて
+   ページ全体を押し下げます。固定ヘッダーと衝突してレイアウトが崩れるため、
+   バーを隠して押し下げを打ち消します。
+   ------------------------------------------------------------ */
+.skiptranslate iframe,
+iframe.goog-te-banner-frame {
+  display: none !important;
+}
+body {
+  top: 0 !important;
+}
+/* 翻訳後に挿入される <font> が行間や色を変えないようにします */
+font {
+  background: transparent !important;
+  box-shadow: none !important;
+  color: inherit !important;
+}
+/* ウィジェット本体は画面に出しません（描画先だけ確保します） */
+#google_translate_element {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------
+   SNSアイコン — Instagram のブランドグラデーション
+   SVG の <linearGradient id> は同一ページに複数置くと id が重複するため、
+   グラデーションは CSS の背景、ロゴの形は mask で表現しています。
+   ------------------------------------------------------------ */
+.icon-instagram {
+  display: inline-block;
+  background: radial-gradient(
+    circle at 30% 107%,
+    #fdf497 0%,
+    #fdf497 5%,
+    #fd5949 45%,
+    #d6249f 60%,
+    #285aeb 90%
+  );
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9'%3E%3Crect x='1.6' y='1.6' width='20.8' height='20.8' rx='5.8'/%3E%3Ccircle cx='12' cy='12' r='4.8'/%3E%3Ccircle cx='18' cy='6' r='1.15' fill='%23000' stroke='none'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.9'%3E%3Crect x='1.6' y='1.6' width='20.8' height='20.8' rx='5.8'/%3E%3Ccircle cx='12' cy='12' r='4.8'/%3E%3Ccircle cx='18' cy='6' r='1.15' fill='%23000' stroke='none'/%3E%3C/svg%3E");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+
+/* ------------------------------------------------------------
+   処方C — つなぎ目を溶かす
+   ------------------------------------------------------------ */
+/* 幅の狭い金の光の帯（実線ボーダーの代わり） */
+.rule-gold {
+  height: 1px;
+  border: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(199, 162, 83, 0.35) 50%,
+    transparent 100%
+  );
+  opacity: 0.7;
+}
+
+/* 濃色セクションの上下 160px 移行帯 */
+.section-bleed {
+  position: relative;
+  isolation: isolate;
+}
+.section-bleed::before {
+  content: "";
+  position: absolute;
+  inset: -160px 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(5, 4, 4, 0) 0%,
+    rgba(5, 4, 4, 0.75) 160px,
+    rgba(5, 4, 4, 0.75) calc(100% - 160px),
+    rgba(5, 4, 4, 0) 100%
+  );
+}
+
+/* ------------------------------------------------------------
+   処方D — 画像を背景に馴染ませる
+   ------------------------------------------------------------ */
+.media-frame {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.media-frame img,
+.media-frame video,
+.media-frame .media-placeholder {
+  filter: saturate(0.92) contrast(1.04) brightness(0.98);
+}
+/* ページ地の色を薄く被せて色温度を統一 */
+.media-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(16, 12, 10, 0.24) 0%, rgba(8, 8, 8, 0.4) 100%);
+  mix-blend-mode: multiply;
+}
+/* 矩形の縁を立たせないマスクフェード */
+.media-soft {
+  -webkit-mask-image:
+    linear-gradient(180deg, transparent 0%, #000 7%, #000 93%, transparent 100%),
+    linear-gradient(90deg, transparent 0%, #000 5%, #000 95%, transparent 100%);
+  mask-image:
+    linear-gradient(180deg, transparent 0%, #000 7%, #000 93%, transparent 100%),
+    linear-gradient(90deg, transparent 0%, #000 5%, #000 95%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+/* プレースホルダー画像（差し替え前の表示） */
+.media-placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(110% 80% at 30% 0%, rgba(143, 107, 40, 0.22) 0%, rgba(143, 107, 40, 0) 62%),
+    radial-gradient(90% 70% at 80% 100%, rgba(185, 56, 30, 0.16) 0%, rgba(185, 56, 30, 0) 60%),
+    linear-gradient(150deg, #16120f 0%, #0d0b0a 55%, #131010 100%);
+}
+
+/* ------------------------------------------------------------
+   処方E — モーション（ゆっくり像を結ぶ）
+   ------------------------------------------------------------ */
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(26px) scale(0.988);
+    filter: blur(7px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+.reveal {
+  animation: reveal 1100ms var(--ease-craft) both;
+  animation-play-state: paused;
+}
+.reveal.is-in {
+  animation-play-state: running;
+}
+.stagger > * {
+  animation-delay: calc(var(--i, 0) * 80ms);
+}
+
+@keyframes ember-rise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.6);
+  }
+  14% {
+    opacity: var(--ember-opacity, 0.7);
+  }
+  72% {
+    opacity: var(--ember-opacity, 0.7);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--ember-drift, 12px), -140px, 0) scale(1);
+  }
+}
+
+@keyframes smoke-drift {
+  0% {
+    opacity: 0;
+    transform: translate3d(-4%, 8%, 0) scale(1.08);
+  }
+  40% {
+    opacity: 0.45;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(4%, -14%, 0) scale(1.24);
+  }
+}
+
+@keyframes marquee-up {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-50%);
+  }
+}
+@keyframes marquee-down {
+  from {
+    transform: translateY(-50%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes scroll-hint {
+  0% {
+    transform: scaleY(0.08);
+    transform-origin: top;
+    opacity: 0.25;
+  }
+  45% {
+    transform: scaleY(1);
+    transform-origin: top;
+    opacity: 1;
+  }
+  46% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+    opacity: 1;
+  }
+  100% {
+    transform: scaleY(0.08);
+    transform-origin: bottom;
+    opacity: 0.25;
+  }
+}
+
+/* ------------------------------------------------------------
+   ユーティリティ
+   ------------------------------------------------------------ */
+.text-gold-gradient {
+  background: linear-gradient(
+    120deg,
+    var(--color-gold-dark) 0%,
+    var(--color-gold-light) 42%,
+    var(--color-gold) 68%,
+    var(--color-gold-light) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.vertical-rl {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+/* Canvas / SVG に頼らない軽量な炭火のにじみ */
+.ember-glow {
+  background: radial-gradient(
+    60% 50% at 50% 100%,
+    rgba(185, 56, 30, 0.34) 0%,
+    rgba(143, 107, 40, 0.18) 38%,
+    rgba(8, 8, 8, 0) 72%
+  );
+}
+
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ------------------------------------------------------------
+   reduced motion — すべてのモーションを無効化（必須）
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
+
+/* ============================================================
+   デザイントークン — AI PORT（/ai-port 配下）
+
+   同じリポジトリで2つのブランドを配信しているため、
+   トークン名はすべて `ai-` で始めて衝突を避けています。
+   （例: bg-ai-void / text-ai-cyan / font-ai-display）
+
+   実際の見た目のルール（背景・ガラス・グロー）は
+   src/styles/ai-port.css にあり、/ai-port のレイアウトからのみ読み込みます。
+   ============================================================ */
+@theme {
+  /* 地の色 — 深宇宙のネイビーからブラックへ */
+  --color-ai-void: #04060f;
+  --color-ai-abyss: #070b18;
+  --color-ai-ink: #0c1226;
+  --color-ai-slate: #141c36;
+  --color-ai-line: #1e2947;
+
+  /* 文字 */
+  --color-ai-white: #f4f8ff;
+  --color-ai-mist: #c3cee4;
+  --color-ai-haze: #8494b3;
+  --color-ai-dim: #5b6a88;
+
+  /* アクセント — シアン→ブルー→パープル→ピンクの連なり */
+  --color-ai-cyan: #2ee6ff;
+  --color-ai-sky: #4aa8ff;
+  --color-ai-blue: #4d6dff;
+  --color-ai-violet: #8b5cf6;
+  --color-ai-purple: #a855f7;
+  --color-ai-pink: #ff4fd8;
+  --color-ai-mint: #5eead4;
+  --color-ai-amber: #ffb547;
+
+  --font-ai-display: var(--font-space-grotesk), var(--font-noto-sans-jp), system-ui, sans-serif;
+  --font-ai-sans: var(--font-noto-sans-jp), "Hiragino Sans", system-ui, sans-serif;
+  --font-ai-mono: var(--font-jetbrains-mono), ui-monospace, "SFMono-Regular", monospace;
+
+  --ease-ai: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-ai-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}

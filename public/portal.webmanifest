@@ -1,0 +1,11 @@
+{
+  "name": "CRYPTO PORT",
+  "short_name": "CryptoPort",
+  "description": "仮想通貨ニュース、価格、取引所比較、Web3.0ツールをリアルタイムで集約するポータルサイト。",
+  "start_url": "/ja",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#04050a",
+  "theme_color": "#04050a",
+  "icons": [{ "src": "/icon.png", "sizes": "512x512", "type": "image/png" }]
+}
