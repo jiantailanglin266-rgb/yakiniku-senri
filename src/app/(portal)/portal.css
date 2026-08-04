@@ -328,6 +328,18 @@ html:has(.portal-root) {
 }
 
 /* ------------------------------------------------------------
+   銘柄バナーのマーキー
+   両端を溶かして、帯の切り口を見せません。
+   流れ自体は下の `.marquee` と共通です（hover停止・reduced-motion対応も共通）。
+   ------------------------------------------------------------ */
+.portal-root .coin-marquee {
+  overflow: hidden;
+  padding-block: clamp(0.75rem, 2vw, 1.25rem);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+}
+
+/* ------------------------------------------------------------
    ティッカー（横に流れる相場表示）
    ------------------------------------------------------------ */
 .portal-root .marquee {

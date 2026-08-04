@@ -89,6 +89,28 @@ export const siteAssetCredits: SiteAssetCredit[] = [
       "運営者から提供された画像です。画面デザインのイメージであり、画像内に描かれている価格・評価・手数料・キャンペーン金額は実際のデータではありません。実在の取引所名・ウォレット名が描かれているため、数値として読まれないよう、掲載箇所には必ず注記（PageVisual の figcaption）を添えています。",
   },
   {
+    id: "cryptoport-coin-banners",
+    label: "CRYPTO PORT トップの銘柄バナー（10点）",
+    origin: "first-party",
+    path: "public/images/portal/marquee/",
+    fileCount: 10,
+    authorName: "サイト運営者",
+    authorUrl: null,
+    sourceName: "運営者が生成AIで作成し、提供を受けたもの",
+    sourceUrl: null,
+    licenseCode: "自作",
+    licenseName: "サイト運営者が権利を持つ素材",
+    licenseUrl: null,
+    licenseTextPath: null,
+    isModified: true,
+    modificationDescription:
+      "掲載サイズに合わせ、1200×600（横2:1）で中央を切り出した WebP へ変換（切り出し・リサイズ・形式変換のみ）",
+    usedOn: ["CRYPTO PORT トップページ上部の銘柄バナー（CoinMarquee）"],
+    verifiedAt: "2026-08-04",
+    verificationNote:
+      "運営者から提供された画像です。各銘柄のロゴ意匠と英語のキャッチコピー（THE PEOPLE'S COIN など）、右肩上がりのチャートを背景に描いた装飾画像であり、価格の見通しを示すものではありません。値動きの数値は描かれていません。画像内の文字は読み上げに乗らないため alt は空にし、リンク名は銘柄名で与えています。",
+  },
+  {
     id: "flag-icons",
     label: "言語切り替えの国旗（42点）",
     origin: "third-party",
