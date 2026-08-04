@@ -75,12 +75,20 @@ export default async function StoresPage() {
             title={store.name}
             description={`${store.prefecture ?? ""}${store.city ?? ""}${store.addressLine ?? ""}`}
             action={
-              <Link
-                href={`/booking/${store.slug}`}
-                className="text-xs text-[--color-accent] hover:underline"
-              >
-                /booking/{store.slug}
-              </Link>
+              <div className="flex items-center gap-3 text-xs">
+                <Link
+                  href={`/booking/${store.slug}`}
+                  className="text-[--color-ink-muted] hover:underline"
+                >
+                  /booking/{store.slug}
+                </Link>
+                <Link
+                  href={`/admin/stores/${store.id}`}
+                  className="text-[--color-accent] hover:underline"
+                >
+                  {t("common.edit")}
+                </Link>
+              </div>
             }
           />
           <CardBody className="grid gap-6 lg:grid-cols-3">
@@ -160,10 +168,6 @@ export default async function StoresPage() {
           </CardBody>
         </Card>
       ))}
-
-      <p className="text-xs text-[--color-ink-subtle]">
-        店舗設定の編集画面は Phase 2 で実装予定です。
-      </p>
     </>
   );
 }

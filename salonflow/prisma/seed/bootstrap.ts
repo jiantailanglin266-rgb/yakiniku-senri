@@ -275,13 +275,14 @@ async function main(): Promise<void> {
   console.log(`  公開予約ページ: /booking/${config.storeSlug}`);
   console.log("");
   console.log("次にやること:");
-  console.log("  1. 管理画面にログインし、パスワードが通ることを確認する");
-  console.log("  2. 店舗設定で営業時間を開ける（初期状態は全曜日が休業です）");
-  console.log("  3. 設備・スタッフ・メニューを登録する");
-  console.log("  4. スタッフのシフトを入れる");
+  console.log("  1. /signin でログインし、パスワードが通ることを確認する");
+  console.log("  2. /admin/stores → 編集 で営業時間を開ける（初期状態は全曜日が休業です）");
+  console.log("  3. /admin/services でメニューを登録する");
+  console.log("  4. /admin/staff でスタッフを登録する");
+  console.log("  5. スタッフ一覧の「シフト」からシフトを入れる");
   console.log("");
-  console.log("営業時間を開け、スタッフとメニューを登録するまで、");
-  console.log("公開予約ページには空き枠が表示されません。");
+  console.log("残りの手順は店舗設定画面のチェックリストに表示されます。");
+  console.log("この 4 つがそろうまで、公開予約ページには空き枠が 1 件も表示されません。");
 }
 
 main()

@@ -1,10 +1,22 @@
-import { requireContext } from "@/server/auth/context";
+import Link from "next/link";
+
+import { can, requireContext } from "@/server/auth/context";
+import { PERMISSIONS } from "@/server/permissions/catalog";
 import { prisma } from "@/server/db/client";
 import { orgScope } from "@/server/db/tenant";
 import { maskStaffCompensation } from "@/server/permissions/mask";
 import { formatMoney } from "@/lib/money";
 import { getTranslator } from "@/i18n";
-import { Badge, Card, EmptyState, PageHeader, Table, Td, Th } from "@/components/ui/primitives";
+import {
+  Badge,
+  Button,
+  Card,
+  EmptyState,
+  PageHeader,
+  Table,
+  Td,
+  Th,
+} from "@/components/ui/primitives";
 
 export const metadata = { title: "スタッフ" };
 export const dynamic = "force-dynamic";
@@ -45,9 +57,21 @@ export default async function StaffPage() {
     trainee: "研修生",
   };
 
+  const canManage = can(context, PERMISSIONS.STAFF_MANAGE);
+
   return (
     <>
-      <PageHeader title={t("staff.title")} description={`${rows.length} 名`} />
+      <PageHeader
+        title={t("staff.title")}
+        description={`${rows.length} 名`}
+        actions={
+          canManage ? (
+            <Link href="/admin/staff/new">
+              <Button type="button">{t("settings.newStaff")}</Button>
+            </Link>
+          ) : null
+        }
+      />
 
       {context.masks.staffCompensation ? (
         <p className="text-xs text-[--color-ink-subtle]">{t("staff.compensationHidden")}</p>
@@ -68,6 +92,7 @@ export default async function StaffPage() {
                 <Th className="text-right">歩合</Th>
                 <Th className="text-right">{t("staff.skills")}</Th>
                 <Th>{t("staff.bookable")}</Th>
+                {canManage ? <Th className="text-right">{t("common.actions")}</Th> : null}
               </tr>
             </thead>
             <tbody>
@@ -105,6 +130,22 @@ export default async function StaffPage() {
                         ) : null}
                       </div>
                     </Td>
+                    {canManage ? (
+                      <Td className="text-right whitespace-nowrap">
+                        <Link
+                          href={`/admin/staff/${row.id}`}
+                          className="text-xs text-[--color-accent] hover:underline"
+                        >
+                          {t("common.edit")}
+                        </Link>
+                        <Link
+                          href={`/admin/staff/${row.id}/shifts`}
+                          className="ml-3 text-xs text-[--color-accent] hover:underline"
+                        >
+                          {t("settings.shifts")}
+                        </Link>
+                      </Td>
+                    ) : null}
                   </tr>
                 );
               })}
@@ -112,10 +153,6 @@ export default async function StaffPage() {
           </Table>
         )}
       </Card>
-
-      <p className="text-xs text-[--color-ink-subtle]">
-        スタッフの編集・シフト編集画面は Phase 2 で実装予定です。
-      </p>
     </>
   );
 }

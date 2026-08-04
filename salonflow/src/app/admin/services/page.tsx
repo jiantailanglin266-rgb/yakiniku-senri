@@ -1,10 +1,14 @@
-import { requireContext } from "@/server/auth/context";
+import Link from "next/link";
+
+import { can, requireContext } from "@/server/auth/context";
+import { PERMISSIONS } from "@/server/permissions/catalog";
 import { prisma } from "@/server/db/client";
 import { orgScope } from "@/server/db/tenant";
 import { formatMoney } from "@/lib/money";
 import { getTranslator } from "@/i18n";
 import {
   Badge,
+  Button,
   Card,
   CardHeader,
   EmptyState,
@@ -57,16 +61,27 @@ export default async function ServicesPage() {
   });
 
   const withServices = categories.filter((category) => category.services.length > 0);
+  const canManage = can(context, PERMISSIONS.STORE_MANAGE);
 
   return (
     <>
       <PageHeader
         title={t("service.title")}
         description="価格は税込表示（店舗設定の税区分に従います）"
+        actions={
+          canManage ? (
+            <Link href="/admin/services/new">
+              <Button type="button">{t("settings.newService")}</Button>
+            </Link>
+          ) : null
+        }
       />
 
       {withServices.length === 0 ? (
-        <EmptyState title={t("common.noData")} />
+        <EmptyState
+          title={t("common.noData")}
+          description={canManage ? t("settings.setupServiceTodo") : undefined}
+        />
       ) : (
         withServices.map((category) => (
           <Card key={category.id}>
@@ -84,6 +99,7 @@ export default async function ServicesPage() {
                   <Th className="text-right">{t("service.unattended")}</Th>
                   <Th>{t("appointment.resources")}</Th>
                   <Th>{t("service.onlineBookable")}</Th>
+                  {canManage ? <Th className="text-right">{t("common.actions")}</Th> : null}
                 </tr>
               </thead>
               <tbody>
@@ -131,6 +147,16 @@ export default async function ServicesPage() {
                         ) : null}
                       </div>
                     </Td>
+                    {canManage ? (
+                      <Td className="text-right whitespace-nowrap">
+                        <Link
+                          href={`/admin/services/${service.id}`}
+                          className="text-xs text-[--color-accent] hover:underline"
+                        >
+                          {t("common.edit")}
+                        </Link>
+                      </Td>
+                    ) : null}
                   </tr>
                 ))}
               </tbody>
@@ -138,10 +164,6 @@ export default async function ServicesPage() {
           </Card>
         ))
       )}
-
-      <p className="text-xs text-[--color-ink-subtle]">
-        メニューの編集画面は Phase 2 で実装予定です。現在はシードデータの内容を表示しています。
-      </p>
     </>
   );
 }
