@@ -94,21 +94,90 @@ export function PageHeader({
   title,
   lead,
   meta,
+  display,
 }: {
   eyebrow?: string;
   title: string;
   lead?: string;
   meta?: ReactNode;
+  /**
+   * 大きく置く英字（例: `News`）。
+   *
+   * デザイン見本に合わせ、英字を主役の大きさで出し、日本語タイトルを添えます。
+   * 見出しの本体は日本語側（h1）で、英字は装飾なので読み上げから外します。
+   */
+  display?: string;
 }) {
   return (
     <header className="mb-10">
-      {eyebrow ? <p className="eyebrow mb-3">{eyebrow}</p> : null}
-      <h1 className="text-3xl font-semibold sm:text-4xl lg:text-5xl">
-        <span className="text-gradient">{title}</span>
+      {display ? (
+        <p
+          aria-hidden="true"
+          className="font-display text-gradient text-5xl leading-none font-bold tracking-tight sm:text-6xl lg:text-7xl"
+        >
+          {display}
+        </p>
+      ) : eyebrow ? (
+        <p className="eyebrow mb-3">{eyebrow}</p>
+      ) : null}
+
+      <h1
+        className={
+          display
+            ? "mt-3 text-2xl font-semibold sm:text-3xl"
+            : "text-3xl font-semibold sm:text-4xl lg:text-5xl"
+        }
+      >
+        {display ? title : <span className="text-gradient">{title}</span>}
       </h1>
+
       {lead ? <p className="mt-4 max-w-3xl text-(--color-ink-soft)">{lead}</p> : null}
       {meta ? <div className="mt-5">{meta}</div> : null}
       <div className="rule-gradient mt-6 w-48" />
     </header>
+  );
+}
+
+/**
+ * 本文＋右サイドバーの2カラム。
+ *
+ * デザイン見本はどのページも右側に補助情報（人気ランキング・関連リンク・
+ * 初心者向けCTA）を置いています。狭い画面では縦積みになり、
+ * サイドバーは本文の後ろへ回ります（読み上げ順も本文が先）。
+ */
+export function WithSidebar({
+  children,
+  aside,
+  className,
+}: {
+  children: ReactNode;
+  aside: ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={cx("grid gap-8 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-10", className)}>
+      <div className="min-w-0">{children}</div>
+      <aside className="min-w-0 lg:sticky lg:top-24 lg:self-start">
+        <div className="grid gap-4">{aside}</div>
+      </aside>
+    </div>
+  );
+}
+
+/** サイドバーに置く小さなまとまり */
+export function AsideCard({
+  title,
+  children,
+  className,
+}: {
+  title: string;
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <section className={cx("glass rounded-2xl p-4", className)}>
+      <h2 className="mb-3 text-sm font-semibold">{title}</h2>
+      {children}
+    </section>
   );
 }

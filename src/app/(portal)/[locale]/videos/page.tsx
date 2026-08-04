@@ -88,7 +88,7 @@ export default async function VideosPage(props: { params: Promise<{ locale: stri
     <Section className="pt-28">
       <Container>
         <Breadcrumbs trail={trail} locale={locale} dict={dict} />
-        <PageHeader eyebrow="YouTube" title={dict.videos.title} lead={dict.videos.lead} />
+        <PageHeader display="YouTube" title={dict.videos.title} lead={dict.videos.lead} />
 
         <NoticeBox tone="cyan" className="mb-8">
           {locale === "ja"

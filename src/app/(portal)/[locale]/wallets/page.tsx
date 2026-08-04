@@ -55,7 +55,7 @@ export default async function WalletsPage(props: { params: Promise<{ locale: str
     <Section className="pt-28">
       <Container>
         <Breadcrumbs trail={trail} locale={locale} dict={dict} />
-        <PageHeader eyebrow="Wallets" title={dict.wallets.title} lead={dict.wallets.lead} />
+        <PageHeader display="Wallets" title={dict.wallets.title} lead={dict.wallets.lead} />
 
         {/* 比較表より先に、鍵の扱いに関する注意を読ませます */}
         <NoticeBox tone="rose" className="mb-8">

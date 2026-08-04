@@ -42,7 +42,7 @@ export default async function ExchangesPage(props: { params: Promise<{ locale: s
       <Container>
         <Breadcrumbs trail={trail} locale={locale} dict={dict} />
         <PageHeader
-          eyebrow="Exchanges"
+          display="Exchanges"
           title={dict.exchanges.domestic}
           lead={dict.exchanges.domesticLead}
         />

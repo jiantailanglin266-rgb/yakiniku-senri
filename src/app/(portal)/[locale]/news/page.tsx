@@ -8,7 +8,17 @@ import { groupedNews, NEWS_DATASET_STATUS, trendingNews } from "@/portal/data/ne
 import { breadcrumbJsonLd } from "@/portal/lib/structured-data";
 import { t } from "@/portal/lib/format";
 
-import { Breadcrumbs, Container, PageHeader, Section } from "@/portal/components/layout/Shell";
+import {
+  AsideCard,
+  Breadcrumbs,
+  Container,
+  PageHeader,
+  Section,
+  WithSidebar,
+} from "@/portal/components/layout/Shell";
+import Link from "next/link";
+import { localePath } from "@/portal/i18n/config";
+import { newsCategories } from "@/portal/data/news";
 import { NewsBrowser } from "@/portal/components/news/NewsBrowser";
 import { NewsCard } from "@/portal/components/news/NewsCard";
 import { NoticeBox, SectionHeading } from "@/portal/components/ui/primitives";
@@ -45,7 +55,7 @@ export default async function NewsPage(props: { params: Promise<{ locale: string
     <Section className="pt-28">
       <Container>
         <Breadcrumbs trail={trail} locale={locale} dict={dict} />
-        <PageHeader eyebrow="News" title={dict.news.title} lead={dict.news.lead} />
+        <PageHeader display="News" title={dict.news.title} lead={dict.news.lead} />
 
         {NEWS_DATASET_STATUS === "sample" ? (
           <NoticeBox tone="cyan" className="mb-6">
@@ -55,7 +65,58 @@ export default async function NewsPage(props: { params: Promise<{ locale: string
           </NoticeBox>
         ) : null}
 
-        <NewsBrowser groups={groups} locale={locale} dict={dict} />
+        <WithSidebar
+          aside={
+            <>
+              {/* 見本の「トレンドワード」に相当。実データはカテゴリの件数から出します */}
+              <AsideCard title={dict.news.trending}>
+                <ol className="grid gap-2 text-sm">
+                  {trending.slice(0, 5).map((article, index) => (
+                    <li key={article.id} className="flex gap-2">
+                      <span aria-hidden="true" className="font-mono text-xs text-(--color-violet)">
+                        {index + 1}
+                      </span>
+                      <Link
+                        href={localePath(locale, `/news/${article.slug}`)}
+                        className="line-clamp-2 text-(--color-ink-soft) transition-colors hover:text-white"
+                      >
+                        {t(article.title, locale)}
+                      </Link>
+                    </li>
+                  ))}
+                </ol>
+              </AsideCard>
+
+              <AsideCard title={dict.common.category}>
+                <ul className="flex flex-wrap gap-1.5 text-xs">
+                  {newsCategories.map((category) => (
+                    <li key={category.id}>
+                      <Link
+                        href={localePath(locale, `/news?category=${category.id}`)}
+                        className="glass inline-block rounded-full px-2.5 py-1 text-(--color-ink-soft) transition-colors hover:text-white"
+                      >
+                        {t(category.label, locale)}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </AsideCard>
+
+              {/* 見本の「はじめての方へ」CTA */}
+              <AsideCard title={dict.learn.title}>
+                <p className="text-sm text-(--color-ink-soft)">{dict.learn.lead}</p>
+                <Link
+                  href={localePath(locale, "/learn")}
+                  className="mt-3 inline-block text-sm text-(--color-cyan-soft) hover:underline"
+                >
+                  {dict.common.viewAll} →
+                </Link>
+              </AsideCard>
+            </>
+          }
+        >
+          <NewsBrowser groups={groups} locale={locale} dict={dict} />
+        </WithSidebar>
 
         <div className="mt-16">
           <SectionHeading
