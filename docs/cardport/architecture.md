@@ -133,6 +133,7 @@
 | `.text-aurora` / `.text-gold-port`                                | 文字グラデーション                            |
 | `.card3d` / `.card3d-sheen` / `.holo`                             | 3D券面・光の走査・ホログラム                  |
 | `.port-float` / `.port-reveal` / `.port-marquee` / `.port-stream` | 浮遊・出現・ティッカー・データストリーム      |
+| `.port-prism`                                                     | FVで色が巡る背景グラデーション                |
 | `.sticky-col`                                                     | 比較表の1列目固定                             |
 
 ### 3D とアニメーションの方針
@@ -143,6 +144,11 @@
   - 差し替え口: `components/visual/` の `ParticleField` / `TiltCard` / `CardArt` を置き換えれば R3F へ移行できます
 - 粒子は画面サイズと `devicePixelRatio` から数を決め、画面外では停止します
 - `prefers-reduced-motion` ですべてのモーションを無効化します（CSS 側で一括）
+  - 一括指定は `animation-duration: 0.001ms` なので、終端まで飛んで止まると困るものは
+    個別に `animation: none` を当てます（`.port-marquee` / `.port-prism` など）
+- 背景レイヤーを敷く節には `isolate` が必須です。
+  `-z-10` は節が重ね合わせ文脈を作らないと `.cardport-root` の不透明な背景の裏へ回り、
+  背景レイヤーが丸ごと見えなくなります（`position: relative` だけでは文脈を作りません）
 
 ## 6. 使用技術
 
