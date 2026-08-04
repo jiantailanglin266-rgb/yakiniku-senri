@@ -132,6 +132,7 @@ export function EventsSection() {
         }
         description="毎年継続して開催されている公式イベントだけを掲載しています。開催日は年ごとに変わるため、確定日程は各公式サイトでご確認ください。"
         action={{ href: aiPortPath("/events"), label: "イベント一覧" }}
+        banner="events"
       />
 
       <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -290,6 +291,7 @@ export function DiagnosisSection() {
         }
         description="登録不要・無料。回答はブラウザ内だけで処理し、サーバーへは送信していません。結果では次にやることまで示します。"
         action={{ href: aiPortPath("/diagnosis"), label: "診断一覧" }}
+        banner="diagnosis"
       />
 
       <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -409,6 +411,7 @@ export function GuidesSection() {
         // ⚠ PVを取得していないため「人気記事」とは表示しません（事実でない見出しは付けない）
         description="AI PORT 編集部が書いた一次コンテンツです。更新日を明記し、確認できた事実だけを載せています。"
         action={{ href: aiPortPath("/guides"), label: "記事一覧" }}
+        banner="guides"
       />
 
       <ul className="mt-10 grid gap-4 lg:grid-cols-3">
@@ -470,6 +473,7 @@ export function TopicsSection() {
         }
         description="AIの基礎から業界別の活用、Web3まで。各ハブには最新ニュース・関連ツール・想定される質問への回答をまとめています。"
         action={{ href: aiPortPath("/topics"), label: "カテゴリー一覧" }}
+        banner="topics"
       />
 
       <div className="mt-10 space-y-8">
@@ -528,6 +532,7 @@ export function FaqSection() {
             よくある<GradientText>ご質問</GradientText>
           </>
         }
+        banner="faq"
       />
 
       <ul className="mt-10 grid gap-3 lg:grid-cols-2">

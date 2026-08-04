@@ -179,6 +179,34 @@ export const siteAssetCredits: SiteAssetCredit[] = [
     verificationNote: "外部素材・外部フォントを含まない、手書きの SVG です。",
   },
   {
+    id: "ai-port-section-banners",
+    label: "AI PORT のセクション見出し画像（9点）",
+    origin: "first-party",
+    path: "public/images/ai-port/sections/",
+    fileCount: 9,
+    authorName: "サイト運営者",
+    authorUrl: null,
+    sourceName: "サイト運営者が ChatGPT（画像生成）で作成",
+    sourceUrl: null,
+    licenseCode: "自作",
+    licenseName: "サイト運営者が権利を持つ素材",
+    licenseUrl: null,
+    licenseTextPath: null,
+    isModified: true,
+    modificationDescription:
+      "9点のうち5点（youtube / events / guides / topics / faq）は下部を切り落としています。" +
+      "元素材の下部に「サイトの画面らしきUI」が描き込まれており、そこに実在しない数字と固有名詞" +
+      "（架空の再生数・架空の更新日・サイトが扱っていないイベント名・実在しない質問）が" +
+      "含まれていたためです。実データの一覧のすぐ上に並ぶと読者が実データと読み違えます。" +
+      "見出しと説明文は切っていません。ほかに JPEG への変換のみ（意匠は変更していません）",
+    usedOn: ["AI PORT トップページのセクション見出し（9箇所）"],
+    verifiedAt: "2026-08-04",
+    verificationNote:
+      "サイト運営者から提供された生成画像です。生成AIの出力のため、実在の人物を写した写真ではありません" +
+      "（肖像権の確認対象となる被写体はいません）。画像内の文字は画面に表示している見出し・説明文と" +
+      "一致することを確認済みです。切り落とした範囲は上記のとおりです。",
+  },
+  {
     id: "senri-photos",
     label: "焼肉 千里 の写真・図版",
     origin: "unverified",
