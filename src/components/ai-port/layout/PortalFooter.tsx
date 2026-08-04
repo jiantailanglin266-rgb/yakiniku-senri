@@ -26,7 +26,7 @@ export function PortalFooter() {
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)]">
           <div>
             <div className="flex items-center gap-2.5">
-              <PortalLogo className="size-9" />
+              <PortalLogo className="h-9" />
               <div>
                 <p className="font-ai-display text-ai-white text-[1.05rem] leading-none font-semibold tracking-[0.14em]">
                   AI PORT
