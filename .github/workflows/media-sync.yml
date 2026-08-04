@@ -175,7 +175,7 @@ jobs:
           生成したものです。承認されていない画像は表示されません。"
 
           # 実行中に main が進むことがあります（他の作業と並行するため）。
-          # 取り込んでから押し直します。生成物は自分の変更を優先します。
+          # 取り込んでから押し直します。生成物は今回の実行結果を優先します。
           for attempt in 1 2 3; do
             if git push origin HEAD:main; then
               echo "push しました。"
@@ -183,7 +183,13 @@ jobs:
             fi
             echo "push が拒否されました。main を取り込んで再試行します（$attempt 回目）..."
             git fetch origin main
-            git rebase origin/main -X ours || {
+            # ⚠ rebase の ours / theirs は merge と逆です。
+            #   rebase 中の "ours" は rebase 先（＝origin/main）を指すため、
+            #   -X ours にすると生成物が main 側で上書きされ、取得結果が消えます。
+            #   実際、594ac26 では画像だけが入り、それを指す JSON が失われました
+            #   （バイナリは衝突しないので残り、JSON だけ落ちます）。
+            #   生成物は決定的な出力なので、こちらの版を採用します。
+            git rebase origin/main -X theirs || {
               git rebase --abort || true
               echo "取り込みに失敗しました。"
               exit 1
