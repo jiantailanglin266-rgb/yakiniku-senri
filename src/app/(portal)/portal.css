@@ -513,6 +513,22 @@ html:has(.portal-root) {
     overflow-x: auto;
   }
 
+  .portal-root .kw-track {
+    animation: none;
+    overflow-x: auto;
+  }
+
+  .portal-root .kw-row {
+    /* 動かないものを斜めにすると読みにくいだけなので、水平に戻します */
+    rotate: none;
+    width: 100%;
+    margin-inline: 0;
+  }
+
+  .portal-root .kw-band::before {
+    animation: none;
+  }
+
   .portal-root .bg-aurora {
     animation: none;
   }
@@ -539,5 +555,141 @@ html:has(.portal-root) {
     background: #fff !important;
     border-color: #ddd !important;
     backdrop-filter: none !important;
+  }
+}
+
+/* ------------------------------------------------------------
+   斜めのキーワード帯
+
+   ■ 斜めにする方法
+     帯そのものを `rotate` し、幅を画面より広く取ります。
+     回転すると四隅が内側へ入り込むため、幅が 100% のままだと
+     左右に三角形の隙間ができます。`width: 140%` と負のマージンで外へ逃がします。
+
+   ■ 帯を包む要素で `overflow: hidden`
+     回転した帯は本来の箱からはみ出します。そのまま置くと
+     横スクロールバーが出るため、外側で必ず刈り取ります。
+
+   ■ 色
+     文字そのものにグラデーションを乗せます（`background-clip: text`）。
+     背景を塗って白文字にすると、帯が主張しすぎて後ろの内容が読めなくなります。
+     グラデーションは位置をずらし続けるので、流れと合わせて色が変化します。
+   ------------------------------------------------------------ */
+.portal-root .kw-band {
+  position: relative;
+  overflow: hidden;
+  /* 回転で上下にはみ出すぶんを、外側の余白ではなく内側で吸収します */
+  padding-block: clamp(2rem, 6vw, 3.5rem);
+  isolation: isolate;
+}
+
+/* 帯の背後に置くグラデーション。面で光らせず、斜めの帯にだけ色を残します */
+.portal-root .kw-band::before {
+  content: "";
+  position: absolute;
+  inset: -20% -10%;
+  z-index: -1;
+  background:
+    radial-gradient(
+      42% 60% at 15% 30%,
+      color-mix(in oklab, var(--color-cyan) 26%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      46% 62% at 78% 68%,
+      color-mix(in oklab, var(--color-violet) 30%, transparent),
+      transparent 72%
+    ),
+    radial-gradient(
+      38% 50% at 52% 12%,
+      color-mix(in oklab, var(--color-magenta, var(--color-violet)) 22%, transparent),
+      transparent 70%
+    );
+  filter: blur(28px);
+  animation: cp-kw-drift 22s ease-in-out infinite alternate;
+}
+
+.portal-root .kw-row {
+  display: flex;
+  width: 140%;
+  margin-inline: -20%;
+  /* 角度は行ごとに `--kw-angle` で渡します */
+  rotate: var(--kw-angle, -3deg);
+}
+
+.portal-root .kw-track {
+  display: flex;
+  width: max-content;
+  animation: cp-marquee-scroll var(--marquee-duration, 40s) linear infinite;
+  animation-direction: var(--kw-direction, normal);
+}
+.portal-root .kw-row:hover .kw-track,
+.portal-root .kw-row:focus-within .kw-track {
+  animation-play-state: paused;
+}
+
+.portal-root .kw-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75em;
+  padding-inline: 0.6em;
+  font-family: var(--font-portal-display), "Space Grotesk", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.35rem, 5.2vw, 2.75rem);
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+
+  background: linear-gradient(
+    92deg,
+    var(--color-cyan) 0%,
+    var(--color-violet) 28%,
+    #ff5fd2 52%,
+    #ffd166 74%,
+    var(--color-cyan) 100%
+  );
+  background-size: 320% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: cp-kw-hue 12s linear infinite;
+}
+
+/* 1行おきに輪郭だけにして、色の面積を抑えます */
+.portal-root .kw-row[data-variant="outline"] .kw-item {
+  background: none;
+  color: transparent;
+  -webkit-text-stroke: 1px color-mix(in oklab, var(--color-ink) 42%, transparent);
+  animation: none;
+}
+
+/* 語の区切り。文字と同じ色で流れるので、帯全体がひと続きに見えます */
+.portal-root .kw-dot {
+  width: 0.34em;
+  height: 0.34em;
+  border-radius: 999px;
+  background: currentColor;
+  opacity: 0.5;
+}
+.portal-root .kw-row[data-variant="outline"] .kw-dot {
+  background: color-mix(in oklab, var(--color-violet) 70%, transparent);
+  opacity: 0.7;
+}
+
+@keyframes cp-kw-hue {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 320% 50%;
+  }
+}
+
+@keyframes cp-kw-drift {
+  from {
+    transform: translate3d(-3%, -2%, 0) scale(1);
+  }
+  to {
+    transform: translate3d(3%, 2%, 0) scale(1.08);
   }
 }

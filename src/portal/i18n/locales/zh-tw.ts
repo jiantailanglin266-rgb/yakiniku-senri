@@ -94,6 +94,16 @@ export const zhTw: Dictionary = {
     featured: "重點幣種",
     featuredLead: "由編輯部依市值與目前關注度挑選。",
     dataNote: "價格僅供參考，交易前請務必於交易所確認。",
+    live: {
+      title: "即時走勢圖",
+      lead: "主要幣種價格，由瀏覽器直接取得。",
+      connected: "取得中",
+      throttled: "已達資料來源限制（約 {sec} 秒後重試）",
+      failed: "未能更新（顯示上一次取得的值）",
+      interval: "約每 {sec} 秒更新",
+      source: "資料來源",
+      note: "約每 60 秒更新一次，並非逐筆變動。交易請以交易所價格為準。",
+    },
   },
   news: {
     title: "最新加密貨幣新聞",

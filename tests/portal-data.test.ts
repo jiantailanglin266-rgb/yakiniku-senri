@@ -15,6 +15,7 @@ import { legalPages } from "@/portal/data/legal";
 import { groupedNews, news, relatedByStory, trendingNews } from "@/portal/data/news";
 import { footerNav, mainNav, siteFaq } from "@/portal/data/site-content";
 import { coinBanners } from "@/portal/data/coin-banners";
+import { keywordRows } from "@/portal/data/keywords";
 import { brandLogoVideo } from "@/portal/lib/site";
 import { navLabel } from "@/portal/lib/format";
 
@@ -512,11 +513,18 @@ describe("ナビゲーションの多言語化", () => {
   });
 
   it("dictKey が実在するキーを指している", () => {
-    const dict = getDictionary("ja") as unknown as Record<string, Record<string, unknown>>;
+    const dict = getDictionary("ja") as unknown;
     const check = (item: { href: string; dictKey?: string }) => {
       if (!item.dictKey) return;
-      const [group, key] = item.dictKey.split(".");
-      expect(typeof dict[group]?.[key], `${item.href} → ${item.dictKey}`).toBe("string");
+      // `market.live.title` のように階層が深いキーも辿ります
+      let value: unknown = dict;
+      for (const segment of item.dictKey.split(".")) {
+        value =
+          typeof value === "object" && value !== null
+            ? (value as Record<string, unknown>)[segment]
+            : undefined;
+      }
+      expect(typeof value, `${item.href} → ${item.dictKey}`).toBe("string");
     };
     for (const item of mainNav) {
       check(item);
@@ -595,5 +603,51 @@ describe("ファーストビューの動くロゴ", () => {
   it("背景つきの MP4 が残っていない", () => {
     // 代替として置かれると、再生できたブラウザで白い箱が出ます
     expect(existsSync(path.join(publicDir, "videos/crypto-port-logo.mp4"))).toBe(false);
+  });
+});
+
+describe("斜めのキーワード帯", () => {
+  it("値動き・順位・利回りを主張する語を入れない", () => {
+    // ここは装飾です。根拠の無い主張を混ぜないための歯止めです
+    const banned = [
+      "高騰",
+      "急騰",
+      "暴騰",
+      "おすすめ",
+      "必ず",
+      "儲か",
+      "年利",
+      "APY",
+      "MOON",
+      "PUMP",
+      "GUARANTEED",
+      "BEST",
+      "PROFIT",
+    ];
+    for (const row of keywordRows) {
+      for (const word of row.words) {
+        for (const ng of banned) {
+          expect(word.toUpperCase().includes(ng.toUpperCase()), `${word} / ${ng}`).toBe(false);
+        }
+      }
+    }
+  });
+
+  it("1行あたり10語以上ある", () => {
+    // 少ないと1周が短く、同じ語がすぐ戻ってきて回っているのが見えます
+    for (const row of keywordRows) {
+      expect(row.words.length).toBeGreaterThanOrEqual(10);
+    }
+  });
+
+  it("同じ語を重複させない", () => {
+    const all = keywordRows.flatMap((row) => row.words);
+    expect(new Set(all).size).toBe(all.length);
+  });
+
+  it("行ごとに傾きと速度が違う", () => {
+    // 全部同じだと平行線が流れるだけで、奥行きが出ません
+    expect(new Set(keywordRows.map((row) => row.angle)).size).toBe(keywordRows.length);
+    expect(new Set(keywordRows.map((row) => row.duration)).size).toBe(keywordRows.length);
   });
 });

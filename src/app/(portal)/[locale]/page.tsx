@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { isLocale, localePath, staticLocales } from "@/portal/i18n/config";
 import { getDictionary } from "@/portal/i18n/dictionaries";
 import { portalMetadata } from "@/portal/lib/seo";
-import { getMarketSnapshot } from "@/portal/lib/market";
+import { getMarketSnapshot, getPriceSeries } from "@/portal/lib/market";
 import { formatCompact, formatNumber, t, tList } from "@/portal/lib/format";
 
 import { coins, getCoin } from "@/portal/data/coins";
@@ -21,6 +21,8 @@ import { activeCampaigns, siteFaq } from "@/portal/data/site-content";
 import { Container, Section } from "@/portal/components/layout/Shell";
 import { PageVisual } from "@/portal/components/layout/PageVisual";
 import { CoinMarquee } from "@/portal/components/home/CoinMarquee";
+import { KeywordBand } from "@/portal/components/home/KeywordBand";
+import { LiveChart } from "@/portal/components/market/LiveChart";
 import { Hero } from "@/portal/components/home/Hero";
 import { MarketTicker } from "@/portal/components/market/MarketTicker";
 import { CoinCard } from "@/portal/components/market/CoinCard";
@@ -79,6 +81,16 @@ export default async function PortalHome(props: { params: Promise<{ locale: stri
     flat: dict.a11y.priceFlat,
   };
 
+  // トップのチャートは主要4銘柄だけにします。多いと1回の問い合わせが重くなります
+  const chartCoins = coins.slice(0, 4);
+  const chartSeries = Object.fromEntries(
+    await Promise.all(
+      chartCoins.map(
+        async (coin) => [coin.id, (await getPriceSeries(coin.id, "d1")).points] as const,
+      ),
+    ),
+  );
+
   return (
     <>
       {/* 1. ファーストビュー */}
@@ -86,6 +98,9 @@ export default async function PortalHome(props: { params: Promise<{ locale: stri
 
       {/* 銘柄バナーのマーキー（バナーが無いときは何も出ません） */}
       <CoinMarquee locale={locale} label={dict.market.featured} />
+
+      {/* 斜めのキーワード帯。装飾なので支援技術からは隠しています */}
+      <KeywordBand />
 
       {/* 2. リアルタイムマーケットティッカー */}
       <div aria-label={dict.market.ticker}>
@@ -103,6 +118,30 @@ export default async function PortalHome(props: { params: Promise<{ locale: stri
           labels={a11yLabels}
         />
       </div>
+
+      {/* リアルタイムチャート（ブラウザ側で更新します） */}
+      <Section labelledBy="live-heading">
+        <Container>
+          <SectionHeading
+            id="live-heading"
+            eyebrow="Live"
+            title={dict.market.live.title}
+            lead={dict.market.live.lead}
+            action={
+              <NeonLink href={localePath(locale, "/charts")} tone="outline">
+                {dict.common.viewAll}
+              </NeonLink>
+            }
+          />
+          <LiveChart
+            coins={chartCoins}
+            locale={locale}
+            dict={dict}
+            initialSeries={chartSeries}
+            compact
+          />
+        </Container>
+      </Section>
 
       {/* 3. マーケット概要 */}
       <Section id="market" labelledBy="market-heading">

@@ -94,6 +94,16 @@ export const zhCn: Dictionary = {
     featured: "重点币种",
     featuredLead: "由编辑部根据市值与当前关注度挑选。",
     dataNote: "价格仅供参考，交易前请务必在交易所确认。",
+    live: {
+      title: "实时行情图",
+      lead: "主要币种价格，由浏览器直接获取。",
+      connected: "获取中",
+      throttled: "已达数据源限制（约 {sec} 秒后重试）",
+      failed: "未能更新（显示上一次取得的值）",
+      interval: "约每 {sec} 秒更新",
+      source: "数据来源",
+      note: "约每 60 秒更新一次，并非逐笔变动。交易请以交易所价格为准。",
+    },
   },
   news: {
     title: "最新加密货币新闻",

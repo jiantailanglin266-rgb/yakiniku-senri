@@ -96,6 +96,16 @@ export const fr: Dictionary = {
       "Sélectionnées par la rédaction selon la capitalisation et l'attention du moment.",
     dataNote:
       "Les cours sont indicatifs. Vérifiez-les toujours sur la plateforme avant de passer un ordre.",
+    live: {
+      title: "Graphiques en direct",
+      lead: "Les cours des principales cryptomonnaies, récupérés directement par votre navigateur.",
+      connected: "En direct",
+      throttled: "Limite du fournisseur (nouvel essai dans ~{sec} s)",
+      failed: "Mise à jour impossible (dernière valeur reçue affichée)",
+      interval: "mise à jour toutes les {sec} s environ",
+      source: "Données de",
+      note: "Mise à jour toutes les 60 secondes environ, et non en continu. Utilisez les cours de la plateforme pour vos transactions.",
+    },
   },
   news: {
     title: "Dernières actualités crypto",

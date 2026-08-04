@@ -100,6 +100,16 @@ export const ko: Dictionary = {
     featured: "주요 가상자산",
     featuredLead: "시가총액과 현재 관심도를 기준으로 편집부가 선정했습니다.",
     dataNote: "가격은 참고값입니다. 거래 전에 반드시 거래소에서 확인하세요.",
+    live: {
+      title: "실시간 차트",
+      lead: "주요 종목의 가격을 브라우저에서 직접 가져와 표시합니다.",
+      connected: "수신 중",
+      throttled: "제공처 제한 중(약 {sec}초 후 재시도)",
+      failed: "갱신하지 못했습니다(직전 값 표시)",
+      interval: "약 {sec}초마다 갱신",
+      source: "데이터 제공",
+      note: "약 60초마다 갱신되며 초 단위로 움직이지 않습니다. 매매 판단에는 거래소 가격을 사용하세요.",
+    },
   },
   news: {
     title: "최신 가상자산 뉴스",

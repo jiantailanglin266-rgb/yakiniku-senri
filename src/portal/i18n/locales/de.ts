@@ -95,6 +95,16 @@ export const de: Dictionary = {
     featuredLead:
       "Von der Redaktion nach Marktkapitalisierung und aktueller Aufmerksamkeit ausgewählt.",
     dataNote: "Die Kurse sind Richtwerte. Prüfen Sie sie vor jedem Handel auf der Börse.",
+    live: {
+      title: "Live-Charts",
+      lead: "Kurse der wichtigsten Coins, direkt von Ihrem Browser abgerufen.",
+      connected: "Live",
+      throttled: "Limit des Anbieters (neuer Versuch in ca. {sec} s)",
+      failed: "Aktualisierung fehlgeschlagen (letzter empfangener Wert)",
+      interval: "Aktualisierung etwa alle {sec} s",
+      source: "Daten von",
+      note: "Aktualisierung etwa alle 60 Sekunden, nicht tickgenau. Für Handelsentscheidungen die Kurse der Börse verwenden.",
+    },
   },
   news: {
     title: "Aktuelle Krypto-News",
