@@ -129,3 +129,20 @@ export const brandMovie = {
 };
 
 export const hasBrandMovie = Boolean(brandMovie.youtubeId || brandMovie.mp4);
+
+/**
+ * サイトの入り口（オープニング）で流す動画。
+ *
+ * 黒背景のロゴアニメーションのため、画面いっぱいに引き伸ばさず
+ * そのままの縦横比で中央に置きます（黒地は背景と同化して見えません）。
+ * mp4 を空にすると、従来の文字だけのオープニングに戻ります。
+ *
+ * 音声トラックは入れないでください。ブラウザは音の出る動画を自動再生しません。
+ */
+export const entranceMovie = {
+  mp4: withBasePath("/videos/entrance.mp4") as string,
+  /** 再生時間（秒）。読み込めなかったときの打ち切り時間の目安に使います */
+  durationSeconds: 5,
+};
+
+export const hasEntranceMovie = Boolean(entranceMovie.mp4);

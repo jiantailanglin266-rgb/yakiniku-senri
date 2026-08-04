@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -9,6 +9,7 @@ vi.mock("next/navigation", async () => (await import("./helpers/next-mocks")).na
 import { MobileNavigation } from "@/components/layout/MobileNavigation";
 import { BrandMovie } from "@/components/home/BrandMovie";
 import { GalleryModal } from "@/components/home/GalleryModal";
+import { LoadingScreen } from "@/components/effects/LoadingScreen";
 import { store } from "@/data/store";
 
 const galleryItems = [
@@ -56,6 +57,7 @@ function observeImmediately() {
 
 afterEach(() => {
   document.body.style.overflow = "";
+  window.sessionStorage.clear();
   vi.unstubAllGlobals();
 });
 
@@ -185,5 +187,59 @@ describe("ギャラリーモーダル", () => {
       <GalleryModal items={galleryItems} index={null} onClose={() => {}} onChange={() => {}} />,
     );
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+});
+
+describe("オープニング（サイトの入り口）", () => {
+  it("動画を1回だけ再生する（ループしない）", () => {
+    render(<LoadingScreen />);
+
+    const video = document.querySelector("video");
+    expect(video).toBeTruthy();
+    // 自動再生はミュートかつインライン再生でなければブラウザが許可しません
+    expect(video).toHaveAttribute("autoplay");
+    expect(video).toHaveAttribute("playsinline");
+    expect(video!.muted || video!.hasAttribute("muted")).toBe(true);
+    // 入り口の演出なので繰り返しません
+    expect(video).not.toHaveAttribute("loop");
+    // 切り抜かず、拡大しすぎない指定であること
+    expect(video!.className).toContain("object-contain");
+  });
+
+  it("再生が終わったらサイトへ入る", async () => {
+    render(<LoadingScreen />);
+    fireEvent.ended(document.querySelector("video")!);
+
+    await waitFor(() => {
+      expect(screen.queryByRole("status", { name: "読み込み中" })).not.toBeInTheDocument();
+    });
+    expect(document.body.style.overflow).toBe("");
+  });
+
+  it("動画が読み込めなければ文字のオープニングへ切り替える", async () => {
+    render(<LoadingScreen />);
+    fireEvent.error(document.querySelector("video")!);
+
+    // 入り口で止まらず、店名の演出に差し替わること
+    await waitFor(() => expect(document.querySelector("video")).toBeNull());
+    expect(screen.getByText(store.name)).toBeInTheDocument();
+  });
+
+  it("スキップできる", async () => {
+    const user = userEvent.setup();
+    render(<LoadingScreen />);
+
+    await user.click(screen.getByRole("button", { name: /オープニングをとばして/ }));
+    await waitFor(() => {
+      expect(screen.queryByRole("status", { name: "読み込み中" })).not.toBeInTheDocument();
+    });
+    // 同じセッションでは二度と出しません
+    expect(window.sessionStorage.getItem("senri:loaded")).toBe("1");
+  });
+
+  it("一度表示したセッションでは出さない", () => {
+    window.sessionStorage.setItem("senri:loaded", "1");
+    render(<LoadingScreen />);
+    expect(screen.queryByRole("status", { name: "読み込み中" })).not.toBeInTheDocument();
   });
 });
