@@ -554,6 +554,18 @@ describe("銘柄バナーのマーキー", () => {
     }
   });
 
+  it("画像が正方形（800×800）である", async () => {
+    // CoinMarquee は width/height に 800×800 を宣言しています。
+    // ここがずれると、読み込み中に帯の高さが動きます（CLS）。
+    // 横長のまま差し替えると、上昇チャートやキャッチコピーが写り込みます。
+    const sharp = (await import("sharp")).default;
+    for (const banner of coinBanners) {
+      const file = path.join(publicDir, "images/portal/marquee", `${banner.slug}.webp`);
+      const meta = await sharp(file).metadata();
+      expect({ w: meta.width, h: meta.height }, `${banner.slug}.webp`).toEqual({ w: 800, h: 800 });
+    }
+  });
+
   it("slug が重複していない", () => {
     const slugs = coinBanners.map((banner) => banner.slug);
     expect(new Set(slugs).size).toBe(slugs.length);

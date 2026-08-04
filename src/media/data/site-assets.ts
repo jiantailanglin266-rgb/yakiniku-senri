@@ -104,11 +104,23 @@ export const siteAssetCredits: SiteAssetCredit[] = [
     licenseTextPath: null,
     isModified: true,
     modificationDescription:
-      "掲載サイズに合わせ、1200×600（横2:1）で中央を切り出した WebP へ変換（切り出し・リサイズ・形式変換のみ）",
+      "元素材は横長のバナーで、右側に上昇チャートと英語のキャッチコピー" +
+      "（「THE STANDARD FOR GLOBAL VALUE」「BUILD・TRADE・EARN」「THE PEOPLE'S COIN」等）が" +
+      "入っていました。値上がりの示唆・運営者による推奨と読まれるため、" +
+      "コイン部分だけを正方形（800×800）で切り出した WebP に差し替えています" +
+      "（切り出し・リサイズ・形式変換のみ）。",
     usedOn: ["CRYPTO PORT トップページ上部の銘柄バナー（CoinMarquee）"],
     verifiedAt: "2026-08-04",
     verificationNote:
-      "運営者から提供された画像です。各銘柄のロゴ意匠と英語のキャッチコピー（THE PEOPLE'S COIN など）、右肩上がりのチャートを背景に描いた装飾画像であり、価格の見通しを示すものではありません。値動きの数値は描かれていません。画像内の文字は読み上げに乗らないため alt は空にし、リンク名は銘柄名で与えています。",
+      "運営者から提供された画像です。公式のロゴファイルではなく、生成AIによる描写です。" +
+      "上昇チャートとキャッチコピーは切り落としてあり、価格・順位・将来の値動きを示す用途では" +
+      "使っていません（装飾のみ）。画像内の文字は読み上げに乗らないため alt は空にし、" +
+      "リンク名は銘柄名で与えています。" +
+      "⚠ 実在する銘柄の商標（Bitcoin / Ethereum / XRP / Solana / BNB / Cardano / Dogecoin / " +
+      "Chainlink / Sui / TRON）が描かれています。CRYPTO PORT はこれらの銘柄を解説し銘柄名も" +
+      "掲載しているサイトであるため説明目的の使用にあたりますが、商標の可否は著作権とは別に" +
+      "各権利者への確認が必要です（未確認）。また Dogecoin の画像には柴犬（Kabosu）の意匠が" +
+      "含まれます。元写真には著作権があり、生成画像がその派生にあたるかは確認できていません。",
   },
   {
     id: "flag-icons",
