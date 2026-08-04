@@ -8,6 +8,7 @@ import { siteFaq } from "@/portal/data/site-content";
 import { breadcrumbJsonLd, faqJsonLd } from "@/portal/lib/structured-data";
 
 import { Breadcrumbs, Container, PageHeader, Section } from "@/portal/components/layout/Shell";
+import { PageVisual } from "@/portal/components/layout/PageVisual";
 import { FaqList } from "@/portal/components/ui/sections";
 import { JsonLd } from "@/portal/components/ui/JsonLd";
 
@@ -41,6 +42,7 @@ export default async function FaqPage(props: { params: Promise<{ locale: string 
       <Container size="text">
         <Breadcrumbs trail={trail} locale={locale} dict={dict} />
         <PageHeader display="FAQ" title={dict.faq.title} lead={dict.faq.lead} />
+        <PageVisual name="faq" locale={locale} priority />
         <FaqList items={siteFaq} locale={locale} />
       </Container>
 
