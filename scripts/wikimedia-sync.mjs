@@ -49,7 +49,11 @@ import {
   rankCandidates,
   scoreCandidate,
 } from "./lib/candidate-score.mjs";
-import { evaluateAutoApproval, getApprovalConfig } from "./lib/media-approval.mjs";
+import {
+  detectRightsRisks,
+  evaluateAutoApproval,
+  getApprovalConfig,
+} from "./lib/media-approval.mjs";
 import { altTextFor, wikipediaTitlesFor } from "./lib/media-keywords.mjs";
 
 const ROOT = process.cwd();
@@ -633,7 +637,12 @@ async function main() {
       isModified: previous?.isModified ?? false,
       modificationDescription: previous?.modificationDescription ?? null,
       objectPosition: previous?.objectPosition ?? "center",
-      rightsRisks: previous?.rightsRisks ?? [],
+      /*
+        被写体に関わる論点を記録します。
+        「要確認」とだけ出しても、何を見ればよいのか分かりません。
+        人物なのか建築物なのか商標なのかで、確認する先が変わります。
+      */
+      rightsRisks: detectRightsRisks(raw),
       usageStatus: previous?.usageStatus ?? "in_use",
       verificationStatus: finalStatus,
       verificationNotes: finalNotes,
