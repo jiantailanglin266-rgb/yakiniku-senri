@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-04T15:28:23.254Z",
+  "generatedAt": "2026-08-04T15:32:26.213Z",
   "note": "scripts/wikimedia-sync.mjs が生成します。手で編集しないでください。",
   "usages": [
     {
@@ -208,6 +208,12 @@
     },
     {
       "assetId": "wm-basketball-going-into-a-basketball-hoop-with-sunset-in-backg",
+      "pageKey": "sportsport:sport:basketball",
+      "slot": "hero",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-basketball-hoop-2230447712",
       "pageKey": "sportsport:sport:basketball",
       "slot": "hero",
       "priority": 0
