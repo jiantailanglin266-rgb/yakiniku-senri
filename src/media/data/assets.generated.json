@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-04T15:32:26.213Z",
+  "generatedAt": "2026-08-04T15:57:34.661Z",
   "note": "scripts/wikimedia-sync.mjs が生成します。手で編集しないでください。",
   "assets": [
     {
@@ -531,7 +531,7 @@
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
-      "rightsRisks": [],
+      "rightsRisks": ["architecture"],
       "usageStatus": "in_use",
       "verificationStatus": "needs_review",
       "verificationNotes": [
@@ -658,7 +658,7 @@
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
-      "rightsRisks": [],
+      "rightsRisks": ["living-person", "product"],
       "usageStatus": "suspended",
       "verificationStatus": "rejected",
       "verificationNotes": [
@@ -775,13 +775,19 @@
         }
       },
       "licenseCode": "PD",
-      "localPath": null,
-      "optimized": null,
-      "blurDataURL": null,
+      "localPath": "/media/wikimedia/wm-assoc-football-match/original.jpg",
+      "optimized": {
+        "webp": "/media/wikimedia/wm-assoc-football-match/image.webp",
+        "avif": "/media/wikimedia/wm-assoc-football-match/image.avif",
+        "thumbnailWebp": "/media/wikimedia/wm-assoc-football-match/thumb.webp",
+        "generatedAt": "2026-08-04T15:57:40.405Z",
+        "sourceHash": "4314a0bf9f8afafa"
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAACwAwCdASoUAAsAPu1iqk2ppaQiMAgBMB2JaQAAXjRww8WBNkhXQADeFDwT8tzFATCK9wPMkAOhtpj5CvBGlZCf6397myapxMyd+nPCPqQAAA==",
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
-      "rightsRisks": [],
+      "rightsRisks": ["living-person", "event-photo"],
       "usageStatus": "in_use",
       "verificationStatus": "approved",
       "verificationNotes": [
@@ -920,13 +926,19 @@
         }
       },
       "licenseCode": "CC0",
-      "localPath": null,
-      "optimized": null,
-      "blurDataURL": null,
+      "localPath": "/media/wikimedia/wm-baseball-themed-playground-at-fireman-s-park/original.jpg",
+      "optimized": {
+        "webp": "/media/wikimedia/wm-baseball-themed-playground-at-fireman-s-park/image.webp",
+        "avif": "/media/wikimedia/wm-baseball-themed-playground-at-fireman-s-park/image.avif",
+        "thumbnailWebp": "/media/wikimedia/wm-baseball-themed-playground-at-fireman-s-park/thumb.webp",
+        "generatedAt": "2026-08-04T15:57:50.316Z",
+        "sourceHash": "822a97cdc3692953"
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAAAQBACdASoUAA8APu1iqU2ppaQiMAgBMB2JQBidP/wHyVzIYal5kBS3oAD+1geVNf4YLeTQAwq4sPYE1pLd8Kjh/62O0ElWZR1td3HSHqRCpo7DJvX/ud3UOk51NQn7lBeMR6vsMfgToTuWmdd97FcY0LgAAA==",
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
-      "rightsRisks": [],
+      "rightsRisks": ["product"],
       "usageStatus": "in_use",
       "verificationStatus": "approved",
       "verificationNotes": [
@@ -1040,9 +1052,15 @@
         }
       },
       "licenseCode": "CC-BY-2.0",
-      "localPath": null,
-      "optimized": null,
-      "blurDataURL": null,
+      "localPath": "/media/wikimedia/wm-basketball-going-into-a-basketball-hoop-with-sunset-in-backg/original.jpg",
+      "optimized": {
+        "webp": "/media/wikimedia/wm-basketball-going-into-a-basketball-hoop-with-sunset-in-backg/image.webp",
+        "avif": "/media/wikimedia/wm-basketball-going-into-a-basketball-hoop-with-sunset-in-backg/image.avif",
+        "thumbnailWebp": "/media/wikimedia/wm-basketball-going-into-a-basketball-hoop-with-sunset-in-backg/thumb.webp",
+        "generatedAt": "2026-08-04T15:58:02.499Z",
+        "sourceHash": "f56de78433b837e5"
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRqoAAABXRUJQVlA4IJ4AAABQBQCdASoUAB4APu1sq1EppaOiqAqpMB2JZQC7AYvDWuJuhU/BMLB84oxcR2P0i391xKAA/u7Va9MgwWUCFL91q2vZXWVMfdkObqU1EyquTlG2sFpJixXmoYZp2pcGGK/yAfzwuNtrFFj46c4QFTWGXZPfQBCG2TuXnRb0LeAIQn4dLnCturIyr0NdUnonbnYRKL11AUl+4FJtpYAAAA==",
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
@@ -1171,9 +1189,15 @@
         }
       },
       "licenseCode": "CC-BY-SA-2.0",
-      "localPath": null,
-      "optimized": null,
-      "blurDataURL": null,
+      "localPath": "/media/wikimedia/wm-basketball-hoop-2230447712/original.jpg",
+      "optimized": {
+        "webp": "/media/wikimedia/wm-basketball-hoop-2230447712/image.webp",
+        "avif": "/media/wikimedia/wm-basketball-hoop-2230447712/image.avif",
+        "thumbnailWebp": "/media/wikimedia/wm-basketball-hoop-2230447712/thumb.webp",
+        "generatedAt": "2026-08-04T15:58:08.111Z",
+        "sourceHash": "3f70531c376e1589"
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAACQAwCdASoUAAsAPu1iqU2ppaOiMAgBMB2JZQCdABVB6I/yZATQAPxagqAGhUUhecIVluEEYfuGs8WUWnqLEe1axfV3iZ/2gAA=",
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
@@ -1297,7 +1321,7 @@
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
-      "rightsRisks": [],
+      "rightsRisks": ["company-logo", "trademark"],
       "usageStatus": "suspended",
       "verificationStatus": "rejected",
       "verificationNotes": [
@@ -1441,7 +1465,7 @@
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
-      "rightsRisks": [],
+      "rightsRisks": ["architecture", "freedom-of-panorama"],
       "usageStatus": "in_use",
       "verificationStatus": "needs_review",
       "verificationNotes": [
@@ -1582,7 +1606,7 @@
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
-      "rightsRisks": [],
+      "rightsRisks": ["living-person"],
       "usageStatus": "in_use",
       "verificationStatus": "needs_review",
       "verificationNotes": [
@@ -1725,9 +1749,15 @@
         }
       },
       "licenseCode": "CC-BY-SA-4.0",
-      "localPath": null,
-      "optimized": null,
-      "blurDataURL": null,
+      "localPath": "/media/wikimedia/wm-clay-tennis-courts-melbourne-looking-from-one-end-of-the-cou/original.jpg",
+      "optimized": {
+        "webp": "/media/wikimedia/wm-clay-tennis-courts-melbourne-looking-from-one-end-of-the-cou/image.webp",
+        "avif": "/media/wikimedia/wm-clay-tennis-courts-melbourne-looking-from-one-end-of-the-cou/image.avif",
+        "thumbnailWebp": "/media/wikimedia/wm-clay-tennis-courts-melbourne-looking-from-one-end-of-the-cou/thumb.webp",
+        "generatedAt": "2026-08-04T15:58:21.264Z",
+        "sourceHash": "984525e1b4bd84e0"
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAACwAwCdASoUABAAPu1iqU2ppaOiMAgBMB2JZACdMoACx44KGcNOEAD+zyn8IQJ+uIIXe5nNsWLRqIyKuvKtYKMCMKSJSQV48VLRxEkTWdkbZz4cRdczjY0WH/zFRanAvU8rA3fwT7JqwNYtic+kAAAA",
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
@@ -1997,7 +2027,7 @@
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
-      "rightsRisks": [],
+      "rightsRisks": ["living-person"],
       "usageStatus": "in_use",
       "verificationStatus": "needs_review",
       "verificationNotes": [
@@ -2146,7 +2176,7 @@
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
-      "rightsRisks": [],
+      "rightsRisks": ["trademark", "card-face"],
       "usageStatus": "suspended",
       "verificationStatus": "rejected",
       "verificationNotes": [
@@ -2295,7 +2325,7 @@
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
-      "rightsRisks": [],
+      "rightsRisks": ["architecture"],
       "usageStatus": "in_use",
       "verificationStatus": "needs_review",
       "verificationNotes": [
@@ -2560,9 +2590,15 @@
         }
       },
       "licenseCode": "CC-BY-SA-4.0",
-      "localPath": null,
-      "optimized": null,
-      "blurDataURL": null,
+      "localPath": "/media/wikimedia/wm-empty-clay-tennis-court-in-melbourne-australia-looking-down-/original.jpg",
+      "optimized": {
+        "webp": "/media/wikimedia/wm-empty-clay-tennis-court-in-melbourne-australia-looking-down-/image.webp",
+        "avif": "/media/wikimedia/wm-empty-clay-tennis-court-in-melbourne-australia-looking-down-/image.avif",
+        "thumbnailWebp": "/media/wikimedia/wm-empty-clay-tennis-court-in-melbourne-australia-looking-down-/thumb.webp",
+        "generatedAt": "2026-08-04T15:58:29.184Z",
+        "sourceHash": "679ec2c911687bfb"
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAADwAwCdASoUAAsAPu1kqU2ppaOiMAgBMB2JZgCdMoADYXpfp+3G0EN4AP6jSyDLiewlGIPvtFCOQNvnyzirzXwd0LiPyL++8lBe1UrWIt8OKtJbhwjjiBgKROPIooAA",
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
@@ -2682,7 +2718,7 @@
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
-      "rightsRisks": [],
+      "rightsRisks": ["architecture"],
       "usageStatus": "in_use",
       "verificationStatus": "needs_review",
       "verificationNotes": [
@@ -2802,7 +2838,7 @@
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
-      "rightsRisks": [],
+      "rightsRisks": ["company-logo", "trademark"],
       "usageStatus": "suspended",
       "verificationStatus": "rejected",
       "verificationNotes": [
@@ -2924,7 +2960,7 @@
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
-      "rightsRisks": [],
+      "rightsRisks": ["living-person"],
       "usageStatus": "in_use",
       "verificationStatus": "needs_review",
       "verificationNotes": [
@@ -3187,7 +3223,7 @@
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
-      "rightsRisks": [],
+      "rightsRisks": ["living-person", "company-logo", "trademark", "product"],
       "usageStatus": "suspended",
       "verificationStatus": "rejected",
       "verificationNotes": [
@@ -3316,7 +3352,7 @@
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
-      "rightsRisks": [],
+      "rightsRisks": ["trademark", "card-face"],
       "usageStatus": "suspended",
       "verificationStatus": "rejected",
       "verificationNotes": [
@@ -3592,9 +3628,15 @@
         }
       },
       "licenseCode": "CC-BY-SA-3.0",
-      "localPath": null,
-      "optimized": null,
-      "blurDataURL": null,
+      "localPath": "/media/wikimedia/wm-mesa-de-ping-pong-riesstr-m-nich-alemania-2012-04-28-dd-01/original.jpg",
+      "optimized": {
+        "webp": "/media/wikimedia/wm-mesa-de-ping-pong-riesstr-m-nich-alemania-2012-04-28-dd-01/image.webp",
+        "avif": "/media/wikimedia/wm-mesa-de-ping-pong-riesstr-m-nich-alemania-2012-04-28-dd-01/image.avif",
+        "thumbnailWebp": "/media/wikimedia/wm-mesa-de-ping-pong-riesstr-m-nich-alemania-2012-04-28-dd-01/thumb.webp",
+        "generatedAt": "2026-08-04T15:58:37.117Z",
+        "sourceHash": "e0fd068abe18b873"
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAACQAwCdASoUAAkAPu1iqU2ppaQiMAgBMB2JZwAATvCu+X+EKNUAAPccfO/qIp7QFywQUFRHogf2fE8weKYlYoJVR0yXMF3gFAA=",
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
@@ -3719,7 +3761,7 @@
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
-      "rightsRisks": [],
+      "rightsRisks": ["product"],
       "usageStatus": "in_use",
       "verificationStatus": "needs_review",
       "verificationNotes": [
@@ -3858,9 +3900,15 @@
         }
       },
       "licenseCode": "CC-BY-SA-2.0",
-      "localPath": null,
-      "optimized": null,
-      "blurDataURL": null,
+      "localPath": "/media/wikimedia/wm-motorcycle-racing-circuit-muirton-geograph-org-uk-8169273/original.jpg",
+      "optimized": {
+        "webp": "/media/wikimedia/wm-motorcycle-racing-circuit-muirton-geograph-org-uk-8169273/image.webp",
+        "avif": "/media/wikimedia/wm-motorcycle-racing-circuit-muirton-geograph-org-uk-8169273/image.avif",
+        "thumbnailWebp": "/media/wikimedia/wm-motorcycle-racing-circuit-muirton-geograph-org-uk-8169273/thumb.webp",
+        "generatedAt": "2026-08-04T15:58:47.760Z",
+        "sourceHash": "c0021548bd78dcb1"
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAACwAwCdASoUAA8APu1iqU2ppaQiMAgBMB2JYwDE2CP/dYNRZpniwAD+1wqtYhcA1NkM5y/6BwxZ6YgKHZCjNOWk6boC1eJVpA74ZNqi6R+LVPOtCvY9ajXgQYjSouuAAAA=",
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
@@ -3978,7 +4026,7 @@
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
-      "rightsRisks": [],
+      "rightsRisks": ["living-person"],
       "usageStatus": "in_use",
       "verificationStatus": "needs_review",
       "verificationNotes": [
@@ -4631,9 +4679,15 @@
         }
       },
       "licenseCode": "CC-BY-SA-2.5",
-      "localPath": null,
-      "optimized": null,
-      "blurDataURL": null,
+      "localPath": "/media/wikimedia/wm-rastkogel-ski-slope/original.jpg",
+      "optimized": {
+        "webp": "/media/wikimedia/wm-rastkogel-ski-slope/image.webp",
+        "avif": "/media/wikimedia/wm-rastkogel-ski-slope/image.avif",
+        "thumbnailWebp": "/media/wikimedia/wm-rastkogel-ski-slope/thumb.webp",
+        "generatedAt": "2026-08-04T15:58:56.606Z",
+        "sourceHash": "f37400a3caac005d"
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAABwAwCdASoUAA0APu1kqU2ppaOiMAgBMB2JQBOgA6Z7Ml/sRYAA/txpsZYvPokwKKaJ7vkUDBShUnQsCwOuZageWS7EP5o1rIkNZvH7bm0Wtw8cCk7sPFHQH2eSvwCW87MxAAAA",
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
@@ -4755,13 +4809,19 @@
         }
       },
       "licenseCode": "CC-BY-SA-4.0",
-      "localPath": null,
-      "optimized": null,
-      "blurDataURL": null,
+      "localPath": "/media/wikimedia/wm-red-mcewen-field-at-usf-baseball-stadium/original.jpg",
+      "optimized": {
+        "webp": "/media/wikimedia/wm-red-mcewen-field-at-usf-baseball-stadium/image.webp",
+        "avif": "/media/wikimedia/wm-red-mcewen-field-at-usf-baseball-stadium/image.avif",
+        "thumbnailWebp": "/media/wikimedia/wm-red-mcewen-field-at-usf-baseball-stadium/thumb.webp",
+        "generatedAt": "2026-08-04T15:59:06.823Z",
+        "sourceHash": "7c401b8b517f987c"
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAABwAwCdASoUAA8APu1iqU2ppaOiMAgBMB2JYgCdACHU4J8yhgAAynF3L4VJNc1x9q5nIMW6P5TPfhaDf3Nquetha5WBp0tuvcQWrLhlDZRhnpRNb8oKhhbcXr0/LOHjbEAAAA==",
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
-      "rightsRisks": [],
+      "rightsRisks": ["architecture"],
       "usageStatus": "in_use",
       "verificationStatus": "approved",
       "verificationNotes": [
@@ -4890,7 +4950,7 @@
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
-      "rightsRisks": [],
+      "rightsRisks": ["architecture"],
       "usageStatus": "in_use",
       "verificationStatus": "needs_review",
       "verificationNotes": [
@@ -5020,7 +5080,7 @@
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
-      "rightsRisks": [],
+      "rightsRisks": ["artwork", "freedom-of-panorama"],
       "usageStatus": "in_use",
       "verificationStatus": "needs_review",
       "verificationNotes": [
@@ -5144,13 +5204,19 @@
         }
       },
       "licenseCode": "CC-BY-SA-4.0",
-      "localPath": null,
-      "optimized": null,
-      "blurDataURL": null,
+      "localPath": "/media/wikimedia/wm-sceptre-rugby-ball/original.jpg",
+      "optimized": {
+        "webp": "/media/wikimedia/wm-sceptre-rugby-ball/image.webp",
+        "avif": "/media/wikimedia/wm-sceptre-rugby-ball/image.avif",
+        "thumbnailWebp": "/media/wikimedia/wm-sceptre-rugby-ball/thumb.webp",
+        "generatedAt": "2026-08-04T15:59:14.803Z",
+        "sourceHash": "d36398d796d8ddc4"
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRqAAAABXRUJQVlA4IJQAAAAwBACdASoUAA8APu1iqU2ppaOiMAgBMB2JYgCdMoACPGIwUMB8H+nNn2AA/ryTpDA35/woaxRkDX0fMGAVK+NZ3rPwPv0mvzJcTz4xYudtE3tbIoLAC87ITOnFxP3TG7mXeramMOURkBr4VdCRZ7CZriQYjX+spVve0ZR0+QnegNKZM82T1i2z98hgw2sKhFH1UAAA",
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
-      "rightsRisks": [],
+      "rightsRisks": ["architecture"],
       "usageStatus": "in_use",
       "verificationStatus": "approved",
       "verificationNotes": [
@@ -5278,7 +5344,7 @@
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
-      "rightsRisks": [],
+      "rightsRisks": ["product"],
       "usageStatus": "in_use",
       "verificationStatus": "needs_review",
       "verificationNotes": [
@@ -5395,9 +5461,15 @@
         }
       },
       "licenseCode": "CC-BY-SA-4.0",
-      "localPath": null,
-      "optimized": null,
-      "blurDataURL": null,
+      "localPath": "/media/wikimedia/wm-view-of-basketball-hoop-from-below/original.jpg",
+      "optimized": {
+        "webp": "/media/wikimedia/wm-view-of-basketball-hoop-from-below/image.webp",
+        "avif": "/media/wikimedia/wm-view-of-basketball-hoop-from-below/image.avif",
+        "thumbnailWebp": "/media/wikimedia/wm-view-of-basketball-hoop-from-below/thumb.webp",
+        "generatedAt": "2026-08-04T15:59:21.113Z",
+        "sourceHash": "519178c3546a2cd5"
+      },
+      "blurDataURL": "data:image/webp;base64,UklGRoQAAABXRUJQVlA4IHgAAAAQBACdASoUAA8APu1iqU2ppaOiMAgBMB2JaACdMoR4GB9X0OmTu03pMADJMVe3sGflw7duB5wlVJDWryMOXOLZ5xjtn/BbZ1lPRIEUSfFRmdHZV+DozSLT6DFOUOZEs/Lq0F/LiPvCH0hcWydOwxoq+8PsfQJU6AA=",
       "isModified": false,
       "modificationDescription": null,
       "objectPosition": "center",
