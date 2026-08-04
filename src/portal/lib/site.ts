@@ -41,13 +41,20 @@ export const portalOrigin = normalizeOrigin(
 export const portalBase = `${portalOrigin}${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}`;
 
 /**
- * 動画ロゴ。ヘッダーとフッターのロゴをこれに差し替えます。
+ * ファーストビューの動画ロゴ。
  *
  * 空文字にすると、これまでの文字ロゴ（`brand.nameParts`）に戻ります。
  * 差し替えるときは /public/videos/ にファイルを置いてパスを変えてください。
  * 消音でのループ再生が前提のため、音声トラックの有無は表示に影響しません。
+ *
+ * ■ WebM（VP9）である理由
+ *   このサイトの背景は暗色なので、ロゴの背景は透過している必要があります。
+ *   MP4/H.264 はアルファチャンネルを持てません。透過を保てる形式のうち、
+ *   広く再生できるのが VP9 の WebM です。
+ *   再生できないブラウザでは文字ロゴに落ちるので、
+ *   **背景つきの MP4 を代替に置いてはいけません**（白い箱が出ます）。
  */
-export const brandLogoVideo = withBasePath("/videos/crypto-port-logo.mp4");
+export const brandLogoVideo = withBasePath("/videos/crypto-port-logo.webm");
 
 /**
  * ソーシャル。空文字のものはUIに出しません（未確認情報を載せないため）。

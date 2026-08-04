@@ -21,7 +21,18 @@ import { brand, brandLogoVideo } from "@/portal/lib/site";
  * ■ prefers-reduced-motion では動かしません
  *   動きを減らす設定の方には、静止したサイト名だけを出します。
  *   ロゴが消えないよう、動画が使えないときも同じ表示に落とします。
+ *
+ * ■ 背景は動画側で透過させています
+ *   暗い背景の上に置くため、白地のままだと箱が浮きます。
+ *   CSS では合成モードで白を抜けないので、動画をアルファつきの WebM に
+ *   変換して持たせています（詳細は `site.ts` の `brandLogoVideo`）。
+ *   枠は動画の縦横比（864:348）で確保し、幅だけを指定して拡縮します。
+ *   高さを指定して `object-contain` に任せると、左右に余白が入って
+ *   ロゴが中央へ寄り、見出しの左端と揃わなくなります。
  */
+
+/** 動画の縦横比。枠をこの比率で確保して、余白が出ないようにします */
+const ASPECT = "864 / 348";
 
 /** 入れ替えにかける時間（秒）。長すぎると二重像が見え、短すぎると継ぎ目が出ます */
 const CROSSFADE_SEC = 0.7;
@@ -86,7 +97,7 @@ export function HeroLogoVideo({ className }: { className?: string }) {
 
   return (
     <span className={className} aria-hidden="true">
-      <span className="relative block">
+      <span className="relative block" style={{ aspectRatio: ASPECT }}>
         {[0, 1].map((index) => (
           <video
             key={index}
