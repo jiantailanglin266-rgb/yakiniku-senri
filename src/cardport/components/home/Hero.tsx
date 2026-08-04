@@ -42,19 +42,19 @@ export function Hero({ locale, dictionary }: { locale: Locale; dictionary: Dicti
       <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
         <PaymentNetwork className="absolute inset-x-0 top-0 h-[130%] w-full opacity-[0.35]" />
         <ParticleField className="absolute inset-0 h-full w-full opacity-70" />
-        <div className="from-void/0 via-void/30 to-void absolute inset-0 bg-gradient-to-b" />
+        <div className="from-cp-void/0 via-cp-void/30 to-cp-void absolute inset-0 bg-gradient-to-b" />
       </div>
 
       <div className="mx-auto grid max-w-[88rem] items-center gap-12 px-4 sm:px-6 lg:grid-cols-[1.05fr_1fr]">
         {/* 前面レイヤー：コピーとCTA */}
         <div>
-          <p className="text-cyan mb-4 font-mono text-[0.68rem] tracking-[0.32em] uppercase">
+          <p className="text-cp-cyan font-cp-mono mb-4 text-[0.68rem] tracking-[0.32em] uppercase">
             {dictionary.hero.eyebrow}
           </p>
           <h1 className="text-[2rem] leading-[1.25] font-semibold sm:text-[2.9rem] lg:text-[3.3rem]">
             <span className="text-aurora">{dictionary.hero.title}</span>
           </h1>
-          <p className="text-mist mt-5 max-w-xl text-[0.92rem] leading-relaxed sm:text-[1rem]">
+          <p className="text-cp-mist mt-5 max-w-xl text-[0.92rem] leading-relaxed sm:text-[1rem]">
             {dictionary.hero.subtitle}
           </p>
 
@@ -73,31 +73,33 @@ export function Hero({ locale, dictionary }: { locale: Locale; dictionary: Dicti
             </LinkButton>
           </div>
 
-          <dl className="border-line/60 mt-10 grid max-w-lg grid-cols-3 gap-4 border-t pt-6">
+          <dl className="border-cp-line/60 mt-10 grid max-w-lg grid-cols-3 gap-4 border-t pt-6">
             <div>
-              <dt className="text-dim text-[0.68rem]">{dictionary.hero.statCards}</dt>
-              <dd className="numeric text-cyan text-[1.4rem] font-semibold">{cards.length}</dd>
+              <dt className="text-cp-dim text-[0.68rem]">{dictionary.hero.statCards}</dt>
+              <dd className="numeric text-cp-cyan text-[1.4rem] font-semibold">{cards.length}</dd>
             </div>
             <div>
-              <dt className="text-dim text-[0.68rem]">{dictionary.hero.statCategories}</dt>
-              <dd className="numeric text-violet text-[1.4rem] font-semibold">60+</dd>
+              <dt className="text-cp-dim text-[0.68rem]">{dictionary.hero.statCategories}</dt>
+              <dd className="numeric text-cp-violet text-[1.4rem] font-semibold">60+</dd>
             </div>
             <div>
-              <dt className="text-dim text-[0.68rem]">{dictionary.hero.statLanguages}</dt>
-              <dd className="numeric text-magenta text-[1.4rem] font-semibold">{locales.length}</dd>
+              <dt className="text-cp-dim text-[0.68rem]">{dictionary.hero.statLanguages}</dt>
+              <dd className="numeric text-cp-magenta text-[1.4rem] font-semibold">
+                {locales.length}
+              </dd>
             </div>
           </dl>
 
           {latest ? (
             <Link
               href={routes.newsArticle(locale, latest.slug)}
-              className="glass hover:border-cyan/50 mt-6 flex items-center gap-3 rounded-full px-4 py-2.5 text-[0.76rem] transition-colors"
+              className="glass hover:border-cp-cyan/50 mt-6 flex items-center gap-3 rounded-full px-4 py-2.5 text-[0.76rem] transition-colors"
             >
-              <span className="bg-cyan/18 text-cyan shrink-0 rounded-full px-2 py-0.5 text-[0.64rem]">
+              <span className="bg-cp-cyan/18 text-cp-cyan shrink-0 rounded-full px-2 py-0.5 text-[0.64rem]">
                 NEWS
               </span>
-              <span className="text-mist line-clamp-1">{pick(latest.title, locale)}</span>
-              <span className="text-dim numeric ms-auto hidden shrink-0 sm:block">
+              <span className="text-cp-mist line-clamp-1">{pick(latest.title, locale)}</span>
+              <span className="text-cp-dim numeric ms-auto hidden shrink-0 sm:block">
                 {formatDate(latest.publishedAt, locale)}
               </span>
             </Link>
@@ -135,11 +137,11 @@ export function Hero({ locale, dictionary }: { locale: Locale; dictionary: Dicti
 
             {/* ホログラム型の情報パネル */}
             <div className="glass absolute right-0 bottom-0 z-10 rounded-xl px-3.5 py-2.5 backdrop-blur-md">
-              <p className="text-dim text-[0.62rem] tracking-wide">
+              <p className="text-cp-dim text-[0.62rem] tracking-wide">
                 {dictionary.hero.networkLabel}
               </p>
-              <p className="numeric text-cyan text-[0.9rem] font-semibold">
-                ●●●● ●●●● ●●●● <span className="text-emerald">LIVE</span>
+              <p className="numeric text-cp-cyan text-[0.9rem] font-semibold">
+                ●●●● ●●●● ●●●● <span className="text-cp-emerald">LIVE</span>
               </p>
             </div>
           </div>

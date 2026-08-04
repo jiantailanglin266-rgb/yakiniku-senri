@@ -104,8 +104,8 @@ function Chip({
       className={cx(
         "rounded-full border px-3 py-1.5 text-[0.74rem] transition-colors",
         active
-          ? "border-cyan/60 bg-cyan/15 text-cyan"
-          : "border-line text-mist hover:border-cyan/40 hover:text-ink",
+          ? "border-cp-cyan/60 bg-cp-cyan/15 text-cp-cyan"
+          : "border-cp-line text-cp-mist hover:border-cp-cyan/40 hover:text-cp-ink",
       )}
     >
       {children}
@@ -154,7 +154,7 @@ export function CardBrowser({
 
         <div className="mt-4 space-y-5">
           <div>
-            <label htmlFor="cardport-search" className="text-dim mb-1.5 block text-[0.72rem]">
+            <label htmlFor="cardport-search" className="text-cp-dim mb-1.5 block text-[0.72rem]">
               {dictionary.common.search}
             </label>
             <input
@@ -163,12 +163,14 @@ export function CardBrowser({
               value={filters.query}
               onChange={(event) => update({ query: event.target.value })}
               placeholder={dictionary.common.searchPlaceholder}
-              className="border-line bg-navy/70 text-ink placeholder:text-dim focus:border-cyan w-full rounded-lg border px-3 py-2 text-[0.8rem] outline-none"
+              className="border-cp-line bg-cp-navy/70 text-cp-ink placeholder:text-cp-dim focus:border-cp-cyan w-full rounded-lg border px-3 py-2 text-[0.8rem] outline-none"
             />
           </div>
 
           <fieldset>
-            <legend className="text-dim mb-2 text-[0.72rem]">{dictionary.filters.annualFee}</legend>
+            <legend className="text-cp-dim mb-2 text-[0.72rem]">
+              {dictionary.filters.annualFee}
+            </legend>
             <div className="flex flex-wrap gap-1.5">
               {feeBands.map((band) => (
                 <Chip
@@ -183,9 +185,9 @@ export function CardBrowser({
           </fieldset>
 
           <div>
-            <label htmlFor="cardport-rate" className="text-dim mb-1.5 block text-[0.72rem]">
+            <label htmlFor="cardport-rate" className="text-cp-dim mb-1.5 block text-[0.72rem]">
               {dictionary.filters.rewardRate}
-              <span className="numeric text-cyan ms-2">{filters.minRate.toFixed(1)}% +</span>
+              <span className="numeric text-cp-cyan ms-2">{filters.minRate.toFixed(1)}% +</span>
             </label>
             <input
               id="cardport-rate"
@@ -195,12 +197,12 @@ export function CardBrowser({
               step={0.1}
               value={filters.minRate}
               onChange={(event) => update({ minRate: Number(event.target.value) })}
-              className="accent-cyan w-full"
+              className="accent-cp-cyan w-full"
             />
           </div>
 
           <fieldset>
-            <legend className="text-dim mb-2 text-[0.72rem]">{dictionary.filters.brand}</legend>
+            <legend className="text-cp-dim mb-2 text-[0.72rem]">{dictionary.filters.brand}</legend>
             <div className="flex flex-wrap gap-1.5">
               {brandOrder.map((brand) => (
                 <Chip
@@ -215,7 +217,7 @@ export function CardBrowser({
           </fieldset>
 
           <fieldset>
-            <legend className="text-dim mb-2 text-[0.72rem]">{dictionary.filters.rank}</legend>
+            <legend className="text-cp-dim mb-2 text-[0.72rem]">{dictionary.filters.rank}</legend>
             <div className="flex flex-wrap gap-1.5">
               {ranks.map((rank) => (
                 <Chip
@@ -230,7 +232,7 @@ export function CardBrowser({
           </fieldset>
 
           <fieldset>
-            <legend className="text-dim mb-2 text-[0.72rem]">{dictionary.filters.target}</legend>
+            <legend className="text-cp-dim mb-2 text-[0.72rem]">{dictionary.filters.target}</legend>
             <div className="flex flex-wrap gap-1.5">
               {eligibilityKeys.map((item) => (
                 <Chip
@@ -247,7 +249,9 @@ export function CardBrowser({
           </fieldset>
 
           <fieldset>
-            <legend className="text-dim mb-2 text-[0.72rem]">{dictionary.filters.purpose}</legend>
+            <legend className="text-cp-dim mb-2 text-[0.72rem]">
+              {dictionary.filters.purpose}
+            </legend>
             <div className="flex flex-wrap gap-1.5">
               {cardCategories.slice(0, 12).map((category) => (
                 <Chip
@@ -266,7 +270,9 @@ export function CardBrowser({
           </fieldset>
 
           <fieldset>
-            <legend className="text-dim mb-2 text-[0.72rem]">{dictionary.filters.features}</legend>
+            <legend className="text-cp-dim mb-2 text-[0.72rem]">
+              {dictionary.filters.features}
+            </legend>
             <div className="flex flex-wrap gap-1.5">
               {featureKeys.map((item) => (
                 <Chip
@@ -283,7 +289,7 @@ export function CardBrowser({
           </fieldset>
 
           <fieldset>
-            <legend className="text-dim mb-2 text-[0.72rem]">
+            <legend className="text-cp-dim mb-2 text-[0.72rem]">
               {dictionary.filters.issueSpeed}
             </legend>
             <div className="flex flex-wrap gap-1.5">
@@ -305,19 +311,21 @@ export function CardBrowser({
 
       <div>
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <p className="text-mist text-[0.82rem]">
-            <span className="numeric text-cyan text-[1.05rem] font-semibold">{results.length}</span>{" "}
+          <p className="text-cp-mist text-[0.82rem]">
+            <span className="numeric text-cp-cyan text-[1.05rem] font-semibold">
+              {results.length}
+            </span>{" "}
             {dictionary.common.results}
           </p>
           <div className="flex items-center gap-2">
-            <label htmlFor="cardport-sort" className="text-dim text-[0.72rem]">
+            <label htmlFor="cardport-sort" className="text-cp-dim text-[0.72rem]">
               {dictionary.common.sort}
             </label>
             <select
               id="cardport-sort"
               value={filters.sort}
               onChange={(event) => update({ sort: event.target.value as SortKey })}
-              className="border-line bg-navy/70 text-ink focus:border-cyan rounded-lg border px-2.5 py-1.5 text-[0.76rem] outline-none"
+              className="border-cp-line bg-cp-navy/70 text-cp-ink focus:border-cp-cyan rounded-lg border px-2.5 py-1.5 text-[0.76rem] outline-none"
             >
               {sortKeys.map((item) => (
                 <option key={item.id} value={item.id}>
@@ -330,7 +338,7 @@ export function CardBrowser({
 
         {results.length === 0 ? (
           <Panel className="p-8 text-center">
-            <p className="text-mist text-[0.85rem]">{dictionary.common.noResults}</p>
+            <p className="text-cp-mist text-[0.85rem]">{dictionary.common.noResults}</p>
             <Button variant="outline" onClick={() => update(defaultFilters)} className="mt-4">
               {dictionary.common.reset}
             </Button>

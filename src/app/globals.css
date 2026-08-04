@@ -363,6 +363,90 @@ font {
   }
 }
 
+/* ------------------------------------------------------------
+   英字マーキー（上部・中部の装飾帯）
+   上段は左へ、下段は右へ。速度をずらして機械的な同期を避けます。
+   ------------------------------------------------------------ */
+@keyframes marquee-x-left {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    /* 同じ並びを4回置いているので、1回ぶん動かすと原点と同じ絵になります */
+    transform: translate3d(-25%, 0, 0);
+  }
+}
+@keyframes marquee-x-right {
+  from {
+    transform: translate3d(-25%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.marquee-band {
+  position: relative;
+  display: grid;
+  gap: clamp(0.1rem, 0.6vw, 0.5rem);
+  overflow: hidden;
+  padding-block: clamp(1.5rem, 4vw, 2.5rem);
+  /* 両端を溶かして、帯の切り口を見せません */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
+}
+
+.marquee-x {
+  overflow: hidden;
+}
+
+.marquee-x-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-x-left 64s linear infinite;
+}
+.marquee-x[data-direction="right"] .marquee-x-track {
+  animation-name: marquee-x-right;
+  animation-duration: 82s;
+}
+
+.marquee-x-group {
+  display: flex;
+  align-items: center;
+}
+
+.marquee-x-item {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 5.5vw, 3.25rem);
+  font-weight: 300;
+  line-height: 1.15;
+  letter-spacing: 0.16em;
+  color: var(--color-gold);
+  opacity: 0.62;
+  white-space: nowrap;
+  padding-inline-end: clamp(1.25rem, 3vw, 2.5rem);
+}
+/* 語のあいだの菱形。上品に見せるための区切りです */
+.marquee-x-item::after {
+  content: "◆";
+  margin-inline-start: clamp(1.25rem, 3vw, 2.5rem);
+  font-size: 0.28em;
+  vertical-align: 0.38em;
+  color: var(--color-gold-dark);
+}
+
+/* 下段は輪郭だけ。二段が同じ強さだと騒がしくなります */
+.marquee-x-track--outline .marquee-x-item {
+  color: transparent;
+  /* 文字が小さいほど線を細く。太いままだと塗りつぶしに見えます */
+  -webkit-text-stroke: clamp(0.5px, 0.022em, 1px) var(--color-gold-dark);
+  opacity: 0.5;
+}
+.marquee-x-track--outline .marquee-x-item::after {
+  -webkit-text-stroke: 0;
+  color: var(--color-gold-dark);
+}
+
 @keyframes scroll-hint {
   0% {
     transform: scaleY(0.08);
@@ -446,4 +530,46 @@ font {
     transform: none !important;
     filter: none !important;
   }
+}
+
+/* ============================================================
+   デザイントークン — AI PORT（/ai-port 配下）
+
+   同じリポジトリで2つのブランドを配信しているため、
+   トークン名はすべて `ai-` で始めて衝突を避けています。
+   （例: bg-ai-void / text-ai-cyan / font-ai-display）
+
+   実際の見た目のルール（背景・ガラス・グロー）は
+   src/styles/ai-port.css にあり、/ai-port のレイアウトからのみ読み込みます。
+   ============================================================ */
+@theme {
+  /* 地の色 — 深宇宙のネイビーからブラックへ */
+  --color-ai-void: #04060f;
+  --color-ai-abyss: #070b18;
+  --color-ai-ink: #0c1226;
+  --color-ai-slate: #141c36;
+  --color-ai-line: #1e2947;
+
+  /* 文字 */
+  --color-ai-white: #f4f8ff;
+  --color-ai-mist: #c3cee4;
+  --color-ai-haze: #8494b3;
+  --color-ai-dim: #5b6a88;
+
+  /* アクセント — シアン→ブルー→パープル→ピンクの連なり */
+  --color-ai-cyan: #2ee6ff;
+  --color-ai-sky: #4aa8ff;
+  --color-ai-blue: #4d6dff;
+  --color-ai-violet: #8b5cf6;
+  --color-ai-purple: #a855f7;
+  --color-ai-pink: #ff4fd8;
+  --color-ai-mint: #5eead4;
+  --color-ai-amber: #ffb547;
+
+  --font-ai-display: var(--font-space-grotesk), var(--font-noto-sans-jp), system-ui, sans-serif;
+  --font-ai-sans: var(--font-noto-sans-jp), "Hiragino Sans", system-ui, sans-serif;
+  --font-ai-mono: var(--font-jetbrains-mono), ui-monospace, "SFMono-Regular", monospace;
+
+  --ease-ai: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-ai-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }

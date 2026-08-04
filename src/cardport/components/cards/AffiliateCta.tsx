@@ -16,7 +16,7 @@ import { AdLabel, cx } from "@/cardport/components/ui/primitives";
 
 declare global {
   interface Window {
-    dataLayer?: unknown[];
+    dataLayer?: Array<Record<string, unknown>>;
     gtag?: (...args: unknown[]) => void;
   }
 }
@@ -64,8 +64,8 @@ export function AffiliateCta({
 
   const styles =
     variant === "primary"
-      ? "bg-gradient-to-r from-cyan to-electric text-void font-semibold hover:brightness-110"
-      : "glass text-ink hover:border-cyan/60";
+      ? "bg-gradient-to-r from-cp-cyan to-cp-electric text-cp-void font-semibold hover:brightness-110"
+      : "glass text-cp-ink hover:border-cp-cyan/60";
 
   return (
     <span className="inline-flex items-center gap-2">

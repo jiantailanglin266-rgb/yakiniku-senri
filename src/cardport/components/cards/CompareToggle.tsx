@@ -29,8 +29,8 @@ export function CompareToggle({
       className={cx(
         "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[0.75rem] transition-colors",
         selected
-          ? "border-cyan/60 bg-cyan/15 text-cyan"
-          : "border-line text-mist hover:border-cyan/50 hover:text-ink",
+          ? "border-cp-cyan/60 bg-cp-cyan/15 text-cp-cyan"
+          : "border-cp-line text-cp-mist hover:border-cp-cyan/50 hover:text-cp-ink",
         disabled && "cursor-not-allowed opacity-40",
         className,
       )}

@@ -21,10 +21,10 @@ export function Footer({ locale, dictionary }: { locale: Locale; dictionary: Dic
   ].filter((item) => item.href);
 
   return (
-    <footer className="border-line/60 relative mt-20 border-t">
+    <footer className="border-cp-line/60 relative mt-20 border-t">
       <div className="mx-auto max-w-[88rem] px-4 py-12 sm:px-6">
         {/* 広告に関する開示。フッターでも省略しません */}
-        <p className="text-dim border-line/60 bg-navy/50 mb-10 rounded-xl border px-4 py-3 text-[0.72rem] leading-relaxed">
+        <p className="text-cp-dim border-cp-line/60 bg-cp-navy/50 mb-10 rounded-xl border px-4 py-3 text-[0.72rem] leading-relaxed">
           {dictionary.affiliate.disclosureLong}
         </p>
 
@@ -32,9 +32,9 @@ export function Footer({ locale, dictionary }: { locale: Locale; dictionary: Dic
           <div>
             <p className="flex items-baseline gap-1 text-[1.05rem] font-semibold tracking-[0.08em]">
               <span className="text-aurora">{brand.wordmark.lead}</span>
-              <span className="text-ink">{brand.wordmark.tail}</span>
+              <span className="text-cp-ink">{brand.wordmark.tail}</span>
             </p>
-            <p className="text-mist mt-3 text-[0.78rem] leading-relaxed">
+            <p className="text-cp-mist mt-3 text-[0.78rem] leading-relaxed">
               {dictionary.common.siteTagline}
             </p>
             {social.length > 0 ? (
@@ -45,7 +45,7 @@ export function Footer({ locale, dictionary }: { locale: Locale; dictionary: Dic
                       href={item.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="glass text-mist hover:text-ink rounded-full px-3 py-1 text-[0.72rem] transition-colors"
+                      className="glass text-cp-mist hover:text-cp-ink rounded-full px-3 py-1 text-[0.72rem] transition-colors"
                     >
                       {item.label}
                     </a>
@@ -56,7 +56,7 @@ export function Footer({ locale, dictionary }: { locale: Locale; dictionary: Dic
           </div>
 
           <nav aria-label={dictionary.nav.cards}>
-            <p className="text-dim mb-3 font-mono text-[0.66rem] tracking-[0.2em] uppercase">
+            <p className="text-cp-dim font-cp-mono mb-3 text-[0.66rem] tracking-[0.2em] uppercase">
               Compare
             </p>
             <ul className="space-y-2">
@@ -64,7 +64,7 @@ export function Footer({ locale, dictionary }: { locale: Locale; dictionary: Dic
                 <li key={item.key}>
                   <Link
                     href={item.href(locale)}
-                    className="text-mist hover:text-cyan text-[0.78rem] transition-colors"
+                    className="text-cp-mist hover:text-cp-cyan text-[0.78rem] transition-colors"
                   >
                     {dictionary.nav[item.key]}
                   </Link>
@@ -74,7 +74,7 @@ export function Footer({ locale, dictionary }: { locale: Locale; dictionary: Dic
           </nav>
 
           <nav aria-label={dictionary.nav.tools}>
-            <p className="text-dim mb-3 font-mono text-[0.66rem] tracking-[0.2em] uppercase">
+            <p className="text-cp-dim font-cp-mono mb-3 text-[0.66rem] tracking-[0.2em] uppercase">
               Explore
             </p>
             <ul className="space-y-2">
@@ -82,7 +82,7 @@ export function Footer({ locale, dictionary }: { locale: Locale; dictionary: Dic
                 <li key={item.key}>
                   <Link
                     href={item.href(locale)}
-                    className="text-mist hover:text-cyan text-[0.78rem] transition-colors"
+                    className="text-cp-mist hover:text-cp-cyan text-[0.78rem] transition-colors"
                   >
                     {dictionary.nav[item.key]}
                   </Link>
@@ -91,7 +91,7 @@ export function Footer({ locale, dictionary }: { locale: Locale; dictionary: Dic
               <li>
                 <Link
                   href={routes.sitemap(locale)}
-                  className="text-mist hover:text-cyan text-[0.78rem] transition-colors"
+                  className="text-cp-mist hover:text-cp-cyan text-[0.78rem] transition-colors"
                 >
                   {dictionary.nav.sitemap}
                 </Link>
@@ -100,7 +100,7 @@ export function Footer({ locale, dictionary }: { locale: Locale; dictionary: Dic
           </nav>
 
           <nav aria-label={dictionary.footer.operator}>
-            <p className="text-dim mb-3 font-mono text-[0.66rem] tracking-[0.2em] uppercase">
+            <p className="text-cp-dim font-cp-mono mb-3 text-[0.66rem] tracking-[0.2em] uppercase">
               Policies
             </p>
             <ul className="grid grid-cols-2 gap-x-4 gap-y-2">
@@ -108,7 +108,7 @@ export function Footer({ locale, dictionary }: { locale: Locale; dictionary: Dic
                 <li key={item.slug}>
                   <Link
                     href={routes.policy(locale, item.slug)}
-                    className="text-mist hover:text-cyan text-[0.74rem] transition-colors"
+                    className="text-cp-mist hover:text-cp-cyan text-[0.74rem] transition-colors"
                   >
                     {dictionary.footer[item.key]}
                   </Link>
@@ -118,12 +118,12 @@ export function Footer({ locale, dictionary }: { locale: Locale; dictionary: Dic
           </nav>
         </div>
 
-        <div className="border-line/50 text-dim mt-10 flex flex-wrap items-center justify-between gap-3 border-t pt-6 text-[0.7rem]">
+        <div className="border-cp-line/50 text-cp-dim mt-10 flex flex-wrap items-center justify-between gap-3 border-t pt-6 text-[0.7rem]">
           <p>
             {company.legalName}
             {company.isPlaceholder ? (
               // 運営会社が未設定であることを隠しません（推測を書かない方針）
-              <span className="text-amber ms-2">— 未設定（公開前に設定してください）</span>
+              <span className="text-cp-amber ms-2">— 未設定（公開前に設定してください）</span>
             ) : null}
           </p>
           <p>

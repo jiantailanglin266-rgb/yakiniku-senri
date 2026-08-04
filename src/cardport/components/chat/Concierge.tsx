@@ -77,17 +77,17 @@ export function Concierge({
           : "h-[34rem] w-full",
       )}
     >
-      <div className="border-line/60 flex items-center justify-between border-b px-4 py-3">
+      <div className="border-cp-line/60 flex items-center justify-between border-b px-4 py-3">
         <div>
-          <p className="text-ink text-[0.86rem] font-semibold">{dictionary.chat.title}</p>
-          <p className="text-dim text-[0.68rem]">{dictionary.chat.subtitle}</p>
+          <p className="text-cp-ink text-[0.86rem] font-semibold">{dictionary.chat.title}</p>
+          <p className="text-cp-dim text-[0.68rem]">{dictionary.chat.subtitle}</p>
         </div>
         <div className="flex items-center gap-2">
           {messages.length > 0 ? (
             <button
               type="button"
               onClick={() => setMessages([])}
-              className="text-dim hover:text-ink text-[0.7rem]"
+              className="text-cp-dim hover:text-cp-ink text-[0.7rem]"
             >
               {dictionary.chat.reset}
             </button>
@@ -97,7 +97,7 @@ export function Concierge({
               type="button"
               onClick={() => setOpen(false)}
               aria-label={dictionary.common.close}
-              className="text-dim hover:text-ink"
+              className="text-cp-dim hover:text-cp-ink"
             >
               <svg viewBox="0 0 16 16" className="h-4 w-4" aria-hidden="true">
                 <path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" strokeWidth="1.6" />
@@ -108,7 +108,7 @@ export function Concierge({
       </div>
 
       <div ref={listRef} className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
-        <p className="text-mist bg-navy/60 border-line rounded-xl border px-3 py-2.5 text-[0.78rem] leading-relaxed">
+        <p className="text-cp-mist bg-cp-navy/60 border-cp-line rounded-xl border px-3 py-2.5 text-[0.78rem] leading-relaxed">
           {dictionary.chat.intro}
         </p>
         {/* 機密情報を入力させない注意は、会話の最初に必ず出します */}
@@ -118,7 +118,7 @@ export function Concierge({
           message.role === "user" ? (
             <p
               key={index}
-              className="bg-cyan/12 text-ink ms-auto max-w-[85%] rounded-xl px-3 py-2 text-[0.8rem]"
+              className="bg-cp-cyan/12 text-cp-ink ms-auto max-w-[85%] rounded-xl px-3 py-2 text-[0.8rem]"
             >
               {message.text}
             </p>
@@ -127,27 +127,29 @@ export function Concierge({
               {message.result.kind === "blocked" ? (
                 <Notice tone="danger">{dictionary.chat.guard}</Notice>
               ) : message.result.kind === "empty" ? (
-                <p className="text-mist bg-navy/60 border-line rounded-xl border px-3 py-2.5 text-[0.78rem]">
+                <p className="text-cp-mist bg-cp-navy/60 border-cp-line rounded-xl border px-3 py-2.5 text-[0.78rem]">
                   {dictionary.chat.empty}
                 </p>
               ) : (
-                <div className="bg-navy/60 border-line rounded-xl border px-3 py-2.5">
-                  <p className="text-mist text-[0.78rem] leading-relaxed whitespace-pre-line">
+                <div className="bg-cp-navy/60 border-cp-line rounded-xl border px-3 py-2.5">
+                  <p className="text-cp-mist text-[0.78rem] leading-relaxed whitespace-pre-line">
                     {message.result.body}
                   </p>
-                  <div className="border-line/60 mt-3 border-t pt-2.5">
-                    <p className="text-dim mb-1.5 text-[0.68rem]">{dictionary.chat.sourceLabel}</p>
+                  <div className="border-cp-line/60 mt-3 border-t pt-2.5">
+                    <p className="text-cp-dim mb-1.5 text-[0.68rem]">
+                      {dictionary.chat.sourceLabel}
+                    </p>
                     <ul className="space-y-1">
                       {message.result.sources.map((source) => (
                         <li key={source.href + source.title}>
                           <Link
                             href={source.href}
-                            className="text-cyan text-[0.74rem] hover:underline"
+                            className="text-cp-cyan text-[0.74rem] hover:underline"
                           >
                             {source.title}
                           </Link>
                           {source.verifiedOn ? (
-                            <span className="text-dim ms-2 text-[0.66rem]">
+                            <span className="text-cp-dim ms-2 text-[0.66rem]">
                               {dictionary.common.verifiedAt}:{" "}
                               {formatDate(source.verifiedOn, locale)}
                             </span>
@@ -157,22 +159,22 @@ export function Concierge({
                     </ul>
                   </div>
                   {/* 回答の最後に必ず次の導線を出します */}
-                  <div className="border-line/60 mt-3 flex flex-wrap gap-3 border-t pt-2.5">
+                  <div className="border-cp-line/60 mt-3 flex flex-wrap gap-3 border-t pt-2.5">
                     <Link
                       href={routes.cards(locale)}
-                      className="text-dim hover:text-cyan text-[0.7rem]"
+                      className="text-cp-dim hover:text-cp-cyan text-[0.7rem]"
                     >
                       {dictionary.nav.cards} →
                     </Link>
                     <Link
                       href={routes.compare(locale)}
-                      className="text-dim hover:text-cyan text-[0.7rem]"
+                      className="text-cp-dim hover:text-cp-cyan text-[0.7rem]"
                     >
                       {dictionary.sections.comparison} →
                     </Link>
                     <Link
                       href={routes.diagnosisIndex(locale)}
-                      className="text-dim hover:text-cyan text-[0.7rem]"
+                      className="text-cp-dim hover:text-cp-cyan text-[0.7rem]"
                     >
                       {dictionary.nav.diagnosis} →
                     </Link>
@@ -190,7 +192,7 @@ export function Concierge({
                 <button
                   type="button"
                   onClick={() => send(suggestion)}
-                  className="border-line text-mist hover:border-cyan/50 hover:text-ink rounded-full border px-2.5 py-1 text-[0.7rem] transition-colors"
+                  className="border-cp-line text-cp-mist hover:border-cp-cyan/50 hover:text-cp-ink rounded-full border px-2.5 py-1 text-[0.7rem] transition-colors"
                 >
                   {suggestion}
                 </button>
@@ -205,7 +207,7 @@ export function Concierge({
           event.preventDefault();
           send(input);
         }}
-        className="border-line/60 flex items-center gap-2 border-t px-3 py-3"
+        className="border-cp-line/60 flex items-center gap-2 border-t px-3 py-3"
       >
         <label htmlFor="cardport-chat-input" className="sr-only">
           {dictionary.chat.placeholder}
@@ -216,11 +218,11 @@ export function Concierge({
           onChange={(event) => setInput(event.target.value)}
           placeholder={dictionary.chat.placeholder}
           autoComplete="off"
-          className="border-line bg-navy/70 text-ink placeholder:text-dim focus:border-cyan flex-1 rounded-full border px-3.5 py-2 text-[0.8rem] outline-none"
+          className="border-cp-line bg-cp-navy/70 text-cp-ink placeholder:text-cp-dim focus:border-cp-cyan flex-1 rounded-full border px-3.5 py-2 text-[0.8rem] outline-none"
         />
         <button
           type="submit"
-          className="from-cyan to-electric text-void rounded-full bg-gradient-to-r px-4 py-2 text-[0.78rem] font-semibold"
+          className="from-cp-cyan to-cp-electric text-cp-void rounded-full bg-gradient-to-r px-4 py-2 text-[0.78rem] font-semibold"
         >
           {dictionary.chat.send}
         </button>
@@ -238,7 +240,7 @@ export function Concierge({
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="from-cyan to-violet text-void flex items-center gap-2 rounded-full bg-gradient-to-r px-4 py-3 text-[0.8rem] font-semibold shadow-[0_12px_40px_-12px_rgba(34,211,238,0.9)]"
+          className="from-cp-cyan to-cp-violet text-cp-void flex items-center gap-2 rounded-full bg-gradient-to-r px-4 py-3 text-[0.8rem] font-semibold shadow-[0_12px_40px_-12px_rgba(34,211,238,0.9)]"
         >
           <svg viewBox="0 0 20 20" className="h-4 w-4" aria-hidden="true">
             <path

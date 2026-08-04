@@ -56,7 +56,7 @@ export function LanguageSwitcher({ locale, label }: { locale: Locale; label: str
         aria-expanded={open}
         aria-haspopup="menu"
         aria-label={label}
-        className="glass text-ink hover:border-cyan/50 flex items-center gap-2 rounded-full px-3 py-1.5 text-[0.78rem] transition-colors"
+        className="glass text-cp-ink hover:border-cp-cyan/50 flex items-center gap-2 rounded-full px-3 py-1.5 text-[0.78rem] transition-colors"
       >
         <Image
           src={localeFlagSrc(locale)}
@@ -93,7 +93,9 @@ export function LanguageSwitcher({ locale, label }: { locale: Locale; label: str
                     onClick={() => setOpen(false)}
                     className={cx(
                       "flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[0.8rem] transition-colors",
-                      active ? "bg-cyan/12 text-cyan" : "text-mist hover:text-ink hover:bg-white/6",
+                      active
+                        ? "bg-cp-cyan/12 text-cp-cyan"
+                        : "text-cp-mist hover:text-cp-ink hover:bg-white/6",
                     )}
                   >
                     <Image
@@ -106,7 +108,7 @@ export function LanguageSwitcher({ locale, label }: { locale: Locale; label: str
                     />
                     {/* 旗だけでは言語が特定できないため、言語名を必ず併記します */}
                     <span className="flex-1">{definition.label}</span>
-                    <span className="text-dim text-[0.66rem]">{definition.code}</span>
+                    <span className="text-cp-dim text-[0.66rem]">{definition.code}</span>
                   </Link>
                 </li>
               );

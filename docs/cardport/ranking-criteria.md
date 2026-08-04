@@ -31,7 +31,7 @@
 
 同じカードでも、探している目的によって「良さ」は変わります。
 そのためカテゴリごとに重みを変え、**その重みをランキングページに表示**しています
-（`/ja/rankings/<category>`）。
+（`/card-port/ja/rankings/<category>`）。
 
 正規化前の値（`scoring.ts` の `categoryWeights`）:
 

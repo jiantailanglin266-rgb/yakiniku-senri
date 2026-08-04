@@ -36,7 +36,7 @@ export function Header({ locale, dictionary }: { locale: Locale; dictionary: Dic
     <header
       className={cx(
         "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-        scrolled ? "glass-solid border-line/70 border-b" : "bg-transparent",
+        scrolled ? "glass-solid border-cp-line/70 border-b" : "bg-transparent",
       )}
     >
       <div className="mx-auto flex max-w-[88rem] items-center gap-3 px-4 py-3 sm:px-6">
@@ -45,7 +45,7 @@ export function Header({ locale, dictionary }: { locale: Locale; dictionary: Dic
           className="flex shrink-0 items-baseline gap-1 text-[1.05rem] font-semibold tracking-[0.08em]"
         >
           <span className="text-aurora">{brand.wordmark.lead}</span>
-          <span className="text-ink">{brand.wordmark.tail}</span>
+          <span className="text-cp-ink">{brand.wordmark.tail}</span>
         </Link>
 
         <nav aria-label={dictionary.nav.home} className="ms-4 hidden flex-1 lg:block">
@@ -60,7 +60,7 @@ export function Header({ locale, dictionary }: { locale: Locale; dictionary: Dic
                     aria-current={active ? "page" : undefined}
                     className={cx(
                       "rounded-full px-3 py-1.5 text-[0.8rem] transition-colors",
-                      active ? "bg-cyan/12 text-cyan" : "text-mist hover:text-ink",
+                      active ? "bg-cp-cyan/12 text-cp-cyan" : "text-cp-mist hover:text-cp-ink",
                     )}
                   >
                     {dictionary.nav[item.key]}
@@ -74,11 +74,11 @@ export function Header({ locale, dictionary }: { locale: Locale; dictionary: Dic
         <div className="ms-auto flex items-center gap-2">
           <Link
             href={routes.compare(locale)}
-            className="glass text-ink hover:border-cyan/50 relative hidden items-center gap-1.5 rounded-full px-3 py-1.5 text-[0.78rem] transition-colors sm:inline-flex"
+            className="glass text-cp-ink hover:border-cp-cyan/50 relative hidden items-center gap-1.5 rounded-full px-3 py-1.5 text-[0.78rem] transition-colors sm:inline-flex"
           >
             {dictionary.sections.comparison}
             {ids.length > 0 ? (
-              <span className="bg-cyan text-void numeric inline-flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[0.62rem] font-bold">
+              <span className="bg-cp-cyan text-cp-void numeric inline-flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[0.62rem] font-bold">
                 {ids.length}
               </span>
             ) : null}
@@ -92,7 +92,7 @@ export function Header({ locale, dictionary }: { locale: Locale; dictionary: Dic
             aria-expanded={open}
             aria-controls="cardport-mobile-nav"
             aria-label={open ? dictionary.common.close : dictionary.common.menu}
-            className="glass text-ink rounded-full p-2 lg:hidden"
+            className="glass text-cp-ink rounded-full p-2 lg:hidden"
           >
             <svg viewBox="0 0 20 20" className="h-4 w-4" aria-hidden="true">
               {open ? (
@@ -119,7 +119,7 @@ export function Header({ locale, dictionary }: { locale: Locale; dictionary: Dic
         <nav
           id="cardport-mobile-nav"
           aria-label={dictionary.nav.home}
-          className="glass-solid border-line/70 max-h-[75vh] overflow-y-auto border-t px-4 pt-3 pb-6 lg:hidden"
+          className="glass-solid border-cp-line/70 max-h-[75vh] overflow-y-auto border-t px-4 pt-3 pb-6 lg:hidden"
         >
           <ul className="grid grid-cols-2 gap-1.5">
             {[...primaryNav, ...secondaryNav].map((item) => (
@@ -127,7 +127,7 @@ export function Header({ locale, dictionary }: { locale: Locale; dictionary: Dic
                 <Link
                   href={item.href(locale)}
                   onClick={() => setOpen(false)}
-                  className="text-mist hover:text-ink block rounded-lg px-3 py-2.5 text-[0.82rem] transition-colors"
+                  className="text-cp-mist hover:text-cp-ink block rounded-lg px-3 py-2.5 text-[0.82rem] transition-colors"
                 >
                   {dictionary.nav[item.key]}
                 </Link>
@@ -137,7 +137,7 @@ export function Header({ locale, dictionary }: { locale: Locale; dictionary: Dic
               <Link
                 href={routes.compare(locale)}
                 onClick={() => setOpen(false)}
-                className="text-cyan block rounded-lg px-3 py-2.5 text-[0.82rem]"
+                className="text-cp-cyan block rounded-lg px-3 py-2.5 text-[0.82rem]"
               >
                 {dictionary.sections.comparison}
                 {ids.length > 0 ? `（${ids.length}）` : ""}

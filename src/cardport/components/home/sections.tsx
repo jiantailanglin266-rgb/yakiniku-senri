@@ -40,12 +40,12 @@ export function FeatureGrid({ locale, limit }: { locale: Locale; limit?: number 
       {list.map((feature, index) => (
         <Reveal as="li" key={feature.id} delayIndex={index % 8}>
           <Link href={routes.feature(locale, feature.slug)} className="block h-full">
-            <Panel glow className="hover:border-cyan/40 h-full p-4 transition-colors">
+            <Panel glow className="hover:border-cp-cyan/40 h-full p-4 transition-colors">
               <Badge accent={feature.accent}>{String(index + 1).padStart(2, "0")}</Badge>
-              <h3 className="text-ink mt-2.5 text-[0.9rem] font-semibold">
+              <h3 className="text-cp-ink mt-2.5 text-[0.9rem] font-semibold">
                 {pick(feature.title, locale)}
               </h3>
-              <p className="text-mist mt-1.5 line-clamp-2 text-[0.74rem] leading-relaxed">
+              <p className="text-cp-mist mt-1.5 line-clamp-2 text-[0.74rem] leading-relaxed">
                 {pick(feature.lead, locale)}
               </p>
             </Panel>
@@ -70,8 +70,8 @@ export function CategoryChips({ locale, active }: { locale: Locale; active?: str
             className={cx(
               "block rounded-full border px-3.5 py-1.5 text-[0.76rem] transition-colors",
               active === category.id
-                ? "border-cyan/60 bg-cyan/15 text-cyan"
-                : "border-line text-mist hover:border-cyan/40 hover:text-ink",
+                ? "border-cp-cyan/60 bg-cp-cyan/15 text-cp-cyan"
+                : "border-cp-line text-cp-mist hover:border-cp-cyan/40 hover:text-cp-ink",
             )}
           >
             {pick(category.title, locale)}
@@ -105,16 +105,19 @@ export function NewsCard({
 }) {
   const author = getAuthor(article.authorId);
   return (
-    <Panel as="article" className="hover:border-cyan/40 flex h-full flex-col p-4 transition-colors">
+    <Panel
+      as="article"
+      className="hover:border-cp-cyan/40 flex h-full flex-col p-4 transition-colors"
+    >
       <div className="flex flex-wrap items-center gap-2">
         {/* 記事の性格を必ず出します。誰の言葉かを読者が判断できるようにするためです */}
         <Badge accent={article.kind === "sponsored" ? "gold" : article.accent}>
           {locale === "ja" ? kindLabels[article.kind].ja : kindLabels[article.kind].en}
         </Badge>
-        <span className="text-dim numeric text-[0.68rem]">
+        <span className="text-cp-dim numeric text-[0.68rem]">
           {formatDate(article.publishedAt, locale)}
         </span>
-        <span className="text-dim text-[0.68rem]">
+        <span className="text-cp-dim text-[0.68rem]">
           {article.readingMinutes} {dictionary.common.readingTime}
         </span>
       </div>
@@ -122,16 +125,16 @@ export function NewsCard({
       <h3 className="mt-2.5 text-[0.92rem] leading-snug font-semibold">
         <Link
           href={routes.newsArticle(locale, article.slug)}
-          className="hover:text-cyan transition-colors"
+          className="hover:text-cp-cyan transition-colors"
         >
           {pick(article.title, locale)}
         </Link>
       </h3>
-      <p className="text-mist mt-2 line-clamp-3 text-[0.78rem] leading-relaxed">
+      <p className="text-cp-mist mt-2 line-clamp-3 text-[0.78rem] leading-relaxed">
         {pick(article.summary, locale)}
       </p>
 
-      <p className="text-dim mt-auto pt-3 text-[0.68rem]">
+      <p className="text-cp-dim mt-auto pt-3 text-[0.68rem]">
         {dictionary.common.source}: {pick(article.sourceName, locale)}
         {author ? ` / ${dictionary.common.author}: ${pick(author.name, locale)}` : ""}
       </p>
@@ -170,10 +173,10 @@ export function VideoGrid({ videos, locale }: { videos: Video[]; locale: Locale 
           <Link href={routes.video(locale, video.slug)} className="block h-full">
             <Panel
               glow
-              className="hover:border-magenta/40 h-full overflow-hidden transition-colors"
+              className="hover:border-cp-magenta/40 h-full overflow-hidden transition-colors"
             >
               {/* サムネイル：APIキー未設定でも成立するようグラデーションで代替します */}
-              <div className="from-violet/40 via-magenta/25 to-navy relative aspect-video bg-gradient-to-br">
+              <div className="from-cp-violet/40 via-cp-magenta/25 to-cp-navy relative aspect-video bg-gradient-to-br">
                 <span className="absolute inset-0 grid place-items-center">
                   <span className="grid h-11 w-11 place-items-center rounded-full bg-white/15 backdrop-blur">
                     <svg viewBox="0 0 16 16" className="h-4 w-4 text-white" aria-hidden="true">
@@ -185,19 +188,19 @@ export function VideoGrid({ videos, locale }: { videos: Video[]; locale: Locale 
                   {formatDuration(video.durationSeconds)}
                 </span>
                 {video.isShort ? (
-                  <span className="bg-magenta/90 absolute top-2 left-2 rounded px-1.5 py-0.5 text-[0.62rem] font-semibold text-white">
+                  <span className="bg-cp-magenta/90 absolute top-2 left-2 rounded px-1.5 py-0.5 text-[0.62rem] font-semibold text-white">
                     SHORTS
                   </span>
                 ) : null}
               </div>
               <div className="p-4">
-                <h3 className="text-ink text-[0.88rem] leading-snug font-semibold">
+                <h3 className="text-cp-ink text-[0.88rem] leading-snug font-semibold">
                   {pick(video.title, locale)}
                 </h3>
-                <p className="text-mist mt-1.5 line-clamp-2 text-[0.74rem]">
+                <p className="text-cp-mist mt-1.5 line-clamp-2 text-[0.74rem]">
                   {pick(video.description, locale)}
                 </p>
-                <p className="text-dim numeric mt-2 text-[0.68rem]">
+                <p className="text-cp-dim numeric mt-2 text-[0.68rem]">
                   {formatDate(video.publishedAt, locale)}
                 </p>
               </div>
@@ -227,25 +230,25 @@ export function ToolGrid({
         <Reveal as="li" key={tool.id} delayIndex={index % 6}>
           <Panel className="flex h-full flex-col p-4">
             <div className="flex items-start justify-between gap-2">
-              <h3 className="text-ink text-[0.9rem] font-semibold">{pick(tool.name, locale)}</h3>
+              <h3 className="text-cp-ink text-[0.9rem] font-semibold">{pick(tool.name, locale)}</h3>
               {tool.freePlan ? <Badge accent="emerald">{dictionary.common.free}</Badge> : null}
             </div>
-            <p className="text-mist mt-2 text-[0.76rem] leading-relaxed">
+            <p className="text-cp-mist mt-2 text-[0.76rem] leading-relaxed">
               {pick(tool.summary, locale)}
             </p>
-            <dl className="text-dim mt-3 space-y-1 text-[0.7rem]">
+            <dl className="text-cp-dim mt-3 space-y-1 text-[0.7rem]">
               <div className="flex gap-2">
                 <dt className="w-16 shrink-0">料金</dt>
-                <dd className="text-mist">{pick(tool.pricing, locale)}</dd>
+                <dd className="text-cp-mist">{pick(tool.pricing, locale)}</dd>
               </div>
               <div className="flex gap-2">
                 <dt className="w-16 shrink-0">対応</dt>
-                <dd className="text-mist">{tool.platforms.join(" / ")}</dd>
+                <dd className="text-cp-mist">{tool.platforms.join(" / ")}</dd>
               </div>
               {tool.integrations.length > 0 ? (
                 <div className="flex gap-2">
                   <dt className="w-16 shrink-0">連携</dt>
-                  <dd className="text-mist">{tool.integrations.join(" / ")}</dd>
+                  <dd className="text-cp-mist">{tool.integrations.join(" / ")}</dd>
                 </div>
               ) : null}
             </dl>
@@ -253,7 +256,7 @@ export function ToolGrid({
               href={tool.officialUrl}
               target="_blank"
               rel="nofollow noopener noreferrer"
-              className="text-cyan mt-auto pt-4 text-[0.76rem] hover:underline"
+              className="text-cp-cyan mt-auto pt-4 text-[0.76rem] hover:underline"
             >
               {dictionary.card.official} →
             </a>
@@ -273,17 +276,19 @@ export function PaymentGrid({ locale, dictionary }: { locale: Locale; dictionary
       {paymentServices.map((service, index) => (
         <Reveal as="li" key={service.id} delayIndex={index % 6}>
           <Panel className="flex h-full flex-col p-4">
-            <h3 className="text-ink text-[0.9rem] font-semibold">{pick(service.name, locale)}</h3>
-            <p className="text-mist mt-2 text-[0.76rem] leading-relaxed">
+            <h3 className="text-cp-ink text-[0.9rem] font-semibold">
+              {pick(service.name, locale)}
+            </h3>
+            <p className="text-cp-mist mt-2 text-[0.76rem] leading-relaxed">
               {pick(service.summary, locale)}
             </p>
-            <p className="text-dim mt-3 text-[0.72rem]">
+            <p className="text-cp-dim mt-3 text-[0.72rem]">
               {dictionary.card.baseRate}:{" "}
-              <span className="numeric text-cyan">{service.baseRate}%</span>
+              <span className="numeric text-cp-cyan">{service.baseRate}%</span>
             </p>
             <div className="mt-3">
-              <p className="text-dim mb-1 text-[0.7rem]">{dictionary.card.cons}</p>
-              <ul className="text-mist space-y-0.5 text-[0.72rem]">
+              <p className="text-cp-dim mb-1 text-[0.7rem]">{dictionary.card.cons}</p>
+              <ul className="text-cp-mist space-y-0.5 text-[0.72rem]">
                 {pickList(service.cons, locale).map((line) => (
                   <li key={line}>・{line}</li>
                 ))}
@@ -318,26 +323,26 @@ export function Web3Grid({
           <Panel glow className="flex h-full flex-col p-4">
             <div className="flex flex-wrap items-center gap-2">
               <Badge accent="magenta">{service.category}</Badge>
-              <span className="text-dim text-[0.68rem]">{service.regions.join(" / ")}</span>
+              <span className="text-cp-dim text-[0.68rem]">{service.regions.join(" / ")}</span>
             </div>
-            <h3 className="text-ink mt-2.5 text-[0.9rem] font-semibold">
+            <h3 className="text-cp-ink mt-2.5 text-[0.9rem] font-semibold">
               <Link
                 href={routes.web3Service(locale, service.slug)}
-                className="hover:text-magenta transition-colors"
+                className="hover:text-cp-magenta transition-colors"
               >
                 {pick(service.name, locale)}
               </Link>
             </h3>
-            <p className="text-mist mt-2 line-clamp-3 text-[0.76rem] leading-relaxed">
+            <p className="text-cp-mist mt-2 line-clamp-3 text-[0.76rem] leading-relaxed">
               {pick(service.summary, locale)}
             </p>
             {/* リスクは折り畳まず、カード上で必ず1件は見えるようにします */}
-            <p className="border-danger/40 bg-danger/8 text-danger mt-3 rounded-lg border px-2.5 py-2 text-[0.7rem] leading-snug">
+            <p className="border-cp-danger/40 bg-cp-danger/8 text-cp-danger mt-3 rounded-lg border px-2.5 py-2 text-[0.7rem] leading-snug">
               {pickList(service.risks, locale)[0]}
             </p>
             <Link
               href={routes.web3Service(locale, service.slug)}
-              className="text-cyan mt-auto pt-3 text-[0.76rem] hover:underline"
+              className="text-cp-cyan mt-auto pt-3 text-[0.76rem] hover:underline"
             >
               {dictionary.card.detail} →
             </Link>
@@ -365,17 +370,17 @@ export function GuideList({
       {items.map((guide, index) => (
         <Reveal as="li" key={guide.id} delayIndex={index % 6}>
           <Link href={routes.guide(locale, guide.slug)} className="block h-full">
-            <Panel className="hover:border-cyan/40 h-full p-4 transition-colors">
+            <Panel className="hover:border-cp-cyan/40 h-full p-4 transition-colors">
               <div className="flex items-center gap-2">
                 <Badge accent="emerald">{guide.level}</Badge>
-                <span className="text-dim text-[0.68rem]">
+                <span className="text-cp-dim text-[0.68rem]">
                   {guide.readingMinutes} {dictionary.common.readingTime}
                 </span>
               </div>
-              <h3 className="text-ink mt-2.5 text-[0.88rem] font-semibold">
+              <h3 className="text-cp-ink mt-2.5 text-[0.88rem] font-semibold">
                 {pick(guide.title, locale)}
               </h3>
-              <p className="text-mist mt-1.5 line-clamp-2 text-[0.74rem]">
+              <p className="text-cp-mist mt-1.5 line-clamp-2 text-[0.74rem]">
                 {pick(guide.lead, locale)}
               </p>
             </Panel>
@@ -396,16 +401,16 @@ export function FaqList({ items, locale }: { items: Faq[]; locale: Locale }) {
         <li key={faq.id}>
           {/* details/summary を使うことで、開閉のためのJSが不要になります */}
           <details className="glass group rounded-xl px-4 py-3">
-            <summary className="text-ink flex cursor-pointer items-center justify-between gap-3 text-[0.85rem] font-medium">
+            <summary className="text-cp-ink flex cursor-pointer items-center justify-between gap-3 text-[0.85rem] font-medium">
               {pick(faq.question, locale)}
               <span
-                className="text-cyan shrink-0 transition-transform group-open:rotate-45"
+                className="text-cp-cyan shrink-0 transition-transform group-open:rotate-45"
                 aria-hidden="true"
               >
                 +
               </span>
             </summary>
-            <p className="text-mist mt-3 text-[0.79rem] leading-relaxed">
+            <p className="text-cp-mist mt-3 text-[0.79rem] leading-relaxed">
               {pick(faq.answer, locale)}
             </p>
           </details>
@@ -424,11 +429,13 @@ export function SubscribeBox({ locale, dictionary }: { locale: Locale; dictionar
     <Panel glow className="p-6 sm:p-8">
       <div className="grid items-center gap-6 md:grid-cols-[1.2fr_1fr]">
         <div>
-          <h2 className="text-ink text-[1.2rem] font-semibold">{dictionary.sections.subscribe}</h2>
-          <p className="text-mist mt-2 text-[0.84rem] leading-relaxed">
+          <h2 className="text-cp-ink text-[1.2rem] font-semibold">
+            {dictionary.sections.subscribe}
+          </h2>
+          <p className="text-cp-mist mt-2 text-[0.84rem] leading-relaxed">
             {dictionary.subscribe.lead}
           </p>
-          <p className="text-dim mt-3 text-[0.72rem]">{dictionary.subscribe.note}</p>
+          <p className="text-cp-dim mt-3 text-[0.72rem]">{dictionary.subscribe.note}</p>
         </div>
         <div>
           {/* 配信システム未接続の間は、動かないフォームを出さずに状態を明示します */}

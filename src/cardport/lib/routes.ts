@@ -1,19 +1,36 @@
 /**
  * CARD PORT の URL 生成。
  *
+ * ■ なぜ `/card-port` の下にあるのか
+ *   このリポジトリには4つのサイトが同居しています。
+ *   `/<言語>/` は先に CRYPTO PORT が使っているため、
+ *   CARD PORT は AI PORT（`/ai-port`）と同じ流儀で `/card-port` 配下に置いています。
+ *
  * 言語プレフィックスの付け忘れ・二重付与を防ぐため、
  * 内部リンクは必ずここを経由してください。
  */
 import type { Locale } from "@/cardport/i18n/locales";
 
-/** `/ja/cards/xxx` のような言語つきパスを作ります */
+/** CARD PORT のベースパス（言語プレフィックスの手前） */
+export const CARD_PORT_BASE = "/card-port";
+
+/** `/card-port/ja/cards/xxx` のような言語つきパスを作ります */
 export function path(locale: Locale, ...segments: (string | number)[]): string {
   const tail = segments
     .filter((segment) => segment !== "" && segment !== undefined && segment !== null)
     .map((segment) => String(segment).replace(/^\/+|\/+$/g, ""))
     .filter(Boolean)
     .join("/");
-  return tail ? `/${locale}/${tail}` : `/${locale}`;
+  return tail ? `${CARD_PORT_BASE}/${locale}/${tail}` : `${CARD_PORT_BASE}/${locale}`;
+}
+
+/** 言語プレフィックスとベースパスを除いた相対パス（`/cards/xxx`）。hreflang の組み立てに使います */
+export function stripLocale(fullPath: string): string {
+  const withoutBase = fullPath.startsWith(CARD_PORT_BASE)
+    ? fullPath.slice(CARD_PORT_BASE.length)
+    : fullPath;
+  const segments = withoutBase.split("/").filter(Boolean);
+  return segments.length <= 1 ? "" : `/${segments.slice(1).join("/")}`;
 }
 
 export const routes = {
@@ -60,8 +77,6 @@ export const routes = {
 export function swapLocale(pathname: string, nextLocale: Locale, basePath = ""): string {
   const withoutBase =
     basePath && pathname.startsWith(basePath) ? pathname.slice(basePath.length) : pathname;
-  const segments = withoutBase.split("/").filter(Boolean);
-  if (segments.length === 0) return `${basePath}/${nextLocale}`;
-  segments[0] = nextLocale;
-  return `${basePath}/${segments.join("/")}`;
+  const tail = stripLocale(withoutBase).split("/").filter(Boolean);
+  return `${basePath}${path(nextLocale, ...tail)}`;
 }

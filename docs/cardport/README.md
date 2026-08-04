@@ -9,23 +9,24 @@
 
 ## 0. このリポジトリの構成（重要）
 
-このリポジトリは **2つのサイトを1つの Next.js アプリで配信** します。
+このリポジトリは **4つのサイトを1つの Next.js アプリで配信** します。
 
-| サイト                        | URL                             | ソース                                                   |
-| ----------------------------- | ------------------------------- | -------------------------------------------------------- |
-| 焼肉 千里（既存・本番稼働中） | `/`, `/menu`, `/news/...`       | `src/app/(senri)/**`, `src/components/**`, `src/data/**` |
-| CARD PORT                     | `/ja/`, `/en/`, `/ja/cards/...` | `src/app/(cardport)/**`, `src/cardport/**`               |
+| サイト                        | URL                       | ソース                                    |
+| ----------------------------- | ------------------------- | ----------------------------------------- |
+| 焼肉 千里（既存・本番稼働中） | `/`, `/menu`, `/news/...` | `src/app/(senri)/**`                      |
+| AI PORT                       | `/ai-port`                | `src/app/ai-port/**`                      |
+| CRYPTO PORT                   | `/<言語>/...`             | `src/app/(portal)/**`                     |
+| **CARD PORT**                 | `/card-port/<言語>/...`   | `src/app/card-port/**`, `src/cardport/**` |
 
-Next.js の **複数ルートレイアウト**（route groups）を使っています。
-ルートグループ名は URL に出ないため、**既存サイトの URL は一切変わりません**。
-
-- CSS も完全に分離しています（`src/app/globals.css` / `src/cardport/styles/cardport.css`）。
-  CARD PORT 側は `@source` で走査範囲を `src/cardport/**` と `src/app/(cardport)/**` に限定しているため、
-  互いのテーマ変数（例: `--color-gold`）が混ざりません。
-- 別ドメインで運用する場合は `NEXT_PUBLIC_CARDPORT_URL` を CARD PORT のドメインにし、
-  リバースプロキシ／Vercel の Rewrites でホストごとに振り分けてください。
-
----
+- `<html>` / `<body>` はルートレイアウト（`src/app/layout.tsx`）が持ちます。
+  各サイトの外枠は自分のレイアウトにあり、CARD PORT は `src/app/card-port/layout.tsx` です。
+- **`/<言語>/` は先に CRYPTO PORT が使っている**ため、CARD PORT は AI PORT と同じ流儀で
+  `/card-port` 配下に置いています。内部リンクは必ず `src/cardport/lib/routes.ts` を経由してください。
+- `cardport.css` は `/card-port` 配下からのみ読み込みます。
+  トークン名はすべて `cp-` 接頭辞付き（`--color-cp-ink` → `text-cp-ink`）で、
+  他サイトのトークンと衝突しません。カスタムクラスは `.cardport-root` の配下に閉じ込めています。
+- preflight（リセット）はルートの `globals.css` が配信済みのため、
+  `cardport.css` では theme と utilities のレイヤーだけを読み込みます。
 
 ## 1. セットアップ
 
@@ -33,7 +34,7 @@ Next.js の **複数ルートレイアウト**（route groups）を使ってい�
 npm ci
 cp .env.example .env.local     # 値は空のままでも全機能が動きます
 npm run cardport:assets        # OGP画像とアイコンのプレースホルダーを生成
-npm run dev                    # http://localhost:3000/ja
+npm run dev                    # http://localhost:3000/card-port/ja
 ```
 
 Node.js は 22 以上を想定しています（CI と同じ）。
@@ -140,7 +141,7 @@ Node.js は 22 以上を想定しています（CI と同じ）。
 2. `src/cardport/data/cards.ts` の全カードに値を入れる（型エラーが漏れを教えてくれます）
 3. 表示したい場所に足す
    - 比較表 → `src/cardport/components/cards/CompareView.tsx` の `rows`
-   - カード詳細 → `src/app/(cardport)/[locale]/cards/[slug]/page.tsx` の仕様表
+   - カード詳細 → `src/app/card-port/[locale]/cards/[slug]/page.tsx` の仕様表
    - 絞り込み条件 → `src/cardport/lib/search.ts` の `FeatureFlag` と `matchesFeature`
 4. 必要なら辞書（`src/cardport/i18n/dictionaries/ja.ts`・`en.ts`）にラベルを足す
 
@@ -152,7 +153,7 @@ Node.js は 22 以上を想定しています（CI と同じ）。
 
 - 各カードの `scores`（6軸・0〜5）を更新する
 - カテゴリ別の重みを変えたいときは `categoryWeights` を編集する
-- 重みはランキングページに自動で表示されます（`/ja/rankings/<category>`）
+- 重みはランキングページに自動で表示されます（`/card-port/ja/rankings/<category>`）
 
 **広告の報酬額は順位の入力に使いません。**
 `scoring.ts` は `affiliate.ts` を import しない構造にして、コードの依存関係で担保しています。
@@ -166,7 +167,7 @@ Node.js は 22 以上を想定しています（CI と同じ）。
 - `endsOn` を過ぎたキャンペーンは自動的に「掲載期限を過ぎています」に切り替わり、
   申込みCTA が消えます（削除しなくて構いません）
 - `conditions` は**必ず全文**書いてください。畳んだり省略したりしないでください
-- 管理画面（`/ja/admin`）に期限の一覧が出ます
+- 管理画面（`/card-port/ja/admin`）に期限の一覧が出ます
 
 ---
 
@@ -215,13 +216,13 @@ Node.js は 22 以上を想定しています（CI と同じ）。
 - 「PR」ラベルを表示
 - 期限を過ぎたら公式サイトへ自動フォールバック
 
-未設定・期限切れの一覧は管理画面（`/ja/admin`）で確認できます。
+未設定・期限切れの一覧は管理画面（`/card-port/ja/admin`）で確認できます。
 
 ---
 
 ## 10. 管理画面
 
-`/ja/admin` は**読み取り専用の運用ダッシュボード**です（`noindex`）。
+`/card-port/ja/admin` は**読み取り専用の運用ダッシュボード**です（`noindex`）。
 
 表示内容:
 
@@ -234,7 +235,7 @@ Node.js は 22 以上を想定しています（CI と同じ）。
 **編集機能はあえて実装していません。** 認証のない編集画面を公開することは、
 金融メディアとして許容できないためです。有効化する手順:
 
-1. Supabase Auth を導入し、`(cardport)/[locale]/admin` をセッション必須にする
+1. Supabase Auth を導入し、`card-port/[locale]/admin` をセッション必須にする
 2. ロール（編集者／承認者／管理者）を作り、公開操作を承認者以上に限定する
 3. 管理者アカウントに多要素認証を必須化する
 4. 変更差分を監査ログへ記録する（誰が・いつ・何を変えたか）
@@ -279,13 +280,13 @@ ISR や Edge へ移す場合は、各ページの `dynamicParams` と `revalidat
 
 ## 13. 生成されるフィード
 
-| パス                          | 内容                                                |
-| ----------------------------- | --------------------------------------------------- |
-| `/cardport-sitemap.xml`       | 全ページ（各URLに `xhtml:link` で全言語の相互参照） |
-| `/cardport-news-sitemap.xml`  | ニュース（直近2日分）                               |
-| `/cardport-video-sitemap.xml` | 動画                                                |
-| `/cardport-rss.xml`           | ニュースRSS（日本語）                               |
-| `/sitemap.xml`                | **焼肉 千里のもの**（従来どおり）                   |
+| パス                           | 内容                                                |
+| ------------------------------ | --------------------------------------------------- |
+| `/sitemap.xml`（統合）         | 全ページ（各URLに `xhtml:link` で全言語の相互参照） |
+| `/card-port/news-sitemap.xml`  | ニュース（直近2日分）                               |
+| `/card-port/video-sitemap.xml` | 動画                                                |
+| `/card-port/rss.xml`           | ニュースRSS（日本語）                               |
+| `/sitemap.xml`                 | **焼肉 千里のもの**（従来どおり）                   |
 
 同じホストに同居している場合、`robots.txt` に CARD PORT のサイトマップも自動で列挙されます。
 
@@ -296,27 +297,25 @@ ISR や Edge へ移す場合は、各ページの `dynamicParams` と `revalidat
 ```
 src/
 ├── app/
-│   ├── (senri)/               # 既存サイト（URLは変わりません）
-│   ├── (cardport)/
-│   │   ├── layout.tsx         # CARD PORT のルートレイアウト
+│   ├── layout.tsx             # 4サイト共通のルートレイアウト（html / body）
+│   ├── (senri)/               # 焼肉 千里
+│   ├── (portal)/              # CRYPTO PORT（/<言語>/）
+│   ├── ai-port/               # AI PORT
+│   ├── card-port/             # CARD PORT
+│   │   ├── layout.tsx         # .cardport-root（外枠・フォント・背景）
 │   │   ├── [locale]/          # 言語つきの全ページ
-│   │   └── cardport-*.xml/    # サイトマップ・RSS のルートハンドラ
-│   ├── globals.css            # 既存サイトのスタイル
-│   ├── not-found.tsx          # どちらにも属さないURLの404
-│   ├── robots.ts / sitemap.ts / manifest.ts
-├── components/                # 既存サイトのコンポーネント
-├── data/ lib/                 # 既存サイトのデータ・ロジック
+│   │   └── *.xml/             # ニュース・動画サイトマップ / RSS
+│   ├── globals.css
+│   ├── robots.ts / sitemap.ts # サイトマップは4サイト分をここで統合
 └── cardport/
     ├── config/site.ts         # サイト名・ロゴ・色・運営会社（差し替え口）
     ├── i18n/                  # 言語定義・辞書・書式
     ├── data/                  # 型とモックデータ
-    ├── lib/                   # スコアリング・診断・計算・検索・RAG・SEO
+    ├── lib/                   # スコアリング・診断・計算・検索・RAG・SEO・サイトマップ
     ├── hooks/                 # 比較リスト
     ├── components/            # UI
     └── styles/cardport.css    # デザインシステム
 ```
-
----
 
 ## 15. 関連ドキュメント
 

@@ -103,15 +103,15 @@ export function DiagnosisRunner({
     return (
       <Panel glow className="p-5 sm:p-7">
         <div className="mb-5">
-          <div className="text-dim mb-2 flex items-center justify-between text-[0.74rem]">
+          <div className="text-cp-dim mb-2 flex items-center justify-between text-[0.74rem]">
             <span>
               {dictionary.diagnosis.question} {step + 1} {dictionary.diagnosis.of} {total}
             </span>
             <span className="numeric">{Math.round((step / total) * 100)}%</span>
           </div>
-          <div className="bg-slate/70 h-1 overflow-hidden rounded-full">
+          <div className="bg-cp-slate/70 h-1 overflow-hidden rounded-full">
             <div
-              className="from-cyan to-violet h-full rounded-full bg-gradient-to-r transition-all duration-500"
+              className="from-cp-cyan to-cp-violet h-full rounded-full bg-gradient-to-r transition-all duration-500"
               style={{ width: `${(step / total) * 100}%` }}
             />
           </div>
@@ -121,7 +121,7 @@ export function DiagnosisRunner({
           {pick(question.label, locale)}
         </h3>
         {question.help ? (
-          <p className="text-dim mt-2 text-[0.76rem] leading-relaxed">
+          <p className="text-cp-dim mt-2 text-[0.76rem] leading-relaxed">
             {pick(question.help, locale)}
           </p>
         ) : null}
@@ -132,7 +132,7 @@ export function DiagnosisRunner({
               <button
                 type="button"
                 onClick={() => choose(question.id, option.id)}
-                className="glass hover:border-cyan/60 hover:bg-cyan/8 w-full rounded-xl px-4 py-3.5 text-start text-[0.86rem] transition-all"
+                className="glass hover:border-cp-cyan/60 hover:bg-cp-cyan/8 w-full rounded-xl px-4 py-3.5 text-start text-[0.86rem] transition-all"
               >
                 {pick(option.label, locale)}
               </button>
@@ -165,7 +165,7 @@ export function DiagnosisRunner({
           <div>
             <Badge accent={diagnosis.accent}>{dictionary.diagnosis.result}</Badge>
             <h3 className="mt-2 text-[1.15rem] font-semibold">{pick(diagnosis.title, locale)}</h3>
-            <p className="text-mist mt-1 text-[0.82rem]">{dictionary.diagnosis.resultLead}</p>
+            <p className="text-cp-mist mt-1 text-[0.82rem]">{dictionary.diagnosis.resultLead}</p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button variant="outline" onClick={copyShare}>
@@ -187,8 +187,8 @@ export function DiagnosisRunner({
                 index === 0 && "glow-border",
               )}
             >
-              <span className="text-dim text-[0.74rem]">{dictionary.diagnosis.matchScore}</span>
-              <span className="numeric text-cyan text-[1.15rem] font-bold">{result.match}%</span>
+              <span className="text-cp-dim text-[0.74rem]">{dictionary.diagnosis.matchScore}</span>
+              <span className="numeric text-cp-cyan text-[1.15rem] font-bold">{result.match}%</span>
             </div>
 
             <CardTile
@@ -200,27 +200,27 @@ export function DiagnosisRunner({
             />
 
             <Panel className="p-4">
-              <p className="text-dim mb-2 text-[0.72rem]">{dictionary.diagnosis.reason}</p>
-              <ul className="text-mist space-y-1 text-[0.76rem]">
+              <p className="text-cp-dim mb-2 text-[0.72rem]">{dictionary.diagnosis.reason}</p>
+              <ul className="text-cp-mist space-y-1 text-[0.76rem]">
                 {result.reasons.length > 0 ? (
                   result.reasons.map((reason) => (
                     <li key={reason.ja} className="flex gap-1.5">
-                      <span className="text-cyan">・</span>
+                      <span className="text-cp-cyan">・</span>
                       {pick(reason, locale)}
                     </li>
                   ))
                 ) : (
-                  <li className="text-dim">
+                  <li className="text-cp-dim">
                     {locale === "ja"
                       ? "回答から強く一致する条件は見つかりませんでした。条件を変えて再度お試しください。"
                       : "No strong match was found from your answers. Try adjusting them."}
                   </li>
                 )}
               </ul>
-              <p className="border-line/50 text-dim mt-3 border-t pt-3 text-[0.72rem]">
+              <p className="border-cp-line/50 text-cp-dim mt-3 border-t pt-3 text-[0.72rem]">
                 {dictionary.diagnosis.estimatedPoints}（
                 {locale === "ja" ? "月5万円利用の場合" : "at ¥50,000/month"}）:{" "}
-                <span className="numeric text-emerald">
+                <span className="numeric text-cp-emerald">
                   {formatNumber(estimateAnnualPoints(result.card, 50000), locale)}
                 </span>
               </p>
@@ -232,16 +232,19 @@ export function DiagnosisRunner({
       <div className="mt-6 space-y-3">
         <Notice tone="warn">{dictionary.diagnosis.disclaimer}</Notice>
         <div className="flex flex-wrap gap-3">
-          <Link href={routes.compare(locale)} className="text-cyan text-[0.82rem] hover:underline">
+          <Link
+            href={routes.compare(locale)}
+            className="text-cp-cyan text-[0.82rem] hover:underline"
+          >
             {dictionary.sections.comparison} →
           </Link>
           <Link
             href={routes.simulatorIndex(locale)}
-            className="text-cyan text-[0.82rem] hover:underline"
+            className="text-cp-cyan text-[0.82rem] hover:underline"
           >
             {dictionary.nav.simulators} →
           </Link>
-          <Link href={routes.cards(locale)} className="text-cyan text-[0.82rem] hover:underline">
+          <Link href={routes.cards(locale)} className="text-cp-cyan text-[0.82rem] hover:underline">
             {dictionary.nav.cards} →
           </Link>
         </div>

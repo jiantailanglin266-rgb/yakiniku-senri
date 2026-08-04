@@ -2,9 +2,21 @@ import type { MetadataRoute } from "next";
 import { mainNav, utilityNav } from "@/data/navigation";
 import { getNews } from "@/data/news";
 import { siteUrl } from "@/data/site";
+import { aiPortSitemapEntries } from "@/lib/ai-port/sitemap";
+import { portalSitemap } from "@/portal/lib/sitemap";
+import { cardPortSitemap } from "@/cardport/lib/site-sitemap";
 
 export const dynamic = "force-static";
 
+/**
+ * このリポジトリには4つのサイトが同居しています。
+ * サイトマップはドメイン単位のファイルなので、すべてのURLをここでまとめて出力します。
+ * 分けると、どれかの登録漏れに気づきにくくなります。
+ *   - 焼肉 千里（ルート直下の静的パス）
+ *   - AI PORT（/ai-port 配下）
+ *   - CRYPTO PORT（/<言語>/ 以下。言語別 alternates つき）
+ *   - CARD PORT（/card-port/<言語>/ 以下。言語別 alternates つき）
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
   // ビルドのたびに現在時刻を入れると全URLが「毎回更新された」ことになり、
   // クロールの優先度判断を誤らせます。最新のお知らせの日付を基準にします。
@@ -34,5 +46,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
-  return [...staticPages, ...newsPages];
+  return [
+    ...staticPages,
+    ...newsPages,
+    ...aiPortSitemapEntries(),
+    ...portalSitemap(),
+    ...cardPortSitemap(),
+  ];
 }

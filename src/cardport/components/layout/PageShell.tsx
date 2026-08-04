@@ -38,17 +38,17 @@ export function PageShell({
 
       <header className="mx-auto w-full max-w-[88rem] px-4 pt-6 pb-2 sm:px-6">
         {eyebrow ? (
-          <p className="text-cyan mb-2 font-mono text-[0.68rem] tracking-[0.24em] uppercase">
+          <p className="text-cp-cyan font-cp-mono mb-2 text-[0.68rem] tracking-[0.24em] uppercase">
             {eyebrow}
           </p>
         ) : null}
-        <h1 className="text-ink text-[1.6rem] leading-tight font-semibold sm:text-[2.2rem]">
+        <h1 className="text-cp-ink text-[1.6rem] leading-tight font-semibold sm:text-[2.2rem]">
           {title}
         </h1>
         {lead ? (
-          <p className="text-mist mt-3 max-w-3xl text-[0.88rem] leading-relaxed">{lead}</p>
+          <p className="text-cp-mist mt-3 max-w-3xl text-[0.88rem] leading-relaxed">{lead}</p>
         ) : null}
-        {meta ? <div className="text-dim mt-4 text-[0.72rem]">{meta}</div> : null}
+        {meta ? <div className="text-cp-dim mt-4 text-[0.72rem]">{meta}</div> : null}
         {notice ? <div className="mt-5 max-w-4xl">{notice}</div> : null}
       </header>
 

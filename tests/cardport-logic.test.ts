@@ -255,7 +255,8 @@ describe("チャットボット（RAG）", () => {
     const result = answer("年会費無料", "ja");
     expect(result.kind).toBe("answer");
     expect(result.sources.length).toBeGreaterThan(0);
-    for (const source of result.sources) expect(source.href.startsWith("/ja/")).toBe(true);
+    for (const source of result.sources)
+      expect(source.href.startsWith("/card-port/ja/")).toBe(true);
   });
 
   it("該当が無いときは作らずに empty を返す", () => {
@@ -272,14 +273,17 @@ describe("チャットボット（RAG）", () => {
 
 describe("URL と多言語", () => {
   it("言語つきパスを組み立てられる", () => {
-    expect(path("ja")).toBe("/ja");
-    expect(routes.card("en", "nova-zero")).toBe("/en/cards/nova-zero");
+    // CRYPTO PORT が /<言語>/ を使っているため、CARD PORT は /card-port 配下にあります
+    expect(path("ja")).toBe("/card-port/ja");
+    expect(routes.card("en", "nova-zero")).toBe("/card-port/en/cards/nova-zero");
   });
 
   it("表示中のページを保ったまま言語だけ切り替えられる", () => {
-    expect(swapLocale("/ja/cards/nova-zero", "en")).toBe("/en/cards/nova-zero");
-    expect(swapLocale("/ja", "ko")).toBe("/ko");
-    expect(swapLocale("/senri/ja/cards", "en", "/senri")).toBe("/senri/en/cards");
+    expect(swapLocale("/card-port/ja/cards/nova-zero", "en")).toBe("/card-port/en/cards/nova-zero");
+    expect(swapLocale("/card-port/ja", "ko")).toBe("/card-port/ko");
+    expect(swapLocale("/senri/card-port/ja/cards", "en", "/senri")).toBe(
+      "/senri/card-port/en/cards",
+    );
   });
 
   it("未定義の言語コードを弾く", () => {

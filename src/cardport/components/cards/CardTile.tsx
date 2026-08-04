@@ -57,10 +57,10 @@ export function CardTile({
                 className={cx(
                   "numeric inline-flex h-6 min-w-6 items-center justify-center rounded-md px-1.5 text-[0.75rem] font-bold",
                   rank === 1
-                    ? "from-gold to-amber text-void bg-gradient-to-br"
+                    ? "from-cp-gold to-cp-amber text-cp-void bg-gradient-to-br"
                     : rank <= 3
-                      ? "bg-cyan/20 text-cyan"
-                      : "bg-slate text-mist",
+                      ? "bg-cp-cyan/20 text-cp-cyan"
+                      : "bg-cp-slate text-cp-mist",
                 )}
               >
                 {rank}
@@ -75,54 +75,54 @@ export function CardTile({
           <h3 className="mt-2 text-[0.98rem] leading-snug font-semibold">
             <Link
               href={routes.card(locale, card.slug)}
-              className="hover:text-cyan transition-colors"
+              className="hover:text-cp-cyan transition-colors"
             >
               {pick(card.name, locale)}
             </Link>
           </h3>
           {issuer ? (
-            <p className="text-dim mt-0.5 text-[0.72rem]">{pick(issuer.name, locale)}</p>
+            <p className="text-cp-dim mt-0.5 text-[0.72rem]">{pick(issuer.name, locale)}</p>
           ) : null}
         </div>
       </div>
 
       {/* 数値は横幅いっぱいに置きます。券面の横だと狭い画面で桁が隣とくっつくためです */}
-      <dl className="border-line/40 mt-4 grid grid-cols-3 gap-2 border-t pt-3">
+      <dl className="border-cp-line/40 mt-4 grid grid-cols-3 gap-2 border-t pt-3">
         <div>
-          <dt className="text-dim text-[0.66rem]">{dictionary.card.annualFee}</dt>
-          <dd className="numeric text-ink text-[0.92rem] font-semibold">
+          <dt className="text-cp-dim text-[0.66rem]">{dictionary.card.annualFee}</dt>
+          <dd className="numeric text-cp-ink text-[0.92rem] font-semibold">
             {formatAnnualFee(card.annualFee, locale, dictionary.common.free)}
           </dd>
         </div>
         <div>
-          <dt className="text-dim text-[0.66rem]">{dictionary.card.baseRate}</dt>
-          <dd className="numeric text-cyan text-[0.92rem] font-semibold">{card.baseRate}%</dd>
+          <dt className="text-cp-dim text-[0.66rem]">{dictionary.card.baseRate}</dt>
+          <dd className="numeric text-cp-cyan text-[0.92rem] font-semibold">{card.baseRate}%</dd>
         </div>
         <div>
-          <dt className="text-dim text-[0.66rem]">{dictionary.card.score}</dt>
-          <dd className="numeric text-gold text-[0.92rem] font-semibold">{score.toFixed(2)}</dd>
+          <dt className="text-cp-dim text-[0.66rem]">{dictionary.card.score}</dt>
+          <dd className="numeric text-cp-gold text-[0.92rem] font-semibold">{score.toFixed(2)}</dd>
         </div>
       </dl>
 
       {!compact ? (
         <>
-          <p className="text-mist mt-3 line-clamp-3 text-[0.8rem] leading-relaxed">
+          <p className="text-cp-mist mt-3 line-clamp-3 text-[0.8rem] leading-relaxed">
             {pick(card.summary, locale)}
           </p>
 
           {campaign ? (
-            <p className="border-amber/35 bg-amber/8 text-amber mt-3 rounded-lg border px-3 py-2 text-[0.74rem] leading-snug">
+            <p className="border-cp-amber/35 bg-cp-amber/8 text-cp-amber mt-3 rounded-lg border px-3 py-2 text-[0.74rem] leading-snug">
               <span className="font-semibold">{dictionary.card.campaign}</span>
               {": "}
               {pick(campaign.title, locale)}
               {campaign.maxValue > 0
                 ? `（${dictionary.card.upTo} ${formatYen(campaign.maxValue, locale)}）`
                 : ""}
-              <span className="text-dim ms-1">〜{formatDate(campaign.endsOn, locale)}</span>
+              <span className="text-cp-dim ms-1">〜{formatDate(campaign.endsOn, locale)}</span>
             </p>
           ) : null}
 
-          <ul className="text-dim mt-3 flex flex-wrap gap-x-3 gap-y-1 text-[0.7rem]">
+          <ul className="text-cp-dim mt-3 flex flex-wrap gap-x-3 gap-y-1 text-[0.7rem]">
             <li>{card.brands.map((b) => brandLabels[b]).join(" / ")}</li>
             <li>
               {dictionary.card.issueSpeed}:{" "}
@@ -148,7 +148,7 @@ export function CardTile({
         />
         <Link
           href={routes.card(locale, card.slug)}
-          className="border-line text-mist hover:border-cyan/50 hover:text-ink rounded-full border px-3 py-1.5 text-[0.75rem] transition-colors"
+          className="border-cp-line text-cp-mist hover:border-cp-cyan/50 hover:text-cp-ink rounded-full border px-3 py-1.5 text-[0.75rem] transition-colors"
         >
           {dictionary.card.detail}
         </Link>
@@ -159,7 +159,7 @@ export function CardTile({
         />
       </div>
 
-      <p className="text-dim mt-3 text-[0.66rem]">
+      <p className="text-cp-dim mt-3 text-[0.66rem]">
         {dictionary.common.verifiedAt}: {formatDate(card.verifiedOn, locale)}
       </p>
     </Panel>

@@ -44,3 +44,61 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - `AggregateRating` / `Review` / 受賞歴 / メディア掲載は、**実データがない限り出力しない**
   （Googleのポリシー違反・優良誤認のリスク）
 - 構造化データは**画面に表示している内容とだけ**一致させる
+
+---
+
+## 4. このリポジトリは4つのサイトを配信しています
+
+| サイト      | URL                  | 外枠                                   |
+| ----------- | -------------------- | -------------------------------------- |
+| 焼肉 千里   | `/`（従来どおり）    | `src/app/(senri)/layout.tsx`           |
+| AI PORT     | `/ai-port`           | `src/app/ai-port/layout.tsx`           |
+| CRYPTO PORT | `/<言語>/`           | `src/app/(portal)/[locale]/layout.tsx` |
+| CARD PORT   | `/card-port/<言語>/` | `src/app/card-port/layout.tsx`         |
+
+ルートレイアウト（`src/app/layout.tsx`）は `<html>` / `<body>` と共通フォントだけを持ちます。
+ルートグループ `(senri)` `(portal)` は**URLに現れない**ため、既存サイトのURLは1つも変わっていません。
+
+### 触ってはいけない設計（追加分）
+
+| 項目                                            | 理由                                                                    |
+| ----------------------------------------------- | ----------------------------------------------------------------------- |
+| `(senri)` というルートグループ名と配置          | 名前を変えるとURLが変わり、既存の被リンク・ブックマークがすべて切れます |
+| `ai-port.css` を `/ai-port` からのみ読み込む    | 全ページで読むと、千里側の訪問者にも不要なCSSを配信することになります   |
+| AI PORT のCSSトークンの `ai-` 接頭辞            | 接頭辞を外すと千里側のトークンと衝突し、既存サイトの配色が壊れます      |
+| `route.node.ts` という拡張子と `pageExtensions` | 静的エクスポート（GitHub Pages）でのビルドを成立させるための仕組みです  |
+| AI PORT でも言語切り替えを常時設置              | §1の固定要件は AI PORT 側にも適用されます                               |
+| CARD PORT のCSSトークンの `cp-` 接頭辞          | 接頭辞を外すと千里側の `--color-gold` / `--font-display` と衝突します   |
+| `/<言語>/` は CRYPTO PORT のもの                | CARD PORT を `/<言語>/` に置くとルートが重複してビルドが通りません      |
+
+### AI PORT の事実性ルール（§3の具体化）
+
+AI PORT では、以下を**出力しない**ことをテストで機械的に守っています
+（`tests/ai-port-data.test.ts` / `tests/ai-port-seo.test.ts`）。
+
+- AIツールの料金の**金額**（変動が速く、古い数字は読者への実害）
+- レビュー点数・星の数・`AggregateRating` / `Review` の構造化データ
+- PV・会員数など、計測していない数字
+- イベントの**開催日**（毎年変わるため、季節の目安のみ）
+- ダミーの広告枠（実在しない案件の表示は不当表示）
+
+確認できていない項目は `null` とし、画面には「未確認」と表示します。
+空欄にすると「なし」と読まれ、事実と異なる印象を与えるためです。
+
+詳細は [docs/ai-port/README.md](docs/ai-port/README.md) を参照してください。
+
+### CARD PORT の事実性ルール（§3の具体化）
+
+CARD PORT では、以下を**出力しない**ことをテストで機械的に守っています
+（`tests/cardport-data.test.ts` / `tests/cardport-logic.test.ts`）。
+
+- 実データのない `AggregateRating` / `Review` / 受賞歴・メディア掲載実績
+- 「必ず審査に通る」「誰でも発行できる」など、審査・特典を保証する表現
+- 適用条件・期限・対象者を欠いたキャンペーン表示
+- 実在するカードの商標・ロゴ・券面意匠（掲載データはすべて架空です）
+
+順位算出コード（`src/cardport/lib/scoring.ts`）は、アフィリエイト管理コード
+（`src/cardport/lib/affiliate.ts`）を import しません。
+広告の報酬額が順位に影響しないことを、依存関係のレベルで担保しています。
+
+詳細は [docs/cardport/README.md](docs/cardport/README.md) を参照してください。

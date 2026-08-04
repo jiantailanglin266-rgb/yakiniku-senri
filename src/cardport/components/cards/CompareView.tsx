@@ -132,7 +132,7 @@ export function CompareView({ locale, dictionary }: { locale: Locale; dictionary
   if (selected.length === 0) {
     return (
       <Panel className="p-8 text-center">
-        <p className="text-mist text-[0.86rem]">
+        <p className="text-cp-mist text-[0.86rem]">
           {locale === "ja"
             ? "比較したいカードを選ぶと、ここに並べて表示します。"
             : "Pick the cards you want and they will line up here."}
@@ -143,7 +143,7 @@ export function CompareView({ locale, dictionary }: { locale: Locale; dictionary
               key={card.id}
               type="button"
               onClick={() => toggle(card.id)}
-              className="border-line text-mist hover:border-cyan/50 hover:text-ink rounded-full border px-3 py-1.5 text-[0.75rem] transition-colors"
+              className="border-cp-line text-cp-mist hover:border-cp-cyan/50 hover:text-cp-ink rounded-full border px-3 py-1.5 text-[0.75rem] transition-colors"
             >
               + {pick(card.name, locale)}
             </button>
@@ -151,7 +151,7 @@ export function CompareView({ locale, dictionary }: { locale: Locale; dictionary
         </div>
         <Link
           href={routes.cards(locale)}
-          className="text-cyan mt-5 inline-block text-[0.8rem] hover:underline"
+          className="text-cp-cyan mt-5 inline-block text-[0.8rem] hover:underline"
         >
           {dictionary.nav.cards} →
         </Link>
@@ -162,11 +162,11 @@ export function CompareView({ locale, dictionary }: { locale: Locale; dictionary
   return (
     <div>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <p className="text-mist text-[0.8rem]">
+        <p className="text-cp-mist text-[0.8rem]">
           {selected.length} / {MAX_COMPARE}
         </p>
         <div className="flex items-center gap-2">
-          <div className="border-line flex rounded-full border p-0.5">
+          <div className="border-cp-line flex rounded-full border p-0.5">
             {(["table", "cards"] as const).map((value) => (
               <button
                 key={value}
@@ -175,7 +175,7 @@ export function CompareView({ locale, dictionary }: { locale: Locale; dictionary
                 aria-pressed={mode === value}
                 className={cx(
                   "rounded-full px-3 py-1 text-[0.72rem] transition-colors",
-                  mode === value ? "bg-cyan/18 text-cyan" : "text-mist hover:text-ink",
+                  mode === value ? "bg-cp-cyan/18 text-cp-cyan" : "text-cp-mist hover:text-cp-ink",
                 )}
               >
                 {value === "table"
@@ -196,12 +196,15 @@ export function CompareView({ locale, dictionary }: { locale: Locale; dictionary
 
       {/* 表形式：広い画面向け。狭い画面ではカード型を選べます */}
       <div className={cx(mode === "table" ? "block" : "hidden")}>
-        <div className="border-line glass overflow-x-auto rounded-2xl border">
+        <div className="border-cp-line glass overflow-x-auto rounded-2xl border">
           <table className="sticky-col w-full min-w-[46rem] border-collapse text-[0.78rem]">
             <caption className="sr-only">{dictionary.sections.comparison}</caption>
             <thead>
-              <tr className="border-line/70 border-b">
-                <th scope="col" className="text-dim w-40 p-3 text-start text-[0.7rem] font-normal">
+              <tr className="border-cp-line/70 border-b">
+                <th
+                  scope="col"
+                  className="text-cp-dim w-40 p-3 text-start text-[0.7rem] font-normal"
+                >
                   &nbsp;
                 </th>
                 {selected.map((card) => (
@@ -211,14 +214,14 @@ export function CompareView({ locale, dictionary }: { locale: Locale; dictionary
                     </div>
                     <Link
                       href={routes.card(locale, card.slug)}
-                      className="hover:text-cyan font-semibold"
+                      className="hover:text-cp-cyan font-semibold"
                     >
                       {pick(card.name, locale)}
                     </Link>
                     <button
                       type="button"
                       onClick={() => remove(card.id)}
-                      className="text-dim hover:text-danger ms-2 text-[0.7rem]"
+                      className="text-cp-dim hover:text-cp-danger ms-2 text-[0.7rem]"
                     >
                       ×
                     </button>
@@ -228,19 +231,19 @@ export function CompareView({ locale, dictionary }: { locale: Locale; dictionary
             </thead>
             <tbody>
               {rows.map((row) => (
-                <tr key={row.label} className="border-line/40 border-b last:border-0">
-                  <th scope="row" className="text-dim p-3 text-start text-[0.72rem] font-normal">
+                <tr key={row.label} className="border-cp-line/40 border-b last:border-0">
+                  <th scope="row" className="text-cp-dim p-3 text-start text-[0.72rem] font-normal">
                     {row.label}
                   </th>
                   {selected.map((card) => (
-                    <td key={card.id} className="text-mist p-3 align-top">
+                    <td key={card.id} className="text-cp-mist p-3 align-top">
                       {row.render(card)}
                     </td>
                   ))}
                 </tr>
               ))}
               <tr>
-                <th scope="row" className="text-dim p-3 text-start text-[0.72rem] font-normal">
+                <th scope="row" className="text-cp-dim p-3 text-start text-[0.72rem] font-normal">
                   &nbsp;
                 </th>
                 {selected.map((card, index) => (
@@ -275,24 +278,24 @@ export function CompareView({ locale, dictionary }: { locale: Locale; dictionary
               <div className="min-w-0">
                 <Link
                   href={routes.card(locale, card.slug)}
-                  className="hover:text-cyan font-semibold"
+                  className="hover:text-cp-cyan font-semibold"
                 >
                   {pick(card.name, locale)}
                 </Link>
                 <button
                   type="button"
                   onClick={() => remove(card.id)}
-                  className="text-dim hover:text-danger ms-2 text-[0.72rem]"
+                  className="text-cp-dim hover:text-cp-danger ms-2 text-[0.72rem]"
                 >
                   {dictionary.card.compareRemove}
                 </button>
               </div>
             </div>
-            <dl className="border-line/40 divide-line/30 divide-y border-t">
+            <dl className="border-cp-line/40 divide-cp-line/30 divide-y border-t">
               {rows.map((row) => (
                 <div key={row.label} className="grid grid-cols-[9rem_1fr] gap-2 py-2">
-                  <dt className="text-dim text-[0.72rem]">{row.label}</dt>
-                  <dd className="text-mist text-[0.76rem]">{row.render(card)}</dd>
+                  <dt className="text-cp-dim text-[0.72rem]">{row.label}</dt>
+                  <dd className="text-cp-mist text-[0.76rem]">{row.render(card)}</dd>
                 </div>
               ))}
             </dl>

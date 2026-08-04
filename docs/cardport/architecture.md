@@ -45,8 +45,8 @@
 | `/admin`                       | 運用ダッシュボード（noindex・読み取り専用）     |
 | `/sitemap`                     | HTML サイトマップ                               |
 
-サイト外（言語プレフィックスなし）: `/cardport-sitemap.xml`, `/cardport-news-sitemap.xml`,
-`/cardport-video-sitemap.xml`, `/cardport-rss.xml`
+サイト外（言語プレフィックスなし）: `/sitemap.xml`（統合）, `/card-port/news-sitemap.xml`,
+`/card-port/video-sitemap.xml`, `/card-port/rss.xml`
 
 ## 3. トップページのセクション構成
 

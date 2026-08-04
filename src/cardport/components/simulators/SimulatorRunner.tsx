@@ -87,7 +87,10 @@ export function SimulatorRunner({
           <div className="space-y-3">
             {spendCategories.map((category) => (
               <div key={category.id} className="flex items-center gap-3">
-                <label htmlFor={`spend-${category.id}`} className="text-dim flex-1 text-[0.74rem]">
+                <label
+                  htmlFor={`spend-${category.id}`}
+                  className="text-cp-dim flex-1 text-[0.74rem]"
+                >
                   {pick(category.label, locale)}
                 </label>
                 <input
@@ -102,13 +105,15 @@ export function SimulatorRunner({
                       [category.id]: Math.max(0, Number(event.target.value) || 0),
                     }))
                   }
-                  className="numeric border-line bg-navy/70 text-ink focus:border-cyan w-28 rounded-lg border px-2 py-1.5 text-end text-[0.78rem] outline-none"
+                  className="numeric border-cp-line bg-cp-navy/70 text-cp-ink focus:border-cp-cyan w-28 rounded-lg border px-2 py-1.5 text-end text-[0.78rem] outline-none"
                 />
               </div>
             ))}
-            <p className="border-line/50 text-mist mt-3 flex justify-between border-t pt-3 text-[0.8rem]">
+            <p className="border-cp-line/50 text-cp-mist mt-3 flex justify-between border-t pt-3 text-[0.8rem]">
               <span>{dictionary.simulator.monthlySpend}</span>
-              <span className="numeric text-cyan font-semibold">{formatYen(monthly, locale)}</span>
+              <span className="numeric text-cp-cyan font-semibold">
+                {formatYen(monthly, locale)}
+              </span>
             </p>
           </div>
         ) : null}
@@ -150,14 +155,14 @@ export function SimulatorRunner({
               onChange={setPoints}
             />
             <div>
-              <label htmlFor="exchange" className="text-dim mb-1.5 block text-[0.74rem]">
+              <label htmlFor="exchange" className="text-cp-dim mb-1.5 block text-[0.74rem]">
                 {locale === "ja" ? "交換先" : "Redemption"}
               </label>
               <select
                 id="exchange"
                 value={exchangeId}
                 onChange={(event) => setExchangeId(event.target.value)}
-                className="border-line bg-navy/70 text-ink focus:border-cyan w-full rounded-lg border px-2.5 py-2 text-[0.78rem] outline-none"
+                className="border-cp-line bg-cp-navy/70 text-cp-ink focus:border-cp-cyan w-full rounded-lg border px-2.5 py-2 text-[0.78rem] outline-none"
               >
                 {exchangeOptions.map((option) => (
                   <option key={option.id} value={option.id}>
@@ -171,8 +176,8 @@ export function SimulatorRunner({
 
         {simulator.id !== "point-exchange" && simulator.id !== "fx-fee" ? null : null}
 
-        <div className="border-line/50 mt-5 border-t pt-4">
-          <p className="text-dim mb-2 text-[0.74rem]">
+        <div className="border-cp-line/50 mt-5 border-t pt-4">
+          <p className="text-cp-dim mb-2 text-[0.74rem]">
             {locale === "ja" ? "対象カード（最大4枚）" : "Cards to compare (up to 4)"}
           </p>
           <div className="flex flex-wrap gap-1.5">
@@ -185,8 +190,8 @@ export function SimulatorRunner({
                 className={cx(
                   "rounded-full border px-2.5 py-1 text-[0.7rem] transition-colors",
                   selectedIds.includes(card.id)
-                    ? "border-cyan/60 bg-cyan/15 text-cyan"
-                    : "border-line text-dim hover:text-ink",
+                    ? "border-cp-cyan/60 bg-cp-cyan/15 text-cp-cyan"
+                    : "border-cp-line text-cp-dim hover:text-cp-ink",
                 )}
               >
                 {pick(card.name, locale)}
@@ -216,14 +221,16 @@ export function SimulatorRunner({
 
         <Panel className="p-5">
           <h3 className="mb-3 text-[0.88rem] font-semibold">{dictionary.simulator.method}</h3>
-          <p className="numeric text-cyan bg-navy/60 border-line rounded-lg border px-3 py-2 text-[0.8rem]">
+          <p className="numeric text-cp-cyan bg-cp-navy/60 border-cp-line rounded-lg border px-3 py-2 text-[0.8rem]">
             {pick(simulator.method, locale)}
           </p>
-          <h4 className="text-dim mt-4 mb-2 text-[0.78rem]">{dictionary.simulator.assumptions}</h4>
-          <ul className="text-mist space-y-1.5 text-[0.76rem]">
+          <h4 className="text-cp-dim mt-4 mb-2 text-[0.78rem]">
+            {dictionary.simulator.assumptions}
+          </h4>
+          <ul className="text-cp-mist space-y-1.5 text-[0.76rem]">
             {pickList(simulator.assumptions, locale).map((line) => (
               <li key={line} className="flex gap-1.5">
-                <span className="text-dim">・</span>
+                <span className="text-cp-dim">・</span>
                 {line}
               </li>
             ))}
@@ -233,12 +240,15 @@ export function SimulatorRunner({
         <Notice tone="warn">{dictionary.simulator.disclaimer}</Notice>
 
         <div className="flex flex-wrap gap-3">
-          <Link href={routes.compare(locale)} className="text-cyan text-[0.82rem] hover:underline">
+          <Link
+            href={routes.compare(locale)}
+            className="text-cp-cyan text-[0.82rem] hover:underline"
+          >
             {dictionary.sections.comparison} →
           </Link>
           <Link
             href={routes.diagnosisIndex(locale)}
-            className="text-cyan text-[0.82rem] hover:underline"
+            className="text-cp-cyan text-[0.82rem] hover:underline"
           >
             {dictionary.nav.diagnosis} →
           </Link>
@@ -263,7 +273,7 @@ function NumberField({
 }) {
   return (
     <div>
-      <label htmlFor={id} className="text-dim mb-1.5 block text-[0.74rem]">
+      <label htmlFor={id} className="text-cp-dim mb-1.5 block text-[0.74rem]">
         {label}
       </label>
       <input
@@ -273,7 +283,7 @@ function NumberField({
         step={step}
         value={value}
         onChange={(event) => onChange(Math.max(0, Number(event.target.value) || 0))}
-        className="numeric border-line bg-navy/70 text-ink focus:border-cyan w-full rounded-lg border px-3 py-2 text-[0.82rem] outline-none"
+        className="numeric border-cp-line bg-cp-navy/70 text-cp-ink focus:border-cp-cyan w-full rounded-lg border px-3 py-2 text-[0.82rem] outline-none"
       />
     </div>
   );
@@ -308,7 +318,7 @@ function ResultBody({
 
   if (cards.length === 0) {
     return (
-      <p className="text-mist text-[0.84rem]">
+      <p className="text-cp-mist text-[0.84rem]">
         {locale === "ja" ? "対象カードを1枚以上選んでください。" : "Select at least one card."}
       </p>
     );
@@ -327,10 +337,10 @@ function ResultBody({
           {exchangeOptions.map((option) => (
             <li
               key={option.id}
-              className="border-line/40 flex justify-between border-b py-2 text-[0.8rem]"
+              className="border-cp-line/40 flex justify-between border-b py-2 text-[0.8rem]"
             >
-              <span className="text-mist">{pick(option.label, locale)}</span>
-              <span className="numeric text-ink">{yen(Math.round(points * option.rate))}</span>
+              <span className="text-cp-mist">{pick(option.label, locale)}</span>
+              <span className="numeric text-cp-ink">{yen(Math.round(points * option.rate))}</span>
             </li>
           ))}
         </ul>
@@ -346,12 +356,12 @@ function ResultBody({
           .map((card) => (
             <li
               key={card.id}
-              className="border-line/40 flex items-center justify-between border-b py-2.5"
+              className="border-cp-line/40 flex items-center justify-between border-b py-2.5"
             >
-              <span className="text-mist text-[0.82rem]">{pick(card.name, locale)}</span>
+              <span className="text-cp-mist text-[0.82rem]">{pick(card.name, locale)}</span>
               <span className="flex items-baseline gap-3">
-                <span className="numeric text-dim text-[0.74rem]">{card.fxFee}%</span>
-                <span className="numeric text-danger text-[0.95rem] font-semibold">
+                <span className="numeric text-cp-dim text-[0.74rem]">{card.fxFee}%</span>
+                <span className="numeric text-cp-danger text-[0.95rem] font-semibold">
                   {yen(simulateFxFee(card, overseasSpend))}
                 </span>
               </span>
@@ -367,8 +377,10 @@ function ResultBody({
         {cards.map((card) => {
           const result = simulateTravelBenefit(card, loungeVisits, trips);
           return (
-            <li key={card.id} className="border-line/40 border-b pb-3">
-              <p className="text-ink mb-2 text-[0.85rem] font-medium">{pick(card.name, locale)}</p>
+            <li key={card.id} className="border-cp-line/40 border-b pb-3">
+              <p className="text-cp-ink mb-2 text-[0.85rem] font-medium">
+                {pick(card.name, locale)}
+              </p>
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                 <StatBlock
                   label={dictionary.card.lounge}
@@ -406,10 +418,10 @@ function ResultBody({
           return (
             <li
               key={card.id}
-              className="border-line/40 flex items-center justify-between border-b py-2.5"
+              className="border-cp-line/40 flex items-center justify-between border-b py-2.5"
             >
-              <span className="text-mist text-[0.82rem]">{pick(card.name, locale)}</span>
-              <span className="numeric text-ink text-[0.95rem] font-semibold">
+              <span className="text-cp-mist text-[0.82rem]">{pick(card.name, locale)}</span>
+              <span className="numeric text-cp-ink text-[0.95rem] font-semibold">
                 {card.annualFee === 0
                   ? dictionary.common.free
                   : Number.isFinite(required)
@@ -429,10 +441,10 @@ function ResultBody({
         {cards.map((card) => (
           <li
             key={card.id}
-            className="border-line/40 flex items-center justify-between border-b py-2.5"
+            className="border-cp-line/40 flex items-center justify-between border-b py-2.5"
           >
-            <span className="text-mist text-[0.82rem]">{pick(card.name, locale)}</span>
-            <span className="numeric text-electric text-[0.95rem] font-semibold">
+            <span className="text-cp-mist text-[0.82rem]">{pick(card.name, locale)}</span>
+            <span className="numeric text-cp-electric text-[0.95rem] font-semibold">
               {card.mileRate > 0
                 ? `${formatNumber(simulateMiles(card, annualSpend), locale)} mile`
                 : dictionary.common.no}
@@ -466,13 +478,13 @@ function ResultBody({
             return (
               <li
                 key={assignment.categoryId}
-                className="border-line/40 flex items-center justify-between border-b py-2 text-[0.78rem]"
+                className="border-cp-line/40 flex items-center justify-between border-b py-2 text-[0.78rem]"
               >
-                <span className="text-dim">
+                <span className="text-cp-dim">
                   {category ? pick(category.label, locale) : assignment.categoryId}
                 </span>
-                <span className="text-mist">{pick(assignment.card.name, locale)}</span>
-                <span className="numeric text-cyan">
+                <span className="text-cp-mist">{pick(assignment.card.name, locale)}</span>
+                <span className="numeric text-cp-cyan">
                   {formatNumber(assignment.annualPoints, locale)}
                 </span>
               </li>
@@ -501,8 +513,8 @@ function ResultBody({
           accent="electric"
         />
         <div>
-          <p className="text-dim text-[0.7rem]">{dictionary.simulator.annualPoints}</p>
-          <p className="numeric text-emerald mt-0.5 text-[1.35rem] font-semibold sm:text-[1.6rem]">
+          <p className="text-cp-dim text-[0.7rem]">{dictionary.simulator.annualPoints}</p>
+          <p className="numeric text-cp-emerald mt-0.5 text-[1.35rem] font-semibold sm:text-[1.6rem]">
             <CountUp
               value={best.result.annualPoints}
               format={(value) => formatNumber(Math.round(value), locale)}
@@ -520,7 +532,7 @@ function ResultBody({
       <table className="mt-6 w-full text-[0.78rem]">
         <caption className="sr-only">{dictionary.simulator.result}</caption>
         <thead>
-          <tr className="border-line/60 text-dim border-b text-[0.72rem]">
+          <tr className="border-cp-line/60 text-cp-dim border-b text-[0.72rem]">
             <th scope="col" className="py-2 text-start font-normal">
               {dictionary.nav.cards}
             </th>
@@ -542,17 +554,17 @@ function ResultBody({
           {rows
             .sort((a, b) => b.result.netValue - a.result.netValue)
             .map(({ card, result }) => (
-              <tr key={card.id} className="border-line/30 border-b">
-                <td className="text-mist py-2.5">{pick(card.name, locale)}</td>
-                <td className="numeric text-dim py-2.5 text-end">{card.baseRate}%</td>
-                <td className="numeric text-cyan py-2.5 text-end">
+              <tr key={card.id} className="border-cp-line/30 border-b">
+                <td className="text-cp-mist py-2.5">{pick(card.name, locale)}</td>
+                <td className="numeric text-cp-dim py-2.5 text-end">{card.baseRate}%</td>
+                <td className="numeric text-cp-cyan py-2.5 text-end">
                   {formatNumber(result.annualPoints, locale)}
                 </td>
-                <td className="numeric text-dim py-2.5 text-end">{yen(result.annualFee)}</td>
+                <td className="numeric text-cp-dim py-2.5 text-end">{yen(result.annualFee)}</td>
                 <td
                   className={cx(
                     "numeric py-2.5 text-end font-semibold",
-                    result.netValue >= 0 ? "text-emerald" : "text-danger",
+                    result.netValue >= 0 ? "text-cp-emerald" : "text-cp-danger",
                   )}
                 >
                   {yen(result.netValue)}

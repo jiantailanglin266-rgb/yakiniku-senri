@@ -7,7 +7,8 @@
 import type { Metadata } from "next";
 import { brand, cardportAbsoluteUrl, cardportAsset } from "@/cardport/config/site";
 import { getDictionary } from "@/cardport/i18n";
-import { getLocaleDefinition, locales, type Locale } from "@/cardport/i18n/locales";
+import { DEFAULT_LOCALE, getLocaleDefinition, locales, type Locale } from "@/cardport/i18n/locales";
+import { path, stripLocale } from "./routes";
 
 export type PageMetaInput = {
   title: string;
@@ -30,19 +31,18 @@ export type PageMetaInput = {
 
 /** 言語ごとの代替URL（hreflang）。x-default は日本語を指します */
 export function alternateLanguages(
-  path: string,
+  fullPath: string,
   locale: Locale,
   localeSet: Locale[] = locales,
 ): Record<string, string> {
-  const segments = path.split("/").filter(Boolean);
-  const tail = segments.slice(1).join("/");
+  const tail = stripLocale(fullPath).split("/").filter(Boolean);
   const entries: Record<string, string> = {};
   for (const candidate of localeSet) {
     entries[getLocaleDefinition(candidate).hreflang] = cardportAbsoluteUrl(
-      tail ? `/${candidate}/${tail}` : `/${candidate}`,
+      path(candidate, ...tail),
     );
   }
-  entries["x-default"] = cardportAbsoluteUrl(tail ? `/ja/${tail}` : "/ja");
+  entries["x-default"] = cardportAbsoluteUrl(path(DEFAULT_LOCALE, ...tail));
   // 自分自身の言語も含めるのが正しい実装です（自己参照 hreflang）
   void locale;
   return entries;
