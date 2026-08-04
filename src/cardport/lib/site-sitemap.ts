@@ -12,6 +12,7 @@ import { cardportAbsoluteUrl } from "@/cardport/config/site";
 import { getLocaleDefinition, locales } from "@/cardport/i18n/locales";
 import { sitemapEntries } from "./feeds";
 import { path, stripLocale } from "./routes";
+import { pageImageSitemapEntries } from "@/media/lib/structured-data";
 
 export function cardPortSitemap(): MetadataRoute.Sitemap {
   const result: MetadataRoute.Sitemap = [];
@@ -27,12 +28,19 @@ export function cardPortSitemap(): MetadataRoute.Sitemap {
     languages["x-default"] = cardportAbsoluteUrl(path("ja", ...tail));
 
     for (const locale of entryLocales) {
+      /*
+        画像サイトマップ。ライセンス確認済みの画像だけを載せます。
+        確認前の画像は resolvePageImages() が返さないため、ここへ漏れません。
+      */
+      const images = entry.pageKey ? pageImageSitemapEntries(entry.pageKey, locale) : [];
+
       result.push({
         url: cardportAbsoluteUrl(entry.build(locale)),
         lastModified: entry.lastModified ? new Date(entry.lastModified) : undefined,
         changeFrequency: entry.changeFrequency,
         priority: entry.priority,
         alternates: { languages },
+        ...(images.length > 0 ? { images: images.map((image) => image.loc) } : {}),
       });
     }
   }

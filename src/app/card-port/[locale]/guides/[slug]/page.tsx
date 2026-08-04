@@ -14,6 +14,9 @@ import { getContentLocales, isLocale, type Locale } from "@/cardport/i18n/locale
 import { routes } from "@/cardport/lib/routes";
 import { cardportMetadata } from "@/cardport/lib/seo";
 import { guideJsonLd, howToJsonLd } from "@/cardport/lib/structured-data";
+import { WikimediaFigure } from "@/media/components";
+import { pageImagesJsonLd } from "@/media/lib/structured-data";
+import { pageKey } from "@/media/data/usages";
 
 export function generateStaticParams() {
   return getContentLocales().flatMap((locale) =>
@@ -58,6 +61,7 @@ export default async function GuidePage({
   const dictionary = getDictionary(locale);
   const author = getAuthor(guide.authorId);
   const relatedCards = getCardsByIds(guide.relatedCardIds);
+  const guideImages = pageImagesJsonLd(pageKey("cardport", "guide", guide.slug), locale);
 
   return (
     <PageShell
@@ -105,6 +109,12 @@ export default async function GuidePage({
             </ol>
           </Panel>
 
+          {/*
+            本文の図版。ライセンス確認済みの画像が割り当てられていなければ、
+            何も描画しません（意味のない装飾は本文に挟みません）。
+          */}
+          <WikimediaFigure pageKey={pageKey("cardport", "guide", guide.slug)} locale={locale} />
+
           {guide.sections.map((section, index) => (
             <section key={index} id={`section-${index}`} className="mb-10 scroll-mt-24">
               <h2 className="text-cp-ink mb-4 text-[1.1rem] font-semibold">
@@ -141,6 +151,8 @@ export default async function GuidePage({
       </div>
 
       <JsonLd data={[guideJsonLd(guide, locale), howToJsonLd(guide, locale)]} />
+      {/* 画面に出している画像がある場合だけ ImageObject を出します */}
+      {guideImages ? <JsonLd data={guideImages} /> : null}
     </PageShell>
   );
 }
