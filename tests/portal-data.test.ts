@@ -14,6 +14,7 @@ import { diagnoses } from "@/portal/data/diagnoses";
 import { legalPages } from "@/portal/data/legal";
 import { groupedNews, news, relatedByStory, trendingNews } from "@/portal/data/news";
 import { footerNav, mainNav, siteFaq } from "@/portal/data/site-content";
+import { coinBanners } from "@/portal/data/coin-banners";
 import { navLabel } from "@/portal/lib/format";
 
 /**
@@ -533,5 +534,34 @@ describe("ナビゲーションの多言語化", () => {
     const market = mainNav.find((item) => item.href === "/coins")!;
     const bitcoin = market.children!.find((child) => child.href === "/coins/bitcoin")!;
     expect(navLabel(bitcoin, "th", getDictionary("th"))).toBe("Bitcoin");
+  });
+});
+
+describe("銘柄バナーのマーキー", () => {
+  it("バナーの slug が実在する銘柄を指す", () => {
+    // リンク切れを防ぎます。slug を間違えると 404 のページへ飛びます
+    const slugs = new Set(coins.map((coin) => coin.slug));
+    for (const banner of coinBanners) {
+      expect(slugs.has(banner.slug), banner.slug).toBe(true);
+    }
+  });
+
+  it("バナーに対応する画像ファイルが存在する", () => {
+    // ファイルが無いまま登録すると、帯に 404 が並びます
+    for (const banner of coinBanners) {
+      const file = path.join(publicDir, "images/portal/marquee", `${banner.slug}.webp`);
+      expect(existsSync(file), `${banner.slug}.webp`).toBe(true);
+    }
+  });
+
+  it("slug が重複していない", () => {
+    const slugs = coinBanners.map((banner) => banner.slug);
+    expect(new Set(slugs).size).toBe(slugs.length);
+  });
+
+  it("読み上げ用の名前が空でない", () => {
+    for (const banner of coinBanners) {
+      expect(banner.label.trim().length, banner.slug).toBeGreaterThan(0);
+    }
   });
 });
