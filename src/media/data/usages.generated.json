@@ -1,5 +1,60 @@
 {
-  "generatedAt": null,
+  "generatedAt": "2026-08-04T15:06:42.294Z",
   "note": "scripts/wikimedia-sync.mjs が生成します。手で編集しないでください。",
-  "usages": []
+  "usages": [
+    {
+      "assetId": "wm-jgc-visa01s",
+      "pageKey": "cardport:guide:credit-card-basics",
+      "slot": "inline",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-mucfids",
+      "pageKey": "cardport:guide:mile-basics",
+      "slot": "inline",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-qr-code-for-mobile-english-wikipedia",
+      "pageKey": "cardport:payment:qr",
+      "slot": "inline",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-baseball-themed-playground-at-fireman-s-park",
+      "pageKey": "sportsport:sport:baseball",
+      "slot": "hero",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-view-of-basketball-hoop-from-below",
+      "pageKey": "sportsport:sport:basketball",
+      "slot": "hero",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-assoc-football-match",
+      "pageKey": "sportsport:sport:football",
+      "slot": "hero",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-motorcycle-racing-circuit-muirton-geograph-org-uk-8169273",
+      "pageKey": "sportsport:sport:motogp",
+      "slot": "hero",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-sceptre-rugby-ball",
+      "pageKey": "sportsport:sport:rugby",
+      "slot": "hero",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-empty-clay-tennis-court-in-melbourne-australia-looking-down-",
+      "pageKey": "sportsport:sport:tennis",
+      "slot": "hero",
+      "priority": 0
+    }
+  ]
 }
