@@ -97,6 +97,7 @@ src/media/
     FallbackVisual.tsx         画像が無いときの装飾（CSS/SVGのみ）
     MediaReviewQueue.tsx       管理画面の確認キュー
 scripts/wikimedia-sync.mjs     取得パイプライン（既定は書き込みなし）
+scripts/Sync-WikimediaPhotos.ps1  同上のPowerShell版（Windows用・ASCIIのみ）
 tests/media-license.test.ts    ライセンス正規化・判定順序・クレジット
 tests/media-components.test.tsx 描画（クレジット分離不可・未承認は描画しない）
 ```
@@ -145,6 +146,18 @@ node scripts/wikimedia-sync.mjs --dry-run
 # 3. 問題なければ書き込み（src/media/data/assets.generated.json）
 node scripts/wikimedia-sync.mjs --write
 ```
+
+Windows では PowerShell 版が使えます。処理内容・出力先・判定は Node 版と同じです。
+
+```powershell
+$env:MEDIA_SYNC_USER_AGENT = "YourSite/1.0 (you@example.com)"
+powershell -ExecutionPolicy Bypass -File scripts\Sync-WikimediaPhotos.ps1
+powershell -ExecutionPolicy Bypass -File scripts\Sync-WikimediaPhotos.ps1 -Write
+```
+
+`.ps1` はASCIIのみで書いています。Windows PowerShell は BOM が無い `.ps1` を
+コンソールのコードページで読むため、本文に日本語を置くと文字化けするからです。
+記事タイトルなどの日本語は `requests.json`（UTF-8）側に置いています。
 
 - スクリプトは **`approved` を付けません**。すべて `needs_review` 以下で止まります。
 - **既存の画像を削除しません。** 同じIDが来たら更新、来なければそのまま残します。
