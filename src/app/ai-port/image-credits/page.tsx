@@ -20,6 +20,7 @@ import { aiPortName, aiPortPath } from "@/data/ai-port/site";
 import { aiPortMetadata } from "@/lib/ai-port/seo";
 import { aiPortBreadcrumbJsonLd, aiPortFaqJsonLd } from "@/lib/ai-port/structured-data";
 import { withBasePath } from "@/lib/base-path";
+import { photoCount } from "@/data/ai-port/photos";
 import { ImageLicenseBadge } from "@/media/components";
 import { getLocalization, wikimediaAssets } from "@/media/data/assets";
 import { siteAssetCredits, type SiteAssetCredit } from "@/media/data/site-assets";
@@ -36,7 +37,7 @@ const CRUMBS = [
 const FAQS = [
   {
     q: "このサイトの画像はどこから来ていますか？",
-    a: "自作の図版・ロゴ、ライセンスを確認した外部素材、そして出所の記録が残っていない既存画像の3種類です。外部素材は作者・出典・ライセンスを、このページと画像のすぐ横の両方に表示しています。出所を確認できていないものは「出所未確認」と明記し、推測で「自作」とは書きません。",
+    a: "4種類あります。(1) 自作の図版・ロゴ、(2) ライセンスを確認した外部素材、(3) 出所の記録が残っていない既存画像、(4) Wikipedia の記事画像を取得したもの（ライセンス未確認）です。(2) は作者・出典・ライセンスを画像のすぐ横に表示しています。(3) と (4) は確認できていないことをそのまま明記しています。",
   },
   {
     q: "Wikipedia に載っている画像をそのまま使っていますか？",
@@ -44,7 +45,7 @@ const FAQS = [
   },
   {
     q: "ライセンスが判定できない画像はどう扱いますか？",
-    a: "掲載しません。取得できたことと使ってよいことは別なので、判定できないものは保留のままにし、人が確認するまで画面には出しません。",
+    a: "Wikimedia Commons から取得した画像は掲載しません。取得できたことと使ってよいことは別なので、判定できないものは保留のままにし、人が確認するまで画面には出しません。一方、下記「ライセンス未確認の写真」の枠は、この判定を通していません。",
   },
   {
     q: "掲載内容に誤りがある場合はどうすればよいですか？",
@@ -198,6 +199,39 @@ export default function ImageCreditsPage() {
               })}
             </ul>
           )}
+        </section>
+
+        <section className="mt-14" aria-labelledby="unverified-photos">
+          <h2 id="unverified-photos" className="text-ai-white text-[1.2rem]">
+            ライセンス未確認の写真
+          </h2>
+
+          {/*
+            ⚠ ここを消さないでください。
+              この枠の画像は src/media/ の判定を通っていません。
+              明記しないと、確認済みの画像と区別がつかなくなります。
+          */}
+          <div className="mt-5 rounded-xl border border-amber-400/30 bg-amber-400/[0.06] p-5">
+            <p className="text-ai-mist text-[0.86rem] leading-[1.95]">
+              カテゴリー・解説記事・イベントの一部で、Wikipedia
+              の記事に掲載されている画像を取得して使用しています（現在 {photoCount} 点）。
+            </p>
+            <ul className="text-ai-haze mt-3 grid gap-1.5 text-[0.82rem] leading-[1.9]">
+              <li>
+                ・これらは
+                <strong className="text-ai-amber">作者・ライセンス・出典を確認していません</strong>
+                。そのため個別のクレジットを表示できていません。
+              </li>
+              <li>
+                ・CC BY / CC BY-SA
+                の画像が含まれる場合、作品ごとの作者表示という条件を満たせていません。
+              </li>
+              <li>・再利用できない条件の画像が混ざっている可能性があります。</li>
+            </ul>
+            <p className="text-ai-dim mt-3 text-[0.78rem] leading-[1.9]">
+              権利者の方でこのサイトでの使用を望まれない画像がありましたら、お問い合わせよりご連絡ください。確認のうえ速やかに削除します。
+            </p>
+          </div>
         </section>
 
         <section className="mt-14" aria-labelledby="site-assets">

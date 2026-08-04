@@ -1,0 +1,42 @@
+[
+  { "slug": "topic-ai-news", "lang": "ja", "titles": ["データセンター", "サーバ"] },
+  {
+    "slug": "topic-ai-tools",
+    "lang": "ja",
+    "titles": ["パーソナルコンピュータ", "ノートパソコン"]
+  },
+  { "slug": "topic-ai-video", "lang": "ja", "titles": ["映画製作", "ビデオカメラ"] },
+  { "slug": "topic-ai-image", "lang": "ja", "titles": ["デジタル画像", "色空間"] },
+  { "slug": "topic-ai-music", "lang": "ja", "titles": ["シンセサイザー", "音声信号処理"] },
+  { "slug": "topic-ai-agent", "lang": "ja", "titles": ["産業用ロボット", "ロボット"] },
+  { "slug": "topic-ai-programming", "lang": "ja", "titles": ["ソースコード", "プログラミング"] },
+  { "slug": "topic-ai-sales", "lang": "ja", "titles": ["会議室", "オフィス"] },
+  { "slug": "topic-ai-marketing", "lang": "ja", "titles": ["統計図表", "折れ線グラフ"] },
+  { "slug": "topic-ai-realestate", "lang": "ja", "titles": ["超高層建築物", "集合住宅"] },
+  { "slug": "topic-ai-medical", "lang": "ja", "titles": ["核磁気共鳴画像法", "医療機器"] },
+  { "slug": "topic-ai-education", "lang": "ja", "titles": ["教室", "図書館"] },
+  { "slug": "topic-ai-investment", "lang": "ja", "titles": ["証券取引所", "株価"] },
+  { "slug": "topic-web3", "lang": "ja", "titles": ["コンピュータネットワーク", "分散システム"] },
+  { "slug": "topic-nft", "lang": "ja", "titles": ["デジタルアート", "ジェネラティブアート"] },
+  { "slug": "topic-dao", "lang": "ja", "titles": ["分散型自律組織", "グラフ理論"] },
+  { "slug": "topic-metaverse", "lang": "ja", "titles": ["ヘッドマウントディスプレイ", "仮想現実"] },
+  {
+    "slug": "topic-blockchain",
+    "lang": "ja",
+    "titles": ["ブロックチェーン", "暗号学的ハッシュ関数"]
+  },
+
+  { "slug": "guide-llmo-aeo-geo-guide", "lang": "ja", "titles": ["検索エンジン", "情報検索"] },
+  { "slug": "guide-ai-agent-basics", "lang": "ja", "titles": ["産業用ロボット", "自動化"] },
+  { "slug": "guide-choose-ai-tool", "lang": "ja", "titles": ["工具", "道具"] },
+  { "slug": "guide-ai-image-rights", "lang": "ja", "titles": ["著作権", "法律図書館"] },
+  { "slug": "guide-rag-for-business", "lang": "ja", "titles": ["書庫", "文書館"] },
+
+  { "slug": "event-gtc", "lang": "ja", "titles": ["サンノゼ (カリフォルニア州)"] },
+  { "slug": "event-google-io", "lang": "ja", "titles": ["マウンテンビュー (カリフォルニア州)"] },
+  { "slug": "event-ms-build", "lang": "ja", "titles": ["シアトル"] },
+  { "slug": "event-wwdc", "lang": "ja", "titles": ["クパチーノ (カリフォルニア州)"] },
+  { "slug": "event-reinvent", "lang": "ja", "titles": ["ラスベガス"] },
+  { "slug": "event-ces", "lang": "ja", "titles": ["ラスベガス"] },
+  { "slug": "event-ai-expo-japan", "lang": "ja", "titles": ["東京国際展示場", "東京"] }
+]
