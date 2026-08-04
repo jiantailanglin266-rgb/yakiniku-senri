@@ -151,15 +151,14 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # 生成JSONは必ず存在します。まとめて add します
+          # ⚠ git add は複数 pathspec のうち1つでも一致しないと全体を中断し、
+          #   何も stage しません。public/media/wikimedia は承認済み画像が
+          #   出るまで存在しないため、まとめて渡すと保留中のデータが
+          #   毎回そのまま捨てられます（実際に run #6 で16件を失いました）。
+          #   生成JSONと画像ディレクトリは分けて stage します。
           git add src/media/data/assets.generated.json \
                   src/media/data/usages.generated.json \
                   src/media/data/requests.generated.json
-
-          # 画像は「承認済みが1件以上あったとき」だけ作られます。
-          # 存在しないパスを同じ git add に混ぜると、pathspec エラーで
-          # コマンド全体が失敗し、JSON まで含めて何もステージされません
-          # （run 30920868384 で実際に起き、取得済みの16件が捨てられました）。
           if [ -d public/media/wikimedia ]; then
             git add public/media/wikimedia
           fi
