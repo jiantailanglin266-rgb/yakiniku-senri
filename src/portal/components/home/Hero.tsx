@@ -3,7 +3,7 @@ import { localePath } from "@/portal/i18n/config";
 import { formatCompact, formatPercent, t } from "@/portal/lib/format";
 import type { Dictionary } from "@/portal/i18n/dictionaries";
 import type { Coin, MarketSnapshot } from "@/portal/lib/types";
-import { Coin3D } from "@/portal/components/effects/Coin3D";
+import { CoinImage } from "@/portal/components/effects/CoinImage";
 import { HeroLogoVideo } from "./HeroLogoVideo";
 import { ParticleField } from "@/portal/components/effects/ParticleField";
 import { FearGreedGauge, PriceChange } from "@/portal/components/market/charts";
@@ -16,7 +16,7 @@ import { NeonLink } from "@/portal/components/ui/primitives";
  *
  * ■ レイヤー構成
  *   背面: グラデーション（layout の .bg-*）→ 粒子とネットワーク線
- *   中間: 3Dコイン（CSS 3D）
+ *   中間: 浮かぶコイン（画像）
  *   前面: 見出し / 検索 / CTA / 価格サマリー
  *
  * ■ 情報を装飾に負けさせない
@@ -32,7 +32,7 @@ export function Hero({
   locale: string;
   dict: Dictionary;
   snapshot: MarketSnapshot;
-  /** 3Dで見せる主要通貨（3枚まで） */
+  /** サマリーに並べる主要通貨 */
   featured: Coin[];
 }) {
   const marketById = new Map(snapshot.coins.map((coin) => [coin.id, coin]));
@@ -56,23 +56,38 @@ export function Hero({
       {/* 中間レイヤー: 粒子 + ネットワーク */}
       <ParticleField className="pointer-events-none absolute inset-0 -z-[1] size-full opacity-70" />
 
-      {/* 中間レイヤー: 3Dコイン。狭い画面では1枚だけ、かつ小さく */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -end-16 top-24 hidden opacity-70 lg:block xl:end-8"
-      >
-        <div className="float-slow">
-          <Coin3D symbol="BTC" color="#f7931a" size={280} />
-        </div>
-      </div>
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute end-56 top-[26rem] hidden opacity-50 xl:block"
-      >
-        <div className="float-slow" style={{ animationDelay: "1.4s" }}>
-          <Coin3D symbol="ETH" color="#627eea" size={150} delay={-3} />
-        </div>
-      </div>
+      {/*
+        中間レイヤー: 浮かぶコイン。
+
+        画面が広くなるほど枚数を増やします。狭い画面で4枚出すと、
+        見出しと重なるうえ、装飾のために300KB近くを配ることになります。
+          lg 以上 … 2枚 / xl 以上 … 4枚
+      */}
+      <CoinImage
+        slug="bitcoin"
+        size={280}
+        delay={0}
+        priority
+        className="pointer-events-none absolute -end-16 top-24 hidden opacity-90 lg:block xl:end-8"
+      />
+      <CoinImage
+        slug="ethereum"
+        size={150}
+        delay={-3}
+        className="pointer-events-none absolute end-56 top-[26rem] hidden opacity-75 lg:block"
+      />
+      <CoinImage
+        slug="xrp"
+        size={112}
+        delay={-6}
+        className="pointer-events-none absolute end-[26rem] top-40 hidden opacity-60 xl:block"
+      />
+      <CoinImage
+        slug="dogecoin"
+        size={96}
+        delay={-1.5}
+        className="pointer-events-none absolute end-24 top-[34rem] hidden opacity-55 xl:block"
+      />
 
       <div className="relative mx-auto max-w-[110rem] px-4 sm:px-6">
         <div className="max-w-3xl">

@@ -651,3 +651,20 @@ describe("斜めのキーワード帯", () => {
     expect(new Set(keywordRows.map((row) => row.duration)).size).toBe(keywordRows.length);
   });
 });
+
+describe("ファーストビューに浮かぶコイン", () => {
+  it("画像ファイルが存在する", () => {
+    // 欠けると装飾が消えるだけでなく、404 が並びます
+    for (const slug of ["bitcoin", "ethereum", "xrp", "dogecoin"]) {
+      const file = path.join(publicDir, "images/portal/coins", `${slug}.webp`);
+      expect(existsSync(file), `${slug}.webp`).toBe(true);
+    }
+  });
+
+  it("slug が実在する銘柄を指す", () => {
+    const slugs = new Set(coins.map((coin) => coin.slug));
+    for (const slug of ["bitcoin", "ethereum", "xrp", "dogecoin"]) {
+      expect(slugs.has(slug), slug).toBe(true);
+    }
+  });
+});
