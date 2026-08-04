@@ -294,3 +294,74 @@ describe("記事の代表画像", () => {
     }
   });
 });
+
+describe("実データから見つかった問題", () => {
+  it("実在ブランドのカード券面は、点数が高くても候補にしない", async () => {
+    const { detectExcludedSubjects, rankCandidates } =
+      await import("../scripts/lib/candidate-score.mjs");
+    // 実際に「クレジットカードの基本」の候補に選ばれていた画像です
+    const visaCard = makeRaw({
+      fileName: "JGC VISA01s.jpg",
+      title: "File:JGC VISA01s.jpg",
+      description: "A JAL Global Club VISA card",
+    });
+    expect(detectExcludedSubjects(visaCard)).toContain("brand");
+    expect(rankCandidates([visaCard], { ...request, query: "credit card payment" })).toEqual([]);
+  });
+
+  it("企業ロゴと人物写真も候補にしない", async () => {
+    const { detectExcludedSubjects } = await import("../scripts/lib/candidate-score.mjs");
+    expect(detectExcludedSubjects(makeRaw({ description: "Company logo on a wall" }))).toContain(
+      "logo",
+    );
+    expect(detectExcludedSubjects(makeRaw({ description: "Portrait of a shop owner" }))).toContain(
+      "person",
+    );
+  });
+
+  it("記事の代表画像は、関連度の点数で自動承認を止めない", () => {
+    const config = {
+      enabled: true,
+      licenses: ["PD", "CC0"],
+      minScore: 80,
+      minWidth: 1200,
+      minHeight: 675,
+    };
+    // 代表画像は記事が関連性を担保するので、点数が低くても止めません
+    expect(
+      evaluateAutoApproval({
+        raw: makeRaw(),
+        licenseCode: "CC0",
+        score: 30,
+        config,
+        viaLeadImage: true,
+      }).approved,
+    ).toBe(true);
+    // 検索経由は従来どおり点数で止めます
+    expect(
+      evaluateAutoApproval({ raw: makeRaw(), licenseCode: "CC0", score: 30, config }).approved,
+    ).toBe(false);
+  });
+
+  it("代表画像でも、権利に関わる条件は1つも緩めない", () => {
+    const config = {
+      enabled: true,
+      licenses: ["PD", "CC0"],
+      minScore: 80,
+      minWidth: 1200,
+      minHeight: 675,
+    };
+    const cases = [
+      { raw: makeRaw({ authorName: null }), licenseCode: "CC0" },
+      { raw: makeRaw({ licenseUrl: null }), licenseCode: "CC0" },
+      { raw: makeRaw({ width: 800, height: 450 }), licenseCode: "CC0" },
+      { raw: makeRaw({ description: "Visa branded terminal" }), licenseCode: "CC0" },
+      { raw: makeRaw(), licenseCode: "CC-BY-4.0" },
+    ];
+    for (const item of cases) {
+      expect(
+        evaluateAutoApproval({ ...item, score: 95, config, viaLeadImage: true }).approved,
+      ).toBe(false);
+    }
+  });
+});
