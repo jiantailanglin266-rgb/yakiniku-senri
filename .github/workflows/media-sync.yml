@@ -175,7 +175,7 @@ jobs:
           生成したものです。承認されていない画像は表示されません。"
 
           # 実行中に main が進むことがあります（他の作業と並行するため）。
-          # 取り込んでから押し直します。生成物は自分の変更を優先します。
+          # 取り込んでから押し直します。生成物はこの実行の結果を優先します。
           for attempt in 1 2 3; do
             if git push origin HEAD:main; then
               echo "push しました。"
@@ -183,7 +183,14 @@ jobs:
             fi
             echo "push が拒否されました。main を取り込んで再試行します（$attempt 回目）..."
             git fetch origin main
-            git rebase origin/main -X ours || {
+            # ⚠ rebase の -X ours は「取り込み先（main）を優先」です。
+            #   自分の commit は theirs 側になります。
+            #   ours にすると、衝突した assets.generated.json が main の内容で
+            #   上書きされ、この実行で付けた承認と localPath が消えます。
+            #   実際に run 30922572569 で、画像だけダウンロード済みなのに
+            #   データ上は未承認、という食い違いが発生しました。
+            #   生成物はこの実行の結果を採用したいので theirs です。
+            git rebase origin/main -X theirs || {
               git rebase --abort || true
               echo "取り込みに失敗しました。"
               exit 1
