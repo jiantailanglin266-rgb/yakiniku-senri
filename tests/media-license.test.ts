@@ -21,6 +21,12 @@ import {
 import { pickBestCandidate, scoreCandidate, RELEVANCE_THRESHOLD } from "@/media/lib/scoring";
 import { resolveImage } from "@/media/lib/resolve";
 import { assetUsages, pageKey } from "@/media/data/usages";
+import {
+  imageObjectJsonLd,
+  pageImageSitemapEntries,
+  pageImagesJsonLd,
+} from "@/media/lib/structured-data";
+import { buildSitemapXml } from "@/cardport/lib/feeds";
 import { wikimediaAssets, assetLocalizations } from "@/media/data/assets";
 import { getMediaLabels } from "@/media/i18n/labels";
 import { slotSizes, type LicenseCode, type WikimediaAsset } from "@/media/types";
@@ -448,5 +454,29 @@ describe("掲載データの状態", () => {
     expect(
       resolveImage(pageKey("cardport", "news", "does-not-exist"), "thumbnail", "ja"),
     ).toBeNull();
+  });
+});
+
+describe("構造化データ・サイトマップへの漏れ", () => {
+  it("掲載可能な画像が無いページでは、ImageObject を出力しない", () => {
+    expect(pageImagesJsonLd(pageKey("cardport", "guide", "points-basics"), "ja")).toBeNull();
+    expect(pageImageSitemapEntries(pageKey("cardport", "news", "any"), "ja")).toEqual([]);
+  });
+
+  it("構造化データにも作者・ライセンス・出典を含める", () => {
+    const asset = makeAsset();
+    const json = imageObjectJsonLd(asset, "ja", "決済端末", null);
+    expect(json.creditText).toContain("Example Author");
+    expect(json.creditText).toContain("CC BY-SA 4.0");
+    expect(json.acquireLicensePage).toBe(asset.commonsPageUrl);
+    expect(json.license).toBe(asset.licenseUrl);
+    expect(json.creator).toMatchObject({ name: "Example Author" });
+  });
+
+  it("サイトマップXMLは image 名前空間を宣言している（画像0件でも整合する）", () => {
+    const xml = buildSitemapXml();
+    expect(xml).toContain('xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"');
+    // 掲載可能な画像が0件のうちは <image:image> を1件も出しません
+    expect(xml).not.toContain("<image:image>");
   });
 });
