@@ -32,6 +32,8 @@ import { getMediaLabels } from "@/media/i18n/labels";
 import { isPublishable } from "@/media/lib/eligibility";
 import { getLicense } from "@/media/lib/license";
 import { getReviewableLicenses } from "@/media/config/licenses";
+import photoManifest from "@/portal/data/photo-manifest.json";
+import { photoCredit } from "@/portal/lib/photos";
 
 export function generateStaticParams() {
   return staticLocales().map((locale) => ({ locale }));
@@ -59,7 +61,12 @@ export default async function ImageCreditsPage(props: { params: Promise<{ locale
   const labels = getMediaLabels(locale);
   const ja = locale === "ja";
 
-  // 掲載できる状態の画像だけを並べます
+  // 一括クレジット方式で配信している写真（mountain-peak 方式）
+  const photoFiles = Object.values(photoManifest as Record<string, { commonsFile: string }>)
+    .map((entry) => entry.commonsFile)
+    .sort((a, b) => a.localeCompare(b));
+
+  // 1件ずつ確認して掲載できる状態になった画像（共通メディア基盤）
   const published = wikimediaAssets
     .filter(isPublishable)
     .sort((a, b) => a.fileName.localeCompare(b.fileName));
@@ -75,7 +82,13 @@ export default async function ImageCreditsPage(props: { params: Promise<{ locale
         <PageHeader
           eyebrow="IMAGE CREDITS"
           title={labels.creditsTitle}
-          lead={labels.creditsIntro}
+          /* 共通ラベルの creditsIntro は「1件ずつ確認したものだけ」を前提にしています。
+             CRYPTO PORT には一括クレジットの写真もあるため、この画面の説明は差し替えます */
+          lead={
+            ja
+              ? "当サイトで使用している画像の出典です。サイト共通クレジットで表示している写真と、1件ずつ確認して個別クレジットを付けている画像の2種類があります。"
+              : "Sources for the images used on this site. Some carry a site-wide credit; others are verified individually and carry per-image attribution."
+          }
         />
 
         <SectionHeading
@@ -129,7 +142,54 @@ export default async function ImageCreditsPage(props: { params: Promise<{ locale
         </div>
 
         <div className="mt-10">
-          <SectionHeading eyebrow="LIST" title={ja ? "掲載中の画像" : "Published images"} />
+          <SectionHeading
+            eyebrow="PHOTOS"
+            title={ja ? "サイト共通クレジットの写真" : "Site-wide credited photos"}
+          />
+          <p className="mt-3 text-sm text-(--color-ink-soft)">
+            {ja
+              ? "解説記事と銘柄ページの写真は Wikimedia Commons から取得し、当サイトから配信しています。これらは画像ごとの個別表記ではなく、以下のサイト共通クレジットで表示しています。"
+              : "Photos on guide and coin pages come from Wikimedia Commons and are served from this site. They carry the following site-wide credit rather than per-image attribution."}
+          </p>
+          <p className="mt-2 text-sm text-(--color-ink)" translate="no">
+            {photoCredit(locale)}
+          </p>
+
+          {photoFiles.length === 0 ? (
+            <p className="mt-3 text-sm text-(--color-ink-dim)">
+              {ja
+                ? "現在、取得済みの写真はありません（scripts/portal-photos.mjs 未実行）。"
+                : "No photos have been fetched yet (scripts/portal-photos.mjs has not been run)."}
+            </p>
+          ) : (
+            <>
+              <p className="mt-4 text-sm text-(--color-ink-dim)">
+                {ja ? "使用しているファイル" : "Files in use"}（{photoFiles.length}）
+              </p>
+              {/* ファイル名は識別子です。翻訳しません */}
+              <ul className="mt-2 grid gap-1 text-xs text-(--color-ink-soft)" translate="no">
+                {photoFiles.map((file) => (
+                  <li key={file}>
+                    <a
+                      href={`https://commons.wikimedia.org/wiki/${encodeURIComponent(file.replace(/ /g, "_"))}`}
+                      target="_blank"
+                      rel="nofollow noopener noreferrer"
+                      className="underline decoration-dotted underline-offset-2 transition-colors hover:text-white"
+                    >
+                      {file}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </div>
+
+        <div className="mt-10">
+          <SectionHeading
+            eyebrow="LIST"
+            title={ja ? "個別クレジットの画像" : "Individually credited images"}
+          />
 
           {published.length === 0 ? (
             // 0件でも、それらしい一覧は作りません。
