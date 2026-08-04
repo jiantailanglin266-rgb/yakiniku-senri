@@ -9,6 +9,7 @@
  *   作者名・ライセンス正式名称・"Wikimedia Commons" は翻訳しません。
  */
 import { buildAttributionParts } from "../lib/attribution";
+import { getLicense } from "../lib/license";
 import type { WikimediaAsset } from "../types";
 
 export type AttributionLabels = {
@@ -18,6 +19,8 @@ export type AttributionLabels = {
   modified: string;
   /** 例: 「画像の出典とライセンスを表示」 */
   detailsLabel: string;
+  /** 継承（ShareAlike）の告知 */
+  shareAlikeNotice: string;
 };
 
 export function ImageAttribution({
@@ -25,14 +28,32 @@ export function ImageAttribution({
   labels,
   className,
   tone = "overlay",
+  renderedAsDerivative = false,
 }: {
   asset: WikimediaAsset;
   labels: AttributionLabels;
   className?: string;
   /** overlay: 画像の上に重ねる / block: 画像の直下に置く */
   tone?: "overlay" | "block";
+  /**
+   * 表示の時点で加工しているか（トリミング・オーバーレイ）。
+   *
+   * 加工は素材そのものではなく**描画側**で起きます。
+   * WikimediaImage は全画像にグラデーションを重ね object-fit: cover で
+   * 切り抜くため、asset.isModified を手で立てる運用では実態とずれます。
+   * 描画側から渡してもらい、継承の告知漏れを防ぎます。
+   */
+  renderedAsDerivative?: boolean;
 }) {
   const parts = buildAttributionParts(asset, labels);
+
+  /*
+    CC BY-SA の画像に手を加えて出す場合、改変版も同じ条件で提供している
+    ことを示す必要があります（4.0 の場合 §3(b)）。
+    告知を省くと、クレジットが揃っていても条件違反になります。
+  */
+  const showShareAlike =
+    getLicense(asset.licenseCode).shareAlikeRequired && (renderedAsDerivative || asset.isModified);
 
   const base =
     tone === "overlay"
@@ -70,6 +91,16 @@ export function ImageAttribution({
           )}
         </span>
       ))}
+
+      {/* 継承の告知。クレジットと同じ場所に出します（別ページ送りにしません） */}
+      {showShareAlike ? (
+        <span className="inline-flex items-center gap-1.5">
+          <span aria-hidden="true" className="opacity-50">
+            /
+          </span>
+          <span>{labels.shareAlikeNotice}</span>
+        </span>
+      ) : null}
     </p>
   );
 }
