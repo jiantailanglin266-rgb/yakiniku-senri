@@ -17,6 +17,36 @@
 
 export const CANDIDATE_THRESHOLD = Number(process.env.MEDIA_CANDIDATE_SCORE ?? 80);
 
+/**
+ * 話題の一致だけで最低限これだけ取れていること。
+ *
+ * ■ なぜ合計点だけでは足りないのか
+ *   合計には、話題と無関係な項目（解像度・横長・縦横比・ライセンス・
+ *   メタデータの充実度）が 48 点ぶん含まれます。
+ *   きれいな高解像度の写真というだけで下駄を履くため、
+ *   話題がまったく違っても合計 80 点に届いてしまいます。
+ *
+ *   実際、「タッチ決済」の候補にブルジュ・ハリファ、MRI画像、
+ *   シンセサイザー、溶接ロボットが 80 点超で並びました。
+ *
+ *   解像度が高いことは、その記事に合っている理由になりません。
+ *   話題の一致（検索語・タイトル・説明・カテゴリ）だけを取り出して、
+ *   別に足切りします。
+ */
+export const RELEVANCE_FLOOR = Number(process.env.MEDIA_RELEVANCE_FLOOR ?? 25);
+
+/** 話題の一致だけを合計します（解像度やライセンスは含めません） */
+export function relevanceOnly(breakdown) {
+  return (
+    (breakdown.query ?? 0) +
+    (breakdown.alternate ?? 0) +
+    (breakdown.title ?? 0) +
+    (breakdown.description ?? 0) +
+    (breakdown.categories ?? 0) +
+    (breakdown.wikidata ?? 0)
+  );
+}
+
 /** 語に分割します（日本語も拾えるように文字クラスを広く取ります） */
 function tokenize(text) {
   return String(text ?? "")
@@ -217,7 +247,14 @@ const EXCLUDED_SUBJECTS = [
       "wechat pay",
     ],
   },
-  { key: "logo", terms: ["logo", "wordmark", "brandmark", "trademark"] },
+  /*
+    Commons のカテゴリ「With trademark」は、
+    商標が写り込んでいることを Commons 側が明示したものです。
+    ファイル名からは分からないため、これが最も確実な手がかりになります。
+    実際 Credit-cards.jpg は、名前に商標が出ないまま
+    Visa と Mastercard のカードを写した写真でした。
+  */
+  { key: "logo", terms: ["logo", "wordmark", "brandmark", "trademark", "with trademark"] },
   { key: "person", terms: ["portrait of", "headshot", "selfie"] },
 ];
 
@@ -233,9 +270,13 @@ export function detectExcludedSubjects(raw) {
 
 /** 採点して、しきい値を超えたものだけを高い順に返します */
 export function rankCandidates(raws, request, context = {}) {
-  return raws
-    .filter((raw) => detectExcludedSubjects(raw).length === 0)
-    .map((raw) => ({ raw, ...scoreCandidate(raw, request, context) }))
-    .filter((entry) => entry.total >= CANDIDATE_THRESHOLD)
-    .sort((a, b) => b.total - a.total || a.raw.fileName.localeCompare(b.raw.fileName));
+  return (
+    raws
+      .filter((raw) => detectExcludedSubjects(raw).length === 0)
+      .map((raw) => ({ raw, ...scoreCandidate(raw, request, context) }))
+      // 話題が一致していない候補は、総合点が高くても採用しません
+      .filter((entry) => relevanceOnly(entry.breakdown) >= RELEVANCE_FLOOR)
+      .filter((entry) => entry.total >= CANDIDATE_THRESHOLD)
+      .sort((a, b) => b.total - a.total || a.raw.fileName.localeCompare(b.raw.fileName))
+  );
 }

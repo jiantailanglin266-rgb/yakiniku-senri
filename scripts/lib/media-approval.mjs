@@ -78,6 +78,80 @@ const BLOCKING_SUBJECTS = [
   { key: "artwork", terms: ["painting", "sculpture", "statue", "mural", "artwork"] },
 ];
 
+/**
+ * 被写体に関わる権利のリスク。
+ *
+ * ■ なぜ記録するのか
+ *   これまで取得結果に rightsRisks を1件も入れていませんでした。
+ *   管理画面には「要確認」とだけ出て、**何を確認すべきかが出ません**。
+ *   人物なのか、建築物なのか、商標なのかで見るべき点が違います。
+ *
+ *   実際、Satoshi Nakamoto.jpg（人物写真）が
+ *   リスク表示なしで承認キューに並んでいました。
+ *
+ * ■ 自動承認は別に止めます
+ *   ここで拾うのは「人が確認すべき論点」で、自動承認の可否は
+ *   detectBlockingSubjects が別に判断します。
+ */
+const RIGHTS_RISK_VOCABULARY = [
+  {
+    risk: "living-person",
+    terms: [
+      "portrait",
+      "headshot",
+      "selfie",
+      "man ",
+      "woman ",
+      "people",
+      "player",
+      "crew",
+      "staff",
+    ],
+  },
+  { risk: "company-logo", terms: ["logo", "wordmark", "brandmark", "homepage", "screenshot"] },
+  {
+    risk: "trademark",
+    terms: ["trademark", "™", "®", "visa", "mastercard", "jcb", "amex", "paypal"],
+  },
+  {
+    risk: "card-face",
+    terms: ["credit card", "credit-cards", "debit card", "bank card", "kundenkarten"],
+  },
+  {
+    risk: "product",
+    terms: ["product", "packaging", "thinkpad", "playstation", "iphone", "minimoog"],
+  },
+  {
+    risk: "architecture",
+    terms: ["building", "tower", "skyline", "stadium", "khalifa", "architecture", "lobby"],
+  },
+  // Commons のカテゴリは判定に効きます。「Bust of ...」で胸像だと分かります
+  { risk: "artwork", terms: ["painting", "sculpture", "statue", "bust of", "mural", "artwork"] },
+  { risk: "event-photo", terms: ["conference", "expo", "match", "ceremony", "sitzung"] },
+  /*
+    "FoP-Hungary" のようなカテゴリは、Commons 側が
+    「この国のパノラマの自由に依拠している」と明示したものです。
+    国名の推測より確実な手がかりなので、接頭辞で拾います。
+  */
+  {
+    risk: "freedom-of-panorama",
+    terms: ["fop-", "france", "italy", "belgium", "greece", "iceland", "ukraine"],
+  },
+];
+
+/**
+ * 人が確認すべき論点を返します。
+ * 空でも「確認不要」ではありません（語彙で拾えるものだけです）。
+ */
+export function detectRightsRisks(raw) {
+  const text = [raw.fileName, raw.title, raw.description ?? "", (raw.categories ?? []).join(" ")]
+    .join(" ")
+    .toLowerCase();
+  return RIGHTS_RISK_VOCABULARY.filter((rule) =>
+    rule.terms.some((term) => text.includes(term)),
+  ).map((rule) => rule.risk);
+}
+
 export function detectBlockingSubjects(raw) {
   const text = [raw.fileName, raw.title, raw.description ?? "", (raw.categories ?? []).join(" ")]
     .join(" ")

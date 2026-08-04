@@ -396,3 +396,63 @@ describe("判定規則を厳しくしたときの既存データ", () => {
     expect(detectExcludedSubjects(ok)).toEqual([]);
   });
 });
+
+describe("Commons のカテゴリを手がかりにした判定", () => {
+  /*
+    実際に取得された画像で確かめます。
+    ファイル名だけでは分からないことが、カテゴリには書かれています。
+  */
+  it("商標が写り込んだ写真は、ファイル名に商標が無くても除外する", async () => {
+    const { detectExcludedSubjects } = await import("../scripts/lib/candidate-score.mjs");
+    // 9つのカテゴリページの hero に選ばれていた画像です
+    const realCards = makeRaw({
+      fileName: "Credit-cards.jpg",
+      title: "File:Credit-cards.jpg",
+      description: null,
+      categories: ["Mastercard (credit card)", "Visa (credit card)", "With trademark"],
+    });
+    expect(detectExcludedSubjects(realCards).length).toBeGreaterThan(0);
+  });
+
+  it("胸像とパノラマの自由を、カテゴリから拾う", async () => {
+    const { detectRightsRisks } = await import("../scripts/lib/media-approval.mjs");
+    // 「AI×ブロックチェーン」の背景に選ばれていた画像です
+    const bust = makeRaw({
+      fileName: "Satoshi Nakamoto.jpg",
+      title: "File:Satoshi Nakamoto.jpg",
+      description: null,
+      categories: ["Bust of Satoshi Nakamoto (Budapest)", "FoP-Hungary"],
+    });
+    const risks = detectRightsRisks(bust);
+    expect(risks).toContain("artwork");
+    expect(risks).toContain("freedom-of-panorama");
+  });
+
+  it("問題のない写真には、余計なリスクを付けない", async () => {
+    const { detectRightsRisks } = await import("../scripts/lib/media-approval.mjs");
+    const clean = makeRaw({
+      fileName: "Toast Tap Payment Perminal.jpg",
+      title: "File:Toast Tap Payment Perminal.jpg",
+      description: "A contactless payment terminal",
+      categories: ["Payment terminals"],
+    });
+    expect(detectRightsRisks(clean)).toEqual([]);
+  });
+
+  it("話題が一致していない候補は、解像度が高くても採用しない", async () => {
+    const { rankCandidates, relevanceOnly, scoreCandidate } =
+      await import("../scripts/lib/candidate-score.mjs");
+    // きれいな高解像度の写真というだけでは、その記事に合う理由になりません
+    const unrelated = makeRaw({
+      fileName: "Burj Khalifa (16260269606).jpg",
+      title: "File:Burj Khalifa.jpg",
+      description: "A skyscraper in Dubai",
+      categories: ["Skyscrapers"],
+      width: 4000,
+      height: 2667,
+      aspectRatio: 4000 / 2667,
+    });
+    expect(relevanceOnly(scoreCandidate(unrelated, request).breakdown)).toBe(0);
+    expect(rankCandidates([unrelated], request)).toEqual([]);
+  });
+});
