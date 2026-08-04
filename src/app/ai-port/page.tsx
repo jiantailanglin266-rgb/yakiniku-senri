@@ -69,6 +69,7 @@ export default async function AiPortHome() {
             </>
           }
           description="各社の公式ブログRSSと、日本語のニュース検索から自動収集しています。見出しをクリックすると配信元の記事へ移動します。"
+          banner="news"
           action={{ href: aiPortPath("/news"), label: "ニュース一覧" }}
         />
 
@@ -138,6 +139,7 @@ export default async function AiPortHome() {
             </>
           }
           description="直近のニュースでの言及数（実測）と、編集部の選定基準を合わせた注目度スコア順です。ユーザー投票やレビュー点数は使っていません。"
+          banner="ranking"
           action={{ href: aiPortPath("/ranking"), label: "計算方法と全順位" }}
         />
 
@@ -161,6 +163,7 @@ export default async function AiPortHome() {
             </>
           }
           description="料金の金額ではなく、長く効く軸（日本語対応・API・法人プラン・無料枠）で比べます。"
+          banner="compare"
           action={{ href: aiPortPath("/compare"), label: "比較ページへ" }}
         />
 
