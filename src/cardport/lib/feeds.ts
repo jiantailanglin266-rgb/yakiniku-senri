@@ -66,6 +66,7 @@ export function sitemapEntries(): SitemapEntry[] {
     { build: routes.features, changeFrequency: "monthly", priority: 0.7 },
     { build: routes.faq, changeFrequency: "monthly", priority: 0.6 },
     { build: routes.policies, changeFrequency: "yearly", priority: 0.4 },
+    { build: routes.imageCredits, changeFrequency: "monthly", priority: 0.3 },
     { build: routes.sitemap, changeFrequency: "monthly", priority: 0.3 },
 
     ...cardCategories.map((category) => ({

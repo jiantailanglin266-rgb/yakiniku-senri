@@ -66,6 +66,8 @@ export const routes = {
   faq: (locale: Locale) => path(locale, "faq"),
   policy: (locale: Locale, slug: string) => path(locale, "policies", slug),
   policies: (locale: Locale) => path(locale, "policies"),
+  /** 画像の出典・ライセンス一覧。掲載画像の作者表示をまとめて確認できるページです */
+  imageCredits: (locale: Locale) => path(locale, "image-credits"),
   admin: (locale: Locale) => path(locale, "admin"),
   sitemap: (locale: Locale) => path(locale, "sitemap"),
 } as const;

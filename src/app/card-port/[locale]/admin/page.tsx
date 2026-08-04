@@ -41,6 +41,9 @@ import { isLocale, locales, type Locale } from "@/cardport/i18n/locales";
 import { auditAffiliateLinks } from "@/cardport/lib/affiliate";
 import { routes } from "@/cardport/lib/routes";
 import { cardportMetadata } from "@/cardport/lib/seo";
+import { MediaReviewQueue } from "@/media/components";
+import { wikimediaAssets } from "@/media/data/assets";
+import { getMediaLabels } from "@/media/i18n/labels";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -85,6 +88,16 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
     .map((card) => ({ card, age: daysSince(card.verifiedOn) }))
     .filter((entry) => entry.age > 90)
     .sort((a, b) => b.age - a.age);
+
+  // 承認済み以外＝掲載されていない画像。確認が必要な順に並べます
+  const statusOrder = ["license_unknown", "rights_risk", "needs_review", "pending", "rejected"];
+  const pendingMediaAssets = wikimediaAssets
+    .filter((asset) => asset.verificationStatus !== "approved")
+    .sort(
+      (a, b) =>
+        statusOrder.indexOf(a.verificationStatus) - statusOrder.indexOf(b.verificationStatus) ||
+        a.fileName.localeCompare(b.fileName),
+    );
 
   const inventory = [
     {
@@ -276,6 +289,26 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
             </ul>
           </Panel>
         )}
+      </div>
+
+      <div className="mt-12">
+        <SectionHeading
+          eyebrow="IMAGES"
+          title={locale === "ja" ? "画像の確認キュー" : "Image review queue"}
+          accent="cyan"
+        />
+        <p className="text-cp-mist mb-3 text-[0.78rem] leading-relaxed">
+          {locale === "ja"
+            ? "Wikimedia Commons から取得した画像は、ライセンス・作者・出典・追加権利を確認するまで掲載されません。取得できたことは、掲載してよい根拠になりません。"
+            : "Images fetched from Wikimedia Commons are not published until licence, author, source and additional rights are checked. Successful retrieval is not permission to publish."}
+        </p>
+        <Panel className="overflow-hidden">
+          <MediaReviewQueue
+            assets={pendingMediaAssets}
+            locale={locale}
+            labels={getMediaLabels(locale)}
+          />
+        </Panel>
       </div>
 
       <div className="mt-12">
