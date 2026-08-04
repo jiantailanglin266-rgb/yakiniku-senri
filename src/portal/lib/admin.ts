@@ -28,6 +28,11 @@ import { locales } from "@/portal/i18n/config";
 import { hasAuthoredDictionary } from "@/portal/i18n/dictionaries";
 import { marketSource } from "./market";
 
+import { wikimediaAssets, assetLocalizations } from "@/media/data/assets";
+import { assetUsages } from "@/media/data/usages";
+import { isPublishable } from "@/media/lib/eligibility";
+import { getLicense } from "@/media/lib/license";
+
 export type InventoryRow = { label: string; count: number; path: string };
 
 export function contentInventory(): InventoryRow[] {
@@ -162,6 +167,65 @@ export function healthIssues(): HealthIssue[] {
       message:
         "市場データがモックです。MARKET_DATA_SOURCE=coingecko と COINGECKO_API_KEY を設定すると実データに切り替わります。",
       file: ".env.local",
+    });
+  }
+
+  // --- 画像 ---------------------------------------------------------------
+  if (wikimediaAssets.length === 0) {
+    issues.push({
+      severity: "medium",
+      area: "画像",
+      message:
+        "Wikimedia Commons の画像が1件も取得できていません。ネットワークが通る環境で `npm run media:sync` を実行してください。取得できるまで、各枠はサイト独自の装飾表現を表示します。",
+      file: "src/media/data/assets.ts",
+    });
+  } else {
+    const pending = wikimediaAssets.filter((asset) => !isPublishable(asset));
+    if (pending.length > 0) {
+      issues.push({
+        severity: "high",
+        area: "画像",
+        message: `掲載可否の確認が済んでいない画像が ${pending.length} 件あります。ライセンス・作者・出典を確認するまで公開されません。`,
+        file: "src/media/data/assets.ts",
+      });
+    }
+
+    // 代替テキストは自動生成しません。無い言語は画像そのものを出さない設計です
+    const missingAlt = wikimediaAssets.filter(
+      (asset) => !assetLocalizations.some((entry) => entry.assetId === asset.id),
+    );
+    if (missingAlt.length > 0) {
+      issues.push({
+        severity: "medium",
+        area: "画像",
+        message: `代替テキストが未設定の画像が ${missingAlt.length} 件あります。設定するまでその画像は表示されません。`,
+        file: "src/media/data/assets.ts",
+      });
+    }
+
+    // ShareAlike は二次利用条件が継承されるため、加工時に運用側の確認が必要です
+    const shareAlike = wikimediaAssets
+      .filter(isPublishable)
+      .filter((asset) => getLicense(asset.licenseCode).shareAlikeRequired);
+    if (shareAlike.length > 0) {
+      issues.push({
+        severity: "low",
+        area: "画像",
+        message: `継承（ShareAlike）が必要な画像が ${shareAlike.length} 件あります。加工して配布する場合は同じライセンスを引き継ぐ必要があります。`,
+        file: "src/media/data/assets.ts",
+      });
+    }
+  }
+
+  const orphanUsages = assetUsages.filter(
+    (usage) => !wikimediaAssets.some((asset) => asset.id === usage.assetId),
+  );
+  if (orphanUsages.length > 0) {
+    issues.push({
+      severity: "medium",
+      area: "画像",
+      message: `存在しない画像を参照している掲載枠が ${orphanUsages.length} 件あります。`,
+      file: "src/media/data/usages.ts",
     });
   }
 

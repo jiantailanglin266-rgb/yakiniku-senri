@@ -70,7 +70,7 @@ export function NewsBrowser({
       {filtered.length === 0 ? (
         <EmptyState message={dict.news.empty} />
       ) : (
-        <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <ul className="grid auto-rows-fr gap-4 md:grid-cols-2 xl:grid-cols-3">
           {filtered.map(({ article, duplicates }) => (
             <li key={article.id}>
               <NewsCard

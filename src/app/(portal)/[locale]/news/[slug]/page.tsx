@@ -22,6 +22,8 @@ import { Breadcrumbs, Container, Section } from "@/portal/components/layout/Shel
 import { NewsCard, NewsLabels } from "@/portal/components/news/NewsCard";
 import { Badge, GlassCard, NeonLink, NoticeBox } from "@/portal/components/ui/primitives";
 import { JsonLd } from "@/portal/components/ui/JsonLd";
+import { pageImagesJsonLd } from "@/media/lib/structured-data";
+import { portalPageKey } from "@/portal/lib/media";
 
 export function generateStaticParams() {
   return staticLocales().flatMap((locale) =>
@@ -236,6 +238,8 @@ export default async function NewsDetailPage(props: {
         data={[
           breadcrumbJsonLd(locale, trail),
           newsArticleJsonLd(locale, article, author ? t(author.name, locale) : "Editorial"),
+          // 画面に出している画像だけを ImageObject として出します
+          ...(pageImagesJsonLd(portalPageKey("news", article.slug), locale) ?? []),
         ]}
       />
     </Section>

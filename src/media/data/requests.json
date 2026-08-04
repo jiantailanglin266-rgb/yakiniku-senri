@@ -180,5 +180,68 @@
     "query": "ski slope",
     "wikidataEntityId": null,
     "limit": 5
+  },
+  {
+    "pageKey": "cryptoport:learn:what-is-blockchain",
+    "slot": "inline",
+    "query": "blockchain distributed ledger diagram",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "cryptoport:learn:what-is-crypto",
+    "slot": "inline",
+    "query": "cryptography public key diagram",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "cryptoport:learn:what-is-wallet",
+    "slot": "inline",
+    "query": "hardware wallet device",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "cryptoport:learn:what-is-gas",
+    "slot": "inline",
+    "query": "ethereum gas fee diagram",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "cryptoport:learn:security-basics",
+    "slot": "inline",
+    "query": "two-factor authentication security key",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "cryptoport:learn:crypto-tax-basics",
+    "slot": "inline",
+    "query": "tax form calculator desk",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "cryptoport:learn:what-is-dao",
+    "slot": "inline",
+    "query": "organizational network graph",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "cryptoport:coin:bitcoin",
+    "slot": "inline",
+    "query": "bitcoin mining data center",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "cryptoport:coin:ethereum",
+    "slot": "inline",
+    "query": "ethereum blockchain diagram",
+    "wikidataEntityId": null,
+    "limit": 5
   }
 ]
