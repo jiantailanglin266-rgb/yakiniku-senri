@@ -13,10 +13,18 @@
 
 import type { Metadata } from "next";
 import { getLocaleConfig, localePath, locales } from "@/portal/i18n/config";
-import { brand, portalBase } from "./site";
+import { brand, portalBase, portalOrigin } from "./site";
 
 export function absoluteUrl(path: string): string {
   return `${portalBase}${path}`;
+}
+
+/**
+ * すでにベースパスを含む公開パス（`withBasePath()` の結果）を絶対URLにします。
+ * `absoluteUrl()` を使うとベースパスが二重に付くため、こちらを使います。
+ */
+export function absolutePortalUrl(pathWithBasePath: string): string {
+  return `${portalOrigin}${pathWithBasePath}`;
 }
 
 /** 言語別の絶対URL */
