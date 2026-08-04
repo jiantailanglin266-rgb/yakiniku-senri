@@ -6,6 +6,8 @@
  * 確定後はコードを触らずに `.env` の値を変えるだけで反映されます。
  */
 
+import { withBasePath } from "@/lib/base-path";
+
 export const brand = {
   /** 表示名（ヘッダー・フッター・OGP・構造化データで共有） */
   name: process.env.NEXT_PUBLIC_PORTAL_NAME ?? "CRYPTO PORT",
@@ -37,6 +39,15 @@ export const portalOrigin = normalizeOrigin(
 
 /** ポータルのルート（例: https://example.com/yakiniku-senri） */
 export const portalBase = `${portalOrigin}${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}`;
+
+/**
+ * ヘッダー下・フッター上に流す映像帯のファイル。
+ *
+ * 装飾として置くため、構造化データ（VideoObject）には出しません。
+ * 差し替えるときは /public/videos/ にファイルを置いてパスを変えてください。
+ * 空文字にすると帯そのものが出なくなります。
+ */
+export const portalBandVideo = withBasePath("/videos/portal-band.mp4");
 
 /**
  * ソーシャル。空文字のものはUIに出しません（未確認情報を載せないため）。

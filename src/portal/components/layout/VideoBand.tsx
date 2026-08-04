@@ -2,41 +2,41 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
-import { cn } from "@/lib/utils";
-import { videoBand } from "@/data/media";
+import { cx } from "@/portal/components/ui/primitives";
+import { portalBandVideo } from "@/portal/lib/site";
 
 /**
- * 横一本の映像帯。金色の英字マーキーと同じ位置に置きます。
+ * 横一本の映像帯。ヘッダーの下とフッターの上に置きます。
  *
  * ■ 帯として見せます
  *   元の映像は 16:9 に近い比率ですが、ここでは高さを抑えた帯に切り出します
  *   （`object-cover` で上下をトリミング）。両端はマスクで溶かし、
- *   マーキーと同じ「切り口を見せない」見え方に揃えています。
+ *   ページ全体の連続した背景から浮かないようにしています。
  *
  * ■ 自動再生を成立させる条件
  *   ブラウザは消音でなければ自動再生を許可しません。`muted` と `playsInline` は必須です。
  *   この動画には音声トラックがありますが、`muted` で再生するため音は出ません。
  *
  * ■ prefers-reduced-motion では自動再生しません
- *   代わりに操作バーを出し、見たい方が自分で再生できるようにします
- *   （ブランドムービーと同じ扱いです）。枠の高さは変わらないため、レイアウトは動きません。
+ *   代わりに操作バーを出し、見たい方が自分で再生できるようにします。
+ *   枠の高さは変わらないため、レイアウトは動きません。
  *
  * ■ 読み込みを遅らせています
  *   帯が画面に近づくまで <video> を作りません。
- *   ページ上部だけ見て離脱する方に、下の帯のダウンロードを負担させないためです。
+ *   フッター側の帯を、上部だけ見て離脱する方に負担させないためです。
  *
  * ■ 読み上げの対象から外しています
- *   置き換え前のマーキーと同じ装飾枠です。意味のある情報は本文側に置いてください。
+ *   装飾枠なので、意味のある情報は本文側に置いてください。
  *   映像自体に読ませたい情報が入る場合は `aria-hidden` を外し、説明を付けてください。
  */
 export function VideoBand({
-  src = videoBand.mp4,
+  src = portalBandVideo,
   className,
   priority = false,
 }: {
   src?: string;
   className?: string;
-  /** 最初の1本だけ先に読み込みます（ファーストビューに近いため） */
+  /** ヘッダー直下の1本だけ先に読み込みます */
   priority?: boolean;
 }) {
   const reduced = useReducedMotion();
@@ -68,7 +68,7 @@ export function VideoBand({
   if (!src) return null;
 
   return (
-    <div aria-hidden={!reduced} className={cn("video-band", className)}>
+    <div aria-hidden={!reduced} className={cx("video-band", className)}>
       <div ref={frameRef} className="video-band-frame">
         {inView ? (
           <video

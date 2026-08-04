@@ -18,6 +18,7 @@ import { withBasePath } from "@/lib/base-path";
 
 import { PortalHeader } from "@/portal/components/layout/PortalHeader";
 import { PortalFooter } from "@/portal/components/layout/PortalFooter";
+import { VideoBand } from "@/portal/components/layout/VideoBand";
 import { CryptoChat } from "@/portal/components/chat/CryptoChat";
 import { JsonLd } from "@/portal/components/ui/JsonLd";
 
@@ -140,7 +141,13 @@ export default async function PortalLayout(props: {
 
       <PortalHeader locale={locale} dict={dict} />
 
+      {/* ヘッダー直下の映像帯。固定ヘッダーのぶん、上に余白を取ります */}
+      <VideoBand className="pt-16 sm:pt-18" priority />
+
       <main id="portal-main">{props.children}</main>
+
+      {/* フッター直上の映像帯 */}
+      <VideoBand />
 
       <PortalFooter locale={locale} dict={dict} />
       <CryptoChat locale={locale} dict={dict} />
