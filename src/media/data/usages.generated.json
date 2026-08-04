@@ -1,12 +1,390 @@
 {
-  "generatedAt": "2026-08-04T15:06:42.294Z",
+  "generatedAt": "2026-08-04T15:22:23.183Z",
   "note": "scripts/wikimedia-sync.mjs が生成します。手で編集しないでください。",
   "usages": [
+    {
+      "assetId": "wm-tokyo-big-sight-02",
+      "pageKey": "aiport:event:ai-expo-japan",
+      "slot": "card",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-las-vegas-composite",
+      "pageKey": "aiport:event:ces",
+      "slot": "card",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-2008-05-01-8",
+      "pageKey": "aiport:event:google-io",
+      "slot": "card",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-san-jose-california-skyline",
+      "pageKey": "aiport:event:gtc",
+      "slot": "card",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-seattlemontage",
+      "pageKey": "aiport:event:ms-build",
+      "slot": "card",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-las-vegas-composite",
+      "pageKey": "aiport:event:reinvent",
+      "slot": "card",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-cupertino-united-states-january-2018-18-18-35-443000",
+      "pageKey": "aiport:event:wwdc",
+      "slot": "card",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-welding-robot-system-002",
+      "pageKey": "aiport:guide:ai-agent-basics",
+      "slot": "background",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-hand-tools",
+      "pageKey": "aiport:guide:choose-ai-tool",
+      "slot": "background",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-google-homepage",
+      "pageKey": "aiport:guide:llmo-aeo-geo-guide",
+      "slot": "background",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-welding-robot-system-002",
+      "pageKey": "aiport:topic:ai-agent",
+      "slot": "background",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-klassenzimmer1930",
+      "pageKey": "aiport:topic:ai-education",
+      "slot": "background",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-additivecolormixing",
+      "pageKey": "aiport:topic:ai-image",
+      "slot": "background",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-nyc-nyse",
+      "pageKey": "aiport:topic:ai-investment",
+      "slot": "background",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-mri-brain",
+      "pageKey": "aiport:topic:ai-medical",
+      "slot": "background",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-minimoog",
+      "pageKey": "aiport:topic:ai-music",
+      "slot": "background",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-datacenter-telecom",
+      "pageKey": "aiport:topic:ai-news",
+      "slot": "background",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-burj-khalifa-16260269606",
+      "pageKey": "aiport:topic:ai-realestate",
+      "slot": "background",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-gehry",
+      "pageKey": "aiport:topic:ai-sales",
+      "slot": "background",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-ibm-thinkpad-r51",
+      "pageKey": "aiport:topic:ai-tools",
+      "slot": "background",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-camera-crew-at-candlestick-park-8-29-08",
+      "pageKey": "aiport:topic:ai-video",
+      "slot": "background",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-satoshi-nakamoto",
+      "pageKey": "aiport:topic:blockchain",
+      "slot": "background",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-sony-playstation-4-psvr-headset-mk1-fl",
+      "pageKey": "aiport:topic:metaverse",
+      "slot": "background",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-operating-system-placement-ja",
+      "pageKey": "aiport:topic:web3",
+      "slot": "background",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-aerial-wiew-of-los-angeles-international-airport-juy-2022-2",
+      "pageKey": "cardport:card:aurum-noir",
+      "slot": "inline",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-apartment-building-lobby",
+      "pageKey": "cardport:card:aurum-platinum",
+      "slot": "inline",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-colored-neural-network",
+      "pageKey": "cardport:card:chainbridge-flow",
+      "slot": "inline",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-new-york-stock-exchange-panoramio-2",
+      "pageKey": "cardport:card:chainbridge-nova",
+      "slot": "inline",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-convenience-store-interior",
+      "pageKey": "cardport:card:hoshimart-gold",
+      "slot": "inline",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-convenience-store-interior",
+      "pageKey": "cardport:card:hoshimart-plus",
+      "slot": "inline",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-colored-neural-network",
+      "pageKey": "cardport:card:linkmobile-prepaid",
+      "slot": "inline",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-london-bankofengland-arp",
+      "pageKey": "cardport:card:meridian-classic",
+      "slot": "inline",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-london-bankofengland-arp",
+      "pageKey": "cardport:card:meridian-debit",
+      "slot": "inline",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-kundenkarten",
+      "pageKey": "cardport:card:meridian-gold",
+      "slot": "inline",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-united-a320-n405ua-at-bos-33787222465",
+      "pageKey": "cardport:card:meridian-sky",
+      "slot": "inline",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-aerial-wiew-of-los-angeles-international-airport-juy-2022-2",
+      "pageKey": "cardport:card:nova-travel",
+      "slot": "inline",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-toast-tap-payment-perminal",
+      "pageKey": "cardport:card:nova-zero",
+      "slot": "inline",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-sitzung-von-wiki-loves-broadcast-im-kontor-hamburg",
+      "pageKey": "cardport:card:orbit-business",
+      "slot": "inline",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-sitzung-von-wiki-loves-broadcast-im-kontor-hamburg",
+      "pageKey": "cardport:card:orbit-business-gold",
+      "slot": "inline",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-kundenkarten",
+      "pageKey": "cardport:card:orbit-solo",
+      "slot": "inline",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-kundenkarten",
+      "pageKey": "cardport:card:orbit-virtual",
+      "slot": "inline",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-credit-cards",
+      "pageKey": "cardport:category:beginner",
+      "slot": "hero",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-credit-cards",
+      "pageKey": "cardport:category:black",
+      "slot": "hero",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-convenience-store-interior",
+      "pageKey": "cardport:category:convenience-store",
+      "slot": "hero",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-holding-bitcoin-cryptocurrency-coin",
+      "pageKey": "cardport:category:crypto",
+      "slot": "hero",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-credit-cards",
+      "pageKey": "cardport:category:debit",
+      "slot": "hero",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-credit-cards",
+      "pageKey": "cardport:category:free-annual-fee",
+      "slot": "hero",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-mattoon-service-station-pre-fabricated-angle-view-national-w",
+      "pageKey": "cardport:category:gas",
+      "slot": "hero",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-sala-dal-rinc-n-del-vino-5657319902",
+      "pageKey": "cardport:category:gold",
+      "slot": "hero",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-kundenkarten",
+      "pageKey": "cardport:category:high-reward",
+      "slot": "hero",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-shopping-online-with-bank-card",
+      "pageKey": "cardport:category:online-shopping",
+      "slot": "hero",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-aerial-wiew-of-los-angeles-international-airport-juy-2022-2",
+      "pageKey": "cardport:category:overseas",
+      "slot": "hero",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-sala-dal-rinc-n-del-vino-5657319902",
+      "pageKey": "cardport:category:platinum",
+      "slot": "hero",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-credit-cards",
+      "pageKey": "cardport:category:prepaid",
+      "slot": "hero",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-credit-cards",
+      "pageKey": "cardport:category:sole-proprietor",
+      "slot": "hero",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-credit-cards",
+      "pageKey": "cardport:category:student",
+      "slot": "hero",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-credit-cards",
+      "pageKey": "cardport:category:subscription",
+      "slot": "hero",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-aerial-wiew-of-los-angeles-international-airport-juy-2022-2",
+      "pageKey": "cardport:category:travel",
+      "slot": "hero",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-credit-cards",
+      "pageKey": "cardport:category:virtual",
+      "slot": "hero",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-operating-system-placement",
+      "pageKey": "cardport:guide:card-security-basics",
+      "slot": "gallery",
+      "priority": 20
+    },
+    {
+      "assetId": "wm-operating-system-placement",
+      "pageKey": "cardport:guide:card-security-basics",
+      "slot": "inline",
+      "priority": 10
+    },
     {
       "assetId": "wm-jgc-visa01s",
       "pageKey": "cardport:guide:credit-card-basics",
       "slot": "inline",
       "priority": 0
+    },
+    {
+      "assetId": "wm-credit-cards",
+      "pageKey": "cardport:guide:how-to-choose-first-card",
+      "slot": "gallery",
+      "priority": 20
+    },
+    {
+      "assetId": "wm-credit-cards",
+      "pageKey": "cardport:guide:how-to-choose-first-card",
+      "slot": "inline",
+      "priority": 10
     },
     {
       "assetId": "wm-mucfids",
@@ -15,8 +393,74 @@
       "priority": 0
     },
     {
+      "assetId": "wm-kundenkarten",
+      "pageKey": "cardport:guide:points-basics",
+      "slot": "gallery",
+      "priority": 20
+    },
+    {
+      "assetId": "wm-bitcoin",
+      "pageKey": "cardport:guide:web3-payment-basics",
+      "slot": "gallery",
+      "priority": 20
+    },
+    {
+      "assetId": "wm-bitcoin",
+      "pageKey": "cardport:guide:web3-payment-basics",
+      "slot": "inline",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-sala-dal-rinc-n-del-vino-5657319902",
+      "pageKey": "cardport:news:annual-fee-vs-benefit",
+      "slot": "comparison",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-sala-dal-rinc-n-del-vino-5657319902",
+      "pageKey": "cardport:news:annual-fee-vs-benefit",
+      "slot": "inline",
+      "priority": 20
+    },
+    {
+      "assetId": "wm-apple-payment-square",
+      "pageKey": "cardport:news:cashless-ratio-report",
+      "slot": "inline",
+      "priority": 20
+    },
+    {
+      "assetId": "wm-apple-payment-square",
+      "pageKey": "cardport:news:cashless-ratio-report",
+      "slot": "thumbnail",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-credit-cards",
+      "pageKey": "cardport:news:chainbridge-region-restriction",
+      "slot": "inline",
+      "priority": 20
+    },
+    {
+      "assetId": "wm-credit-cards",
+      "pageKey": "cardport:news:chainbridge-region-restriction",
+      "slot": "thumbnail",
+      "priority": 10
+    },
+    {
+      "assetId": "wm-kundenkarten",
+      "pageKey": "cardport:news:hoshimart-plus-campaign",
+      "slot": "inline",
+      "priority": 20
+    },
+    {
       "assetId": "wm-qr-code-for-mobile-english-wikipedia",
       "pageKey": "cardport:payment:qr",
+      "slot": "inline",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-nft-diagram",
+      "pageKey": "cryptoport:coin:ethereum",
       "slot": "inline",
       "priority": 0
     },
@@ -27,7 +471,19 @@
       "priority": 0
     },
     {
+      "assetId": "wm-red-mcewen-field-at-usf-baseball-stadium",
+      "pageKey": "sportsport:sport:baseball",
+      "slot": "hero",
+      "priority": 0
+    },
+    {
       "assetId": "wm-view-of-basketball-hoop-from-below",
+      "pageKey": "sportsport:sport:basketball",
+      "slot": "hero",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-basketball-going-into-a-basketball-hoop-with-sunset-in-backg",
       "pageKey": "sportsport:sport:basketball",
       "slot": "hero",
       "priority": 0
@@ -51,8 +507,26 @@
       "priority": 0
     },
     {
+      "assetId": "wm-mesa-de-ping-pong-riesstr-m-nich-alemania-2012-04-28-dd-01",
+      "pageKey": "sportsport:sport:table-tennis",
+      "slot": "hero",
+      "priority": 0
+    },
+    {
       "assetId": "wm-empty-clay-tennis-court-in-melbourne-australia-looking-down-",
       "pageKey": "sportsport:sport:tennis",
+      "slot": "hero",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-clay-tennis-courts-melbourne-looking-from-one-end-of-the-cou",
+      "pageKey": "sportsport:sport:tennis",
+      "slot": "hero",
+      "priority": 0
+    },
+    {
+      "assetId": "wm-rastkogel-ski-slope",
+      "pageKey": "sportsport:sport:winter-sports",
       "slot": "hero",
       "priority": 0
     }
