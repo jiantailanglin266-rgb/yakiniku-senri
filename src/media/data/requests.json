@@ -279,24 +279,18 @@
   {
     "pageKey": "aiport:topic:ai-tools",
     "slot": "background",
-    "query": "laptop computer workspace",
+    "query": "computer keyboard close up",
     "wikidataEntityId": null,
     "limit": 5,
-    "wikipedia": {
-      "lang": "ja",
-      "titles": ["ノートパソコン"]
-    }
+    "leadImage": false
   },
   {
     "pageKey": "aiport:topic:ai-video",
     "slot": "background",
-    "query": "film camera lens",
+    "query": "film camera lens close up",
     "wikidataEntityId": null,
     "limit": 5,
-    "wikipedia": {
-      "lang": "ja",
-      "titles": ["ビデオカメラ", "映画製作"]
-    }
+    "leadImage": false
   },
   {
     "pageKey": "aiport:topic:ai-image",
@@ -345,13 +339,10 @@
   {
     "pageKey": "aiport:topic:ai-sales",
     "slot": "background",
-    "query": "business meeting room",
+    "query": "empty conference room chairs",
     "wikidataEntityId": null,
     "limit": 5,
-    "wikipedia": {
-      "lang": "ja",
-      "titles": ["会議室"]
-    }
+    "leadImage": false
   },
   {
     "pageKey": "aiport:topic:ai-marketing",
@@ -367,13 +358,10 @@
   {
     "pageKey": "aiport:topic:ai-realestate",
     "slot": "background",
-    "query": "city skyline buildings",
+    "query": "residential housing rooftops",
     "wikidataEntityId": null,
     "limit": 5,
-    "wikipedia": {
-      "lang": "ja",
-      "titles": ["超高層建築物"]
-    }
+    "leadImage": false
   },
   {
     "pageKey": "aiport:topic:ai-medical",
@@ -411,13 +399,10 @@
   {
     "pageKey": "aiport:topic:web3",
     "slot": "background",
-    "query": "computer network topology",
+    "query": "distributed network topology diagram",
     "wikidataEntityId": null,
     "limit": 5,
-    "wikipedia": {
-      "lang": "ja",
-      "titles": ["コンピュータネットワーク"]
-    }
+    "leadImage": false
   },
   {
     "pageKey": "aiport:topic:nft",
@@ -444,35 +429,26 @@
   {
     "pageKey": "aiport:topic:metaverse",
     "slot": "background",
-    "query": "virtual reality headset",
+    "query": "3d wireframe mesh model",
     "wikidataEntityId": null,
     "limit": 5,
-    "wikipedia": {
-      "lang": "ja",
-      "titles": ["ヘッドマウントディスプレイ"]
-    }
+    "leadImage": false
   },
   {
     "pageKey": "aiport:topic:blockchain",
     "slot": "background",
-    "query": "blockchain diagram",
+    "query": "cryptographic hash chain diagram",
     "wikidataEntityId": null,
     "limit": 5,
-    "wikipedia": {
-      "lang": "ja",
-      "titles": ["ブロックチェーン"]
-    }
+    "leadImage": false
   },
   {
     "pageKey": "aiport:guide:llmo-aeo-geo-guide",
     "slot": "background",
-    "query": "search engine results",
+    "query": "library card catalog drawer",
     "wikidataEntityId": null,
     "limit": 5,
-    "wikipedia": {
-      "lang": "ja",
-      "titles": ["検索エンジン"]
-    }
+    "leadImage": false
   },
   {
     "pageKey": "aiport:guide:ai-agent-basics",
