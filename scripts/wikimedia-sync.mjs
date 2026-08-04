@@ -385,9 +385,18 @@ async function main() {
          ただし各言語版ローカルの非自由ファイルは fetchLeadImageTitle が捨てます
          （Commons にあるファイルだけが返ります）。
     */
-    for (const query of queries) {
-      const mapping = request.wikipediaTitles ?? wikipediaTitlesFor(query);
-      if (!mapping) continue;
+    // 検索語が無くても、記事タイトルの指定だけで取得できるようにします
+    for (const query of queries.length > 0 ? queries : [null]) {
+      /*
+        指定の優先順位:
+          1. requests.json に人が書いた `wikipedia`（main で運用中の書式）
+          2. 自動生成が付けた `wikipediaTitles`
+          3. 検索語からの対応表
+        人が指定したものを最優先にします。
+      */
+      const mapping =
+        request.wikipedia ?? request.wikipediaTitles ?? (query ? wikipediaTitlesFor(query) : null);
+      if (!mapping?.titles?.length) continue;
 
       for (const articleTitle of mapping.titles) {
         const fileTitle = await safeCall(

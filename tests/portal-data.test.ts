@@ -430,6 +430,7 @@ describe("固定ページ・ナビゲーション", () => {
       "/videos",
       "/diagnosis",
       "/faq",
+      "/image-credits",
     ]);
     for (const group of footerNav) {
       for (const item of group.items) {

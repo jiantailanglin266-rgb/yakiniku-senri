@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-04T14:23:50.983Z",
+  "generatedAt": "2026-08-04T14:32:48.230Z",
   "note": "scripts/generate-media-requests.mjs が生成します。手で編集しないでください。手書きの指示は requests.json に書いてください。",
   "requests": [
     {

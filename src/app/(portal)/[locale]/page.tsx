@@ -217,7 +217,7 @@ export default async function PortalHome(props: { params: Promise<{ locale: stri
             </NoticeBox>
           ) : null}
 
-          <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          <ul className="grid auto-rows-fr gap-4 md:grid-cols-2 xl:grid-cols-3">
             {news.map(({ article, duplicates }) => (
               <li key={article.id}>
                 <NewsCard

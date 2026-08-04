@@ -90,6 +90,7 @@ export const footerNav: { title: LocalizedText; items: NavItem[] }[] = [
         label: { ja: "コンテンツ修正依頼", en: "Request a correction" },
       },
       { href: "/legal/copyright", label: { ja: "著作権ポリシー", en: "Copyright policy" } },
+      { href: "/image-credits", label: { ja: "画像の出典一覧", en: "Image credits" } },
       { href: "/legal/contact", label: { ja: "お問い合わせ", en: "Contact" } },
     ],
   },

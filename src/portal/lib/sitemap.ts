@@ -22,6 +22,8 @@ import { videos } from "@/portal/data/videos";
 import { wallets } from "@/portal/data/wallets";
 import { diagnoses } from "@/portal/data/diagnoses";
 import { legalPages } from "@/portal/data/legal";
+import { pageImageSitemapEntries } from "@/media/lib/structured-data";
+import { portalPageKey } from "./media";
 import { alternateLanguages, localeUrl } from "./seo";
 
 type Entry = {
@@ -29,6 +31,8 @@ type Entry = {
   lastModified: Date;
   changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"];
   priority: number;
+  /** 画像サイトマップ用。掲載可能な画像がある枠だけ結果に載ります */
+  pageKey?: string;
 };
 
 function contentEntries(): Entry[] {
@@ -58,15 +62,18 @@ function contentEntries(): Entry[] {
     { path: "/diagnosis", lastModified: learnDate, changeFrequency: "monthly", priority: 0.7 },
     { path: "/campaigns", lastModified: learnDate, changeFrequency: "weekly", priority: 0.5 },
     { path: "/faq", lastModified: learnDate, changeFrequency: "monthly", priority: 0.5 },
+    { path: "/image-credits", lastModified: learnDate, changeFrequency: "monthly", priority: 0.3 },
 
     ...coins.map((coin) => ({
       path: `/coins/${coin.slug}`,
+      pageKey: portalPageKey("coin", coin.slug),
       lastModified: newsDate,
       changeFrequency: "daily" as const,
       priority: 0.8,
     })),
     ...news.map((article) => ({
       path: `/news/${article.slug}`,
+      pageKey: portalPageKey("news", article.slug),
       lastModified: new Date(article.updatedAt ?? article.publishedAt),
       changeFrequency: "monthly" as const,
       priority: 0.6,
@@ -91,12 +98,14 @@ function contentEntries(): Entry[] {
     })),
     ...videos.map((video) => ({
       path: `/videos/${video.slug}`,
+      pageKey: portalPageKey("video", video.slug),
       lastModified: new Date(video.publishedAt),
       changeFrequency: "monthly" as const,
       priority: 0.6,
     })),
     ...learnArticles.map((article) => ({
       path: `/learn/${article.slug}`,
+      pageKey: portalPageKey("learn", article.slug),
       lastModified: new Date(article.updatedAt),
       changeFrequency: "monthly" as const,
       priority: 0.7,
@@ -120,13 +129,18 @@ export function portalSitemap(): MetadataRoute.Sitemap {
   const entries = contentEntries();
 
   return locales.flatMap((locale) =>
-    entries.map((entry) => ({
-      url: localeUrl(locale.code, entry.path),
-      lastModified: entry.lastModified,
-      changeFrequency: entry.changeFrequency,
-      priority: entry.priority,
-      alternates: { languages: alternateLanguages(entry.path) },
-    })),
+    entries.map((entry) => {
+      // 掲載可否の確認が済んでいない画像は `pageImageSitemapEntries` が返しません
+      const images = entry.pageKey ? pageImageSitemapEntries(entry.pageKey, locale.code) : [];
+      return {
+        url: localeUrl(locale.code, entry.path),
+        lastModified: entry.lastModified,
+        changeFrequency: entry.changeFrequency,
+        priority: entry.priority,
+        alternates: { languages: alternateLanguages(entry.path) },
+        ...(images.length > 0 ? { images: images.map((image) => image.loc) } : {}),
+      };
+    }),
   );
 }
 

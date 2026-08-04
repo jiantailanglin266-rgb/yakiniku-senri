@@ -39,145 +39,292 @@
     "slot": "hero",
     "query": "association football ball on pitch",
     "wikidataEntityId": null,
-    "limit": 5
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["サッカー"]
+    }
   },
   {
     "pageKey": "sportsport:sport:baseball",
     "slot": "hero",
     "query": "baseball field empty",
     "wikidataEntityId": null,
-    "limit": 5
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["野球"]
+    }
   },
   {
     "pageKey": "sportsport:sport:basketball",
     "slot": "hero",
     "query": "basketball hoop",
     "wikidataEntityId": null,
-    "limit": 5
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["バスケットボール"]
+    }
   },
   {
     "pageKey": "sportsport:sport:american-football",
     "slot": "hero",
     "query": "american football ball",
     "wikidataEntityId": null,
-    "limit": 5
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["アメリカンフットボール"]
+    }
   },
   {
     "pageKey": "sportsport:sport:ice-hockey",
     "slot": "hero",
     "query": "ice hockey rink empty",
     "wikidataEntityId": null,
-    "limit": 5
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["アイスホッケー"]
+    }
   },
   {
     "pageKey": "sportsport:sport:tennis",
     "slot": "hero",
     "query": "tennis court empty",
     "wikidataEntityId": null,
-    "limit": 5
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["テニス"]
+    }
   },
   {
     "pageKey": "sportsport:sport:golf",
     "slot": "hero",
     "query": "golf course fairway",
     "wikidataEntityId": null,
-    "limit": 5
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["ゴルフ"]
+    }
   },
   {
     "pageKey": "sportsport:sport:f1",
     "slot": "hero",
     "query": "formula one circuit aerial",
     "wikidataEntityId": null,
-    "limit": 5
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["フォーミュラ1"]
+    }
   },
   {
     "pageKey": "sportsport:sport:motogp",
     "slot": "hero",
     "query": "motorcycle racing circuit",
     "wikidataEntityId": null,
-    "limit": 5
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["ロードレース世界選手権"]
+    }
   },
   {
     "pageKey": "sportsport:sport:boxing",
     "slot": "hero",
     "query": "boxing ring empty",
     "wikidataEntityId": null,
-    "limit": 5
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["ボクシング"]
+    }
   },
   {
     "pageKey": "sportsport:sport:mma",
     "slot": "hero",
     "query": "mixed martial arts cage empty",
     "wikidataEntityId": null,
-    "limit": 5
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["総合格闘技"]
+    }
   },
   {
     "pageKey": "sportsport:sport:pro-wrestling",
     "slot": "hero",
     "query": "professional wrestling ring empty",
     "wikidataEntityId": null,
-    "limit": 5
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["プロレス"]
+    }
   },
   {
     "pageKey": "sportsport:sport:rugby",
     "slot": "hero",
     "query": "rugby ball",
     "wikidataEntityId": null,
-    "limit": 5
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["ラグビー"]
+    }
   },
   {
     "pageKey": "sportsport:sport:cricket",
     "slot": "hero",
     "query": "cricket ground empty",
     "wikidataEntityId": null,
-    "limit": 5
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["クリケット"]
+    }
   },
   {
     "pageKey": "sportsport:sport:volleyball",
     "slot": "hero",
     "query": "volleyball court empty",
     "wikidataEntityId": null,
-    "limit": 5
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["バレーボール"]
+    }
   },
   {
     "pageKey": "sportsport:sport:table-tennis",
     "slot": "hero",
     "query": "table tennis table",
     "wikidataEntityId": null,
-    "limit": 5
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["卓球"]
+    }
   },
   {
     "pageKey": "sportsport:sport:badminton",
     "slot": "hero",
     "query": "badminton court empty",
     "wikidataEntityId": null,
-    "limit": 5
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["バドミントン"]
+    }
   },
   {
     "pageKey": "sportsport:sport:horse-racing",
     "slot": "hero",
     "query": "horse racing track empty",
     "wikidataEntityId": null,
-    "limit": 5
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["競馬"]
+    }
   },
   {
     "pageKey": "sportsport:sport:esports",
     "slot": "hero",
     "query": "esports arena empty",
     "wikidataEntityId": null,
-    "limit": 5
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["eスポーツ"]
+    }
   },
   {
     "pageKey": "sportsport:sport:olympics",
     "slot": "hero",
     "query": "athletics track empty",
     "wikidataEntityId": null,
-    "limit": 5
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["オリンピック"]
+    }
   },
   {
     "pageKey": "sportsport:sport:winter-sports",
     "slot": "hero",
     "query": "ski slope",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["ウィンタースポーツ", "スキー"]
+    }
+  },
+  {
+    "pageKey": "cryptoport:learn:what-is-blockchain",
+    "slot": "inline",
+    "query": "blockchain distributed ledger diagram",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "cryptoport:learn:what-is-crypto",
+    "slot": "inline",
+    "query": "cryptography public key diagram",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "cryptoport:learn:what-is-wallet",
+    "slot": "inline",
+    "query": "hardware wallet device",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "cryptoport:learn:what-is-gas",
+    "slot": "inline",
+    "query": "ethereum gas fee diagram",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "cryptoport:learn:security-basics",
+    "slot": "inline",
+    "query": "two-factor authentication security key",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "cryptoport:learn:crypto-tax-basics",
+    "slot": "inline",
+    "query": "tax form calculator desk",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "cryptoport:learn:what-is-dao",
+    "slot": "inline",
+    "query": "organizational network graph",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "cryptoport:coin:bitcoin",
+    "slot": "inline",
+    "query": "bitcoin mining data center",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "cryptoport:coin:ethereum",
+    "slot": "inline",
+    "query": "ethereum blockchain diagram",
     "wikidataEntityId": null,
     "limit": 5
   }

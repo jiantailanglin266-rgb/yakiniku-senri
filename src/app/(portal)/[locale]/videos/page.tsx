@@ -12,6 +12,8 @@ import { breadcrumbJsonLd, itemListJsonLd } from "@/portal/lib/structured-data";
 import { Breadcrumbs, Container, PageHeader, Section } from "@/portal/components/layout/Shell";
 import { Badge, GlassCard, NoticeBox, SectionHeading } from "@/portal/components/ui/primitives";
 import { JsonLd } from "@/portal/components/ui/JsonLd";
+import { MediaSlot } from "@/media/components";
+import { mediaSeed, portalPageKey } from "@/portal/lib/media";
 
 export function generateStaticParams() {
   return staticLocales().map((locale) => ({ locale }));
@@ -43,24 +45,20 @@ function VideoCard({
   return (
     <GlassCard as="article" className="h-full overflow-hidden">
       <Link href={localePath(locale, `/videos/${video.slug}`)}>
-        <div
-          aria-hidden="true"
-          className={`relative grid place-items-center bg-linear-to-br from-(--color-navy) to-(--color-abyss) text-(--color-ink-dim) ${video.shorts ? "aspect-9/16" : "aspect-video"}`}
-        >
-          <svg viewBox="0 0 24 24" className="size-10 opacity-50">
-            <path d="M9 7.5v9l7.5-4.5z" fill="currentColor" />
-            <rect
-              x="1.5"
-              y="3.5"
-              width="21"
-              height="17"
-              rx="4"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.4"
-            />
-          </svg>
-          <span className="absolute end-2 bottom-2 rounded bg-black/60 px-1.5 py-0.5 font-mono text-[0.625rem]">
+        {/* サムネイル枠。YouTube のサムネイルは権利者が別にいるため、
+            ここでは表示せず、掲載可否を確認できた画像か装飾表現だけを出します */}
+        <div className="relative">
+          <MediaSlot
+            pageKey={portalPageKey("video", video.slug)}
+            slot="thumbnail"
+            locale={locale}
+            theme="video"
+            seed={mediaSeed(video.slug)}
+            showCaption={false}
+            className={video.shorts ? "aspect-9/16 w-full" : "aspect-video w-full"}
+            sizes="(min-width: 1024px) 20rem, 45vw"
+          />
+          <span className="pointer-events-none absolute end-2 bottom-2 rounded bg-black/70 px-1.5 py-0.5 font-mono text-[0.625rem]">
             {formatDuration(video.durationSec)}
           </span>
         </div>
