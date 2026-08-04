@@ -20,6 +20,7 @@ import { activeCampaigns, siteFaq } from "@/portal/data/site-content";
 
 import { Container, Section } from "@/portal/components/layout/Shell";
 import { PageVisual } from "@/portal/components/layout/PageVisual";
+import { CoinMarquee } from "@/portal/components/home/CoinMarquee";
 import { Hero } from "@/portal/components/home/Hero";
 import { MarketTicker } from "@/portal/components/market/MarketTicker";
 import { CoinCard } from "@/portal/components/market/CoinCard";
@@ -82,6 +83,9 @@ export default async function PortalHome(props: { params: Promise<{ locale: stri
     <>
       {/* 1. ファーストビュー */}
       <Hero locale={locale} dict={dict} snapshot={snapshot} featured={coins} />
+
+      {/* 銘柄バナーのマーキー（バナーが無いときは何も出ません） */}
+      <CoinMarquee locale={locale} label={dict.market.featured} />
 
       {/* 2. リアルタイムマーケットティッカー */}
       <div aria-label={dict.market.ticker}>
