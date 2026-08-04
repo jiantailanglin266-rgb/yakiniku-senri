@@ -2,6 +2,8 @@ import { LoadingScreen } from "@/components/effects/LoadingScreen";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { videoJsonLd } from "@/lib/structured-data";
 import { GradientDivider } from "@/components/ui/GradientDivider";
+import { MarqueeBand } from "@/components/ui/MarqueeBand";
+import { marqueeMiddle, marqueeTop } from "@/data/marquee";
 import { HeroSection } from "@/components/home/HeroSection";
 import { BrandMovie } from "@/components/home/BrandMovie";
 import { StorySection } from "@/components/home/StorySection";
@@ -23,12 +25,15 @@ export default function HomePage() {
       {videoJsonLd ? <JsonLd data={videoJsonLd} /> : null}
 
       <HeroSection />
+      {/* ブランドムービーはファーストビューの直下に置きます（間に何も挟みません） */}
       <BrandMovie />
+      <MarqueeBand rows={marqueeTop} />
       <StorySection />
       <GradientDivider tone="gold" />
       <CommitmentGrid />
       <SignatureMenu />
       <EmberSection />
+      <MarqueeBand rows={marqueeMiddle} />
       <MenuPreview />
       <OwnerProfile />
       <TakeoutSection />
