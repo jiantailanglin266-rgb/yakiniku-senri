@@ -12,8 +12,12 @@ import { cn } from "@/lib/utils";
  * パネルごとにごくゆっくり縮小させ、静止画に見えないようにしています
  * （動きは transform のみ。prefers-reduced-motion では停止します）。
  *
- * スマートフォンでは3列が細くなりすぎるため、1枚目のみを全面表示します。
+ * スマートフォンでは3列が細くなりすぎるため、中央の1枚のみを全面表示します。
  */
+
+/** スマートフォンで表示するパネルの番号（0始まり）。 */
+const MOBILE_PANEL_INDEX = 1;
+
 export function HeroTriptych({ panels }: { panels: readonly Media[] }) {
   const reduced = useReducedMotion();
 
@@ -26,8 +30,8 @@ export function HeroTriptych({ panels }: { panels: readonly Media[] }) {
             key={panel.src || index}
             className={cn(
               "relative h-full overflow-hidden",
-              // 2枚目以降はスマートフォンでは表示しません
-              index > 0 && "hidden sm:block",
+              // スマートフォンでは中央の1枚だけを残します
+              index !== MOBILE_PANEL_INDEX && "hidden sm:block",
             )}
           >
             {panel.src ? (
@@ -46,7 +50,10 @@ export function HeroTriptych({ panels }: { panels: readonly Media[] }) {
                   alt={panel.alt}
                   fill
                   sizes="(max-width: 640px) 100vw, 34vw"
-                  priority={index === 0}
+                  // スマートフォンで唯一表示される中央のパネルだけ先読みします。
+                  // 他の2枚は遅延読み込みにしているため、非表示のスマートフォンでは
+                  // ダウンロード自体が発生しません（display:none は交差しないため）。
+                  priority={index === MOBILE_PANEL_INDEX}
                   className="object-cover"
                   style={{ filter: "saturate(0.92) contrast(1.04) brightness(0.98)" }}
                 />
