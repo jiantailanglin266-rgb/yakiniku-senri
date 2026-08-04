@@ -40,6 +40,21 @@
 
 ---
 
+## このリポジトリには4つのサイトが入っています
+
+| サイト                                | URL                       | ドキュメント                                                 |
+| ------------------------------------- | ------------------------- | ------------------------------------------------------------ |
+| **焼肉 千里**（このREADME）           | `/`, `/menu`, `/news/...` | 以下                                                         |
+| **AI PORT**                           | `/ai-port`                | [`docs/ai-port/README.md`](./docs/ai-port/README.md)         |
+| **CRYPTO PORT**                       | `/<言語>/...`             | [`docs/portal/00-overview.md`](./docs/portal/00-overview.md) |
+| **CARD PORT**（クレジットカード比較） | `/card-port/<言語>/...`   | [`docs/cardport/README.md`](./docs/cardport/README.md)       |
+
+`<html>` / `<body>` はルートレイアウト（`src/app/layout.tsx`）が持ち、
+各サイトの外枠はそれぞれのレイアウトにあります。
+ルートグループ `(senri)` `(portal)` はURLに現れないため、**焼肉 千里のURLは従来どおり**です。
+
+---
+
 ## 1. 技術構成
 
 | 項目            | 内容                                                                |
