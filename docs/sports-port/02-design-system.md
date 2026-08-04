@@ -7,7 +7,7 @@
 
 ## 1. カラートークン
 
-`src/app/(sports)/sports.css` の `@theme` に定義。Tailwind のユーティリティとして使えます
+`src/app/sports-port/sports.css` の `@theme` に定義。Tailwind のユーティリティとして使えます
 （`bg-void` `text-ink` `border-edge` `text-cyan` …）。
 
 ### 面

@@ -22,13 +22,13 @@ npm install
 npm run dev
 ```
 
-| URL                            | 内容                    |
-| ------------------------------ | ----------------------- |
-| http://localhost:3000/ja       | 日本語トップ            |
-| http://localhost:3000/en       | 英語トップ              |
-| http://localhost:3000/ar       | アラビア語（RTL確認用） |
-| http://localhost:3000/ja/live  | ライブスコア            |
-| http://localhost:3000/ja/admin | 管理画面デモ            |
+| URL                                        | 内容                    |
+| ------------------------------------------ | ----------------------- |
+| http://localhost:3000/sports-port/ja       | 日本語トップ            |
+| http://localhost:3000/sports-port/en       | 英語トップ              |
+| http://localhost:3000/sports-port/ar       | アラビア語（RTL確認用） |
+| http://localhost:3000/sports-port/ja/live  | ライブスコア            |
+| http://localhost:3000/sports-port/ja/admin | 管理画面デモ            |
 
 環境変数は `.env.example` をコピーして使います（**なくても全ページ動作します**）。
 
@@ -107,12 +107,12 @@ if (!result.ok) {
 ```
 
 順位表・スコアボード・スタッツバーはこの設定を読むだけなので、**コンポーネントの改修は不要**です。
-`/{locale}/sports/handball` と `/{locale}/leagues` に自動で現れます。
+`/sports-port/{locale}/sports/handball` と `/sports-port/{locale}/leagues` に自動で現れます。
 
 ## リーグの追加方法
 
 `src/sports/data/leagues.ts` に1件追加し、必要なら `teams.ts` `standings.ts` にチームと順位を足します。
-`/{locale}/leagues/<slug>` が自動生成され、サイトマップにも入ります。
+`/sports-port/{locale}/leagues/<slug>` が自動生成され、サイトマップにも入ります。
 
 ## 多言語の追加方法
 
@@ -152,12 +152,12 @@ export const theme = { base: "#04060f", primary: "#22d3ee", ... };
 export const features = { betting: true, web3: true, diagnosis: true, chatbot: true, admin: true };
 ```
 
-カラーの実体は `src/app/(sports)/sports.css` の `@theme` です。
+カラーの実体は `src/app/sports-port/sports.css` の `@theme` です。
 OGP画像を作り直す場合は `npm run sports:assets` を実行してください。
 
 ## 管理画面
 
-`/{locale}/admin` は**読み取り専用のデモ**です（`noindex`）。
+`/sports-port/{locale}/admin` は**読み取り専用のデモ**です（`noindex`）。
 主要指標・人気競技・言語別アクセス・登録件数・アフィリエイトリンク一覧・運用の健全性を確認できます。
 
 本番運用では多要素認証・権限管理・監査ログが前提です。要件は画面下部と

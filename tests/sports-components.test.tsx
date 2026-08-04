@@ -5,7 +5,7 @@ import { describe, expect, it, vi } from "vitest";
 vi.mock("next/image", async () => (await import("./helpers/next-mocks")).imageMock());
 vi.mock("next/link", async () => (await import("./helpers/next-mocks")).linkMock());
 vi.mock("next/navigation", async () =>
-  (await import("./helpers/next-mocks")).navigationMock("/ja/matches"),
+  (await import("./helpers/next-mocks")).navigationMock("/sports-port/ja/matches"),
 );
 
 import { LocaleSwitcher } from "@/sports/components/layout/LocaleSwitcher";
@@ -68,8 +68,14 @@ describe("言語切り替え", () => {
     render(<LocaleSwitcher current={ja} />);
     await user.click(screen.getByRole("button", { name: /表示言語/ }));
 
-    expect(screen.getByRole("option", { name: /English/ })).toHaveAttribute("href", "/en/matches");
-    expect(screen.getByRole("option", { name: /한국어/ })).toHaveAttribute("href", "/ko/matches");
+    expect(screen.getByRole("option", { name: /English/ })).toHaveAttribute(
+      "href",
+      "/sports-port/en/matches",
+    );
+    expect(screen.getByRole("option", { name: /한국어/ })).toHaveAttribute(
+      "href",
+      "/sports-port/ko/matches",
+    );
   });
 
   it("言語名は機械翻訳の対象外にする", () => {
@@ -84,9 +90,12 @@ describe("ヘッダー / フッター", () => {
     const nav = screen.getAllByRole("navigation")[0];
     expect(within(nav).getByRole("link", { name: dict.navLive })).toHaveAttribute(
       "href",
-      "/ja/live",
+      "/sports-port/ja/live",
     );
-    expect(screen.getByRole("link", { name: dict.search })).toHaveAttribute("href", "/ja/search");
+    expect(screen.getByRole("link", { name: dict.search })).toHaveAttribute(
+      "href",
+      "/sports-port/ja/search",
+    );
   });
 
   it("フッターに法務ページが揃っている", () => {

@@ -4,12 +4,12 @@
 ルートレイアウト（`src/app/layout.tsx`）は `<html>` / `<body>` だけを持ち、
 ブランド固有の外枠（背景・ヘッダー・フッター・フォント・CSS）は各サイトのレイアウトにあります。
 
-| サイト              | URL                         | ルート              | ドキュメント                               |
-| ------------------- | --------------------------- | ------------------- | ------------------------------------------ |
-| 焼肉 千里（既存）   | `/`, `/menu`, `/news` …     | `src/app/(senri)/`  | この README（以下）                        |
-| AI PORT             | `/ai-port/…`                | `src/app/ai-port/`  | ソース内のコメント                         |
-| CRYPTO PORT（仮称） | `/ja/`, `/en/`, `/zh-cn/` … | `src/app/(portal)/` | **[README-portal.md](./README-portal.md)** |
-| SPORTS PORT（仮称） | `/sports-port/ja/` … | `src/app/sports-port/` | **[docs/sports-port/](./docs/sports-port/)** |
+| サイト              | URL                         | ルート                 | ドキュメント                                 |
+| ------------------- | --------------------------- | ---------------------- | -------------------------------------------- |
+| 焼肉 千里（既存）   | `/`, `/menu`, `/news` …     | `src/app/(senri)/`     | この README（以下）                          |
+| AI PORT             | `/ai-port/…`                | `src/app/ai-port/`     | ソース内のコメント                           |
+| CRYPTO PORT（仮称） | `/ja/`, `/en/`, `/zh-cn/` … | `src/app/(portal)/`    | **[README-portal.md](./README-portal.md)**   |
+| SPORTS PORT（仮称） | `/sports-port/ja/` …        | `src/app/sports-port/` | **[docs/sports-port/](./docs/sports-port/)** |
 
 > 相互リンクは張っていません。CRYPTO PORT を別ドメインへ切り出すときは
 > `src/app/(portal)/` と `src/portal/` を移せば済む構成にしています。

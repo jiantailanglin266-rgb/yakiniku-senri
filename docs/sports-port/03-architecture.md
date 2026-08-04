@@ -11,7 +11,7 @@ src/
 │   │   ├── layout.tsx
 │   │   ├── page.tsx
 │   │   └── menu/ news/ about/ …
-│   ├── (sports)/                   SPORTS PORT
+│   ├── sports-port/                SPORTS PORT
 │   │   ├── sports.css              デザインシステム（Tailwind @theme + @utility）
 │   │   └── [locale]/
 │   │       ├── layout.tsx          ルートレイアウト（15ロケールを事前生成）
@@ -58,7 +58,7 @@ src/
 ### 依存の向き
 
 ```
-app/(sports)/**  ──►  sports/components  ──►  sports/lib  ──►  sports/data  ──►  sports/types
+app/sports-port/**  ──►  sports/components  ──►  sports/lib  ──►  sports/data  ──►  sports/types
                                           └─►  sports/i18n
 ```
 

@@ -1,14 +1,24 @@
 # SPORTS PORT — 設計方針・サイトマップ・導線
 
-このリポジトリには2つのサイトが同居しています。
+このリポジトリには4つのサイトが同居しています。
 
-| サイト      | URL                      | ルート                       |
-| ----------- | ------------------------ | ---------------------------- |
-| 焼肉 千里   | `/`, `/menu`, `/news` …  | `src/app/(senri)/`           |
-| SPORTS PORT | `/ja/`, `/en/`, `/ko/` … | `src/app/(sports)/[locale]/` |
+| サイト      | URL                                      | ルート                          |
+| ----------- | ---------------------------------------- | ------------------------------- |
+| 焼肉 千里   | `/`, `/menu`, `/news` …                  | `src/app/(senri)/`              |
+| AI PORT     | `/ai-port/…`                             | `src/app/ai-port/`              |
+| CRYPTO PORT | `/ja/`, `/en/` …                         | `src/app/(portal)/[locale]/`    |
+| SPORTS PORT | `/sports-port/ja/`, `/sports-port/en/` … | `src/app/sports-port/[locale]/` |
 
-Next.js の **複数ルートレイアウト**（route group ごとに `layout.tsx` を持ち、`app/layout.tsx` を置かない構成）で分離しています。
-両者はフォント・CSS・ヘッダー・フッターを一切共有しません。既存サイトへ影響を出さないための構成です。
+ルートレイアウト（`src/app/layout.tsx`）は `<html>` / `<body>` だけを持ち、
+ブランド固有の外枠（背景・ヘッダー・フッター・フォント・CSS）は各サイトのレイアウトにあります。
+SPORTS PORT の CSS は `.sports-root` 配下に閉じており、他サイトへは配信されません。
+
+### なぜ `/sports-port/` 配下なのか
+
+ルートの `/{locale}/` は CRYPTO PORT が使用しています。
+同じ階層に `[locale]` を2つ置くと同一URLへ解決してビルドが通らないため、前置パスを付けています。
+値は `src/sports/config/site.ts` の `brand.routePrefix` 1か所で管理しており、
+独自ドメインへ切り出すときは空文字にすれば `/ja/` に戻ります。
 
 ---
 
@@ -54,54 +64,54 @@ Next.js の **複数ルートレイアウト**（route group ごとに `layout.t
 
 ### 試合・データ
 
-| パス                       | 内容                                                     |
-| -------------------------- | -------------------------------------------------------- |
-| `/{locale}/`               | トップページ（25セクション）                             |
-| `/{locale}/live`           | ライブスコア（競技別、更新間隔つき）                     |
-| `/{locale}/matches`        | 試合一覧（ライブ / 今日 / 予定 / 結果）                  |
-| `/{locale}/matches/[slug]` | 試合詳細（試合前 / 試合中 / 試合後でレイアウトが変わる） |
-| `/{locale}/leagues`        | 競技・リーグ一覧                                         |
-| `/{locale}/leagues/[slug]` | リーグ詳細（順位表・日程・結果・所属チーム・視聴方法）   |
-| `/{locale}/sports/[slug]`  | 競技詳細（その競技の表示ルールも公開）                   |
-| `/{locale}/teams/[slug]`   | チーム詳細                                               |
-| `/{locale}/players/[slug]` | 選手詳細                                                 |
+| パス                                   | 内容                                                     |
+| -------------------------------------- | -------------------------------------------------------- |
+| `/sports-port/{locale}/`               | トップページ（25セクション）                             |
+| `/sports-port/{locale}/live`           | ライブスコア（競技別、更新間隔つき）                     |
+| `/sports-port/{locale}/matches`        | 試合一覧（ライブ / 今日 / 予定 / 結果）                  |
+| `/sports-port/{locale}/matches/[slug]` | 試合詳細（試合前 / 試合中 / 試合後でレイアウトが変わる） |
+| `/sports-port/{locale}/leagues`        | 競技・リーグ一覧                                         |
+| `/sports-port/{locale}/leagues/[slug]` | リーグ詳細（順位表・日程・結果・所属チーム・視聴方法）   |
+| `/sports-port/{locale}/sports/[slug]`  | 競技詳細（その競技の表示ルールも公開）                   |
+| `/sports-port/{locale}/teams/[slug]`   | チーム詳細                                               |
+| `/sports-port/{locale}/players/[slug]` | 選手詳細                                                 |
 
 ### コンテンツ
 
-| パス                      | 内容                                        |
-| ------------------------- | ------------------------------------------- |
-| `/{locale}/news`          | ニュース一覧                                |
-| `/{locale}/news/[slug]`   | ニュース詳細（結論→要点→背景→注意点の構成） |
-| `/{locale}/videos`        | 動画一覧                                    |
-| `/{locale}/videos/[slug]` | 動画詳細（チャプター・AI要約・関連試合）    |
-| `/{locale}/videos/shorts` | ショート動画からの流入専用ページ            |
-| `/{locale}/guide`         | 初心者ガイド + 用語集                       |
-| `/{locale}/faq`           | FAQ                                         |
+| パス                                  | 内容                                        |
+| ------------------------------------- | ------------------------------------------- |
+| `/sports-port/{locale}/news`          | ニュース一覧                                |
+| `/sports-port/{locale}/news/[slug]`   | ニュース詳細（結論→要点→背景→注意点の構成） |
+| `/sports-port/{locale}/videos`        | 動画一覧                                    |
+| `/sports-port/{locale}/videos/[slug]` | 動画詳細（チャプター・AI要約・関連試合）    |
+| `/sports-port/{locale}/videos/shorts` | ショート動画からの流入専用ページ            |
+| `/sports-port/{locale}/guide`         | 初心者ガイド + 用語集                       |
+| `/sports-port/{locale}/faq`           | FAQ                                         |
 
 ### 収益・サービス
 
-| パス                         | 内容                                        |
-| ---------------------------- | ------------------------------------------- |
-| `/{locale}/streaming`        | 配信サービス比較（情報確認日つき）          |
-| `/{locale}/web3`             | Web3.0 サービス一覧（カテゴリ別）           |
-| `/{locale}/web3/[slug]`      | Web3.0 サービス詳細（メリットとリスク併記） |
-| `/{locale}/fan-tokens`       | ファントークン                              |
-| `/{locale}/nfts`             | スポーツNFT                                 |
-| `/{locale}/diagnosis`        | 診断一覧（13種）                            |
-| `/{locale}/diagnosis/[slug]` | 診断の実行と結果                            |
-| `/{locale}/betting`          | ベッティング情報（事業者掲載なし）          |
+| パス                                     | 内容                                        |
+| ---------------------------------------- | ------------------------------------------- |
+| `/sports-port/{locale}/streaming`        | 配信サービス比較（情報確認日つき）          |
+| `/sports-port/{locale}/web3`             | Web3.0 サービス一覧（カテゴリ別）           |
+| `/sports-port/{locale}/web3/[slug]`      | Web3.0 サービス詳細（メリットとリスク併記） |
+| `/sports-port/{locale}/fan-tokens`       | ファントークン                              |
+| `/sports-port/{locale}/nfts`             | スポーツNFT                                 |
+| `/sports-port/{locale}/diagnosis`        | 診断一覧（13種）                            |
+| `/sports-port/{locale}/diagnosis/[slug]` | 診断の実行と結果                            |
+| `/sports-port/{locale}/betting`          | ベッティング情報（事業者掲載なし）          |
 
 ### その他
 
-| パス                     | 内容                                |
-| ------------------------ | ----------------------------------- |
-| `/{locale}/search`       | サイト内検索（noindex）             |
-| `/{locale}/admin`        | 管理画面デモ（noindex）             |
-| `/{locale}/sitemap`      | HTMLサイトマップ                    |
-| `/{locale}/legal/[slug]` | 法務・方針 14ページ                 |
-| `/sports-sitemap.xml`    | 言語別サイトマップ（hreflang つき） |
-| `/sports-rss.xml`        | ニュースRSS                         |
-| `/api/sports/live`       | ライブスコア取得エンドポイント      |
+| パス                                 | 内容                                |
+| ------------------------------------ | ----------------------------------- |
+| `/sports-port/{locale}/search`       | サイト内検索（noindex）             |
+| `/sports-port/{locale}/admin`        | 管理画面デモ（noindex）             |
+| `/sports-port/{locale}/sitemap`      | HTMLサイトマップ                    |
+| `/sports-port/{locale}/legal/[slug]` | 法務・方針 14ページ                 |
+| `/sports-sitemap.xml`                | 言語別サイトマップ（hreflang つき） |
+| `/sports-rss.xml`                    | ニュースRSS                         |
+| `/api/sports/live`                   | ライブスコア取得エンドポイント      |
 
 ---
 

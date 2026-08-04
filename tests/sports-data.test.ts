@@ -20,6 +20,7 @@ import { ja, en, type Dictionary } from "@/sports/i18n/dictionary";
 import { partials } from "@/sports/i18n/partials";
 import { getDictionary, text } from "@/sports/i18n";
 import { href, swapLocale, alternateUrls, absoluteUrl } from "@/sports/lib/url";
+import { brand } from "@/sports/config/site";
 import { searchDocs } from "@/sports/lib/search";
 import { answerQuestion } from "@/sports/lib/chat";
 import { pickResult, scoreDiagnosis } from "@/sports/lib/diagnosis";
@@ -341,16 +342,25 @@ describe("多言語", () => {
 });
 
 describe("URL / hreflang", () => {
+  // CRYPTO PORT が `/{locale}/` を使っているため、SPORTS PORT は前置パスを持ちます
+  const base = brand.routePrefix;
+
   it("ロケール付きのパスを組み立てる", () => {
-    expect(href("ja", "/")).toBe("/ja");
-    expect(href("en", "/matches")).toBe("/en/matches");
-    expect(href("zh-cn", "matches/a-vs-b")).toBe("/zh-cn/matches/a-vs-b");
+    expect(href("ja", "/")).toBe(`${base}/ja`);
+    expect(href("en", "/matches")).toBe(`${base}/en/matches`);
+    expect(href("zh-cn", "matches/a-vs-b")).toBe(`${base}/zh-cn/matches/a-vs-b`);
   });
 
   it("言語切り替えでパスを保持する", () => {
-    expect(swapLocale("/ja/matches/a-vs-b", "en")).toBe("/en/matches/a-vs-b");
-    expect(swapLocale("/ja", "ko")).toBe("/ko");
-    expect(swapLocale("/", "ko")).toBe("/ko");
+    expect(swapLocale(`${base}/ja/matches/a-vs-b`, "en")).toBe(`${base}/en/matches/a-vs-b`);
+    expect(swapLocale(`${base}/ja`, "ko")).toBe(`${base}/ko`);
+    expect(swapLocale(`${base}/`, "ko")).toBe(`${base}/ko`);
+  });
+
+  it("他サイトのURLと衝突しない前置パスを持つ", () => {
+    // ルートの `/{locale}/` は CRYPTO PORT が使用中です
+    expect(base).not.toBe("");
+    expect(href("ja", "/")).not.toBe("/ja");
   });
 
   it("hreflang に全ロケールと x-default が含まれる", () => {

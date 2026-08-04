@@ -19,7 +19,7 @@
 | パンくず                       | ✅   | 全下層ページ（表示 + JSON-LD）                |
 | 内部リンク・関連コンテンツ     | ✅   | 試合↔チーム↔選手↔リーグ↔ニュース↔動画         |
 | サイトマップ（言語別）         | ✅   | `/sports-sitemap.xml`（hreflang 入り）        |
-| HTMLサイトマップ               | ✅   | `/{locale}/sitemap`                           |
+| HTMLサイトマップ               | ✅   | `/sports-port/{locale}/sitemap`               |
 | RSS                            | ✅   | `/sports-rss.xml`                             |
 | robots.txt                     | ✅   | 管理画面・検索結果を除外                      |
 | noindex の適用                 | ✅   | `/search` `/admin`                            |
