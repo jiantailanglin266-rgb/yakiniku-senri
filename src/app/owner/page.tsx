@@ -18,7 +18,7 @@ const crumbs = [
 ];
 
 export const metadata: Metadata = pageMetadata({
-  title: "オーナー紹介",
+  title: "オーナー紹介｜三代目 河 明樹",
   description: `焼肉 千里の${owner.role}・${owner.name}（${owner.nameReading}）。先代から受け継いだ味を守りながら、朝鮮半島の伝統弦楽器ソヘグムの奏者としても活動しています。`,
   path: "/owner",
 });

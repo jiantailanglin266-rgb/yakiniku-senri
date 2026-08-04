@@ -19,7 +19,7 @@ const crumbs = [
 ];
 
 export const metadata: Metadata = pageMetadata({
-  title: "こだわり",
+  title: "こだわり｜秘伝のタレともみシリーズ",
   description:
     "焼肉 千里が守り続ける四つのこだわり。世田谷で愛され続ける老舗としての歩み、創業より守り続けた秘伝のタレ、名物「もみシリーズ」、ゆったり過ごせるアットホームな空間をご紹介します。",
   path: "/commitment",

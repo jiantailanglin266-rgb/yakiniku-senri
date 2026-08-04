@@ -18,7 +18,7 @@ const crumbs = [
 ];
 
 export const metadata: Metadata = pageMetadata({
-  title: "お問い合わせ",
+  title: "お問い合わせ・ご予約",
   description: `${store.name}へのお問い合わせ。ご予約・テイクアウトのご相談はお電話（${store.phone}）にて承っております。`,
   path: "/contact",
 });

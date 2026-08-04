@@ -25,13 +25,13 @@ export function FaqList() {
           {faqs.map((faq, index) => (
             <Reveal key={faq.question} delay={Math.min(index, 5) * 70}>
               <div className="border-ivory/10 border-b py-7">
-                <dt className="text-ivory flex gap-3 text-[0.92rem] leading-[1.9]">
+                <dt className="faq-question text-ivory flex gap-3 text-[0.92rem] leading-[1.9]">
                   <span aria-hidden="true" className="font-display text-gold">
                     Q.
                   </span>
                   {faq.question}
                 </dt>
-                <dd className="text-gray mt-3 flex gap-3 text-[0.83rem] leading-[2.1]">
+                <dd className="faq-answer text-gray mt-3 flex gap-3 text-[0.83rem] leading-[2.1]">
                   <span aria-hidden="true" className="font-display text-gold/60">
                     A.
                   </span>
