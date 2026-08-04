@@ -30,10 +30,17 @@ const iconColors: Record<string, string> = {
 
 type Props = {
   className?: string;
-  size?: "sm" | "md";
+  /**
+   * xs はヘッダーの横幅が足りないスマートフォン用。
+   * タップ領域は28pxで、WCAG 2.2 の最小サイズ（24px）は満たします。
+   */
+  size?: "xs" | "sm" | "md";
   /** 表示するリンクのID（省略時はすべて） */
   only?: string[];
 };
+
+const boxSize = { xs: "size-7", sm: "size-11", md: "size-12" } as const;
+const glyphSize = { xs: "size-4", sm: "size-[1.05rem]", md: "size-5" } as const;
 
 export function SocialLinks({ className, size = "sm", only }: Props) {
   const links = only ? socialLinks.filter((l) => only.includes(l.id)) : socialLinks;
@@ -53,10 +60,10 @@ export function SocialLinks({ className, size = "sm", only }: Props) {
               className={cn(
                 "grid place-items-center rounded-full opacity-90 transition duration-500 hover:opacity-100",
                 iconColors[link.icon],
-                size === "sm" ? "size-11" : "size-12",
+                boxSize[size],
               )}
             >
-              <Icon aria-hidden="true" className={size === "sm" ? "size-[1.05rem]" : "size-5"} />
+              <Icon aria-hidden="true" className={glyphSize[size]} />
             </a>
           </li>
         );
