@@ -19,18 +19,42 @@ Redis・オブジェクトストレージ・メール事業者は Phase 1 では
 
 ---
 
+## 0-b. どの方式を選ぶか
+
+| 方式 | 向いている場面 | 商用利用 |
+| --- | --- | --- |
+| **A. Docker Compose**（§1） | 自前サーバー・VPS・オンプレ。1 台で完結 | 可 |
+| **A′. Oracle Cloud Always Free** | クライアント提供を月額ゼロで運用したい | 可 |
+| **B. Vercel + Neon**（§2） | 自分用の検証・デモを最短で公開したい | **要確認（下記）** |
+| **C. 任意の Node.js ホスティング**（§3） | 既存の実行環境がある | 可 |
+
+**クライアントへ提供する場合は方式 A または A′ を選んでください。**
+Vercel の Hobby プランは商用利用を許可していません（§2 冒頭）。
+
+Oracle Cloud Always Free の手順は独立した文書にまとめてあります。
+2 段階のファイアウォールなど、このプラットフォーム固有の詰まりどころが
+あるためです。
+
+→ [DEPLOY_ORACLE_CLOUD.md](DEPLOY_ORACLE_CLOUD.md)
+
+---
+
 ## 1. 方式 A：Docker Compose（自前サーバー・最短）
 
 VPS やオンプレのサーバー 1 台で完結します。外部アカウントは不要です。
 
 ```bash
 git clone https://github.com/jiantailanglin266-rgb/yakiniku-senri.git
-cd yakiniku-senri/salonflow
+cd yakiniku-senri
 git checkout claude/salon-management-saas-86gcz2
+cd salonflow
 
-# 1. docker-compose.yml のパスワードと SESSION_SECRET を書き換える
-#    SESSION_SECRET の生成:
+# 1. 設定ファイルを用意する
+cp .env.production.example .env
+
+#    SESSION_SECRET / POSTGRES_PASSWORD の生成:
 node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"
+openssl rand -base64 24
 
 # 2. 起動
 docker compose up -d --build
@@ -38,33 +62,69 @@ docker compose up -d --build
 # 3. マイグレーション（排他制約と btree_gist を含む）
 docker compose exec app npx prisma migrate deploy
 
-# 4. デモデータ（任意。本番では実行しない）
-docker compose exec app npx tsx prisma/seed/index.ts
+# 4. 最初の法人・店舗・オーナーアカウントを作る
+#    先に .env の BOOTSTRAP_* を埋めてください
+docker compose run --rm bootstrap
 ```
 
-`http://<サーバー>:3100` で起動します。
+`http://127.0.0.1:3100` で起動します（`APP_BIND` で変更可）。
 
-### 公開する場合
+`db` はホストに公開されません。アプリからは Compose ネットワーク越しに
+届きます。自前サーバーの PostgreSQL をインターネットに晒すのは、
+侵入と身代金要求の最短経路です。
 
-前段にリバースプロキシ（Nginx / Caddy）を置き、TLS を終端してください。
-`docker-compose.yml` の `db` の `ports` は削除します。
+**デモデータ（`prisma/seed/index.ts`）は本番では実行しないでください。**
+架空の顧客と予約が入ります。`bootstrap` は法人・店舗・オーナーだけを作ります。
 
+> 本番イメージには `src/` も `tsx` も入っていません（Next.js の standalone
+> 出力を使うため）。運用 CLI は `dist/cli/*.mjs` に単一ファイルとして
+> 事前バンドルされ、`node dist/cli/bootstrap.mjs` /
+> `node dist/cli/check-mail.mjs` で実行します。
+
+### HTTPS で公開する
+
+Caddy を同梱しています。証明書の取得と更新は自動です。
+
+```bash
+# .env に DOMAIN と APP_URL を設定してから
+docker compose --profile https up -d --build
 ```
-# Caddy の例
-salon.example.com {
-    reverse_proxy localhost:3100
-}
-```
 
-そのうえで `APP_URL=https://salon.example.com` を設定します。
-これを設定しないと、通知メール内のリンクが `localhost` になり、
+事前に DNS の A レコードをこのサーバーへ向け、80 / 443 番を開けておいて
+ください。証明書の取得には 80 番への到達が必要です。
+
+`APP_URL` を設定しないと、通知メール内のリンクが `localhost` になり、
 クロスオリジン判定も正しく働きません。
+
+### 通知の配送
+
+`scheduler` サービスが `JOB_INTERVAL_SECONDS`（既定 300 秒）ごとに
+配送ジョブを叩きます。**これが動いていないと、予約確認とリマインドは
+データベースに書かれたまま送信されません。**
+
+```bash
+docker compose logs -f scheduler
+```
+
+ジョブトークンは `SESSION_SECRET` から導出されるため、別途の秘密情報は
+不要です。
 
 ---
 
 ## 2. 方式 B：Vercel + Neon
 
-無料枠だけで公開できます。所要 15〜20 分。
+自分用の検証やデモを最短で公開する方式です。所要 15〜20 分。
+
+> **クライアントへ提供する用途では、無料枠のまま使わないでください。**
+>
+> - Vercel の **Hobby プランは商用利用を許可していません**。クライアント提供は
+>   商用にあたるため、Pro プラン以上への切り替えが必要です。
+> - Neon の無料枠は使用量の上限に達すると**停止**します。予約システムが
+>   月末に止まると、顧客は予約できず、店舗は台帳を開けません。
+>
+> 費用をかけずにクライアントへ提供したい場合は方式 A′
+> （[DEPLOY_ORACLE_CLOUD.md](DEPLOY_ORACLE_CLOUD.md)）を選んでください。
+> 最新の料金と規約は各社の公式ページで必ず確認してください。
 
 ### 2-1. Neon でデータベースを作る
 

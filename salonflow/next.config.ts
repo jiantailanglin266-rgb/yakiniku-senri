@@ -65,7 +65,7 @@ const nextConfig: NextConfig = {
    * them keeps the deployment bundle to what actually runs.
    */
   outputFileTracingExcludes: {
-    "/**/*": ["docs/**", "tests/**", "**/*.md", ".mailbox/**", "storage/**"],
+    "/**/*": ["docs/**", "tests/**", "dist/**", "**/*.md", ".mailbox/**", "storage/**"],
   },
 
   async headers() {

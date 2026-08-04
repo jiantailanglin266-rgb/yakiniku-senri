@@ -19,11 +19,12 @@
 generator client {
   provider = "prisma-client-js"
 
-  // `native` covers local development and Docker. `rhel-openssl-3.0.x` is what
-  // Vercel's serverless runtime needs — without it the deployed function fails
-  // at runtime with "could not locate the Query Engine", which does not show
-  // up during the build.
-  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+  // `native` covers whatever machine ran `prisma generate`.
+  // `linux-arm64-openssl-3.0.x` is needed for Oracle Cloud's Ampere (ARM)
+  // instances, and `rhel-openssl-3.0.x` for serverless platforms such as
+  // Vercel. Missing the right target does not fail the build — it fails at
+  // runtime with "could not locate the Query Engine", which is far worse.
+  binaryTargets = ["native", "linux-arm64-openssl-3.0.x", "rhel-openssl-3.0.x"]
 }
 
 datasource db {

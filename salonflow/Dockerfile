@@ -35,7 +35,7 @@ ENV DIRECT_DATABASE_URL="postgresql://build:build@localhost:5432/build"
 ENV SESSION_SECRET="build-time-placeholder-value-32-characters-min"
 ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN npx prisma generate && npm run build
+RUN npx prisma generate && npm run build && npm run build:cli
 
 # --- runtime ---------------------------------------------------------------
 FROM node:22-slim AS runtime
@@ -62,6 +62,13 @@ COPY --from=build --chown=node:node /app/prisma ./prisma
 COPY --from=build --chown=node:node /app/node_modules/prisma ./node_modules/prisma
 COPY --from=build --chown=node:node /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=build --chown=node:node /app/node_modules/.prisma ./node_modules/.prisma
+
+# Operator CLI, pre-bundled to plain JavaScript. `src/` and `tsx` are not in
+# this image, so the TypeScript entry points cannot be run here directly.
+#
+#   node dist/cli/bootstrap.mjs    # create the first tenant and owner account
+#   node dist/cli/check-mail.mjs   # verify SMTP before customers depend on it
+COPY --from=build --chown=node:node /app/dist/cli ./dist/cli
 
 EXPOSE 3100
 

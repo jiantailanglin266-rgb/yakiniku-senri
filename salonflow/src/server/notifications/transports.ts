@@ -1,29 +1,34 @@
 import "server-only";
 
-import { mkdir, writeFile } from "node:fs/promises";
-import path from "node:path";
-import { randomUUID } from "node:crypto";
 import type { NotificationChannel } from "@prisma/client";
 
 import { env } from "@/config/env";
-import { logger } from "@/server/observability/logger";
+import {
+  MailNotConfiguredError,
+  deliversForReal,
+  mailConfigFromEnv,
+  sendMail,
+  verifyMail,
+  type MailConfig,
+  type MailVerifyResult,
+} from "./mail";
 
 /**
  * Notification transports.
  *
- * PLACEHOLDER BOUNDARY — read this before deploying.
+ * Email delivery itself lives in `./mail.ts`, which takes its configuration
+ * as an argument so the CLI check can use it outside the server boundary.
+ * This module is the server-side entry point: it supplies the configuration
+ * from the validated environment and routes by channel.
  *
- * The `console` and `file` transports do NOT send anything. They write the
- * message where a developer can read it. That is deliberate: this project
- * must never appear to be integrated with a real messaging provider it has no
- * contract with.
+ * Email transports:
+ *   - `console` / `file` send NOTHING. They write the message where a
+ *     developer can read it. These are the defaults, so a fresh checkout
+ *     cannot accidentally mail a real person.
+ *   - `smtp` delivers for real, using the operator's own contracted provider.
  *
- * Enabling real delivery requires a contracted provider, its credentials in
- * the environment, and an adapter implemented against that provider's public,
- * documented API.
- *
- * SMS, LINE and Web Push are not implemented in Phase 1. Their entries exist
- * so the shape of the interface is fixed, and they fail loudly rather than
+ * SMS, LINE and Web Push are not implemented. Their entries exist so the
+ * shape of the interface is fixed, and they fail loudly rather than
  * pretending to succeed.
  */
 
@@ -46,57 +51,59 @@ export class TransportNotConfiguredError extends Error {
   }
 }
 
+function currentMailConfig(): MailConfig {
+  const config = env();
+  return {
+    transport: config.MAIL_TRANSPORT,
+    from: config.MAIL_FROM,
+    outboxDir: config.MAIL_OUTBOX_DIR,
+    smtpHost: config.SMTP_HOST,
+    smtpPort: config.SMTP_PORT,
+    smtpUser: config.SMTP_USER,
+    smtpPassword: config.SMTP_PASSWORD,
+  };
+}
+
 export async function sendViaChannel(message: OutgoingMessage): Promise<DeliveryOutcome> {
   switch (message.channel) {
     case "email":
-      return sendEmail(message);
+      try {
+        return await sendMail(currentMailConfig(), {
+          recipient: message.recipient,
+          subject: message.subject,
+          body: message.body,
+        });
+      } catch (error) {
+        // Surface a misconfiguration as a transport problem, so the outbox
+        // records a delivery failure rather than crashing the dispatcher.
+        if (error instanceof MailNotConfiguredError) {
+          throw new TransportNotConfiguredError(`email (${error.message})`);
+        }
+        throw error;
+      }
+
     case "in_app":
       // In-app notifications are the Notification row itself; nothing to send.
       return { provider: "in_app" };
+
     case "sms":
     case "line":
     case "web_push":
       throw new TransportNotConfiguredError(message.channel);
+
     default:
       throw new TransportNotConfiguredError(String(message.channel));
   }
 }
 
-async function sendEmail(message: OutgoingMessage): Promise<DeliveryOutcome> {
-  const transport = env().MAIL_TRANSPORT;
-
-  if (transport === "console") {
-    logger.info("mail_console_transport", {
-      to: message.recipient,
-      subject: message.subject,
-      preview: message.body.slice(0, 200),
-      notice: "DEV TRANSPORT — no mail was actually sent",
-    });
-    return { provider: "console", messageId: randomUUID() };
-  }
-
-  if (transport === "file") {
-    const directory = path.resolve(process.cwd(), env().MAIL_OUTBOX_DIR);
-    await mkdir(directory, { recursive: true });
-
-    const messageId = randomUUID();
-    const filename = `${new Date().toISOString().replace(/[:.]/g, "-")}-${messageId}.txt`;
-    const content = [
-      `To: ${message.recipient}`,
-      `From: ${process.env.MAIL_FROM ?? "no-reply@example.invalid"}`,
-      `Subject: ${message.subject ?? ""}`,
-      "X-SalonFlow-Notice: development transport, not delivered to a real mailbox",
-      "",
-      message.body,
-    ].join("\n");
-
-    await writeFile(path.join(directory, filename), content, "utf8");
-    return { provider: "file", messageId };
-  }
-
-  // transport === "smtp"
-  throw new TransportNotConfiguredError(
-    "SMTP transport is selected but no SMTP client is bundled in Phase 1. " +
-      "Add a mail client dependency and implement the adapter before enabling it.",
-  );
+/** Whether the current configuration actually reaches customers' mailboxes. */
+export function mailDeliversForReal(): boolean {
+  return deliversForReal(currentMailConfig());
 }
+
+/** Verify the mail settings without sending. */
+export async function verifyMailTransport(): Promise<MailVerifyResult> {
+  return verifyMail(currentMailConfig());
+}
+
+export { mailConfigFromEnv };

@@ -2,8 +2,12 @@ node_modules
 .next
 out
 build
+# Rebuilt inside the image by `npm run build:cli`; a stale local copy would
+# only bloat the build context.
+dist
 storage
 .mailbox
+backups
 coverage
 .env
 .env.local

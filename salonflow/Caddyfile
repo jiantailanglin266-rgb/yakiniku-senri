@@ -1,0 +1,45 @@
+# SalonFlow — reverse proxy with automatic HTTPS
+#
+# Caddy obtains and renews a Let's Encrypt certificate for {$DOMAIN} on its
+# own. Requirements: the domain's A/AAAA record points at this server, and
+# ports 80 and 443 are reachable from the internet.
+#
+# On Oracle Cloud that means BOTH the OCI Security List AND the VM's own
+# iptables must allow 80/443. Opening only the Security List is the single
+# most common reason certificate issuance fails there — see
+# docs/operations/DEPLOYMENT.md.
+
+{$DOMAIN} {
+	encode zstd gzip
+
+	# The app sets its own security headers (CSP, HSTS, Permissions-Policy).
+	# They are not duplicated here — two sources for one header is how they
+	# drift apart.
+	reverse_proxy app:3100 {
+		header_up X-Forwarded-Proto {scheme}
+		header_up X-Real-IP {remote_host}
+
+		# The booking confirmation runs a transaction and a re-validation;
+		# the default 30s can cut it off under load on a small instance.
+		transport http {
+			read_timeout 120s
+			write_timeout 120s
+		}
+	}
+
+	# Uploaded chart photos can be large; bookings never are. Anything past
+	# this is either a mistake or an attempt to fill the disk.
+	request_body {
+		max_size 20MB
+	}
+
+	log {
+		output file /data/access.log {
+			roll_size 10MB
+			roll_keep 5
+		}
+		# Request bodies and headers can carry customer names and session
+		# cookies, so only the request line is logged.
+		format json
+	}
+}

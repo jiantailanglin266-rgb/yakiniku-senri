@@ -2,12 +2,21 @@ node_modules/
 .next/
 out/
 build/
+# Bundled operator CLI (npm run build:cli) — produced during the image build.
+dist/
 *.tsbuildinfo
 next-env.d.ts
 
 .env
 .env.local
 .env.*.local
+
+# The repository root ignores `.env*` wholesale, which would also swallow the
+# templates. They contain no secrets and are the documented starting point
+# (`cp .env.production.example .env`), so re-include them here — a deeper
+# .gitignore overrides a parent's pattern.
+!.env.example
+!.env.production.example
 
 # Local development storage (uploaded photos / generated files)
 storage/

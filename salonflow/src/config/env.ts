@@ -26,9 +26,14 @@ const envSchema = z.object({
   DEFAULT_TIMEZONE: z.string().default("Asia/Tokyo"),
   DEFAULT_CURRENCY: z.string().default("JPY"),
 
+  // `console` and `file` do not send anything. Only `smtp` delivers for real.
   MAIL_TRANSPORT: z.enum(["console", "file", "smtp"]).default("console"),
   MAIL_FROM: z.string().default("SalonFlow <no-reply@example.invalid>"),
   MAIL_OUTBOX_DIR: z.string().default(".mailbox"),
+  SMTP_HOST: z.string().default(""),
+  SMTP_PORT: z.coerce.number().int().positive().default(587),
+  SMTP_USER: z.string().default(""),
+  SMTP_PASSWORD: z.string().default(""),
 
   STORAGE_DRIVER: z.enum(["local", "s3"]).default("local"),
   STORAGE_LOCAL_DIR: z.string().default("storage"),

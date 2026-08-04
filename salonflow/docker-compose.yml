@@ -1,33 +1,49 @@
 # SalonFlow — self-hosted stack
 #
+# Designed for a single small server (Oracle Cloud Always Free, a VPS, or
+# on-prem). Everything the product needs runs here: the app, PostgreSQL,
+# automatic HTTPS, and the scheduler that delivers notifications.
+#
+#   cp .env.production.example .env
+#   # edit .env — at minimum SESSION_SECRET, POSTGRES_PASSWORD, DOMAIN
 #   docker compose up -d --build
 #   docker compose exec app npx prisma migrate deploy
-#   docker compose exec app npx tsx prisma/seed/index.ts   # demo data (optional)
+#   docker compose run --rm bootstrap        # first tenant + owner account
 #
-# The app is then on http://localhost:3100
+# Verify the mail settings before customers depend on them:
+#   docker compose exec app node dist/cli/check-mail.mjs you@example.com
 #
-# CHANGE `SESSION_SECRET` AND THE DATABASE PASSWORD BEFORE ANY REAL USE.
+# Without a domain (local testing), run the app only:
+#   docker compose up -d --build db app
+#   # → http://localhost:3100
 
 services:
   db:
     image: postgres:16
     restart: unless-stopped
     environment:
-      POSTGRES_USER: salonflow
-      POSTGRES_PASSWORD: change-me-before-real-use
-      POSTGRES_DB: salonflow
+      POSTGRES_USER: ${POSTGRES_USER:-salonflow}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD を .env に設定してください}
+      POSTGRES_DB: ${POSTGRES_DB:-salonflow}
+      # Deterministic collation. A locale change between server rebuilds can
+      # silently alter index ordering and corrupt lookups.
+      LANG: C.UTF-8
     volumes:
       - db-data:/var/lib/postgresql/data
+      # Backups land on the host so they survive `docker compose down -v`.
+      - ./backups:/backups
     healthcheck:
-      # The app cannot start before the database accepts connections, and
+      # The app must not start before PostgreSQL accepts connections;
       # `depends_on` alone does not wait for readiness.
-      test: ["CMD-SHELL", "pg_isready -U salonflow -d salonflow"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-salonflow} -d ${POSTGRES_DB:-salonflow}"]
       interval: 5s
       timeout: 5s
       retries: 12
-    ports:
-      # Exposed for local inspection only. Remove this in production.
-      - "5432:5432"
+    # Deliberately NOT published to the host. The app reaches it over the
+    # compose network; exposing 5432 to the internet is how self-hosted
+    # databases get found and ransomed.
+    expose:
+      - "5432"
 
   app:
     build: .
@@ -36,22 +52,113 @@ services:
       db:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgresql://salonflow:change-me-before-real-use@db:5432/salonflow?schema=public
-      SESSION_SECRET: change-me-to-a-random-32-plus-character-string
-      APP_URL: http://localhost:3100
-      PRODUCT_NAME: SalonFlow
-      DEFAULT_TIMEZONE: Asia/Tokyo
-      # `console` writes to the log and sends nothing. See docs/SETUP.md §9.
-      MAIL_TRANSPORT: console
-      DEMO_MODE: "true"
-      LOG_LEVEL: info
-    ports:
-      - "3100:3100"
+      DATABASE_URL: postgresql://${POSTGRES_USER:-salonflow}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-salonflow}?schema=public
+      DIRECT_DATABASE_URL: postgresql://${POSTGRES_USER:-salonflow}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-salonflow}?schema=public
+      SESSION_SECRET: ${SESSION_SECRET:?SESSION_SECRET を .env に設定してください}
+      APP_URL: ${APP_URL:-http://localhost:3100}
+      PRODUCT_NAME: ${PRODUCT_NAME:-SalonFlow}
+      DEFAULT_TIMEZONE: ${DEFAULT_TIMEZONE:-Asia/Tokyo}
+      DEMO_MODE: ${DEMO_MODE:-false}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      # Mail. `console` sends nothing; set MAIL_TRANSPORT=smtp to deliver.
+      MAIL_TRANSPORT: ${MAIL_TRANSPORT:-console}
+      MAIL_FROM: ${MAIL_FROM:-SalonFlow <no-reply@example.invalid>}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
     volumes:
-      # Chart photos. Replace with object storage before production use —
-      # a container-local volume is not a durable home for medical records.
+      # Chart photos. A named volume is durable across restarts but lives on
+      # this one server — copy it off-site along with the database.
       - app-storage:/app/storage
+    expose:
+      - "3100"
+    # Published only when running without Caddy (local testing).
+    ports:
+      - "${APP_BIND:-127.0.0.1}:3100:3100"
+
+  # --- First-run setup -----------------------------------------------------
+  # Creates the permission catalogue, the standard roles, one organization,
+  # one store and one owner account. No demo customers, no sample bookings.
+  #
+  #   docker compose run --rm bootstrap
+  #
+  # Kept in its own profile so it never starts with the stack: it is a
+  # one-shot, and BOOTSTRAP_ADMIN_PASSWORD should not sit in the long-running
+  # app container's environment where `docker inspect` would show it.
+  #
+  # Safe to re-run — an existing tenant is left untouched. Once the owner has
+  # logged in, delete BOOTSTRAP_ADMIN_PASSWORD from .env.
+  bootstrap:
+    build: .
+    profiles: ["setup"]
+    restart: "no"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-salonflow}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-salonflow}?schema=public
+      DIRECT_DATABASE_URL: postgresql://${POSTGRES_USER:-salonflow}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-salonflow}?schema=public
+      BOOTSTRAP_ORG_NAME: ${BOOTSTRAP_ORG_NAME:?BOOTSTRAP_ORG_NAME を .env に設定してください}
+      BOOTSTRAP_ORG_SLUG: ${BOOTSTRAP_ORG_SLUG:-}
+      BOOTSTRAP_STORE_NAME: ${BOOTSTRAP_STORE_NAME:?BOOTSTRAP_STORE_NAME を .env に設定してください}
+      BOOTSTRAP_STORE_SLUG: ${BOOTSTRAP_STORE_SLUG:-}
+      BOOTSTRAP_ADMIN_EMAIL: ${BOOTSTRAP_ADMIN_EMAIL:?BOOTSTRAP_ADMIN_EMAIL を .env に設定してください}
+      BOOTSTRAP_ADMIN_NAME: ${BOOTSTRAP_ADMIN_NAME:-}
+      BOOTSTRAP_ADMIN_PASSWORD: ${BOOTSTRAP_ADMIN_PASSWORD:?BOOTSTRAP_ADMIN_PASSWORD を .env に設定してください}
+      BOOTSTRAP_INDUSTRY: ${BOOTSTRAP_INDUSTRY:-}
+    command: ["node", "dist/cli/bootstrap.mjs"]
+
+  # --- HTTPS termination ---------------------------------------------------
+  # Caddy obtains and renews certificates automatically. Enable with:
+  #   docker compose --profile https up -d
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    profiles: ["https"]
+    depends_on:
+      - app
+    environment:
+      DOMAIN: ${DOMAIN:?DOMAIN を .env に設定してください（https プロファイル使用時）}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+
+  # --- Scheduler -----------------------------------------------------------
+  # Drains the notification outbox. Without this, confirmation and reminder
+  # emails are written to the database and never sent.
+  #
+  # The job token is derived from SESSION_SECRET, so no extra secret is needed.
+  scheduler:
+    image: alpine:3
+    restart: unless-stopped
+    depends_on:
+      - app
+    environment:
+      SESSION_SECRET: ${SESSION_SECRET}
+      INTERVAL_SECONDS: ${JOB_INTERVAL_SECONDS:-300}
+    command:
+      - /bin/sh
+      - -c
+      - |
+        apk add --no-cache curl coreutils >/dev/null
+        TOKEN=$$(printf '%s' "jobs:notifications:$$SESSION_SECRET" | sha256sum | cut -d' ' -f1)
+        echo "scheduler: 通知配送を $${INTERVAL_SECONDS} 秒間隔で実行します"
+        while true; do
+          # `|| true` so a transient failure does not kill the loop; the
+          # outbox retries with backoff on its own.
+          curl -fsS -m 60 -X POST -H "x-job-token: $$TOKEN" \
+            http://app:3100/api/v1/jobs/notifications >/dev/null 2>&1 || true
+          sleep "$$INTERVAL_SECONDS"
+        done
 
 volumes:
   db-data:
   app-storage:
+  caddy-data:
+  caddy-config:

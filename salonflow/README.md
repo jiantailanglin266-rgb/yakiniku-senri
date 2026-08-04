@@ -261,13 +261,24 @@ I/O を一切行わない純関数であり、DB なしで単体テストでき�
 
 ```bash
 cd salonflow
-# docker-compose.yml のパスワードと SESSION_SECRET を書き換えてから
+cp .env.production.example .env      # SESSION_SECRET と POSTGRES_PASSWORD を設定
+
 docker compose up -d --build
 docker compose exec app npx prisma migrate deploy
-docker compose exec app npx tsx prisma/seed/index.ts   # デモデータ（任意）
+docker compose run --rm bootstrap    # 法人・店舗・オーナーを作成（.env の BOOTSTRAP_* を参照）
+
+docker compose --profile https up -d # 独自ドメインで公開する場合（Caddy が自動TLS）
 ```
 
-Vercel・その他のホスティングを含む詳細は
+`bootstrap` はデモデータを入れません。架空の顧客と予約が必要な場合だけ
+`npm run db:seed` を使ってください（本番では実行しないこと）。
+
+**クライアントへ提供する場合は Vercel の Hobby プランを使わないでください**
+（商用利用が許可されていません）。月額ゼロで運用する手順は
+[docs/operations/DEPLOY_ORACLE_CLOUD.md](docs/operations/DEPLOY_ORACLE_CLOUD.md)
+にまとめてあります。
+
+方式の比較とその他のホスティングは
 [docs/operations/DEPLOYMENT.md](docs/operations/DEPLOYMENT.md) を参照してください。
 
 **デプロイ後は必ず排他制約の存在を確認してください。** 失われていると
@@ -292,9 +303,27 @@ npm run test:integration # 結合のみ（PostgreSQL が必要）
 
 npm run db:migrate       # マイグレーション作成・適用（開発）
 npm run db:deploy        # マイグレーション適用（本番）
-npm run db:seed          # デモデータ投入（再実行可能）
+npm run db:seed          # デモデータ投入（再実行可能・本番では使わない）
+npm run db:bootstrap     # 実運用の初期テナント作成（デモデータ無し・再実行可能）
 npm run db:reset         # DB をリセットして再構築
 ```
+
+### 運用コマンド
+
+```bash
+npm run mail:check                  # SMTP の接続と認証を確認（送信はしない）
+npm run mail:check -- you@example.com   # テスト送信も行う
+npm run backup                      # PostgreSQL のダンプを取得して中身を検証
+npm run build:cli                   # 運用 CLI を dist/cli/*.mjs にバンドル
+```
+
+`db:seed` と `db:bootstrap` は目的が違います。`db:seed` は製品を見せるための
+架空データ（顧客 50 名・予約 100 件）を入れます。`db:bootstrap` は
+使い始めるためのもので、権限・ロール・法人・店舗・オーナーだけを作ります。
+
+`build:cli` は本番イメージのビルド中に自動で実行されます。本番イメージには
+`src/` も `tsx` も含まれないため、`bootstrap` と `mail:check` は
+`node dist/cli/bootstrap.mjs` のように実行します。
 
 ### 結合テストの実行
 
