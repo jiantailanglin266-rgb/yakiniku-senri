@@ -152,6 +152,36 @@
 }
 
 /* ------------------------------------------------------------
+   自動翻訳（Google 翻訳ウィジェット）の見た目の後始末
+
+   ウィジェットは画面上部に自前のバーを差し込み、body に top を付けて
+   ページ全体を押し下げます。固定ヘッダーと衝突してレイアウトが崩れるため、
+   バーを隠して押し下げを打ち消します。
+   ------------------------------------------------------------ */
+.skiptranslate iframe,
+iframe.goog-te-banner-frame {
+  display: none !important;
+}
+body {
+  top: 0 !important;
+}
+/* 翻訳後に挿入される <font> が行間や色を変えないようにします */
+font {
+  background: transparent !important;
+  box-shadow: none !important;
+  color: inherit !important;
+}
+/* ウィジェット本体は画面に出しません（描画先だけ確保します） */
+#google_translate_element {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------
    SNSアイコン — Instagram のブランドグラデーション
    SVG の <linearGradient id> は同一ページに複数置くと id が重複するため、
    グラデーションは CSS の背景、ロゴの形は mask で表現しています。

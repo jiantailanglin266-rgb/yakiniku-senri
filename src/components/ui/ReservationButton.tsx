@@ -33,7 +33,9 @@ export function ReservationButton({
       <Phone aria-hidden="true" className="size-4" />
       <span>{label}</span>
       {showNumber ? (
-        <span className="font-display text-base tracking-[0.08em]">{store.phone}</span>
+        <span translate="no" className="font-display text-base tracking-[0.08em]">
+          {store.phone}
+        </span>
       ) : null}
       <span className="sr-only">電話番号 {store.phone}</span>
     </a>

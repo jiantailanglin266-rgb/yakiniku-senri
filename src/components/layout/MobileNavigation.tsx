@@ -146,6 +146,7 @@ export function MobileNavigation() {
                 </p>
                 <a
                   href={store.phoneHref}
+                  translate="no"
                   className="font-display text-gold-light mt-3 block text-2xl tracking-[0.08em]"
                 >
                   {store.phone}

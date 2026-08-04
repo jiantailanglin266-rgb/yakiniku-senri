@@ -39,12 +39,13 @@ export function GlobalFooter() {
             <address className="mt-6 space-y-3 not-italic">
               <p className="text-ivory/90 flex items-start gap-2.5 text-[0.82rem]">
                 <MapPin aria-hidden="true" className="text-gold/70 mt-1 size-4 shrink-0" />
-                <span>{store.addressFull}</span>
+                <span translate="no">{store.addressFull}</span>
               </p>
               <p className="flex items-center gap-2.5">
                 <Phone aria-hidden="true" className="text-gold/70 size-4 shrink-0" />
                 <a
                   href={store.phoneHref}
+                  translate="no"
                   className="font-display text-gold-light hover:text-gold text-xl tracking-[0.08em] transition-colors duration-500"
                 >
                   {store.phone}

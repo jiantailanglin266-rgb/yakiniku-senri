@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { DesktopNavigation } from "./DesktopNavigation";
 import { MobileNavigation } from "./MobileNavigation";
+import { LanguageSwitcher } from "@/components/i18n/LanguageSwitcher";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 import { ReservationButton } from "@/components/ui/ReservationButton";
 import { media } from "@/data/media";
@@ -57,6 +58,7 @@ export function GlobalHeader() {
 
         <div className="flex items-center gap-1 sm:gap-2">
           <SocialLinks className="hidden lg:flex" only={["instagram", "tabelog"]} />
+          <LanguageSwitcher />
           <ReservationButton className="hidden md:inline-flex" />
           <MobileNavigation />
         </div>

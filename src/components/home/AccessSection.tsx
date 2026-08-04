@@ -29,13 +29,16 @@ export function AccessSection() {
               <dl className="mt-8 space-y-5">
                 <div>
                   <dt className="text-gold/80 text-[0.68rem] tracking-[0.2em]">住所</dt>
-                  <dd className="text-ivory/90 mt-1.5 text-[0.86rem]">{store.addressFull}</dd>
+                  <dd translate="no" className="text-ivory/90 mt-1.5 text-[0.86rem]">
+                    {store.addressFull}
+                  </dd>
                 </div>
                 <div>
                   <dt className="text-gold/80 text-[0.68rem] tracking-[0.2em]">電話番号</dt>
                   <dd className="mt-1.5">
                     <a
                       href={store.phoneHref}
+                      translate="no"
                       className="font-display text-gold-light hover:text-gold inline-flex items-center gap-2 text-xl tracking-[0.08em] transition-colors duration-500"
                     >
                       <Phone aria-hidden="true" className="size-4" />

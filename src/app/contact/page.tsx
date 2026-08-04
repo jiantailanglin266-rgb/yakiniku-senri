@@ -44,6 +44,7 @@ export default function ContactPage() {
               <h2 className="text-ivory mt-5 text-[1.1rem]">お電話でのお問い合わせ</h2>
               <a
                 href={store.phoneHref}
+                translate="no"
                 className="font-display text-gold-light hover:text-gold mt-6 inline-flex items-center gap-3 text-[2rem] tracking-[0.06em] transition-colors duration-500 sm:text-[2.4rem]"
               >
                 <Phone aria-hidden="true" className="size-6" />
