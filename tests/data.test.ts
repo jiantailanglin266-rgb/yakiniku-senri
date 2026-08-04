@@ -10,6 +10,7 @@ import {
 } from "@/data/menu";
 import { getAllNewsSlugs, getNews, getNewsBySlug } from "@/data/news";
 import { commitments, faqs, storyBlocks } from "@/data/content";
+import { marqueeMiddle, marqueeTop } from "@/data/marquee";
 
 describe("店舗情報", () => {
   it("電話リンクが国番号付きの正しい形式である", () => {
@@ -119,6 +120,57 @@ describe("本文コンテンツ", () => {
     for (const faq of faqs) {
       expect(faq.question.length).toBeGreaterThan(0);
       expect(faq.answer.length).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe("英字マーキー", () => {
+  const rows = [...marqueeTop, ...marqueeMiddle];
+
+  it("上部・中部とも2段で、各段に語がある", () => {
+    for (const band of [marqueeTop, marqueeMiddle]) {
+      expect(band).toHaveLength(2);
+      for (const row of band) expect(row.length).toBeGreaterThan(2);
+    }
+  });
+
+  it("同じ段に同じ語を重ねない（繰り返し表示で目立つため）", () => {
+    for (const row of rows) {
+      expect(new Set(row).size).toBe(row.length);
+    }
+  });
+
+  it("確認できていない格付け・仕入れの語を含めない", () => {
+    // 店に確認できていない主張は、装飾であっても優良誤認になります
+    const 禁止語 = [
+      "WAGYU",
+      "A5",
+      "A4",
+      "AGED",
+      "DRY AGE",
+      "BINCHOTAN",
+      "KUROGE",
+      "MICHELIN",
+      "AWARD",
+      "BEST",
+      "NO.1",
+      "LUXURY",
+      "FINEST",
+    ];
+    for (const row of rows) {
+      for (const word of row) {
+        for (const 禁止 of 禁止語) {
+          expect(word.toUpperCase()).not.toContain(禁止);
+        }
+      }
+    }
+  });
+
+  it("英字のみで構成されている（英字ロゴタイプとして置いているため）", () => {
+    for (const row of rows) {
+      for (const word of row) {
+        expect(word).toMatch(/^[A-Z0-9 &.'-]+$/);
+      }
     }
   });
 });

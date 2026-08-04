@@ -10,6 +10,8 @@ import { GlobalFooter } from "@/components/layout/GlobalFooter";
 import { MobileFixedBar } from "@/components/layout/MobileFixedBar";
 import { Figure } from "@/components/ui/Figure";
 import { SocialLinks } from "@/components/ui/SocialLinks";
+import { MarqueeBand } from "@/components/ui/MarqueeBand";
+import { marqueeTop } from "@/data/marquee";
 import { MenuCard } from "@/components/menu/MenuCard";
 import { store } from "@/data/store";
 import { socialLinks } from "@/data/site";
@@ -54,6 +56,32 @@ describe("GlobalHeader", () => {
     // ラッパー側で出し分けているので、その指定が消えていないことを確かめます
     expect(button?.parentElement?.className).toContain("hidden");
     expect(button?.parentElement?.className).toContain("md:contents");
+  });
+});
+
+describe("MarqueeBand", () => {
+  it("2段が逆方向で、読み上げ・翻訳の対象から外れている", () => {
+    const { container } = render(<MarqueeBand rows={marqueeTop} />);
+    const band = container.querySelector(".marquee-band");
+    expect(band).toHaveAttribute("aria-hidden", "true");
+    expect(band).toHaveAttribute("translate", "no");
+
+    const rows = container.querySelectorAll(".marquee-x");
+    expect(rows).toHaveLength(2);
+    expect(rows[0]).toHaveAttribute("data-direction", "left");
+    expect(rows[1]).toHaveAttribute("data-direction", "right");
+  });
+
+  it("継ぎ目が出ないよう同じ並びを複数回描画する", () => {
+    const { container } = render(<MarqueeBand rows={marqueeTop} />);
+    const groups = container.querySelectorAll(".marquee-x .marquee-x-group");
+    // 2段 × 繰り返し。1段あたり2回以上なければループで隙間が出ます
+    expect(groups.length / 2).toBeGreaterThanOrEqual(2);
+
+    const firstRowItems = Array.from(
+      container.querySelectorAll(".marquee-x:first-child .marquee-x-group:first-child span"),
+    ).map((span) => span.textContent);
+    expect(firstRowItems).toEqual([...marqueeTop[0]]);
   });
 });
 
