@@ -98,12 +98,19 @@ export function WikimediaImage({
             labels={labels}
             tone="overlay"
             className="absolute inset-x-0 bottom-0"
+            /*
+              この描画は object-fit: cover で切り抜き、
+              上に暗いグラデーションを重ねています。
+              CC BY-SA では改変版も同じ条件で提供する必要があるため、
+              加工している事実をクレジット側へ渡します。
+            */
+            renderedAsDerivative
           />
         ) : null}
       </div>
 
       {attributionTone === "block" ? (
-        <ImageAttribution asset={asset} labels={labels} tone="block" />
+        <ImageAttribution asset={asset} labels={labels} tone="block" renderedAsDerivative />
       ) : null}
 
       {caption ? (
