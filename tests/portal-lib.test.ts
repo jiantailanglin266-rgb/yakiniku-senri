@@ -19,6 +19,7 @@ import { faqJsonLd, videoJsonLd } from "@/portal/lib/structured-data";
 import { getDiagnosis } from "@/portal/data/diagnoses";
 import { locales } from "@/portal/i18n/config";
 import { videos } from "@/portal/data/videos";
+import { outboundLinks } from "@/portal/lib/admin";
 
 describe("モック市場データ", () => {
   it("同じ時刻なら同じ値を返す（サーバーとクライアントで食い違わない）", () => {
@@ -373,5 +374,23 @@ describe("構造化データ", () => {
     const exported = Object.keys(structuredData).join(" ").toLowerCase();
     expect(exported).not.toContain("aggregaterating");
     expect(exported).not.toContain("reviewjsonld");
+  });
+});
+
+describe("外部リンクの生存確認", () => {
+  // scripts/check-links.mjs は `@/` エイリアスを解決できないため、
+  // 同じ一覧をデータファイルから直接組み立てています。
+  // 種別が増えたらスクリプト側にも足す必要があるため、ここで気づけるようにします。
+  it("対象の種別がスクリプトの実装と揃っている", () => {
+    const kinds = new Set(outboundLinks().map((entry) => entry.kind));
+    expect([...kinds].sort()).toEqual(["coin", "exchange", "tool", "wallet"]);
+  });
+
+  it("すべて絶対URLで、重複を除いても1件以上ある", () => {
+    const links = outboundLinks();
+    expect(links.length).toBeGreaterThan(0);
+    for (const entry of links) {
+      expect(entry.url, entry.label).toMatch(/^https?:\/\//);
+    }
   });
 });
