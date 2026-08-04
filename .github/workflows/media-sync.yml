@@ -119,6 +119,14 @@ jobs:
       - name: Validate generated data
         run: npm run media:validate
 
+      # ------------------------------------------------------------
+      # 生成物の整形
+      #   生成した JSON は毎回タイムスタンプが変わるため、
+      #   整形してからでないと format:check が落ちます
+      # ------------------------------------------------------------
+      - name: Format generated files
+        run: npx prettier --write "src/media/data/*.generated.json"
+
       - name: Quality checks
         run: |
           npm run typecheck

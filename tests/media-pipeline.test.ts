@@ -216,3 +216,81 @@ describe("自動承認", () => {
     }
   });
 });
+
+describe("記事の代表画像", () => {
+  /**
+   * URL のパスはアンダースコア区切り、API が返すタイトルはスペース区切りです。
+   * ここを揃えないと「この候補は代表画像か」を照合できず、
+   * 関連度の足切り免除が効かなくなります（実際にそうなっていました）。
+   */
+  it("URL からファイル名を組み立てるとき、アンダースコアをスペースに戻す", async () => {
+    const captured: string[] = [];
+    const originalFetch = globalThis.fetch;
+
+    globalThis.fetch = (async (input: RequestInfo | URL) => {
+      captured.push(String(input));
+      return new Response(
+        JSON.stringify({
+          originalimage: {
+            source: "https://upload.wikimedia.org/wikipedia/commons/a/ab/Sceptre_Rugby_Ball.jpg",
+          },
+        }),
+        { status: 200, headers: { "content-type": "application/json" } },
+      );
+    }) as typeof globalThis.fetch;
+
+    try {
+      const { fetchLeadImageTitle, createStats, getClientConfig } =
+        await import("../scripts/lib/wikimedia-client.mjs");
+      const title = await fetchLeadImageTitle("en", "Rugby ball", getClientConfig(), createStats());
+      expect(title).toBe("File:Sceptre Rugby Ball.jpg");
+    } finally {
+      globalThis.fetch = originalFetch;
+    }
+
+    expect(captured[0]).toContain("en.wikipedia.org/api/rest_v1/page/summary/Rugby_ball");
+  });
+
+  it("各言語版へのローカルアップロードは採用しない", async () => {
+    const originalFetch = globalThis.fetch;
+    globalThis.fetch = (async () =>
+      new Response(
+        JSON.stringify({
+          // Commons ではなく ja へのローカルアップロード（非自由を含みます）
+          originalimage: { source: "https://upload.wikimedia.org/wikipedia/ja/a/ab/Local.jpg" },
+        }),
+        { status: 200, headers: { "content-type": "application/json" } },
+      )) as typeof globalThis.fetch;
+
+    try {
+      const { fetchLeadImageTitle, createStats, getClientConfig } =
+        await import("../scripts/lib/wikimedia-client.mjs");
+      expect(await fetchLeadImageTitle("ja", "何か", getClientConfig(), createStats())).toBeNull();
+    } finally {
+      globalThis.fetch = originalFetch;
+    }
+  });
+
+  it("SVG は写真枠に使わない", async () => {
+    const originalFetch = globalThis.fetch;
+    globalThis.fetch = (async () =>
+      new Response(
+        JSON.stringify({
+          originalimage: {
+            source: "https://upload.wikimedia.org/wikipedia/commons/a/ab/Diagram.svg",
+          },
+        }),
+        { status: 200, headers: { "content-type": "application/json" } },
+      )) as typeof globalThis.fetch;
+
+    try {
+      const { fetchLeadImageTitle, createStats, getClientConfig } =
+        await import("../scripts/lib/wikimedia-client.mjs");
+      expect(
+        await fetchLeadImageTitle("en", "Something", getClientConfig(), createStats()),
+      ).toBeNull();
+    } finally {
+      globalThis.fetch = originalFetch;
+    }
+  });
+});
