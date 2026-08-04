@@ -19,6 +19,12 @@ export type MediaLabels = {
   photo: string;
   /** 加工済みであることの注記 */
   modified: string;
+  /**
+   * 継承（ShareAlike）の告知。
+   * CC BY-SA の画像に手を加えて掲載する場合、改変版も同じ条件で
+   * 提供していることを示す必要があります。表示を省くと条件違反です。
+   */
+  shareAlikeNotice: string;
   /** 出典モーダルを開くボタン */
   detailsLabel: string;
   /** 出典モーダルの見出し */
@@ -52,6 +58,7 @@ export type MediaLabels = {
 const ja: MediaLabels = {
   photo: "写真",
   modified: "（当サイトで加工）",
+  shareAlikeNotice: "改変あり。この改変版も元画像と同じライセンスで提供します。",
   detailsLabel: "画像の出典とライセンス",
   detailsTitle: "画像の出典とライセンス",
   author: "作者",
@@ -78,6 +85,7 @@ const ja: MediaLabels = {
 const en: MediaLabels = {
   photo: "Photo",
   modified: "(modified by this site)",
+  shareAlikeNotice: "Modified. This adaptation is offered under the same licence as the original.",
   detailsLabel: "Image source and licence",
   detailsTitle: "Image source and licence",
   author: "Author",

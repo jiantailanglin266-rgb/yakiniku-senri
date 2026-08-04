@@ -66,6 +66,40 @@ function makeAsset(overrides: Partial<WikimediaAsset> = {}): WikimediaAsset {
 
 const labels = getMediaLabels("ja");
 
+describe("継承（ShareAlike）の告知", () => {
+  /*
+    当サイトは object-fit: cover で切り抜き、上にグラデーションを重ねます。
+    CC BY-SA ではこれが改変にあたりうるため、
+    改変版も同じ条件で提供していることを示す必要があります。
+    告知を省くと、作者名とライセンス名が揃っていても条件違反です。
+  */
+  it("CC BY-SA の画像には、改変版も同条件である旨を出す", () => {
+    const { container } = render(
+      <WikimediaImage
+        asset={makeAsset({ licenseCode: "CC-BY-SA-4.0" })}
+        alt="テニスコート"
+        slot="card"
+        labels={labels}
+      />,
+    );
+    expect(container.textContent).toContain(labels.shareAlikeNotice);
+  });
+
+  it("継承が要らないライセンスでは出さない（不要な表示を増やさない）", () => {
+    for (const licenseCode of ["CC0", "PD", "CC-BY-4.0"] as const) {
+      const { container } = render(
+        <WikimediaImage
+          asset={makeAsset({ licenseCode })}
+          alt="テニスコート"
+          slot="card"
+          labels={labels}
+        />,
+      );
+      expect(container.textContent, licenseCode).not.toContain(labels.shareAlikeNotice);
+    }
+  });
+});
+
 describe("WikimediaImage", () => {
   it("画像とクレジットを同じ figure の中に描画する", () => {
     const { container } = render(
