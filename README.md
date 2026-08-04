@@ -1,20 +1,24 @@
 # このリポジトリについて
 
-このリポジトリには、**3つの独立したサイト**が同居しています。
+このリポジトリには、**5つの独立したサイト**が同居しています。
 ルートレイアウト（`src/app/layout.tsx`）は `<html>` / `<body>` だけを持ち、
 ブランド固有の外枠（背景・ヘッダー・フッター・フォント・CSS）は各サイトのレイアウトにあります。
 
-| サイト              | URL                         | ルート              | ドキュメント                               |
-| ------------------- | --------------------------- | ------------------- | ------------------------------------------ |
-| 焼肉 千里（既存）   | `/`, `/menu`, `/news` …     | `src/app/(senri)/`  | この README（以下）                        |
-| AI PORT             | `/ai-port/…`                | `src/app/ai-port/`  | ソース内のコメント                         |
-| CRYPTO PORT（仮称） | `/ja/`, `/en/`, `/zh-cn/` … | `src/app/(portal)/` | **[README-portal.md](./README-portal.md)** |
+| サイト              | URL                         | ルート                 | ドキュメント                                 |
+| ------------------- | --------------------------- | ---------------------- | -------------------------------------------- |
+| 焼肉 千里（既存）   | `/`, `/menu`, `/news` …     | `src/app/(senri)/`     | この README（以下）                          |
+| AI PORT             | `/ai-port/…`                | `src/app/ai-port/`     | ソース内のコメント                           |
+| CRYPTO PORT（仮称） | `/ja/`, `/en/`, `/zh-cn/` … | `src/app/(portal)/`    | **[README-portal.md](./README-portal.md)**   |
+| CARD PORT（仮称）   | `/card-port/ja/` …          | `src/app/card-port/`   | **[docs/cardport/](./docs/cardport/)**       |
+| SPORTS PORT（仮称） | `/sports-port/ja/` …        | `src/app/sports-port/` | **[docs/sports-port/](./docs/sports-port/)** |
 
 > 相互リンクは張っていません。CRYPTO PORT を別ドメインへ切り出すときは
 > `src/app/(portal)/` と `src/portal/` を移せば済む構成にしています。
+> SPORTS PORT も同様に `src/app/sports-port/` と `src/sports/` で完結しており、
+> 切り出すときは `src/sports/config/site.ts` の `routePrefix` を空にすれば `/ja/` に戻ります。
 >
 > 各サイトのCSSはそれぞれのレイアウトからのみ読み込まれ、
-> クラス指定は `.ai-root` / `.portal-root` の配下に閉じています。
+> クラス指定は `.ai-root` / `.portal-root` / `.sports-root` などサイトごとの配下に閉じています。
 > 焼肉 千里 のページに他サイトのスタイルやフォントは配信されません。
 
 ---

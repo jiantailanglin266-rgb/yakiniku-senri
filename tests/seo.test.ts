@@ -143,9 +143,11 @@ describe("sitemap / robots", () => {
     expect(rule?.allow).toBe("/");
     expect(result.sitemap).toBe(`${siteUrl}/sitemap.xml`);
 
-    // 除外しているのは AI PORT の検索結果ページとAPIだけで、
+    // 除外しているのは各ポータルの検索結果・管理画面・APIだけで、
     // 焼肉 千里 側のページは1つもブロックされていないこと
     const disallow = (rule?.disallow ?? []) as string[];
-    expect(disallow.every((path) => path.startsWith("/ai-port"))).toBe(true);
+    expect(
+      disallow.every((path) => path.startsWith("/ai-port") || path.startsWith("/sports-port")),
+    ).toBe(true);
   });
 });
