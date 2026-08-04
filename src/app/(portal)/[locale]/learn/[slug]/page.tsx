@@ -16,6 +16,9 @@ import { Breadcrumbs, Container, Section } from "@/portal/components/layout/Shel
 import { Badge, GlassCard, NeonLink, NoticeBox } from "@/portal/components/ui/primitives";
 import { FaqList } from "@/portal/components/ui/sections";
 import { JsonLd } from "@/portal/components/ui/JsonLd";
+import { WikimediaFigure } from "@/media/components";
+import { pageImagesJsonLd } from "@/media/lib/structured-data";
+import { portalPageKey } from "@/portal/lib/media";
 
 export function generateStaticParams() {
   return staticLocales().flatMap((locale) =>
@@ -133,6 +136,9 @@ export default async function LearnDetailPage(props: {
           <section className="mb-8">
             <h2 className="mb-3 text-xl font-semibold">{dict.learn.definition}</h2>
             <p className="text-(--color-ink-soft)">{t(article.definition, locale)}</p>
+            {/* 図版はライセンス確認済みの画像があるときだけ出ます。
+                無いときは何も表示しません（装飾目的の画像は本文に挟みません） */}
+            <WikimediaFigure pageKey={portalPageKey("learn", article.slug)} locale={locale} />
           </section>
 
           <section className="mb-8 grid gap-4 leading-relaxed text-(--color-ink-soft)">
@@ -231,6 +237,8 @@ export default async function LearnDetailPage(props: {
           breadcrumbJsonLd(locale, trail),
           learnArticleJsonLd(locale, article, author ? t(author.name, locale) : "Editorial"),
           faqJsonLd(locale, article.faq),
+          // 画面に出している画像だけを ImageObject として出します
+          ...(pageImagesJsonLd(portalPageKey("learn", article.slug), locale) ?? []),
         ]}
       />
     </Section>

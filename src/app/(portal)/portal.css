@@ -181,6 +181,10 @@ html:has(.portal-root) {
 /* ------------------------------------------------------------
    ガラス（Glassmorphism）
    背景ぼかしは端末負荷が高いため、面積の大きい要素だけに使います。
+
+   backdrop-filter は必ず `-webkit-` を先に、標準プロパティを後に書きます。
+   逆順にすると Lightning CSS の最適化でプレフィックス版だけが残り、
+   標準プロパティしか見ない Firefox でぼかしが効かなくなります。
    ------------------------------------------------------------ */
 .portal-root .glass {
   background: linear-gradient(
@@ -190,15 +194,15 @@ html:has(.portal-root) {
     rgba(255, 255, 255, 0.05) 100%
   );
   border: 1px solid var(--color-hairline);
-  backdrop-filter: blur(14px) saturate(140%);
   -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
 }
 
 .portal-root .glass-strong {
   background: linear-gradient(145deg, rgba(18, 25, 53, 0.92) 0%, rgba(7, 10, 22, 0.86) 100%);
   border: 1px solid var(--color-hairline-strong);
-  backdrop-filter: blur(20px) saturate(150%);
   -webkit-backdrop-filter: blur(20px) saturate(150%);
+  backdrop-filter: blur(20px) saturate(150%);
 }
 
 /* 光る枠。hover でだけ強めます（常時発光はうるさく、電池も食います） */
@@ -333,7 +337,9 @@ html:has(.portal-root) {
    ------------------------------------------------------------ */
 .portal-root .coin3d {
   transform-style: preserve-3d;
-  animation: cp-coin-spin 14s linear infinite;
+  /* 一周（360deg）させると 90〜270deg の区間は裏面が見え、シンボルが鏡文字になります。
+     ±22deg の往復に留めると、立体感は保ったまま文字が常に正しく読めます。 */
+  animation: cp-coin-swing 14s ease-in-out infinite alternate;
 }
 
 .portal-root .tilt {
@@ -419,12 +425,12 @@ html:has(.portal-root) {
   }
 }
 
-@keyframes cp-coin-spin {
+@keyframes cp-coin-swing {
   from {
-    transform: rotateY(0deg);
+    transform: rotateY(-22deg);
   }
   to {
-    transform: rotateY(360deg);
+    transform: rotateY(22deg);
   }
 }
 
