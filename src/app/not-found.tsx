@@ -1,59 +1,47 @@
-import type { Metadata } from "next";
-import { LinkButton } from "@/components/ui/Button";
-import { ReservationButton } from "@/components/ui/ReservationButton";
-import { SmokeLayer } from "@/components/effects/SmokeLayer";
-import { mainNav } from "@/data/navigation";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "ページが見つかりません",
-  description: "お探しのページは移動または削除された可能性があります。",
-  robots: { index: false, follow: true },
-};
-
-export default function NotFound() {
+/**
+ * 全体の 404。
+ *
+ * このアプリはルートレイアウトを2つ持ちます（`(senri)` と `(cardport)`）。
+ * どちらのグループにも該当しないURLはこのファイルが処理するため、
+ * ここでは `<html>` / `<body>` を自前で出力する必要があります。
+ */
+export default function GlobalNotFound() {
   return (
-    <section className="relative flex min-h-[80svh] items-center overflow-hidden py-28">
-      <SmokeLayer className="opacity-60" />
-
-      <div className="relative mx-auto max-w-2xl px-5 text-center sm:px-8">
-        <p className="font-display text-gold/70 text-[3.5rem] leading-none tracking-[0.14em] sm:text-[5rem]">
-          404
-        </p>
-        <span aria-hidden="true" className="rule-gold mx-auto mt-8 block w-16" />
-        <h1 className="text-ivory mt-8 text-[1.4rem] leading-[1.7] sm:text-[1.8rem]">
-          お探しのページが
-          <br />
-          見つかりませんでした。
-        </h1>
-        <p className="text-gray mt-7 text-[0.85rem] leading-[2.1]">
-          ページが移動または削除された可能性があります。
-          <br />
-          下のリンクから、お目当ての情報をお探しください。
-        </p>
-
-        <div className="mt-10 flex flex-wrap justify-center gap-3">
-          <LinkButton href="/" variant="gold">
-            トップページへ戻る
-          </LinkButton>
-          <ReservationButton />
-        </div>
-
-        <nav aria-label="主要ページ" className="mt-12">
-          <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2.5">
-            {mainNav.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className="text-gray hover:text-gold text-[0.78rem] transition-colors duration-500"
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
-    </section>
+    <html lang="ja">
+      <body
+        style={{
+          margin: 0,
+          minHeight: "100svh",
+          display: "grid",
+          placeItems: "center",
+          background: "#05070f",
+          color: "#e8ecf8",
+          fontFamily:
+            "system-ui, -apple-system, 'Hiragino Sans', 'Yu Gothic', 'Noto Sans JP', sans-serif",
+        }}
+      >
+        <main style={{ padding: "2rem", textAlign: "center" }}>
+          <p style={{ fontSize: "3rem", margin: 0, letterSpacing: "0.1em", opacity: 0.5 }}>404</p>
+          <h1 style={{ fontSize: "1.15rem", fontWeight: 500, margin: "1rem 0 0" }}>
+            お探しのページが見つかりませんでした
+          </h1>
+          <p style={{ fontSize: "0.85rem", opacity: 0.7, lineHeight: 2 }}>
+            The page you are looking for could not be found.
+          </p>
+          <p
+            style={{ display: "flex", gap: "1.25rem", justifyContent: "center", flexWrap: "wrap" }}
+          >
+            <Link href="/" style={{ color: "#5ad9ff" }}>
+              焼肉 千里 トップへ
+            </Link>
+            <Link href="/ja" style={{ color: "#5ad9ff" }}>
+              CARD PORT トップへ
+            </Link>
+          </p>
+        </main>
+      </body>
+    </html>
   );
 }

@@ -13,7 +13,7 @@ import {
 } from "@/lib/structured-data";
 import sitemap from "@/app/sitemap";
 import robots from "@/app/robots";
-import { metadata as rootMetadata } from "@/app/layout";
+import { metadata as rootMetadata } from "@/app/(senri)/layout";
 import { siteUrl } from "@/data/site";
 import { store } from "@/data/store";
 import { faqs } from "@/data/content";
@@ -138,6 +138,8 @@ describe("sitemap / robots", () => {
   it("robots.txt が全ページを許可し sitemap を指す", () => {
     const result = robots();
     expect(result.rules).toEqual([{ userAgent: "*", allow: "/" }]);
-    expect(result.sitemap).toBe(`${siteUrl}/sitemap.xml`);
+    // CARD PORT を同じホストへ同居させたときは複数のサイトマップを列挙します
+    const sitemaps = Array.isArray(result.sitemap) ? result.sitemap : [result.sitemap];
+    expect(sitemaps).toContain(`${siteUrl}/sitemap.xml`);
   });
 });
