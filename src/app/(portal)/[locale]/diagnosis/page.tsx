@@ -10,6 +10,7 @@ import { t } from "@/portal/lib/format";
 import { breadcrumbJsonLd, itemListJsonLd } from "@/portal/lib/structured-data";
 
 import { Breadcrumbs, Container, PageHeader, Section } from "@/portal/components/layout/Shell";
+import { PageVisual } from "@/portal/components/layout/PageVisual";
 import { GlassCard, NoticeBox } from "@/portal/components/ui/primitives";
 import { JsonLd } from "@/portal/components/ui/JsonLd";
 
@@ -43,6 +44,7 @@ export default async function DiagnosisIndexPage(props: { params: Promise<{ loca
       <Container>
         <Breadcrumbs trail={trail} locale={locale} dict={dict} />
         <PageHeader display="Quiz" title={dict.diagnosis.title} lead={dict.diagnosis.lead} />
+        <PageVisual name="diagnosis" locale={locale} priority />
 
         <NoticeBox tone="cyan" className="mb-8">
           {dict.diagnosis.disclaimer}

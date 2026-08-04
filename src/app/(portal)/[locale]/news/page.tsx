@@ -16,6 +16,7 @@ import {
   Section,
   WithSidebar,
 } from "@/portal/components/layout/Shell";
+import { PageVisual } from "@/portal/components/layout/PageVisual";
 import Link from "next/link";
 import { localePath } from "@/portal/i18n/config";
 import { newsCategories } from "@/portal/data/news";
@@ -56,6 +57,7 @@ export default async function NewsPage(props: { params: Promise<{ locale: string
       <Container>
         <Breadcrumbs trail={trail} locale={locale} dict={dict} />
         <PageHeader display="News" title={dict.news.title} lead={dict.news.lead} />
+        <PageVisual name="news" locale={locale} priority />
 
         {NEWS_DATASET_STATUS === "sample" ? (
           <NoticeBox tone="cyan" className="mb-6">

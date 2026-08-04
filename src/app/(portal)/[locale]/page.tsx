@@ -19,6 +19,7 @@ import { diagnoses } from "@/portal/data/diagnoses";
 import { activeCampaigns, siteFaq } from "@/portal/data/site-content";
 
 import { Container, Section } from "@/portal/components/layout/Shell";
+import { PageVisual } from "@/portal/components/layout/PageVisual";
 import { Hero } from "@/portal/components/home/Hero";
 import { MarketTicker } from "@/portal/components/market/MarketTicker";
 import { CoinCard } from "@/portal/components/market/CoinCard";
@@ -241,6 +242,7 @@ export default async function PortalHome(props: { params: Promise<{ locale: stri
             title={dict.news.trending}
             lead={dict.news.trendingLead}
           />
+          <PageVisual name="trending" locale={locale} />
           <ol className="grid gap-3 lg:grid-cols-2">
             {trending.map((article, index) => (
               <li key={article.id} className="flex items-start gap-4">

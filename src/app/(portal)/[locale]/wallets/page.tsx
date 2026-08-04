@@ -10,6 +10,7 @@ import { t, tList } from "@/portal/lib/format";
 import { breadcrumbJsonLd, itemListJsonLd } from "@/portal/lib/structured-data";
 
 import { Breadcrumbs, Container, PageHeader, Section } from "@/portal/components/layout/Shell";
+import { PageVisual } from "@/portal/components/layout/PageVisual";
 import { Badge, GlassCard, NoticeBox, SupportMark } from "@/portal/components/ui/primitives";
 import { JsonLd } from "@/portal/components/ui/JsonLd";
 
@@ -56,6 +57,7 @@ export default async function WalletsPage(props: { params: Promise<{ locale: str
       <Container>
         <Breadcrumbs trail={trail} locale={locale} dict={dict} />
         <PageHeader display="Wallets" title={dict.wallets.title} lead={dict.wallets.lead} />
+        <PageVisual name="wallets" locale={locale} priority />
 
         {/* 比較表より先に、鍵の扱いに関する注意を読ませます */}
         <NoticeBox tone="rose" className="mb-8">

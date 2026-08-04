@@ -8,6 +8,7 @@ import { tools } from "@/portal/data/tools";
 import { breadcrumbJsonLd, itemListJsonLd } from "@/portal/lib/structured-data";
 
 import { Breadcrumbs, Container, PageHeader, Section } from "@/portal/components/layout/Shell";
+import { PageVisual } from "@/portal/components/layout/PageVisual";
 import { ToolBrowser } from "@/portal/components/tools/ToolBrowser";
 import { NoticeBox } from "@/portal/components/ui/primitives";
 import { JsonLd } from "@/portal/components/ui/JsonLd";
@@ -42,6 +43,7 @@ export default async function ToolsPage(props: { params: Promise<{ locale: strin
       <Container>
         <Breadcrumbs trail={trail} locale={locale} dict={dict} />
         <PageHeader display="Web3" title={dict.tools.title} lead={dict.tools.lead} />
+        <PageVisual name="tools" locale={locale} priority />
 
         <NoticeBox tone="cyan" className="mb-8">
           {locale === "ja"

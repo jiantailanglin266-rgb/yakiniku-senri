@@ -8,6 +8,7 @@ import { DATASET_STATUS, domesticExchanges } from "@/portal/data/exchanges";
 import { breadcrumbJsonLd, itemListJsonLd } from "@/portal/lib/structured-data";
 
 import { Breadcrumbs, Container, PageHeader, Section } from "@/portal/components/layout/Shell";
+import { PageVisual } from "@/portal/components/layout/PageVisual";
 import { ExchangeCompare } from "@/portal/components/compare/ExchangeCompare";
 import { NeonLink, NoticeBox } from "@/portal/components/ui/primitives";
 import { JsonLd } from "@/portal/components/ui/JsonLd";
@@ -46,6 +47,7 @@ export default async function ExchangesPage(props: { params: Promise<{ locale: s
           title={dict.exchanges.domestic}
           lead={dict.exchanges.domesticLead}
         />
+        <PageVisual name="exchanges" locale={locale} priority />
 
         {DATASET_STATUS === "sample" ? (
           <NoticeBox tone="amber" className="mb-6">
