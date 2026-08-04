@@ -2,19 +2,19 @@ import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Noto_Sans_JP, Noto_Serif_JP } from "next/font/google";
 import "./globals.css";
 
-import { GlobalHeader } from "@/components/layout/GlobalHeader";
-import { GlobalFooter } from "@/components/layout/GlobalFooter";
-import { MobileFixedBar } from "@/components/layout/MobileFixedBar";
-import { SkipLink } from "@/components/layout/SkipLink";
-import { PageTransition } from "@/components/effects/PageTransition";
-import { ChatBot } from "@/components/chat/ChatBot";
-import { GoogleTranslate } from "@/components/i18n/GoogleTranslate";
-import { JsonLd } from "@/components/ui/JsonLd";
-import { organizationJsonLd, restaurantJsonLd, websiteJsonLd } from "@/lib/structured-data";
 import { defaultDescription } from "@/lib/seo";
 import { withBasePath } from "@/lib/base-path";
 import { siteName, siteUrl } from "@/data/site";
 import { store } from "@/data/store";
+
+/**
+ * ルートレイアウト。
+ *
+ * `<html>` / `<body>` と共通フォントだけを持ちます。
+ * ブランド固有の外枠（ヘッダー・フッター・背景）は各ルートグループのレイアウトにあります。
+ *   - `(senri)/layout.tsx` … 焼肉 千里
+ *   - `ai-port/layout.tsx` … AI PORT
+ */
 
 const notoSerifJp = Noto_Serif_JP({
   subsets: ["latin"],
@@ -100,24 +100,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="ja"
       className={`${notoSerifJp.variable} ${notoSansJp.variable} ${cormorant.variable}`}
     >
-      <body className="antialiased">
-        {/* 処方A/B — ページ全体で1枚の連続背景。セクション固有背景を持たせない */}
-        <div className="bg-canvas" aria-hidden="true" />
-        <div className="bg-ornament" aria-hidden="true" />
-        <div className="bg-grain" aria-hidden="true" />
-
-        <SkipLink />
-        <GlobalHeader />
-        <main id="main">
-          <PageTransition>{children}</PageTransition>
-        </main>
-        <GlobalFooter />
-        <MobileFixedBar />
-
-        <ChatBot />
-        <GoogleTranslate />
-        <JsonLd data={[websiteJsonLd, organizationJsonLd, restaurantJsonLd]} />
-      </body>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }
