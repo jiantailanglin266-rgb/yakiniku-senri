@@ -25,6 +25,7 @@ import { videos } from "@/cardport/data/videos";
 import { web3Services } from "@/cardport/data/web3";
 import { faqs } from "@/cardport/data/faqs";
 import { authors } from "@/cardport/data/authors";
+import { marqueeKeywords, marqueeRows } from "@/cardport/data/marquee";
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -234,6 +235,77 @@ describe("数値の妥当性", () => {
     for (const card of cards) {
       expect(card.fxFee).toBeGreaterThanOrEqual(0);
       expect(card.fxFee).toBeLessThanOrEqual(5);
+    }
+  });
+});
+
+describe("斜めマーキーのキーワード", () => {
+  const all = marqueeKeywords.flatMap((keyword) => Object.values(keyword.text));
+
+  it("日本語が必ずあり、空文字がない", () => {
+    for (const keyword of marqueeKeywords) {
+      expect(keyword.text.ja.trim().length).toBeGreaterThan(0);
+    }
+    for (const text of all) expect(text.trim().length).toBeGreaterThan(0);
+  });
+
+  it("金額・還元率・順位などの数字を流さない", () => {
+    /*
+      条件を伴わない数字だけが目に入ると、実際の条件と食い違って読まれます。
+      「3Dセキュア」のように、規格名として数字を含むものだけを許可します。
+    */
+    const allowed = new Set(["3Dセキュア", "3-D Secure", "Web3.0決済", "Web3 payments"]);
+    for (const text of all) {
+      if (allowed.has(text)) continue;
+      expect(text, text).not.toMatch(/[0-9０-９]/);
+    }
+  });
+
+  it("金額・割合の記号を含まない", () => {
+    for (const text of all) expect(text, text).not.toMatch(/[¥￥%％円]/);
+  });
+
+  it("実在する決済ブランド名を流さない（掲載カードはすべて架空のため）", () => {
+    const brands = [
+      "visa",
+      "mastercard",
+      "american express",
+      "amex",
+      "jcb",
+      "unionpay",
+      "paypal",
+      "apple pay",
+      "google pay",
+      "楽天",
+      "三井住友",
+      "イオン",
+    ];
+    const joined = all.join(" ").toLowerCase();
+    for (const brand of brands) expect(joined, brand).not.toContain(brand);
+  });
+
+  it("同じキーワードが重複しない", () => {
+    const ja = marqueeKeywords.map((keyword) => keyword.text.ja);
+    expect(new Set(ja).size).toBe(ja.length);
+  });
+
+  it("行へ配り直しても、1語も落とさず、空の行を作らない", () => {
+    for (const rows of [2, 3, 4]) {
+      const distributed = marqueeRows(rows);
+      expect(distributed).toHaveLength(rows);
+      expect(distributed.flat()).toHaveLength(marqueeKeywords.length);
+      for (const row of distributed) expect(row.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("文字色に使えるアクセントだけを指定している", () => {
+    /*
+      --color-cp-violet / --color-cp-electric は暗い地の上で 4.5:1 を割るため、
+      面（枠線・発光）専用にしています。文字には使いません。
+    */
+    const usable = new Set(["cyan", "magenta", "emerald", "amber", "gold"]);
+    for (const keyword of marqueeKeywords) {
+      expect(usable.has(keyword.accent), keyword.accent).toBe(true);
     }
   });
 });

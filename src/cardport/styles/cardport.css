@@ -390,6 +390,230 @@
 }
 
 /* ------------------------------------------------------------
+   斜めキーワードマーキー
+
+   ■ はみ出しの止め方
+     帯を回転させると、四隅に地の色が三角に覗きます。
+     行を画面幅より広く取り（140%）、左へずらして中央に戻したうえで、
+     帯そのものに overflow: hidden を掛けて隠しています。
+
+   ■ 端末ごとの角度
+     スマホでは角度を浅くします。狭い画面で深く傾けると、
+     1行に収まる語数が減って「流れている」ことが伝わらないためです。
+
+   ■ 色を回すのは背景だけ
+     hue-rotate は背後のオーロラにだけ掛けます。
+     チップに掛けると filter が文字の描画にも効き、
+     コントラスト比が時間によって変わって読めない瞬間ができます。
+   ------------------------------------------------------------ */
+@keyframes port-kw-drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+/*
+  オーロラは回転させません。
+
+  長方形を回すと、回した角が帯の角を覆いきれず、
+  背景との境目が硬い斜めの線になって出ます（実機で確認）。
+  色の変化は hue-rotate に任せ、動きは横移動と拡縮だけにします。
+*/
+@keyframes port-kw-aurora {
+  from {
+    transform: translate3d(-7%, -3%, 0) scale(1.2);
+    filter: blur(var(--port-kw-blur)) hue-rotate(0deg);
+  }
+  50% {
+    transform: translate3d(7%, 3%, 0) scale(1.45);
+    filter: blur(var(--port-kw-blur)) hue-rotate(180deg);
+  }
+  to {
+    transform: translate3d(-7%, -3%, 0) scale(1.2);
+    filter: blur(var(--port-kw-blur)) hue-rotate(360deg);
+  }
+}
+@keyframes port-kw-beam {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: translate3d(-30%, 0, 0);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translate3d(30%, 0, 0);
+  }
+}
+
+.cardport-root .port-kwband {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding-block: clamp(2.75rem, 8vw, 5.5rem);
+  border-block: 1px solid var(--color-cp-line);
+  background:
+    radial-gradient(120% 140% at 12% 0%, rgb(59 130 246 / 0.22), transparent 60%),
+    radial-gradient(120% 140% at 88% 100%, rgb(229 72 168 / 0.22), transparent 60%),
+    linear-gradient(180deg, var(--color-cp-abyss), var(--color-cp-navy) 55%, var(--color-cp-void));
+}
+
+/* 背後で回るオーロラ（面にだけ色を掛けます） */
+.cardport-root .port-kwaurora {
+  position: absolute;
+  inset: -35%;
+  z-index: -2;
+  display: block;
+  pointer-events: none;
+  background: conic-gradient(
+    from 140deg,
+    rgb(34 211 238 / 0.5) 0deg,
+    rgb(139 92 246 / 0.5) 70deg,
+    rgb(229 72 168 / 0.5) 140deg,
+    rgb(251 191 36 / 0.45) 210deg,
+    rgb(52 211 153 / 0.5) 285deg,
+    rgb(34 211 238 / 0.5) 360deg
+  );
+  /*
+    ぼかし量は帯の高さに対する相対で決めます。
+    スマホでは帯が低いぶん、同じ 64px でぼかすと色が全部混ざって
+    ただの暗い面になります（実機で確認）。
+  */
+  --port-kw-blur: 38px;
+
+  opacity: 0.42;
+  filter: blur(var(--port-kw-blur));
+  animation: port-kw-aurora 44s linear infinite;
+}
+
+/* 横切る光の帯 */
+.cardport-root .port-kwbeam {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  display: block;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent 34%,
+    rgb(242 246 255 / 0.11) 50%,
+    transparent 66%
+  );
+  animation: port-kw-beam 9s var(--ease-port) infinite;
+}
+
+.cardport-root .port-kwtilt {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1.6vw, 0.9rem);
+  transform: rotate(-3deg);
+}
+
+.cardport-root .port-kwrow {
+  display: flex;
+  width: max-content;
+  /* 回転で四隅が覗かないよう、画面より広く取って中央へ戻します */
+  margin-inline-start: -20%;
+  padding-inline-end: 40%;
+  animation: port-kw-drift var(--port-kw-duration, 64s) linear infinite;
+  animation-direction: var(--port-kw-direction, normal);
+}
+.cardport-root .port-kwtrack {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.5rem, 1.4vw, 0.85rem);
+  padding-inline-end: clamp(0.5rem, 1.4vw, 0.85rem);
+}
+
+.cardport-root .port-kwchip {
+  --port-kw-tint: var(--color-cp-cyan);
+
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.5em;
+  white-space: nowrap;
+  border: 1px solid color-mix(in oklab, var(--port-kw-tint) 46%, transparent);
+  border-radius: 999px;
+  padding: 0.5em 1.1em;
+  font-family: var(--font-cp-display);
+  font-size: clamp(0.78rem, 2.6vw, 1.15rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--port-kw-tint);
+  /*
+    地はアクセント色を混ぜず、暗いままにします。
+    color-mix を使うと、対応していないブラウザ向けの代替として
+    アクセント色そのものが地に落ちてしまい、
+    同じ色の文字が読めなくなります（ビルド後のCSSで確認済み）。
+    色味は文字・枠線・発光と、背後のオーロラで足ります。
+  */
+  background: rgb(8 12 24 / 0.74);
+  box-shadow:
+    0 0 0 1px rgb(5 7 15 / 0.6),
+    0 10px 30px -18px color-mix(in oklab, var(--port-kw-tint) 80%, transparent);
+  /*
+    チップ自体には色のアニメーションを掛けません。
+
+    filter: hue-rotate() は文字の描画にも掛かるため、
+    時間によって文字色が変わり、コントラスト比が読めなくなります。
+    色を回すのは背後のオーロラだけにして、
+    キーワードの文字色は 4.5:1 を確保できる値で固定します。
+
+    56 個のチップに box-shadow のアニメーションを掛けると
+    毎フレーム描き直しになるため、そちらも掛けていません。
+    動きは行の流れ（transform）だけで作ります。
+  */
+}
+.cardport-root .port-kwdot {
+  display: inline-block;
+  width: 0.42em;
+  height: 0.42em;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.cardport-root .port-kw-cyan {
+  --port-kw-tint: var(--color-cp-cyan);
+}
+.cardport-root .port-kw-magenta {
+  --port-kw-tint: var(--color-cp-magenta);
+}
+.cardport-root .port-kw-emerald {
+  --port-kw-tint: var(--color-cp-emerald);
+}
+.cardport-root .port-kw-amber {
+  --port-kw-tint: var(--color-cp-amber);
+}
+.cardport-root .port-kw-gold {
+  --port-kw-tint: var(--color-cp-gold);
+}
+
+/* 画面が広いほど角度を深くします（狭い画面で深く傾けると語数が減ります） */
+@media (min-width: 640px) {
+  .cardport-root .port-kwaurora {
+    --port-kw-blur: 56px;
+
+    opacity: 0.36;
+  }
+  .cardport-root .port-kwtilt {
+    transform: rotate(-4.5deg);
+  }
+}
+@media (min-width: 1024px) {
+  .cardport-root .port-kwaurora {
+    --port-kw-blur: 64px;
+
+    opacity: 0.34;
+  }
+  .cardport-root .port-kwtilt {
+    transform: rotate(-5.5deg);
+  }
+}
+
+/* ------------------------------------------------------------
    スクロール連動の出現
    ------------------------------------------------------------ */
 @keyframes port-reveal {
@@ -484,6 +708,19 @@
   }
   .cardport-root .port-marquee {
     animation: none !important;
+    transform: none !important;
+  }
+  /*
+    斜めマーキーは、動きを止めても「傾いた帯にキーワードが並んでいる」
+    見た目がそのまま残ります。行の位置だけ戻して、装飾としては残します。
+  */
+  .cardport-root .port-kwrow {
+    animation: none !important;
+  }
+  .cardport-root .port-kwaurora,
+  .cardport-root .port-kwbeam {
+    animation: none !important;
+    opacity: 0.3 !important;
     transform: none !important;
   }
   .cardport-root .card3d-sheen::after,

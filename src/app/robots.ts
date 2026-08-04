@@ -4,7 +4,7 @@ import { AI_PORT_BASE } from "@/data/ai-port/site";
 import { brand as sportsBrand } from "@/sports/config/site";
 import { staticLocales } from "@/portal/i18n/config";
 import { localeUrl } from "@/portal/lib/seo";
-import { portalOrigin } from "@/portal/lib/site";
+import { portalBase } from "@/portal/lib/site";
 
 export const dynamic = "force-static";
 
@@ -20,7 +20,8 @@ export const dynamic = "force-static";
  * 存在しないURLを指し続けることになるためです。
  */
 function portalSitemaps(): string[] {
-  if (portalOrigin !== siteUrl) return [];
+  // ベースパスまで含めた公開URLどうしで比べます（オリジンだけでは配信先が一致しません）
+  if (portalBase !== siteUrl) return [];
   return staticLocales().flatMap((locale) => [
     localeUrl(locale, "/news-sitemap.xml"),
     localeUrl(locale, "/video-sitemap.xml"),

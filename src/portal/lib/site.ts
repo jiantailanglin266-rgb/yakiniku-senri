@@ -23,22 +23,34 @@ export const brand = {
   contactEmail: process.env.NEXT_PUBLIC_PORTAL_EMAIL ?? "",
 } as const;
 
-/**
- * 公開URL。末尾スラッシュなしで正規化します。
- * GitHub Pages のサブディレクトリ配信にも追従させるため basePath を含みます。
- */
+/** 末尾スラッシュを落とします */
 function normalizeOrigin(value: string): string {
   return value.replace(/\/+$/, "");
 }
 
-export const portalOrigin = normalizeOrigin(
-  process.env.NEXT_PUBLIC_PORTAL_URL ??
-    process.env.NEXT_PUBLIC_SITE_URL ??
-    "https://crypto-port.example.com",
-);
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
+/**
+ * オリジンだけ（例: https://example.com）。ベースパスは含みません。
+ *
+ * ■ なぜ末尾のベースパスを剥がすのか
+ *   `NEXT_PUBLIC_SITE_URL` には、ベースパスまで含めた公開URLが渡されます
+ *   （GitHub Pages のワークフローが `https://<owner>.github.io/<repo>` を組み立てます）。
+ *   剥がさずに `portalBase` でもう一度足すと `/<repo>/<repo>/ja/...` になり、
+ *   canonical・hreflang・サイトマップの全URLが 404 を指します。
+ *   実際に静的エクスポートすると、20,280 件がこの形で出力されていました。
+ */
+export const portalOrigin = (() => {
+  const raw = normalizeOrigin(
+    process.env.NEXT_PUBLIC_PORTAL_URL ??
+      process.env.NEXT_PUBLIC_SITE_URL ??
+      "https://crypto-port.example.com",
+  );
+  return basePath !== "" && raw.endsWith(basePath) ? raw.slice(0, -basePath.length) : raw;
+})();
 
 /** ポータルのルート（例: https://example.com/yakiniku-senri） */
-export const portalBase = `${portalOrigin}${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}`;
+export const portalBase = `${portalOrigin}${basePath}`;
 
 /**
  * ファーストビューの動画ロゴ。
