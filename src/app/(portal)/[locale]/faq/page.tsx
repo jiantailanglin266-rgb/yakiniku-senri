@@ -40,7 +40,7 @@ export default async function FaqPage(props: { params: Promise<{ locale: string 
     <Section className="pt-28">
       <Container size="text">
         <Breadcrumbs trail={trail} locale={locale} dict={dict} />
-        <PageHeader eyebrow="FAQ" title={dict.faq.title} lead={dict.faq.lead} />
+        <PageHeader display="FAQ" title={dict.faq.title} lead={dict.faq.lead} />
         <FaqList items={siteFaq} locale={locale} />
       </Container>
 

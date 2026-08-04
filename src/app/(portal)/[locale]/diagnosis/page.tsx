@@ -42,7 +42,7 @@ export default async function DiagnosisIndexPage(props: { params: Promise<{ loca
     <Section className="pt-28">
       <Container>
         <Breadcrumbs trail={trail} locale={locale} dict={dict} />
-        <PageHeader eyebrow="Quiz" title={dict.diagnosis.title} lead={dict.diagnosis.lead} />
+        <PageHeader display="Quiz" title={dict.diagnosis.title} lead={dict.diagnosis.lead} />
 
         <NoticeBox tone="cyan" className="mb-8">
           {dict.diagnosis.disclaimer}

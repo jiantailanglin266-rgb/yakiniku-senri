@@ -42,7 +42,7 @@ export default async function CampaignsPage(props: { params: Promise<{ locale: s
     <Section className="pt-28">
       <Container>
         <Breadcrumbs trail={trail} locale={locale} dict={dict} />
-        <PageHeader eyebrow="Campaigns" title={dict.campaigns.title} lead={dict.campaigns.lead} />
+        <PageHeader display="Campaigns" title={dict.campaigns.title} lead={dict.campaigns.lead} />
 
         {/*
           終了済み・存在しない特典を載せると景品表示法上の問題になります。
