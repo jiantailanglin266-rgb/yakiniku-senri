@@ -121,12 +121,20 @@ describe("取得対象リスト", () => {
   });
 
   it("取得対象にライセンスや作者を書き込んでいない（推測の混入防止）", () => {
+    /*
+      ここに書いてよいのは「どこを探すか」だけです。
+      ライセンス・作者・出典は Commons から取得した値しか使いません
+      （手で書けてしまうと、確認済みの画像と区別がつかなくなります）。
+      wikipedia は探索の起点（記事タイトル）で、権利情報ではありません。
+    */
+    const allowedKeys = ["limit", "pageKey", "query", "slot", "wikidataEntityId", "wikipedia"];
     for (const request of requests) {
       expect(request).not.toHaveProperty("licenseCode");
       expect(request).not.toHaveProperty("authorName");
-      expect(Object.keys(request).sort()).toEqual(
-        ["limit", "pageKey", "query", "slot", "wikidataEntityId"].sort(),
-      );
+      expect(request).not.toHaveProperty("licenseName");
+      for (const key of Object.keys(request)) {
+        expect(allowedKeys, `未知のキー: ${key}`).toContain(key);
+      }
     }
   });
 

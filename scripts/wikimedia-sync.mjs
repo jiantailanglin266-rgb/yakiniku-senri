@@ -67,6 +67,51 @@ async function fetchJson(url) {
 /* ------------------------------------------------------------------ */
 
 /**
+ * Wikipedia の記事から代表画像（リード画像）のファイル名を引きます。
+ *
+ * ■ 何をしているか
+ *   `/api/rest_v1/page/summary/<題名>` の `originalimage.source` を見ます。
+ *   記事タイトルから1枚を決められるので、検索語を考えるより早く、外れも少なくなります。
+ *
+ * ■ ここで必ず弾くもの
+ *   返ってくるURLには2種類あります。
+ *     .../wikipedia/commons/... → Commons のファイル
+ *     .../wikipedia/ja/...      → その言語版へのローカルアップロード
+ *   後者は Commons の基準（自由なライセンス）を通っていないファイルで、
+ *   非フリー素材が含まれます。記事に出ているからといって使えるものではないので、
+ *   パスを見て機械的に除外します。
+ *
+ * ■ ファイル名を返すだけです
+ *   画像そのものはここでは落としません。返したファイル名を Commons のAPIに渡し、
+ *   作者・ライセンス・出典を取得したうえで初めて候補になります。
+ */
+async function fetchLeadImageFile(lang, title) {
+  const encoded = encodeURIComponent(title.replace(/ /g, "_"));
+  const url = new URL(`https://${lang}.wikipedia.org/api/rest_v1/page/summary/${encoded}`);
+
+  const json = await fetchJson(url);
+  const source = json?.originalimage?.source;
+  if (!source) return { file: null, reason: "記事に代表画像がありません" };
+
+  // ローカルアップロード（非フリーを含む）は対象外
+  if (!source.includes("/wikipedia/commons/")) {
+    return {
+      file: null,
+      reason: `Commons のファイルではありません（${lang} へのローカルアップロード）`,
+    };
+  }
+  if (/\.svg($|\?)/i.test(source)) {
+    return { file: null, reason: "SVG は対象外です" };
+  }
+
+  // .../commons/a/ab/Foo.jpg あるいは .../commons/thumb/a/ab/Foo.jpg/800px-Foo.jpg
+  const match = source.match(/\/wikipedia\/commons\/(?:thumb\/)?[0-9a-f]\/[0-9a-f]{2}\/([^/]+)/);
+  if (!match) return { file: null, reason: "ファイル名を判別できませんでした" };
+
+  return { file: `File:${decodeURIComponent(match[1])}`, reason: null };
+}
+
+/**
  * Commons の全文検索。
  * `srnamespace=6` はファイル名前空間で、Commons に登録されたファイルだけが対象です。
  */
@@ -307,16 +352,44 @@ async function main() {
   const summary = { fetched: 0, skipped: 0, byStatus: {} };
 
   for (const request of targets) {
-    console.log(`\n▸ ${request.pageKey} (${request.slot}) — "${request.query}"`);
+    const label = request.wikipedia
+      ? `${request.wikipedia.lang}:${request.wikipedia.titles.join(" / ")}`
+      : `"${request.query}"`;
+    console.log(`\n▸ ${request.pageKey} (${request.slot}) — ${label}`);
 
     let titles = [];
-    try {
-      titles = await searchCommons(request.query, request.limit ?? 5);
-    } catch (error) {
-      console.error(`  検索に失敗しました: ${error.message}`);
-      continue;
+
+    /*
+      記事タイトルが指定されていれば、そちらを優先します。
+      検索語より対象が定まるぶん、無関係な画像を拾いにくくなります。
+      1件も取れなければ、下の Commons 検索へ落ちます。
+    */
+    if (request.wikipedia) {
+      for (const articleTitle of request.wikipedia.titles) {
+        try {
+          const { file, reason } = await fetchLeadImageFile(request.wikipedia.lang, articleTitle);
+          await sleep(REQUEST_INTERVAL_MS);
+          if (file) {
+            console.log(`  記事「${articleTitle}」の代表画像: ${file}`);
+            titles.push(file);
+            break;
+          }
+          console.log(`  「${articleTitle}」は対象外: ${reason}`);
+        } catch (error) {
+          console.error(`  「${articleTitle}」の取得に失敗しました: ${error.message}`);
+        }
+      }
     }
-    await sleep(REQUEST_INTERVAL_MS);
+
+    if (titles.length === 0 && request.query) {
+      try {
+        titles = await searchCommons(request.query, request.limit ?? 5);
+      } catch (error) {
+        console.error(`  検索に失敗しました: ${error.message}`);
+        continue;
+      }
+      await sleep(REQUEST_INTERVAL_MS);
+    }
 
     if (titles.length === 0) {
       console.log("  候補が見つかりませんでした（フォールバック装飾のままになります）");
