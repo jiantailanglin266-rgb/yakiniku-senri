@@ -4,6 +4,7 @@ import { formatCompact, formatPercent, t } from "@/portal/lib/format";
 import type { Dictionary } from "@/portal/i18n/dictionaries";
 import type { Coin, MarketSnapshot } from "@/portal/lib/types";
 import { Coin3D } from "@/portal/components/effects/Coin3D";
+import { HeroLogoVideo } from "./HeroLogoVideo";
 import { ParticleField } from "@/portal/components/effects/ParticleField";
 import { FearGreedGauge, PriceChange } from "@/portal/components/market/charts";
 import { DataFreshness } from "@/portal/components/market/DataFreshness";
@@ -75,6 +76,8 @@ export function Hero({
 
       <div className="relative mx-auto max-w-[110rem] px-4 sm:px-6">
         <div className="max-w-3xl">
+          {/* 動くロゴ。見出しの上に置きます */}
+          <HeroLogoVideo className="mb-5 block h-16 w-auto max-w-[22rem] sm:h-20 sm:max-w-[28rem]" />
           <p className="eyebrow mb-4">{dict.hero.eyebrow}</p>
           <h1 className="text-4xl leading-[1.15] font-semibold sm:text-5xl lg:text-6xl">
             <span className="text-gradient">{dict.hero.title}</span>
