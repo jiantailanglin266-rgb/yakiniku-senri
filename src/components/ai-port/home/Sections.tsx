@@ -60,6 +60,7 @@ export function YoutubeSection({ videos }: { videos: YoutubeVideo[] }) {
           </>
         }
         description="各社の公式YouTubeチャンネルの配信を自動で収集しています。見出しをクリックするとYouTubeで再生されます。"
+        banner="youtube"
         action={{ href: aiPortPath("/youtube"), label: "動画をもっと見る" }}
       />
 
