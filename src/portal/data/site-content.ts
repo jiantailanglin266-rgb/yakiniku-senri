@@ -8,6 +8,14 @@ export type NavItem = {
   /** 言語プレフィックスを除いたパス */
   href: string;
   label: LocalizedText;
+  /**
+   * UI辞書のキー（`nav.news` のようなドット記法）。
+   *
+   * 指定があればそちらを優先します。`label` は ja / en しか持たないため、
+   * これが無いとヘッダーの主要ナビが13言語のうち11言語で英語のままになります。
+   * 固有名詞（Bitcoin など）には付けません。
+   */
+  dictKey?: string;
   /** 子メニュー（デスクトップのメガメニュー用） */
   children?: NavItem[];
 };
@@ -16,37 +24,55 @@ export const mainNav: NavItem[] = [
   {
     href: "/coins",
     label: { ja: "マーケット", en: "Market" },
+    dictKey: "nav.market",
     children: [
-      { href: "/coins", label: { ja: "仮想通貨一覧", en: "All coins" } },
+      { href: "/coins", label: { ja: "仮想通貨一覧", en: "All coins" }, dictKey: "nav.coins" },
       { href: "/coins/bitcoin", label: { ja: "ビットコイン", en: "Bitcoin" } },
       { href: "/coins/ethereum", label: { ja: "イーサリアム", en: "Ethereum" } },
     ],
   },
-  { href: "/news", label: { ja: "ニュース", en: "News" } },
+  { href: "/news", label: { ja: "ニュース", en: "News" }, dictKey: "nav.news" },
   {
     href: "/exchanges",
     label: { ja: "取引所", en: "Exchanges" },
+    dictKey: "nav.exchanges",
     children: [
-      { href: "/exchanges", label: { ja: "国内取引所比較", en: "Japanese exchanges" } },
-      { href: "/exchanges/overseas", label: { ja: "海外取引所比較", en: "Global exchanges" } },
-      { href: "/campaigns", label: { ja: "キャンペーン", en: "Campaigns" } },
+      {
+        href: "/exchanges",
+        label: { ja: "国内取引所比較", en: "Japanese exchanges" },
+        dictKey: "exchanges.domestic",
+      },
+      {
+        href: "/exchanges/overseas",
+        label: { ja: "海外取引所比較", en: "Global exchanges" },
+        dictKey: "exchanges.overseas",
+      },
+      {
+        href: "/campaigns",
+        label: { ja: "キャンペーン", en: "Campaigns" },
+        dictKey: "nav.campaigns",
+      },
     ],
   },
-  { href: "/wallets", label: { ja: "ウォレット", en: "Wallets" } },
-  { href: "/tools", label: { ja: "Web3ツール", en: "Web3 tools" } },
-  { href: "/videos", label: { ja: "動画", en: "Videos" } },
-  { href: "/learn", label: { ja: "学ぶ", en: "Learn" } },
-  { href: "/diagnosis", label: { ja: "診断", en: "Quiz" } },
+  { href: "/wallets", label: { ja: "ウォレット", en: "Wallets" }, dictKey: "nav.wallets" },
+  { href: "/tools", label: { ja: "Web3ツール", en: "Web3 tools" }, dictKey: "nav.tools" },
+  { href: "/videos", label: { ja: "動画", en: "Videos" }, dictKey: "nav.videos" },
+  { href: "/learn", label: { ja: "学ぶ", en: "Learn" }, dictKey: "nav.learn" },
+  { href: "/diagnosis", label: { ja: "診断", en: "Quiz" }, dictKey: "nav.diagnosis" },
 ];
 
 export const footerNav: { title: LocalizedText; items: NavItem[] }[] = [
   {
     title: { ja: "マーケット", en: "Market" },
     items: [
-      { href: "/coins", label: { ja: "仮想通貨一覧", en: "All coins" } },
-      { href: "/news", label: { ja: "ニュース", en: "News" } },
-      { href: "/campaigns", label: { ja: "キャンペーン", en: "Campaigns" } },
-      { href: "/search", label: { ja: "サイト内検索", en: "Search" } },
+      { href: "/coins", label: { ja: "仮想通貨一覧", en: "All coins" }, dictKey: "nav.coins" },
+      { href: "/news", label: { ja: "ニュース", en: "News" }, dictKey: "nav.news" },
+      {
+        href: "/campaigns",
+        label: { ja: "キャンペーン", en: "Campaigns" },
+        dictKey: "nav.campaigns",
+      },
+      { href: "/search", label: { ja: "サイト内検索", en: "Search" }, dictKey: "search.title" },
     ],
   },
   {
@@ -54,17 +80,17 @@ export const footerNav: { title: LocalizedText; items: NavItem[] }[] = [
     items: [
       { href: "/exchanges", label: { ja: "国内取引所", en: "Japanese exchanges" } },
       { href: "/exchanges/overseas", label: { ja: "海外取引所", en: "Global exchanges" } },
-      { href: "/wallets", label: { ja: "ウォレット", en: "Wallets" } },
-      { href: "/tools", label: { ja: "Web3ツール", en: "Web3 tools" } },
+      { href: "/wallets", label: { ja: "ウォレット", en: "Wallets" }, dictKey: "nav.wallets" },
+      { href: "/tools", label: { ja: "Web3ツール", en: "Web3 tools" }, dictKey: "nav.tools" },
     ],
   },
   {
     title: { ja: "学ぶ", en: "Learn" },
     items: [
-      { href: "/learn", label: { ja: "学習コンテンツ", en: "Guides" } },
-      { href: "/videos", label: { ja: "動画", en: "Videos" } },
-      { href: "/diagnosis", label: { ja: "診断ツール", en: "Quizzes" } },
-      { href: "/faq", label: { ja: "よくある質問", en: "FAQ" } },
+      { href: "/learn", label: { ja: "学習コンテンツ", en: "Guides" }, dictKey: "nav.learn" },
+      { href: "/videos", label: { ja: "動画", en: "Videos" }, dictKey: "nav.videos" },
+      { href: "/diagnosis", label: { ja: "診断ツール", en: "Quizzes" }, dictKey: "nav.diagnosis" },
+      { href: "/faq", label: { ja: "よくある質問", en: "FAQ" }, dictKey: "nav.faq" },
     ],
   },
   {

@@ -14,6 +14,7 @@ import { diagnoses } from "@/portal/data/diagnoses";
 import { legalPages } from "@/portal/data/legal";
 import { groupedNews, news, relatedByStory, trendingNews } from "@/portal/data/news";
 import { footerNav, mainNav, siteFaq } from "@/portal/data/site-content";
+import { navLabel } from "@/portal/lib/format";
 
 /**
  * データの整合性テスト。
@@ -85,22 +86,73 @@ describe("多言語設定", () => {
 });
 
 describe("辞書", () => {
-  it("日本語と英語は人手で用意されている", () => {
-    expect(hasAuthoredDictionary("ja")).toBe(true);
-    expect(hasAuthoredDictionary("en")).toBe(true);
+  it("対応している13言語すべてに辞書がある", () => {
+    for (const locale of locales) {
+      expect(hasAuthoredDictionary(locale.code), locale.code).toBe(true);
+    }
   });
 
-  it("未整備の言語は英語へフォールバックする（日本語のままにしない）", () => {
-    const thai = getDictionary("th");
-    expect(thai.common.search).toBe(getDictionary("en").common.search);
+  it("未知の言語コードは英語へフォールバックする（日本語のままにしない）", () => {
+    const unknown = getDictionary("xx");
+    expect(unknown.common.search).toBe(getDictionary("en").common.search);
   });
 
   it("同じキー構造を持つ", () => {
     const ja = getDictionary("ja");
+    for (const locale of locales) {
+      const dict = getDictionary(locale.code);
+      expect(Object.keys(dict).sort(), locale.code).toEqual(Object.keys(ja).sort());
+      for (const key of Object.keys(ja) as Array<keyof typeof ja>) {
+        expect(Object.keys(dict[key]).sort(), `${locale.code}.${String(key)}`).toEqual(
+          Object.keys(ja[key]).sort(),
+        );
+      }
+    }
+  });
+
+  it("空文字の項目がない（未翻訳を空欄で埋めない）", () => {
+    for (const locale of locales) {
+      const dict = getDictionary(locale.code) as unknown as Record<string, Record<string, unknown>>;
+      for (const [group, entries] of Object.entries(dict)) {
+        for (const [key, value] of Object.entries(entries)) {
+          const values = typeof value === "string" ? [value] : Object.values(value as object);
+          for (const text of values) {
+            expect(String(text).trim().length, `${locale.code}.${group}.${key}`).toBeGreaterThan(0);
+          }
+        }
+      }
+    }
+  });
+
+  it("英語の文言をそのまま流用していない（コピー漏れの検出）", () => {
+    // ナビゲーションは各言語で必ず訳し分かれるはずの箇所です。
+    // ラテン文字圏どうしで一部一致することはあるため、全一致だけを弾きます。
     const en = getDictionary("en");
-    expect(Object.keys(en).sort()).toEqual(Object.keys(ja).sort());
-    for (const key of Object.keys(ja) as Array<keyof typeof ja>) {
-      expect(Object.keys(en[key]).sort()).toEqual(Object.keys(ja[key]).sort());
+    for (const locale of locales) {
+      if (locale.code === "en") continue;
+      const dict = getDictionary(locale.code);
+      const identical = Object.keys(en.nav).every(
+        (key) => dict.nav[key as keyof typeof en.nav] === en.nav[key as keyof typeof en.nav],
+      );
+      expect(identical, locale.code).toBe(false);
+    }
+  });
+
+  it("すべての言語でリスク注記が出る（金融メディアとして落とさない）", () => {
+    for (const locale of locales) {
+      const dict = getDictionary(locale.code);
+      expect(dict.footer.disclaimerTitle.length, locale.code).toBeGreaterThan(0);
+      expect(dict.footer.disclaimer.length, locale.code).toBeGreaterThan(30);
+      expect(dict.diagnosis.disclaimer.length, locale.code).toBeGreaterThan(30);
+      // 秘密鍵・シードフレーズを入力させない注意は全言語で必須です
+      expect(dict.chat.securityNotice.length, locale.code).toBeGreaterThan(0);
+      expect(dict.wallets.lead.length, locale.code).toBeGreaterThan(0);
+    }
+  });
+
+  it("検索の例示は日本語表記を残す（かな・カナでも引けることを示すため）", () => {
+    for (const locale of locales) {
+      expect(getDictionary(locale.code).search.placeholder, locale.code).toContain("ビットコイン");
     }
   });
 });
@@ -446,5 +498,40 @@ describe("固定ページ・ナビゲーション", () => {
 
   it("既定言語が対応言語に含まれている", () => {
     expect(isLocale(defaultLocale)).toBe(true);
+  });
+});
+
+describe("ナビゲーションの多言語化", () => {
+  it("主要ナビはすべて辞書から引ける（ja / en 止まりにしない）", () => {
+    // dictKey が無いと13言語のうち11言語で英語のままになります
+    for (const item of mainNav) {
+      expect(item.dictKey, item.href).toBeTruthy();
+    }
+  });
+
+  it("dictKey が実在するキーを指している", () => {
+    const dict = getDictionary("ja") as unknown as Record<string, Record<string, unknown>>;
+    const check = (item: { href: string; dictKey?: string }) => {
+      if (!item.dictKey) return;
+      const [group, key] = item.dictKey.split(".");
+      expect(typeof dict[group]?.[key], `${item.href} → ${item.dictKey}`).toBe("string");
+    };
+    for (const item of mainNav) {
+      check(item);
+      for (const child of item.children ?? []) check(child);
+    }
+    for (const group of footerNav) for (const item of group.items) check(item);
+  });
+
+  it("辞書を引いた表示名が言語ごとに変わる", () => {
+    const news = mainNav.find((item) => item.href === "/news")!;
+    expect(navLabel(news, "th", getDictionary("th"))).toBe(getDictionary("th").nav.news);
+    expect(navLabel(news, "th", getDictionary("th"))).not.toBe(getDictionary("en").nav.news);
+  });
+
+  it("dictKey の無い固有名詞はそのまま出る", () => {
+    const market = mainNav.find((item) => item.href === "/coins")!;
+    const bitcoin = market.children!.find((child) => child.href === "/coins/bitcoin")!;
+    expect(navLabel(bitcoin, "th", getDictionary("th"))).toBe("Bitcoin");
   });
 });

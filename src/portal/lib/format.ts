@@ -136,3 +136,24 @@ export function tList(list: LocalizedList | undefined, locale: string): string[]
   if (!list) return [];
   return list[locale] ?? list.en ?? list.ja ?? [];
 }
+
+/**
+ * ナビゲーション項目の表示名。
+ *
+ * `dictKey`（例: `nav.news`）があれば13言語ぶんの辞書を引き、
+ * 無ければ `label`（ja / en のみ）に落とします。
+ * 固有名詞（Bitcoin など）には `dictKey` を付けないため、そのまま出ます。
+ */
+export function navLabel(
+  item: { label: LocalizedText; dictKey?: string },
+  locale: string,
+  dict: unknown,
+): string {
+  if (item.dictKey) {
+    const [group, key] = item.dictKey.split(".");
+    const groups = dict as Record<string, Record<string, unknown>> | undefined;
+    const value = groups?.[group]?.[key];
+    if (typeof value === "string" && value.length > 0) return value;
+  }
+  return t(item.label, locale);
+}
