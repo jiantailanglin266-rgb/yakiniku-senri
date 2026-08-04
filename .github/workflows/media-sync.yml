@@ -151,10 +151,17 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # ⚠ git add は複数 pathspec のうち1つでも一致しないと全体を中断し、
+          #   何も stage しません。public/media/wikimedia は承認済み画像が
+          #   出るまで存在しないため、まとめて渡すと保留中のデータが
+          #   毎回そのまま捨てられます（実際に run #6 で16件を失いました）。
+          #   生成JSONと画像ディレクトリは分けて stage します。
           git add src/media/data/assets.generated.json \
                   src/media/data/usages.generated.json \
-                  src/media/data/requests.generated.json \
-                  public/media/wikimedia || true
+                  src/media/data/requests.generated.json
+          if [ -d public/media/wikimedia ]; then
+            git add public/media/wikimedia
+          fi
           if git diff --cached --quiet; then
             echo "変更はありません。"
             exit 0
