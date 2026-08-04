@@ -365,3 +365,34 @@ describe("実データから見つかった問題", () => {
     }
   });
 });
+
+describe("判定規則を厳しくしたときの既存データ", () => {
+  /**
+   * 既存の画像は削除しません（出所の記録を消さないため）。
+   * ただし、いまの基準を満たさないものを needs_review のまま残すと、
+   * 承認キューに並び続けてうっかり承認される余地ができます。
+   * 「却下」として記録し、なぜ載せないのかを残します。
+   */
+  it("すでに保存済みの実在ブランド券面も、いまの基準では除外対象と判定される", async () => {
+    const { detectExcludedSubjects } = await import("../scripts/lib/candidate-score.mjs");
+    // 実際に main へ入っていた画像です
+    const stored = makeRaw({
+      fileName: "JGC VISA01s.jpg",
+      title: "File:JGC VISA01s.jpg",
+      description: null,
+      categories: [],
+    });
+    expect(detectExcludedSubjects(stored)).toContain("brand");
+  });
+
+  it("問題のない既存画像は、除外対象にならない", async () => {
+    const { detectExcludedSubjects } = await import("../scripts/lib/candidate-score.mjs");
+    const ok = makeRaw({
+      fileName: "Sceptre Rugby Ball.jpg",
+      title: "File:Sceptre Rugby Ball.jpg",
+      description: "A rugby ball",
+      categories: ["Rugby balls"],
+    });
+    expect(detectExcludedSubjects(ok)).toEqual([]);
+  });
+});
