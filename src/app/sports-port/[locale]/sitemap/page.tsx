@@ -117,6 +117,7 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
         { label: dict.navBetting, path: "/betting" },
         { label: dict.navSearch, path: "/search" },
         { label: dict.navAdmin, path: "/admin" },
+        { label: dict.footerImageCredits, path: "/image-credits" },
         ...legalPages.map((page) => ({ label: t(page.title), path: `/legal/${page.slug}` })),
       ],
     },

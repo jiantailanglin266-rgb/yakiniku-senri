@@ -14,6 +14,8 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "@/cardport/styles/cardport.css";
+// 画像モジュールの配色トークン（クレジット表示に使います）
+import "@/media/styles/media.css";
 
 import { brand, cardportUrl, palette } from "@/cardport/config/site";
 import { Backdrop } from "@/cardport/components/visual/Backdrop";

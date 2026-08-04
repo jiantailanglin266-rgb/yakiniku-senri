@@ -37,7 +37,7 @@ export function ImageAttribution({
   const base =
     tone === "overlay"
       ? "bg-black/65 text-white/85 backdrop-blur-sm"
-      : "text-cp-dim border-cp-line/50 border-t";
+      : "text-media-dim border-media-line/50 border-t";
 
   return (
     <p

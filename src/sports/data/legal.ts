@@ -439,6 +439,19 @@ export const legalPages: LegalPage[] = [
         ],
       },
       {
+        heading: p("外部から取得した画像", "Images sourced from elsewhere"),
+        paragraphs: [
+          p(
+            "掲載する画像は、Wikimedia Commons のファイルページでライセンス・作者・出典を確認できたものに限ります。Wikipediaの記事に載っているという理由だけで転載することはありません。商用利用不可・改変不可・ライセンス不明の画像は使用しません。",
+            "We publish an image only when its licence, author and source can be verified on the Wikimedia Commons file page. We never reuse an image merely because it appears in a Wikipedia article, and we do not use non-commercial, no-derivatives or unknown-licence images.",
+          ),
+          p(
+            "使用しているすべての画像の作者・出典・ライセンス・取得日は「画像出典・ライセンス一覧」に掲載しています。適切な画像が無い場合は、無理に画像を使わず自前の生成ビジュアルを表示します。当サイトは Wikimedia Foundation とは無関係であり、公認を受けたものではありません。",
+            "The author, source, licence and retrieval date of every image are listed on our image credits page. Where no suitable image exists we show a generated visual rather than forcing one. This site is not affiliated with or endorsed by the Wikimedia Foundation.",
+          ),
+        ],
+      },
+      {
         heading: p("試合データ", "Match data"),
         paragraphs: [
           p(

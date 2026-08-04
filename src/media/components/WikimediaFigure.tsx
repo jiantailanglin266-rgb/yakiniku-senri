@@ -45,7 +45,7 @@ export function WikimediaFigure({
         labels={labels}
         sizes={sizes ?? "(min-width: 1024px) 720px, 100vw"}
         attributionTone="block"
-        className="border-cp-line/40 rounded-xl border"
+        className="border-media-line/40 rounded-xl border"
       />
       <ImageSourceDetails asset={resolved.asset} labels={labels} className="mt-2 px-1" />
     </div>

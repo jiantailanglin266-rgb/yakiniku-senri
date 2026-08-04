@@ -22,8 +22,8 @@ import { ImageLicenseBadge } from "./ImageLicenseBadge";
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="grid grid-cols-[7rem_1fr] gap-x-3 gap-y-1 py-1 max-sm:grid-cols-1">
-      <dt className="text-cp-dim text-[0.7rem] tracking-wide uppercase">{label}</dt>
-      <dd className="text-cp-mist m-0 text-[0.78rem] break-words">{children}</dd>
+      <dt className="text-media-dim text-[0.7rem] tracking-wide uppercase">{label}</dt>
+      <dd className="text-media-mist m-0 text-[0.78rem] break-words">{children}</dd>
     </div>
   );
 }
@@ -41,11 +41,11 @@ export function ImageSourceDetails({
 
   return (
     <details className={["group", className ?? ""].join(" ")}>
-      <summary className="text-cp-dim hover:text-cp-mist cursor-pointer list-none text-[0.7rem] underline decoration-dotted underline-offset-2">
+      <summary className="text-media-dim hover:text-media-mist cursor-pointer list-none text-[0.7rem] underline decoration-dotted underline-offset-2">
         {labels.detailsLabel}
       </summary>
 
-      <dl className="border-cp-line/50 mt-2 border-t pt-2">
+      <dl className="border-media-line/50 mt-2 border-t pt-2">
         <Row label={labels.author}>
           {asset.authorName ? (
             // 作者名は原文のまま。翻訳すると作者表示の義務を満たせなくなります
@@ -131,7 +131,7 @@ export function ImageSourceDetails({
         ) : null}
       </dl>
 
-      <p className="text-cp-dim mt-2 text-[0.68rem] leading-relaxed">{labels.disclaimer}</p>
+      <p className="text-media-dim mt-2 text-[0.68rem] leading-relaxed">{labels.disclaimer}</p>
     </details>
   );
 }

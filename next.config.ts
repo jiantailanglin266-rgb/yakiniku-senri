@@ -46,8 +46,19 @@ const nextConfig: NextConfig = {
           formats: ["image/avif" as const, "image/webp" as const],
           deviceSizes: [375, 390, 640, 768, 1024, 1280, 1440, 1920],
           imageSizes: [96, 128, 256, 384],
-          // AI PORT のYouTubeサムネイル（配信元のCDNをそのまま参照します）
-          remotePatterns: [{ protocol: "https" as const, hostname: "i.ytimg.com" }],
+          remotePatterns: [
+            // AI PORT のYouTubeサムネイル（配信元のCDNをそのまま参照します）
+            { protocol: "https" as const, hostname: "i.ytimg.com" },
+            /**
+             * Wikimedia Commons の画像。
+             *
+             * ライセンス確認済みの画像だけがここへ到達します
+             * （src/wikimedia/licenses.ts の evaluateAsset を通らないと描画されません）。
+             * 自社ストレージへ複製する運用に切り替える場合も、
+             * 元画像URL・ファイルページ・作者・ライセンスの保持は必須です。
+             */
+            { protocol: "https" as const, hostname: "upload.wikimedia.org" },
+          ],
         },
       }),
   poweredByHeader: false,
