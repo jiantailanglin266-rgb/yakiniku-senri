@@ -114,6 +114,7 @@ export default async function PortalHome(props: { params: Promise<{ locale: stri
               </NeonLink>
             }
           />
+          <PageVisual name="market" locale={locale} />
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <StatTile
@@ -209,6 +210,7 @@ export default async function PortalHome(props: { params: Promise<{ locale: stri
               </NeonLink>
             }
           />
+          <PageVisual name="news" locale={locale} />
 
           {NEWS_DATASET_STATUS === "sample" ? (
             <NoticeBox tone="cyan" className="mb-6">
@@ -304,6 +306,7 @@ export default async function PortalHome(props: { params: Promise<{ locale: stri
               </NeonLink>
             }
           />
+          <PageVisual name="exchanges" locale={locale} />
 
           {DATASET_STATUS === "sample" ? (
             <NoticeBox tone="amber" className="mb-6">
@@ -419,6 +422,7 @@ export default async function PortalHome(props: { params: Promise<{ locale: stri
               </NeonLink>
             }
           />
+          <PageVisual name="wallets" locale={locale} />
           <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             {wallets.slice(0, 4).map((wallet) => (
               <li key={wallet.id}>
@@ -455,6 +459,7 @@ export default async function PortalHome(props: { params: Promise<{ locale: stri
               </NeonLink>
             }
           />
+          <PageVisual name="tools" locale={locale} />
           <ul className="mb-6 flex flex-wrap gap-2">
             {toolCategories.map((category) => (
               <li key={category.id}>
@@ -509,6 +514,7 @@ export default async function PortalHome(props: { params: Promise<{ locale: stri
               </NeonLink>
             }
           />
+          <PageVisual name="videos" locale={locale} />
           <ul className="grid gap-4 md:grid-cols-3">
             {longVideos.map((video) => (
               <li key={video.id}>
@@ -578,6 +584,7 @@ export default async function PortalHome(props: { params: Promise<{ locale: stri
               </NeonLink>
             }
           />
+          <PageVisual name="diagnosis" locale={locale} />
           <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             {diagnoses.slice(0, 4).map((diagnosis) => (
               <li key={diagnosis.id}>
@@ -668,6 +675,7 @@ export default async function PortalHome(props: { params: Promise<{ locale: stri
             title={dict.campaigns.title}
             lead={dict.campaigns.lead}
           />
+          <PageVisual name="campaigns" locale={locale} />
           {campaigns.length === 0 ? (
             <EmptyState message={dict.campaigns.empty} />
           ) : (
@@ -719,6 +727,7 @@ export default async function PortalHome(props: { params: Promise<{ locale: stri
             title={dict.faq.title}
             lead={dict.faq.lead}
           />
+          <PageVisual name="faq" locale={locale} />
           <FaqList items={siteFaq} locale={locale} />
         </Container>
       </Section>
