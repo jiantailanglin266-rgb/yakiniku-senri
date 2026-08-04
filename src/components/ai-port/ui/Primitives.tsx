@@ -3,11 +3,7 @@ import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { withBasePath } from "@/lib/base-path";
-import {
-  SECTION_BANNER_ASPECT,
-  SECTION_BANNER_SIZE,
-  sectionBanner,
-} from "@/data/ai-port/section-banners";
+import { sectionBanner } from "@/data/ai-port/section-banners";
 import { accentClass, accentText, type Accent } from "@/data/ai-port/taxonomy";
 
 /* ------------------------------------------------------------
@@ -78,9 +74,9 @@ export function SectionHeading({
   className?: string;
   banner?: string;
 }) {
-  const bannerSrc = banner ? sectionBanner(banner) : null;
+  const bannerImage = banner ? sectionBanner(banner) : null;
 
-  if (bannerSrc) {
+  if (bannerImage) {
     return (
       <div className={cn("flex flex-wrap items-end justify-between gap-x-8 gap-y-5", className)}>
         <div className="min-w-0 flex-1">
@@ -94,13 +90,17 @@ export function SectionHeading({
             {description ? <p>{description}</p> : null}
           </span>
 
+          {/*
+            高さは width / height から決まります（比率のクラスは付けません）。
+            画像ごとに高さが違うため、固定比率にすると文字が歪みます。
+          */}
           <Image
-            src={withBasePath(bannerSrc)}
+            src={withBasePath(bannerImage.src)}
             alt=""
-            width={SECTION_BANNER_SIZE.width}
-            height={SECTION_BANNER_SIZE.height}
+            width={bannerImage.width}
+            height={bannerImage.height}
             sizes="(min-width: 1024px) 62rem, 100vw"
-            className={cn("h-auto w-full rounded-2xl object-cover", SECTION_BANNER_ASPECT)}
+            className="h-auto w-full rounded-2xl"
           />
         </div>
 
