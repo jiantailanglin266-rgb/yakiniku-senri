@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { accentClass, toolCategories, topics, type Accent } from "@/data/ai-port/taxonomy";
+import { accentText, toolCategories, topics, type Accent } from "@/data/ai-port/taxonomy";
 
 /**
  * 斜めに流れるキーワードの帯。
@@ -22,6 +22,15 @@ import { accentClass, toolCategories, topics, type Accent } from "@/data/ai-port
  * ■ 動きを抑える設定
  *   ai-port.css 側で `.ai-marquee` `.ai-diagonal-glow` `.ai-diagonal-blob` の
  *   アニメーションを止めます。止まっても言葉は読める状態で残ります。
+ *
+ * ⚠ ピルに重い指定を足さないでください
+ *   1つの帯に約200個のピルが並びます。1個あたりの負荷が
+ *   そのまま200倍になるため、次はどれも入れないでください。
+ *     - `backdrop-blur`（背景ぼかし）… 実際にこれでスクロールが重くなりました
+ *     - `bg-clip-text` のグラデーション文字 … 要素ごとに合成レイヤーができます
+ *     - `box-shadow` のぼかし、`filter`
+ *   色は `color` だけで付けます。見た目のカラフルさは、
+ *   背景のグラデーションと光3枚が担当します。
  */
 
 /** 行の定義。速度を少しずつ変えると、同じ板に見えません */
@@ -62,12 +71,30 @@ function rotate<T>(items: T[], offset: number): T[] {
   return [...items.slice(shift), ...items.slice(0, shift)];
 }
 
-export function KeywordMarquee() {
+export function KeywordMarquee({
+  /** 傾きの向き。ページ内に2本置くとき、逆向きにすると使い回しに見えません */
+  tilt = "left",
+  /** 高さを詰めた版。ファーストビューの直後など、主役を邪魔したくない場所で使います */
+  compact = false,
+}: {
+  tilt?: "left" | "right";
+  compact?: boolean;
+} = {}) {
   const keywords = buildKeywords();
   if (keywords.length === 0) return null;
 
+  // 詰めた版は2行。行を減らすとピルの総数も減り、描画が軽くなります
+  const rows = compact ? ROWS.slice(0, 2) : ROWS;
+
   return (
-    <div aria-hidden="true" className="ai-diagonal relative overflow-hidden py-14 sm:py-20">
+    <div
+      aria-hidden="true"
+      className={cn(
+        "ai-diagonal relative overflow-hidden",
+        tilt === "right" && "ai-diagonal-right",
+        compact ? "py-8 sm:py-11" : "py-14 sm:py-20",
+      )}
+    >
       {/* 背景のグラデーション。色がゆっくり流れます */}
       <div className="ai-diagonal-glow pointer-events-none absolute inset-0 opacity-70" />
 
@@ -93,7 +120,7 @@ export function KeywordMarquee() {
         帯ごと回すと、四隅に三角の隙間ができます。
       */}
       <div className="ai-diagonal-rows relative flex flex-col gap-3 sm:gap-4">
-        {ROWS.map((row, rowIndex) => {
+        {rows.map((row, rowIndex) => {
           const items = rotate(keywords, rowIndex * 5);
           return (
             <div key={rowIndex} className="relative flex overflow-hidden">
@@ -106,16 +133,15 @@ export function KeywordMarquee() {
                     {items.map((word) => (
                       <span
                         key={`${copy}-${word.label}`}
-                        className="mx-1.5 shrink-0 rounded-full border border-white/12 bg-white/[0.04] px-4 py-2 text-[0.8rem] whitespace-nowrap backdrop-blur-sm sm:mx-2 sm:px-5 sm:py-2.5 sm:text-[0.95rem]"
+                        className={cn(
+                          "mx-1.5 shrink-0 rounded-full border border-white/12 bg-white/[0.05] px-4 py-2 font-medium whitespace-nowrap sm:mx-2 sm:px-5",
+                          accentText[word.accent],
+                          compact
+                            ? "py-1.5 text-[0.72rem] sm:py-2 sm:text-[0.82rem]"
+                            : "py-2 text-[0.8rem] sm:py-2.5 sm:text-[0.95rem]",
+                        )}
                       >
-                        <span
-                          className={cn(
-                            "bg-gradient-to-r bg-clip-text font-medium text-transparent",
-                            accentClass[word.accent],
-                          )}
-                        >
-                          {word.label}
-                        </span>
+                        {word.label}
                       </span>
                     ))}
                   </div>

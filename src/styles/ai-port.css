@@ -488,6 +488,21 @@
   animation-direction: reverse;
 }
 
+/*
+  帯の外枠。画面外にあるときは描画そのものを省かせます。
+  ピルが数百個あるため、これが無いとスクロール中ずっと再描画が走ります。
+*/
+.ai-diagonal {
+  contain: layout paint style;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 22rem;
+}
+
+/* 流れる行。合成レイヤーに固定して、毎フレームの再ラスタ化を避けます */
+.ai-diagonal-rows .ai-marquee {
+  will-change: transform;
+}
+
 /* 帯の背景。色をゆっくり流します（動かすのはこの1枚だけ） */
 .ai-diagonal-glow {
   background: linear-gradient(
@@ -509,17 +524,36 @@
   }
 }
 
-/* 背景に浮かべる光。transform だけを動かすのでレイアウトを揺らしません */
+/*
+  背景に浮かべる光。
+
+  ⚠ scale を混ぜないでください。
+    ぼかした面を拡大すると、ぼかしを毎フレーム作り直すことになります
+    （blur 70px を1フレームごとに再計算するため、スクロールが目に見えて重くなります）。
+    平行移動だけなら、できあがったレイヤーをずらすだけで済みます。
+*/
 .ai-diagonal-blob {
+  will-change: transform;
   animation: ai-diagonal-drift 18s ease-in-out infinite alternate;
 }
 
 @keyframes ai-diagonal-drift {
   from {
-    transform: translate3d(-6%, -4%, 0) scale(1);
+    transform: translate3d(-6%, -4%, 0);
   }
   to {
-    transform: translate3d(6%, 5%, 0) scale(1.15);
+    transform: translate3d(6%, 5%, 0);
+  }
+}
+
+/* 傾きの向き。行を右上がりにする変種です */
+.ai-diagonal-right {
+  --ai-diagonal-tilt: 4deg;
+}
+
+@media (min-width: 640px) {
+  .ai-diagonal-right {
+    --ai-diagonal-tilt: 6deg;
   }
 }
 

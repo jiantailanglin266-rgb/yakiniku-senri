@@ -61,6 +61,9 @@ export default async function AiPortHome() {
       <HeroSection news={news} />
 
       {/* ② 最新AIニュース */}
+      {/* トップの帯。ファーストビュー直後に、詰めた高さで置きます */}
+      <KeywordMarquee compact tilt="right" />
+
       <Section id="news">
         <SectionHeading
           eyebrow="News"
