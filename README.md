@@ -6,6 +6,16 @@
 - ブランドコンセプト：**炎とともに、受け継がれる味。**
 - サブコンセプト：世田谷で愛され続ける、老舗焼肉店。
 
+> **このリポジトリは2つのサイトを配信しています。**
+>
+> | サイト      | URL               | 説明                                                                   |
+> | ----------- | ----------------- | ---------------------------------------------------------------------- |
+> | 焼肉 千里   | `/`（従来どおり） | このREADMEが説明しているサイト                                         |
+> | **AI PORT** | `/ai-port`        | AIポータルメディア。→ [docs/ai-port/README.md](docs/ai-port/README.md) |
+>
+> ルートグループ（`src/app/(senri)/`）を使っているため、**焼肉 千里 のURLは1つも変わっていません**。
+> CSS・フォント・レイアウトも分離されており、AI PORT 側の追加が千里側の表示速度に影響することはありません。
+
 ---
 
 ## 1. 技術構成
@@ -77,12 +87,15 @@ npm run start
 ```text
 src/
 ├── app/                  ルーティング（App Router）
-│   ├── page.tsx          トップページ
-│   ├── layout.tsx        共通レイアウト・フォント・全体のメタデータ
-│   ├── sitemap.ts        /sitemap.xml を生成
+│   ├── layout.tsx        <html>/<body> と共通フォント・全体のメタデータ
+│   ├── (senri)/          ★ 焼肉 千里（ルートグループ。URLには現れません）
+│   │   ├── layout.tsx    千里のヘッダー・フッター・背景
+│   │   ├── page.tsx      トップページ
+│   │   └── <各ページ>/page.tsx
+│   ├── ai-port/          AI PORT（→ docs/ai-port/README.md）
+│   ├── sitemap.ts        /sitemap.xml を生成（両サイト分）
 │   ├── robots.ts         /robots.txt を生成
-│   ├── not-found.tsx     404ページ
-│   └── <各ページ>/page.tsx
+│   └── not-found.tsx     404ページ
 ├── components/
 │   ├── layout/           ヘッダー・フッター・モバイルナビ・固定バー
 │   ├── home/             トップページの各セクション
@@ -94,7 +107,8 @@ src/
 │   ├── animations/       木槿（ムクゲ）の降下アニメーション
 │   ├── i18n/             自動翻訳（言語切り替え・翻訳エンジンの読み込み）
 │   ├── chat/             よくあるご質問チャットボット
-│   └── ui/               ボタン・見出し・画像・縦書きなどの汎用パーツ
+│   ├── ui/               ボタン・見出し・画像・縦書きなどの汎用パーツ
+│   └── ai-port/          AI PORT のUI（千里側からは読み込まれません）
 ├── data/                 ★ 編集するのは基本ここだけ
 │   ├── store.ts          店舗情報（住所・電話・営業時間・定休日）
 │   ├── site.ts           サイトURL・SNS・外部リンク
@@ -104,11 +118,16 @@ src/
 │   ├── content.ts        ストーリー・こだわり・オーナー・テイクアウト・FAQ
 │   ├── languages.ts      自動翻訳の対応言語（42言語）
 │   ├── chatbot.ts        チャットボットの回答（★編集はここ）
-│   └── navigation.ts     ナビゲーション項目
-└── lib/                  SEO / 構造化データ / ユーティリティ
+│   ├── navigation.ts     ナビゲーション項目
+│   └── ai-port/          AI PORT のデータ
+├── lib/                  SEO / 構造化データ / ユーティリティ
+│   └── ai-port/          AI PORT のRSS収集・検索・スコア計算など
+└── styles/
+    └── ai-port.css       AI PORT 専用のCSS（/ai-port 配下だけで読み込み）
 
 public/
 ├── images/               差し替え用の画像（下記参照）
+│   └── ai-port/          AI PORT のロゴ・OGP
 └── videos/               ブランドムービーのmp4置き場
 ```
 
