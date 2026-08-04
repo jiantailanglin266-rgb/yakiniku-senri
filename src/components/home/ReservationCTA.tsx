@@ -39,6 +39,7 @@ export function ReservationCTA() {
         <Reveal delay={250}>
           <a
             href={store.phoneHref}
+            translate="no"
             className="font-display text-gold-light hover:text-gold mt-6 inline-block text-[2.1rem] tracking-[0.08em] transition-colors duration-500 sm:text-[2.6rem]"
           >
             {store.phone}
