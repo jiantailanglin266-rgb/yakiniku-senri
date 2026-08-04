@@ -94,6 +94,16 @@ export const pt: Dictionary = {
     featured: "Criptomoedas em destaque",
     featuredLead: "Selecionadas pela redação com base na capitalização e na atenção atual.",
     dataNote: "Os preços são indicativos. Confirme sempre na corretora antes de operar.",
+    live: {
+      title: "Gráficos ao vivo",
+      lead: "Preços das principais moedas, obtidos diretamente pelo seu navegador.",
+      connected: "Ao vivo",
+      throttled: "Limite do provedor (nova tentativa em ~{sec} s)",
+      failed: "Não foi possível atualizar (exibindo o último valor recebido)",
+      interval: "atualiza a cada {sec} s aprox.",
+      source: "Dados de",
+      note: "Atualiza a cada 60 segundos aproximadamente, não a cada tick. Use os preços da corretora para operar.",
+    },
   },
   news: {
     title: "Últimas notícias de cripto",

@@ -119,6 +119,16 @@ const ja = {
     featured: "注目の仮想通貨",
     featuredLead: "時価総額と話題性から編集部が選定しています。",
     dataNote: "価格は参考値です。取引の際は必ず取引所の表示価格をご確認ください。",
+    live: {
+      title: "リアルタイムチャート",
+      lead: "主要銘柄の価格を、ブラウザから直接取得して表示します。",
+      connected: "取得中",
+      throttled: "提供元の制限中（約{sec}秒後に再試行）",
+      failed: "取得できませんでした（表示は直前の値です）",
+      interval: "約{sec}秒ごとに更新",
+      source: "データ提供",
+      note: "更新は約60秒ごとで、秒単位では動きません。売買の判断には取引所の表示価格をお使いください。",
+    },
   },
   news: {
     title: "最新仮想通貨ニュース",
@@ -412,6 +422,16 @@ const en: Dictionary = {
     featured: "Featured coins",
     featuredLead: "Selected by our editors on market cap and current attention.",
     dataNote: "Prices are indicative. Always confirm on the exchange before trading.",
+    live: {
+      title: "Live charts",
+      lead: "Prices for major coins, fetched directly by your browser.",
+      connected: "Live",
+      throttled: "Rate limited by the provider (retrying in ~{sec}s)",
+      failed: "Could not update (showing the last value received)",
+      interval: "updates about every {sec}s",
+      source: "Data by",
+      note: "Updates roughly every 60 seconds, not tick by tick. Use exchange prices for trading decisions.",
+    },
   },
   news: {
     title: "Latest crypto news",

@@ -27,6 +27,11 @@ export const mainNav: NavItem[] = [
     dictKey: "nav.market",
     children: [
       { href: "/coins", label: { ja: "仮想通貨一覧", en: "All coins" }, dictKey: "nav.coins" },
+      {
+        href: "/charts",
+        label: { ja: "リアルタイムチャート", en: "Live charts" },
+        dictKey: "market.live.title",
+      },
       { href: "/coins/bitcoin", label: { ja: "ビットコイン", en: "Bitcoin" } },
       { href: "/coins/ethereum", label: { ja: "イーサリアム", en: "Ethereum" } },
     ],

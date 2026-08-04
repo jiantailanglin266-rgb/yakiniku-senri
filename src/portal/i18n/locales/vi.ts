@@ -101,6 +101,16 @@ export const vi: Dictionary = {
     featured: "Tiền mã hoá nổi bật",
     featuredLead: "Do ban biên tập chọn dựa trên vốn hoá và mức quan tâm hiện tại.",
     dataNote: "Giá chỉ mang tính tham khảo. Hãy luôn kiểm tra trên sàn trước khi giao dịch.",
+    live: {
+      title: "Biểu đồ trực tiếp",
+      lead: "Giá các đồng tiền chính, lấy trực tiếp bằng trình duyệt của bạn.",
+      connected: "Đang nhận",
+      throttled: "Bị nhà cung cấp giới hạn (thử lại sau khoảng {sec} giây)",
+      failed: "Không cập nhật được (hiển thị giá trị nhận gần nhất)",
+      interval: "cập nhật khoảng mỗi {sec} giây",
+      source: "Dữ liệu từ",
+      note: "Cập nhật khoảng mỗi 60 giây, không theo từng biến động. Hãy dùng giá trên sàn để ra quyết định giao dịch.",
+    },
   },
   news: {
     title: "Tin tức tiền mã hoá mới nhất",

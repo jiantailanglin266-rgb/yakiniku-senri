@@ -150,9 +150,15 @@ export function navLabel(
   dict: unknown,
 ): string {
   if (item.dictKey) {
-    const [group, key] = item.dictKey.split(".");
-    const groups = dict as Record<string, Record<string, unknown>> | undefined;
-    const value = groups?.[group]?.[key];
+    // `market.live.title` のように階層が深いキーも引けるようにします
+    let value: unknown = dict;
+    for (const segment of item.dictKey.split(".")) {
+      if (typeof value !== "object" || value === null) {
+        value = undefined;
+        break;
+      }
+      value = (value as Record<string, unknown>)[segment];
+    }
     if (typeof value === "string" && value.length > 0) return value;
   }
   return t(item.label, locale);

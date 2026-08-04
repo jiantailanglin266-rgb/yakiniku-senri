@@ -94,6 +94,16 @@ export const id: Dictionary = {
     featured: "Aset kripto pilihan",
     featuredLead: "Dipilih redaksi berdasarkan kapitalisasi pasar dan perhatian saat ini.",
     dataNote: "Harga bersifat indikatif. Selalu konfirmasi di bursa sebelum bertransaksi.",
+    live: {
+      title: "Grafik langsung",
+      lead: "Harga koin utama, diambil langsung oleh peramban Anda.",
+      connected: "Menerima data",
+      throttled: "Dibatasi penyedia (mencoba lagi dalam ~{sec} detik)",
+      failed: "Gagal memperbarui (menampilkan nilai terakhir yang diterima)",
+      interval: "diperbarui sekitar tiap {sec} detik",
+      source: "Data oleh",
+      note: "Diperbarui sekitar setiap 60 detik, bukan per detik. Gunakan harga bursa untuk keputusan transaksi.",
+    },
   },
   news: {
     title: "Berita kripto terbaru",
