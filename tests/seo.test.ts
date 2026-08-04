@@ -13,7 +13,7 @@ import {
 } from "@/lib/structured-data";
 import sitemap from "@/app/sitemap";
 import robots from "@/app/robots";
-import { metadata as rootMetadata } from "@/app/layout";
+import { metadata as rootMetadata } from "@/app/(senri)/layout";
 import { siteUrl } from "@/data/site";
 import { store } from "@/data/store";
 import { faqs } from "@/data/content";
@@ -137,7 +137,10 @@ describe("sitemap / robots", () => {
 
   it("robots.txt が全ページを許可し sitemap を指す", () => {
     const result = robots();
-    expect(result.rules).toEqual([{ userAgent: "*", allow: "/" }]);
+    // 管理画面と検索結果だけは除外します（クロールしても価値がないため）
+    expect(result.rules).toEqual([
+      { userAgent: "*", allow: "/", disallow: ["/*/admin", "/*/search"] },
+    ]);
     expect(result.sitemap).toBe(`${siteUrl}/sitemap.xml`);
   });
 });

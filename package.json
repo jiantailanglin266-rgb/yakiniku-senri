@@ -13,7 +13,8 @@
     "test:watch": "vitest",
     "format": "prettier --write \"**/*.{ts,tsx,mts,mjs,css,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,mts,mjs,css,json,md}\"",
-    "placeholders": "node scripts/generate-placeholders.mjs"
+    "placeholders": "node scripts/generate-placeholders.mjs",
+    "sports:assets": "node scripts/generate-sports-assets.mjs"
   },
   "dependencies": {
     "framer-motion": "^12.43.0",
