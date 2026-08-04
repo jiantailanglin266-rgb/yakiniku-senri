@@ -39,7 +39,7 @@ export function GlobalHeader() {
       <div className="mx-auto flex h-18 max-w-[100rem] items-center justify-between gap-4 px-5 sm:h-20 sm:px-8">
         <Link
           href="/"
-          className="flex items-center gap-3 py-2"
+          className="flex shrink-0 items-center gap-3 py-2"
           aria-label={`${store.name} トップページ`}
         >
           <span aria-hidden="true" className="bg-gold/45 hidden h-9 w-px sm:block" />
@@ -50,16 +50,31 @@ export function GlobalHeader() {
             width={media.logo.width}
             height={media.logo.height}
             priority
-            className="h-11 w-auto sm:h-14"
+            /* 横幅が詰まったときに潰れないよう、縮小させません */
+            className="h-11 w-auto shrink-0 sm:h-14"
           />
         </Link>
 
         <DesktopNavigation />
 
-        <div className="flex items-center gap-1 sm:gap-2">
+        <div className="flex items-center gap-0.5 sm:gap-2">
+          {/*
+            スマートフォンではフッターと同じSNSアイコンを並べます。
+            電話予約は画面下部の固定バーとメニュー内にあるため、
+            ヘッダーからは外しています（横幅が足りず、他の要素を圧迫するため）。
+            360px 未満の端末では並べきれないので隠します（メニュー内には出ます）。
+          */}
+          <SocialLinks className="hidden min-[360px]:flex lg:hidden" size="xs" />
           <SocialLinks className="hidden lg:flex" only={["instagram", "tabelog"]} />
           <LanguageSwitcher />
-          <ReservationButton className="hidden md:inline-flex" />
+          {/*
+            ReservationButton は基底クラスに inline-flex を持ちます。
+            cn() は単純連結のため className の hidden が打ち消されてしまうので、
+            ラッパー側で出し分けます（md 以上では contents にして配置に影響させません）。
+          */}
+          <span className="hidden md:contents">
+            <ReservationButton />
+          </span>
           <MobileNavigation />
         </div>
       </div>
