@@ -218,9 +218,15 @@ describe("サイトマップ", () => {
     expect(urls.some((url) => url.includes("/api/"))).toBe(false);
   });
 
-  it("焼肉 千里 側のURLも従来どおり含まれる（既存を壊していない）", () => {
-    expect(urls.some((url) => url.endsWith("/menu"))).toBe(true);
-    expect(urls.some((url) => url.endsWith("/access"))).toBe(true);
+  /*
+    このリポジトリは焼肉 千里の公式サイトから分離しました。
+    分離前は千里のURL（/menu, /access）も同じサイトマップに入っていましたが、
+    いまは別リポジトリ・別サイトです。ここで期待すると、
+    「消えたのか、壊れたのか」の区別が付かなくなります。
+  */
+  it("他ポータルのURLが相互に含まれる", () => {
+    expect(urls.some((url) => url.includes("/ai-port"))).toBe(true);
+    expect(urls.some((url) => url.includes("/card-port/"))).toBe(true);
   });
 
   it("URLが重複していない", () => {

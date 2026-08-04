@@ -86,8 +86,11 @@ describe("ライセンス表記への導線", () => {
    * MIT は複製物に著作権表示を含めることが条件です。
    * 国旗を表示している画面から辿れないと、条件を満たしません。
    */
+  /*
+    焼肉 千里の LanguageSwitcher は、分離にともない別リポジトリへ移りました。
+    そちらでも同じ表記義務が残るため、あちらのテストが引き継いでいます。
+  */
   const switchers = [
-    "src/components/i18n/LanguageSwitcher.tsx",
     "src/components/ai-port/layout/AiLanguageSwitcher.tsx",
     "src/cardport/components/layout/LanguageSwitcher.tsx",
     "src/sports/components/layout/LocaleSwitcher.tsx",

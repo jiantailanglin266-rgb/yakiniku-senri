@@ -2,18 +2,21 @@ import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Noto_Sans_JP, Noto_Serif_JP } from "next/font/google";
 import "./globals.css";
 
-import { defaultDescription } from "@/lib/seo";
 import { withBasePath } from "@/lib/base-path";
-import { siteName, siteUrl } from "@/data/site";
-import { store } from "@/data/store";
 
 /**
  * ルートレイアウト。
  *
  * `<html>` / `<body>` と共通フォントだけを持ちます。
- * ブランド固有の外枠（ヘッダー・フッター・背景）は各ルートグループのレイアウトにあります。
- *   - `(senri)/layout.tsx` … 焼肉 千里
- *   - `ai-port/layout.tsx` … AI PORT
+ * 各ポータルの外枠（ヘッダー・フッター・背景・配色）は、それぞれのレイアウトにあります。
+ *   - `(portal)/[locale]/layout.tsx` … CRYPTO PORT
+ *   - `ai-port/layout.tsx`           … AI PORT
+ *   - `card-port/layout.tsx`         … CARD PORT
+ *   - `sports-port/[locale]/layout.tsx` … SPORTS PORT
+ *
+ * ここにサイト固有のメタデータを置かないでください。
+ * 4サイトが同居しているため、1つの説明文を全体の既定にすると必ず嘘になります。
+ * タイトル・説明・OGPは各サイトの generateMetadata が持ちます。
  */
 
 const notoSerifJp = Noto_Serif_JP({
@@ -40,41 +43,6 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
-  title: {
-    default: `${store.name} | 世田谷・上馬の老舗焼肉店（${store.founded}年創業）`,
-    template: `%s | ${siteName}`,
-  },
-  description: defaultDescription,
-  applicationName: siteName,
-  keywords: [
-    "焼肉 千里",
-    "世田谷 焼肉",
-    "上馬 焼肉",
-    "駒沢大学 焼肉",
-    "若林 焼肉",
-    "世田谷 老舗焼肉",
-    "もみ焼肉",
-    "秘伝のタレ",
-    "テイクアウト 焼肉",
-  ],
-  alternates: { canonical: siteUrl },
-  robots: { index: true, follow: true },
-  openGraph: {
-    type: "website",
-    locale: "ja_JP",
-    url: siteUrl,
-    siteName,
-    title: `${store.name} | 世田谷・上馬の老舗焼肉店`,
-    description: defaultDescription,
-    images: [{ url: "/images/common/ogp.png", width: 1200, height: 630, alt: siteName }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: `${store.name} | 世田谷・上馬の老舗焼肉店`,
-    description: defaultDescription,
-    images: ["/images/common/ogp.png"],
-  },
   icons: {
     // ファビコンは metadataBase の解決対象外のため、ベースパスを明示的に付与します
     icon: [
@@ -87,7 +55,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#080808",
+  themeColor: "#05070f",
   colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
