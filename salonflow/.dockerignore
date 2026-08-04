@@ -1,0 +1,16 @@
+node_modules
+.next
+out
+build
+storage
+.mailbox
+coverage
+.env
+.env.local
+.env.*.local
+.git
+.gitignore
+docs
+tests
+*.md
+!README.md

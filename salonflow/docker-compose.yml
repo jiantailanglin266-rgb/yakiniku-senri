@@ -1,0 +1,57 @@
+# SalonFlow — self-hosted stack
+#
+#   docker compose up -d --build
+#   docker compose exec app npx prisma migrate deploy
+#   docker compose exec app npx tsx prisma/seed/index.ts   # demo data (optional)
+#
+# The app is then on http://localhost:3100
+#
+# CHANGE `SESSION_SECRET` AND THE DATABASE PASSWORD BEFORE ANY REAL USE.
+
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: salonflow
+      POSTGRES_PASSWORD: change-me-before-real-use
+      POSTGRES_DB: salonflow
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      # The app cannot start before the database accepts connections, and
+      # `depends_on` alone does not wait for readiness.
+      test: ["CMD-SHELL", "pg_isready -U salonflow -d salonflow"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    ports:
+      # Exposed for local inspection only. Remove this in production.
+      - "5432:5432"
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://salonflow:change-me-before-real-use@db:5432/salonflow?schema=public
+      SESSION_SECRET: change-me-to-a-random-32-plus-character-string
+      APP_URL: http://localhost:3100
+      PRODUCT_NAME: SalonFlow
+      DEFAULT_TIMEZONE: Asia/Tokyo
+      # `console` writes to the log and sends nothing. See docs/SETUP.md §9.
+      MAIL_TRANSPORT: console
+      DEMO_MODE: "true"
+      LOG_LEVEL: info
+    ports:
+      - "3100:3100"
+    volumes:
+      # Chart photos. Replace with object storage before production use —
+      # a container-local volume is not a durable home for medical records.
+      - app-storage:/app/storage
+
+volumes:
+  db-data:
+  app-storage:

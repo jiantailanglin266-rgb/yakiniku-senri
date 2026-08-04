@@ -66,28 +66,28 @@ Phase 1（MVP）が動作する形で完成しています。
 
 ### 実装済み
 
-| 領域 | 内容 |
-| --- | --- |
-| 認証 | メール + パスワード、DB セッション、scrypt ハッシュ、ログイン失敗ロック、アイドルタイムアウト、セッション失効 |
-| マルチテナント | Organization / Brand / Store / Staff の 4 階層、テナントスコープ強制、越境テスト有り |
-| 権限 | 17 の Permission、10 の標準ロール、店舗スコープ、項目単位マスキング |
-| 店舗 | 基本情報、営業時間、定休日、臨時休業、タイムゾーン、予約ルール |
-| スタッフ | プロフィール、所属店舗、対応メニュー、スキル別所要時間係数、公開設定 |
-| メニュー | カテゴリ、価格、税区分、所要時間、準備/片付け/放置時間、オプション、必要設備 |
-| 設備 | 席・シャンプー台・ネイルテーブル・ベッド・個室、同時利用数 |
-| シフト | 日別シフト、休憩、休暇（承認制） |
-| **予約枠計算** | 純関数エンジン。営業時間・シフト・設備・工程分割・バッファ・締切を考慮 |
-| **重複予約防止** | PostgreSQL GiST 排他制約 + トランザクション + 冪等キー + 確定直前の再検証 |
-| 予約台帳 | 日 / 3 日 / 週表示、スタッフ別列、工程ギャップの可視化、状態遷移、ブロック時間 |
-| 公開予約ページ | `/booking/[storeSlug]` の 6 ステップフロー、多言語、モバイル最適化 |
-| 顧客管理 | 一覧・検索・詳細・正規化・重複検知・統合・匿名化（削除依頼対応） |
-| 電子カルテ | 業種別テンプレート、動的フィールド、閲覧監査、署名付き URL |
-| 通知 | Outbox パターン、メール、idempotency key、指数バックオフ再送 |
-| ダッシュボード | 当日指標、稼働率、30 日推移、経路別、メニュー別 |
-| 監査ログ | 記録・閲覧画面・秘密情報の自動除去 |
-| 多言語 | 日本語 / 英語（管理画面と予約画面を分離） |
-| API | REST（公開空き枠 / 公開予約 / ファイル配信 / CSV 出力 / ジョブ） |
-| テスト | 単体 153 / 結合 30（合計 183） |
+| 領域             | 内容                                                                                                          |
+| ---------------- | ------------------------------------------------------------------------------------------------------------- |
+| 認証             | メール + パスワード、DB セッション、scrypt ハッシュ、ログイン失敗ロック、アイドルタイムアウト、セッション失効 |
+| マルチテナント   | Organization / Brand / Store / Staff の 4 階層、テナントスコープ強制、越境テスト有り                          |
+| 権限             | 17 の Permission、10 の標準ロール、店舗スコープ、項目単位マスキング                                           |
+| 店舗             | 基本情報、営業時間、定休日、臨時休業、タイムゾーン、予約ルール                                                |
+| スタッフ         | プロフィール、所属店舗、対応メニュー、スキル別所要時間係数、公開設定                                          |
+| メニュー         | カテゴリ、価格、税区分、所要時間、準備/片付け/放置時間、オプション、必要設備                                  |
+| 設備             | 席・シャンプー台・ネイルテーブル・ベッド・個室、同時利用数                                                    |
+| シフト           | 日別シフト、休憩、休暇（承認制）                                                                              |
+| **予約枠計算**   | 純関数エンジン。営業時間・シフト・設備・工程分割・バッファ・締切を考慮                                        |
+| **重複予約防止** | PostgreSQL GiST 排他制約 + トランザクション + 冪等キー + 確定直前の再検証                                     |
+| 予約台帳         | 日 / 3 日 / 週表示、スタッフ別列、工程ギャップの可視化、状態遷移、ブロック時間                                |
+| 公開予約ページ   | `/booking/[storeSlug]` の 6 ステップフロー、多言語、モバイル最適化                                            |
+| 顧客管理         | 一覧・検索・詳細・正規化・重複検知・統合・匿名化（削除依頼対応）                                              |
+| 電子カルテ       | 業種別テンプレート、動的フィールド、閲覧監査、署名付き URL                                                    |
+| 通知             | Outbox パターン、メール、idempotency key、指数バックオフ再送                                                  |
+| ダッシュボード   | 当日指標、稼働率、30 日推移、経路別、メニュー別                                                               |
+| 監査ログ         | 記録・閲覧画面・秘密情報の自動除去                                                                            |
+| 多言語           | 日本語 / 英語（管理画面と予約画面を分離）                                                                     |
+| API              | REST（公開空き枠 / 公開予約 / ファイル配信 / CSV 出力 / ジョブ）                                              |
+| テスト           | 単体 153 / 結合 30（合計 183）                                                                                |
 
 ### 未実装（Phase 2 以降）
 
@@ -104,19 +104,19 @@ POS / 会計 UI・返金・レジ締め、在庫管理、クーポン UI、ポ�
 
 ## 3. 技術構成
 
-| 領域 | 採用 |
-| --- | --- |
-| フレームワーク | Next.js 16.2 (App Router / React Server Components / Turbopack) |
-| 言語 | TypeScript 5（`strict` + `noUncheckedIndexedAccess`） |
-| UI | React 19.2 / Tailwind CSS v4 / shadcn/ui 方式の自前プリミティブ |
-| 表・グラフ | TanStack Table / Recharts |
-| バリデーション | Zod 4 |
-| DB | PostgreSQL 16（`btree_gist` 拡張が必須） |
-| ORM | Prisma 6 |
-| テスト | Vitest 4（単体は純関数、結合は実 DB） |
-| 認証 | 自前の DB セッション（scrypt） — [ADR-0002](docs/adr/0002-session-auth.md) |
-| i18n | 自前の軽量辞書ローダー — [ADR-0005](docs/adr/0005-i18n.md) |
-| ジョブ | インプロセス実行 + HTTP トリガ — [ADR-0004](docs/adr/0004-jobs.md) |
+| 領域           | 採用                                                                       |
+| -------------- | -------------------------------------------------------------------------- |
+| フレームワーク | Next.js 16.2 (App Router / React Server Components / Turbopack)            |
+| 言語           | TypeScript 5（`strict` + `noUncheckedIndexedAccess`）                      |
+| UI             | React 19.2 / Tailwind CSS v4 / shadcn/ui 方式の自前プリミティブ            |
+| 表・グラフ     | TanStack Table / Recharts                                                  |
+| バリデーション | Zod 4                                                                      |
+| DB             | PostgreSQL 16（`btree_gist` 拡張が必須）                                   |
+| ORM            | Prisma 6                                                                   |
+| テスト         | Vitest 4（単体は純関数、結合は実 DB）                                      |
+| 認証           | 自前の DB セッション（scrypt） — [ADR-0002](docs/adr/0002-session-auth.md) |
+| i18n           | 自前の軽量辞書ローダー — [ADR-0005](docs/adr/0005-i18n.md)                 |
+| ジョブ         | インプロセス実行 + HTTP トリガ — [ADR-0004](docs/adr/0004-jobs.md)         |
 
 仕様書が推奨していた Auth.js / next-intl / BullMQ からの差分と、その理由・移行方針は
 上記 ADR に記載しています。
@@ -168,31 +168,31 @@ npm run dev
 
 `npm run db:seed` で以下が投入されます。**すべて架空です。**
 
-| 種別 | 件数 |
-| --- | --- |
-| 法人 | 1 |
-| 店舗 | 2（Demo Beauty Salon 一号店 / 二号店） |
-| スタッフ | 6 |
-| 顧客 | 50 |
-| メニュー | 20 |
-| 予約 | 100 |
-| カルテ | 30 |
-| 会計 | 50 |
-| 商品 | 10 |
-| 設備 | 12 |
-| シフト | 336 |
+| 種別     | 件数                                   |
+| -------- | -------------------------------------- |
+| 法人     | 1                                      |
+| 店舗     | 2（Demo Beauty Salon 一号店 / 二号店） |
+| スタッフ | 6                                      |
+| 顧客     | 50                                     |
+| メニュー | 20                                     |
+| 予約     | 100                                    |
+| カルテ   | 30                                     |
+| 会計     | 50                                     |
+| 商品     | 10                                     |
+| 設備     | 12                                     |
+| シフト   | 336                                    |
 
 ### デモ用ログイン
 
 パスワードはすべて `DemoPassw0rd!`（`DEMO_ADMIN_PASSWORD` で変更可）。
 
-| メールアドレス | ロール | 確認できること |
-| --- | --- | --- |
-| `owner@demo.example.invalid` | 法人オーナー | 全機能 |
-| `manager@demo.example.invalid` | 店長 | 顧客 CSV 出力・監査ログが見えない |
-| `reception@demo.example.invalid` | 受付 | カルテ写真が見えない |
-| `stylist@demo.example.invalid` | スタッフ | 自分の担当分のみ・連絡先がマスクされる |
-| `viewer@demo.example.invalid` | 閲覧専用 | 編集操作ができない・金額が伏せられる |
+| メールアドレス                   | ロール       | 確認できること                         |
+| -------------------------------- | ------------ | -------------------------------------- |
+| `owner@demo.example.invalid`     | 法人オーナー | 全機能                                 |
+| `manager@demo.example.invalid`   | 店長         | 顧客 CSV 出力・監査ログが見えない      |
+| `reception@demo.example.invalid` | 受付         | カルテ写真が見えない                   |
+| `stylist@demo.example.invalid`   | スタッフ     | 自分の担当分のみ・連絡先がマスクされる |
+| `viewer@demo.example.invalid`    | 閲覧専用     | 編集操作ができない・金額が伏せられる   |
 
 複数のアカウントでログインし直すと、権限設計が画面にどう反映されるかを確認できます。
 
@@ -252,6 +252,26 @@ salonflow/
 **依存方向は `app → modules → domain/infra` の一方向**です。
 ドメイン層（`booking-engine`, `lib/tax`, `lib/money`, `lib/time`）は
 I/O を一切行わない純関数であり、DB なしで単体テストできます。
+
+---
+
+## 6-b. デプロイ
+
+最短は Docker Compose です（外部アカウント不要）。
+
+```bash
+cd salonflow
+# docker-compose.yml のパスワードと SESSION_SECRET を書き換えてから
+docker compose up -d --build
+docker compose exec app npx prisma migrate deploy
+docker compose exec app npx tsx prisma/seed/index.ts   # デモデータ（任意）
+```
+
+Vercel・その他のホスティングを含む詳細は
+[docs/operations/DEPLOYMENT.md](docs/operations/DEPLOYMENT.md) を参照してください。
+
+**デプロイ後は必ず排他制約の存在を確認してください。** 失われていると
+二重予約がエラーなく成立します（手順は DEPLOYMENT.md §4）。
 
 ---
 
@@ -353,17 +373,17 @@ ALTER TABLE "AppointmentStaff"
 実サービス接続が必要な箇所は、**明示的なプレースホルダー**として実装しています。
 本物の外部サービスと連携できるかのような偽装は行いません。
 
-| 種別 | Phase 1 の挙動 | 本番化に必要なもの |
-| --- | --- | --- |
-| メール送信 | `console` / `file` トランスポート。**実送信しません** | SMTP または送信事業者の正式契約 |
-| SMS | 未実装。呼び出すと明示的にエラー | SMS 事業者との契約 |
-| LINE 通知 | 未実装。呼び出すと明示的にエラー | LINE 公式アカウントと Messaging API の正式利用 |
-| Web Push | 未実装 | VAPID 鍵 |
-| 決済 | インターフェース定義のみ | 決済事業者アカウントと本人確認 |
-| ストレージ | ローカルファイルシステム + 署名付き URL | S3 互換ストレージ |
-| 地図 | 住所テキストのみ | 地図 API の正式契約 |
-| 外部予約経路 | 値として定義するのみ | 各サービスの正式 API 契約 |
-| エラー追跡 | 構造化ログを標準出力へ | Sentry 等の契約と DSN |
+| 種別         | Phase 1 の挙動                                        | 本番化に必要なもの                             |
+| ------------ | ----------------------------------------------------- | ---------------------------------------------- |
+| メール送信   | `console` / `file` トランスポート。**実送信しません** | SMTP または送信事業者の正式契約                |
+| SMS          | 未実装。呼び出すと明示的にエラー                      | SMS 事業者との契約                             |
+| LINE 通知    | 未実装。呼び出すと明示的にエラー                      | LINE 公式アカウントと Messaging API の正式利用 |
+| Web Push     | 未実装                                                | VAPID 鍵                                       |
+| 決済         | インターフェース定義のみ                              | 決済事業者アカウントと本人確認                 |
+| ストレージ   | ローカルファイルシステム + 署名付き URL               | S3 互換ストレージ                              |
+| 地図         | 住所テキストのみ                                      | 地図 API の正式契約                            |
+| 外部予約経路 | 値として定義するのみ                                  | 各サービスの正式 API 契約                      |
+| エラー追跡   | 構造化ログを標準出力へ                                | Sentry 等の契約と DSN                          |
 
 ---
 
@@ -372,14 +392,14 @@ ALTER TABLE "AppointmentStaff"
 以下は**初期目標値**であり、実測値ではありません。
 本番相当のデータ量での負荷試験による検証が必要です。
 
-| 指標 | 目標 |
-| --- | --- |
-| 管理画面 通常 API | p95 500ms 以下 |
-| 公開空き枠 API | p95 800ms 以下 |
-| 予約確定 API | p95 1,500ms 以下 |
-| 月間稼働率 | 99.9% |
-| RPO | 24 時間以内 |
-| RTO | 4 時間以内 |
+| 指標              | 目標             |
+| ----------------- | ---------------- |
+| 管理画面 通常 API | p95 500ms 以下   |
+| 公開空き枠 API    | p95 800ms 以下   |
+| 予約確定 API      | p95 1,500ms 以下 |
+| 月間稼働率        | 99.9%            |
+| RPO               | 24 時間以内      |
+| RTO               | 4 時間以内       |
 
 ---
 
@@ -418,16 +438,16 @@ ALTER TABLE "AppointmentStaff"
 **本プロジェクトは法的結論を出していません。** 以下は専門家の確認が必要です。
 詳細と確認観点は [docs/legal/LEGAL_REVIEW.md](docs/legal/LEGAL_REVIEW.md) に整理しています。
 
-| 分野 | 主な論点 | 相談先 |
-| --- | --- | --- |
-| 個人情報保護法 | 要配慮個人情報の該当性、同意取得、越境移転、委託先管理 | 弁護士 |
-| 特定電子メール法 | 一斉配信のオプトイン、表示義務、送信者情報 | 弁護士 |
-| 特定商取引法 | キャンセル料、前払、表示義務 | 弁護士 |
-| 電子帳簿保存法 | 会計データの保存要件、検索要件 | 税理士 |
-| 消費税・インボイス | 端数処理、税区分、適格請求書の記載事項 | 税理士 |
-| 資金決済法 | 回数券・ポイント・前払式支払手段の該当性、供託義務 | 弁護士 |
-| 労働関連法令 | 勤怠・打刻・労働時間管理（Phase 2 で実装予定） | 社労士 |
-| 商標 | 製品名「SalonFlow」の使用可否 | 弁理士 |
+| 分野               | 主な論点                                               | 相談先 |
+| ------------------ | ------------------------------------------------------ | ------ |
+| 個人情報保護法     | 要配慮個人情報の該当性、同意取得、越境移転、委託先管理 | 弁護士 |
+| 特定電子メール法   | 一斉配信のオプトイン、表示義務、送信者情報             | 弁護士 |
+| 特定商取引法       | キャンセル料、前払、表示義務                           | 弁護士 |
+| 電子帳簿保存法     | 会計データの保存要件、検索要件                         | 税理士 |
+| 消費税・インボイス | 端数処理、税区分、適格請求書の記載事項                 | 税理士 |
+| 資金決済法         | 回数券・ポイント・前払式支払手段の該当性、供託義務     | 弁護士 |
+| 労働関連法令       | 勤怠・打刻・労働時間管理（Phase 2 で実装予定）         | 社労士 |
+| 商標               | 製品名「SalonFlow」の使用可否                          | 弁理士 |
 
 **労務管理機能**（シフト・勤怠）は、法令対応の確認が必要です。
 Phase 1 では打刻機能を実装していません。
@@ -441,24 +461,25 @@ Phase 1 では販売機能を実装していません（データモデルのみ
 
 ## 13. ドキュメント
 
-| ファイル | 内容 |
-| --- | --- |
-| [docs/PHASE0_DESIGN.md](docs/PHASE0_DESIGN.md) | **Phase 0 設計資料**（ER 図・権限マトリクス・シーケンス図・リスク一覧・未確定事項） |
-| [docs/SETUP.md](docs/SETUP.md) | 環境構築手順 |
-| [docs/architecture/ARCHITECTURE.md](docs/architecture/ARCHITECTURE.md) | アーキテクチャ詳細 |
-| [docs/DATA_MODEL.md](docs/DATA_MODEL.md) | 全モデル定義 |
-| [docs/PERMISSIONS.md](docs/PERMISSIONS.md) | 権限マトリクス |
-| [docs/api/API.md](docs/api/API.md) | API 一覧と共通仕様 |
-| [docs/api/openapi.yaml](docs/api/openapi.yaml) | OpenAPI 3.1 定義 |
-| [docs/security/SECURITY.md](docs/security/SECURITY.md) | セキュリティ設計 |
-| [docs/security/PRIVACY.md](docs/security/PRIVACY.md) | 個人情報の取り扱い |
-| [docs/operations/OPERATIONS.md](docs/operations/OPERATIONS.md) | 運用手順 |
-| [docs/operations/BACKUP_RESTORE.md](docs/operations/BACKUP_RESTORE.md) | バックアップと復旧 |
-| [docs/operations/INCIDENT_RESPONSE.md](docs/operations/INCIDENT_RESPONSE.md) | インシデント対応 |
-| [docs/legal/LEGAL_REVIEW.md](docs/legal/LEGAL_REVIEW.md) | 法務確認項目 |
-| [docs/MIGRATION.md](docs/MIGRATION.md) | マイグレーション方針 |
-| [docs/adr/](docs/adr/) | アーキテクチャ決定記録 |
-| [CHANGELOG.md](CHANGELOG.md) | 変更履歴 |
+| ファイル                                                                     | 内容                                                                                |
+| ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| [docs/PHASE0_DESIGN.md](docs/PHASE0_DESIGN.md)                               | **Phase 0 設計資料**（ER 図・権限マトリクス・シーケンス図・リスク一覧・未確定事項） |
+| [docs/SETUP.md](docs/SETUP.md)                                               | 環境構築手順                                                                        |
+| [docs/architecture/ARCHITECTURE.md](docs/architecture/ARCHITECTURE.md)       | アーキテクチャ詳細                                                                  |
+| [docs/DATA_MODEL.md](docs/DATA_MODEL.md)                                     | 全モデル定義                                                                        |
+| [docs/PERMISSIONS.md](docs/PERMISSIONS.md)                                   | 権限マトリクス                                                                      |
+| [docs/api/API.md](docs/api/API.md)                                           | API 一覧と共通仕様                                                                  |
+| [docs/api/openapi.yaml](docs/api/openapi.yaml)                               | OpenAPI 3.1 定義                                                                    |
+| [docs/security/SECURITY.md](docs/security/SECURITY.md)                       | セキュリティ設計                                                                    |
+| [docs/security/PRIVACY.md](docs/security/PRIVACY.md)                         | 個人情報の取り扱い                                                                  |
+| [docs/operations/DEPLOYMENT.md](docs/operations/DEPLOYMENT.md)               | **デプロイ手順**（Docker Compose / Vercel / 任意の Node ホスティング）              |
+| [docs/operations/OPERATIONS.md](docs/operations/OPERATIONS.md)               | 運用手順                                                                            |
+| [docs/operations/BACKUP_RESTORE.md](docs/operations/BACKUP_RESTORE.md)       | バックアップと復旧                                                                  |
+| [docs/operations/INCIDENT_RESPONSE.md](docs/operations/INCIDENT_RESPONSE.md) | インシデント対応                                                                    |
+| [docs/legal/LEGAL_REVIEW.md](docs/legal/LEGAL_REVIEW.md)                     | 法務確認項目                                                                        |
+| [docs/MIGRATION.md](docs/MIGRATION.md)                                       | マイグレーション方針                                                                |
+| [docs/adr/](docs/adr/)                                                       | アーキテクチャ決定記録                                                              |
+| [CHANGELOG.md](CHANGELOG.md)                                                 | 変更履歴                                                                            |
 
 ---
 

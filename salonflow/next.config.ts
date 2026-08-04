@@ -39,6 +39,32 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   serverExternalPackages: ["@prisma/client"],
   typedRoutes: false,
+
+  /**
+   * Emit `.next/standalone` so the app can be deployed without installing
+   * `node_modules` on the target — which is what makes the container image
+   * small enough to be practical.
+   */
+  output: "standalone",
+
+  /**
+   * SalonFlow lives inside a repository whose root holds an unrelated app.
+   * Next.js sees two lockfiles and, left alone, picks the repository root as
+   * the file-tracing root — which would drag the other app's dependencies
+   * into the deployment bundle. Pinning it here keeps tracing inside
+   * `salonflow/`.
+   */
+  outputFileTracingRoot: import.meta.dirname,
+
+  /**
+   * Documentation and tests are not needed to serve a request. Turbopack's
+   * tracer is conservative and pulls them in via the config file; excluding
+   * them keeps the deployment bundle to what actually runs.
+   */
+  outputFileTracingExcludes: {
+    "/**/*": ["docs/**", "tests/**", "**/*.md", ".mailbox/**", "storage/**"],
+  },
+
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
