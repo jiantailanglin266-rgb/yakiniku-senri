@@ -151,10 +151,21 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/media/data/assets.generated.json \
-                  src/media/data/usages.generated.json \
-                  src/media/data/requests.generated.json \
-                  public/media/wikimedia || true
+          # 1つずつ add します。
+          # まとめて渡すと、存在しないパスが1つあるだけで git add 全体が失敗し、
+          # 他のファイルも1件もステージされません（|| true は終了コードを隠すだけです）。
+          # 承認画像が0件のときは public/media/wikimedia が作られないため、
+          # 実際にこれで取得結果が毎回捨てられていました。
+          for path in src/media/data/assets.generated.json \
+                      src/media/data/usages.generated.json \
+                      src/media/data/requests.generated.json \
+                      public/media/wikimedia; do
+            if [ -e "$path" ]; then
+              git add "$path"
+            else
+              echo "（$path はまだありません）"
+            fi
+          done
           if git diff --cached --quiet; then
             echo "変更はありません。"
             exit 0
