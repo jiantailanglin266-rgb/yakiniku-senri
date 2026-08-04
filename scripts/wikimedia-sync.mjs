@@ -739,10 +739,27 @@ async function main() {
     ),
   });
 
+  /*
+    存在しない画像を指す掲載指定を落とします。
+
+    掲載指定と画像は別ファイルなので、片方だけが巻き戻ると迷子が残ります
+    （実際に push 再試行の rebase -X ours で発生しました。#46 で再発は
+    止めましたが、すでに残ったものは消えません）。
+
+    迷子は何も描画できず、media:validate を止め続けるだけなので、
+    書き出しのたびに掃除します。人の承認は assets 側にあるため、
+    ここで落としても判断は失われません。
+  */
+  const liveUsages = [...usageByKey.values()].filter((usage) => assetById.has(usage.assetId));
+  const orphanCount = usageByKey.size - liveUsages.length;
+  if (orphanCount > 0) {
+    console.log(`\n存在しない画像を指す掲載指定を ${orphanCount} 件外しました。`);
+  }
+
   await writeJsonFormatted(USAGES_PATH, {
     generatedAt,
     note: "scripts/wikimedia-sync.mjs が生成します。手で編集しないでください。",
-    usages: [...usageByKey.values()].sort(
+    usages: liveUsages.sort(
       (a, b) =>
         a.pageKey.localeCompare(b.pageKey) ||
         a.slot.localeCompare(b.slot) ||
