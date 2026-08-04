@@ -327,5 +327,335 @@
     "query": "ethereum blockchain diagram",
     "wikidataEntityId": null,
     "limit": 5
+  },
+  {
+    "pageKey": "aiport:topic:ai-news",
+    "slot": "background",
+    "query": "data center server room",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["データセンター"]
+    }
+  },
+  {
+    "pageKey": "aiport:topic:ai-tools",
+    "slot": "background",
+    "query": "laptop computer workspace",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["ノートパソコン"]
+    }
+  },
+  {
+    "pageKey": "aiport:topic:ai-video",
+    "slot": "background",
+    "query": "film camera lens",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["ビデオカメラ", "映画製作"]
+    }
+  },
+  {
+    "pageKey": "aiport:topic:ai-image",
+    "slot": "background",
+    "query": "color spectrum gradient",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["色空間"]
+    }
+  },
+  {
+    "pageKey": "aiport:topic:ai-music",
+    "slot": "background",
+    "query": "audio waveform spectrogram",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["シンセサイザー"]
+    }
+  },
+  {
+    "pageKey": "aiport:topic:ai-agent",
+    "slot": "background",
+    "query": "industrial robot arm",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["産業用ロボット"]
+    }
+  },
+  {
+    "pageKey": "aiport:topic:ai-programming",
+    "slot": "background",
+    "query": "source code on screen",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["ソースコード"]
+    }
+  },
+  {
+    "pageKey": "aiport:topic:ai-sales",
+    "slot": "background",
+    "query": "business meeting room",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["会議室"]
+    }
+  },
+  {
+    "pageKey": "aiport:topic:ai-marketing",
+    "slot": "background",
+    "query": "statistics chart graph",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["統計図表"]
+    }
+  },
+  {
+    "pageKey": "aiport:topic:ai-realestate",
+    "slot": "background",
+    "query": "city skyline buildings",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["超高層建築物"]
+    }
+  },
+  {
+    "pageKey": "aiport:topic:ai-medical",
+    "slot": "background",
+    "query": "MRI medical imaging",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["核磁気共鳴画像法"]
+    }
+  },
+  {
+    "pageKey": "aiport:topic:ai-education",
+    "slot": "background",
+    "query": "classroom lecture hall",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["教室"]
+    }
+  },
+  {
+    "pageKey": "aiport:topic:ai-investment",
+    "slot": "background",
+    "query": "stock exchange trading floor",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["証券取引所"]
+    }
+  },
+  {
+    "pageKey": "aiport:topic:web3",
+    "slot": "background",
+    "query": "computer network topology",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["コンピュータネットワーク"]
+    }
+  },
+  {
+    "pageKey": "aiport:topic:nft",
+    "slot": "background",
+    "query": "generative digital art",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["ジェネラティブアート"]
+    }
+  },
+  {
+    "pageKey": "aiport:topic:dao",
+    "slot": "background",
+    "query": "network graph nodes",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["グラフ理論"]
+    }
+  },
+  {
+    "pageKey": "aiport:topic:metaverse",
+    "slot": "background",
+    "query": "virtual reality headset",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["ヘッドマウントディスプレイ"]
+    }
+  },
+  {
+    "pageKey": "aiport:topic:blockchain",
+    "slot": "background",
+    "query": "blockchain diagram",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["ブロックチェーン"]
+    }
+  },
+  {
+    "pageKey": "aiport:guide:llmo-aeo-geo-guide",
+    "slot": "background",
+    "query": "search engine results",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["検索エンジン"]
+    }
+  },
+  {
+    "pageKey": "aiport:guide:ai-agent-basics",
+    "slot": "background",
+    "query": "industrial robot arm",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["産業用ロボット"]
+    }
+  },
+  {
+    "pageKey": "aiport:guide:choose-ai-tool",
+    "slot": "background",
+    "query": "hand tools workshop",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["工具"]
+    }
+  },
+  {
+    "pageKey": "aiport:guide:ai-image-rights",
+    "slot": "background",
+    "query": "copyright law books",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["著作権"]
+    }
+  },
+  {
+    "pageKey": "aiport:guide:rag-for-business",
+    "slot": "background",
+    "query": "document archive shelves",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["文書館"]
+    }
+  },
+  {
+    "pageKey": "aiport:event:gtc",
+    "slot": "card",
+    "query": "San Jose California skyline",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["サンノゼ (カリフォルニア州)"]
+    }
+  },
+  {
+    "pageKey": "aiport:event:google-io",
+    "slot": "card",
+    "query": "Mountain View California",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["マウンテンビュー (カリフォルニア州)"]
+    }
+  },
+  {
+    "pageKey": "aiport:event:ms-build",
+    "slot": "card",
+    "query": "Seattle skyline",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["シアトル"]
+    }
+  },
+  {
+    "pageKey": "aiport:event:wwdc",
+    "slot": "card",
+    "query": "Cupertino California",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["クパチーノ (カリフォルニア州)"]
+    }
+  },
+  {
+    "pageKey": "aiport:event:reinvent",
+    "slot": "card",
+    "query": "Las Vegas skyline",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["ラスベガス"]
+    }
+  },
+  {
+    "pageKey": "aiport:event:ces",
+    "slot": "card",
+    "query": "Las Vegas convention center",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["ラスベガス"]
+    }
+  },
+  {
+    "pageKey": "aiport:event:ai-expo-japan",
+    "slot": "card",
+    "query": "Tokyo Big Sight",
+    "wikidataEntityId": null,
+    "limit": 5,
+    "wikipedia": {
+      "lang": "ja",
+      "titles": ["東京国際展示場"]
+    }
   }
 ]
