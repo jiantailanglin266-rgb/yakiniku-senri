@@ -108,8 +108,13 @@ export const siteAssetCredits: SiteAssetCredit[] = [
       "（「THE STANDARD FOR GLOBAL VALUE」「BUILD・TRADE・EARN」「THE PEOPLE'S COIN」等）が" +
       "入っていました。値上がりの示唆・運営者による推奨と読まれるため、" +
       "コイン部分だけを正方形（800×800）で切り出した WebP に差し替えています" +
-      "（切り出し・リサイズ・形式変換のみ）。",
-    usedOn: ["CRYPTO PORT トップページ上部の銘柄バナー（CoinMarquee）"],
+      "（切り出し・リサイズ・形式変換のみ）。" +
+      "ファーストビュー用（public/images/portal/coins/）は、同じ素材から" +
+      "コインの円盤が収まる円で切り抜き、縁をぼかして 512×512 の透過 WebP にしたものです。",
+    usedOn: [
+      "CRYPTO PORT トップページ上部の銘柄バナー（CoinMarquee）",
+      "CRYPTO PORT ファーストビューに浮かぶコイン（CoinImage / 4点を円形に切り抜き）",
+    ],
     verifiedAt: "2026-08-04",
     verificationNote:
       "運営者から提供された画像です。公式のロゴファイルではなく、生成AIによる描写です。" +
