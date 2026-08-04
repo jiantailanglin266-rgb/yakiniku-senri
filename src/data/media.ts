@@ -107,17 +107,6 @@ export const media = {
   },
 } as const;
 
-/**
- * 金色マーキーの位置に流す映像帯。
- *
- * 装飾として置くため、構造化データ（VideoObject）には出しません。
- * 画面に出している主コンテンツではなく、`brandMovie` と役割が違います。
- * 差し替えるときは /public/videos/ にファイルを置いてパスを変えてください。
- */
-export const videoBand = {
-  mp4: withBasePath("/videos/brand-band.mp4") as string,
-} as const;
-
 export const brandMovie = {
   /** 例: "dQw4w9WgXcQ" — YouTube動画ID。設定するとYouTube埋め込みが優先されます */
   youtubeId: "" as string,
