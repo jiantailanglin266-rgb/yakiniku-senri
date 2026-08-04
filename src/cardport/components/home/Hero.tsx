@@ -2,7 +2,7 @@
  * ファーストビュー。
  *
  * ■ レイヤー構造
- *   背景（グラデーション・決済ネットワーク・粒子）
+ *   背景（プリズム・決済ネットワーク・粒子・下端のグラデーション）
  *   → 中間（3Dカード群）
  *   → 前面（コピー・検索・CTA）
  *
@@ -36,10 +36,29 @@ export function Hero({ locale, dictionary }: { locale: Locale; dictionary: Dicti
 
   const latest = getNews(1)[0];
 
+  /*
+    `isolate` は必須です。
+    背景レイヤーを `-z-10` で敷いていますが、この節が重ね合わせ文脈を作らないと
+    `-z-10` は節の外まで下がり、`.cardport-root` の不透明な背景（#05070f）の
+    裏へ回って一切見えなくなります（`position: relative` だけでは文脈を作りません）。
+    付けるまで PaymentNetwork と ParticleField は一度も描画されていませんでした。
+  */
   return (
-    <section className="relative overflow-hidden pt-28 pb-16 sm:pt-32 sm:pb-24">
-      {/* 背景レイヤー */}
-      <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+    <section className="relative isolate overflow-hidden pt-28 pb-16 sm:pt-32 sm:pb-24">
+      {/*
+        背景レイヤー。手前に来るほど後に書きます。
+          port-prism      色が巡るグラデーション（最背面）
+          PaymentNetwork  決済ネットワークの線
+          ParticleField   粒子
+          縦グラデーション 下端をページ背景へ溶かす
+        いずれも装飾で、読み上げ対象から外しています。
+        この上に載る見出し・CTAは不透明な文字色を保ってください。
+      */}
+      <div
+        className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+        aria-hidden="true"
+      >
+        <div className="port-prism" />
         <PaymentNetwork className="absolute inset-x-0 top-0 h-[130%] w-full opacity-[0.35]" />
         <ParticleField className="absolute inset-0 h-full w-full opacity-70" />
         <div className="from-cp-void/0 via-cp-void/30 to-cp-void absolute inset-0 bg-gradient-to-b" />

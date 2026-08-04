@@ -614,6 +614,62 @@
 }
 
 /* ------------------------------------------------------------
+   プリズム（ファーストビューの背景で色が巡るグラデーション）
+
+   円錐グラデーションを2枚ずらして重ね、強くぼかしてから全体の色相を回します。
+   単色のグラデーションを動かすより、隣り合う色が混ざって
+   「面が発光している」ように見えます。
+
+   文字には掛けません（`.cardport-root` の方針どおり、発光は面だけに掛けます）。
+   ------------------------------------------------------------ */
+@keyframes port-prism {
+  from {
+    transform: rotate(0deg) scale(1.08);
+  }
+  to {
+    transform: rotate(360deg) scale(1.08);
+  }
+}
+@keyframes port-hue {
+  from {
+    filter: blur(3.2rem) saturate(1.2) hue-rotate(0deg);
+  }
+  to {
+    filter: blur(3.2rem) saturate(1.2) hue-rotate(360deg);
+  }
+}
+.cardport-root .port-prism {
+  position: absolute;
+  /* 回転で四隅が欠けないよう、箱より一回り大きく取ります */
+  inset: -28%;
+  pointer-events: none;
+  opacity: 0.42;
+  background:
+    conic-gradient(
+      from 210deg at 32% 38%,
+      var(--color-cp-cyan) 0deg,
+      var(--color-cp-violet) 78deg,
+      var(--color-cp-magenta) 150deg,
+      var(--color-cp-amber) 232deg,
+      var(--color-cp-emerald) 300deg,
+      var(--color-cp-cyan) 360deg
+    ),
+    conic-gradient(
+      from 30deg at 72% 68%,
+      var(--color-cp-electric) 0deg,
+      var(--color-cp-emerald) 96deg,
+      var(--color-cp-gold) 190deg,
+      var(--color-cp-magenta) 268deg,
+      var(--color-cp-electric) 360deg
+    );
+  background-blend-mode: screen;
+  filter: blur(3.2rem) saturate(1.2);
+  animation:
+    port-prism 34s linear infinite,
+    port-hue 52s linear infinite;
+}
+
+/* ------------------------------------------------------------
    スクロール連動の出現
    ------------------------------------------------------------ */
 @keyframes port-reveal {
@@ -729,6 +785,11 @@
   }
   .cardport-root .port-float {
     animation: none !important;
+  }
+  /* 色が巡らないぶん、静止画としての見え方を整えます */
+  .cardport-root .port-prism {
+    animation: none !important;
+    transform: none !important;
   }
 }
 
