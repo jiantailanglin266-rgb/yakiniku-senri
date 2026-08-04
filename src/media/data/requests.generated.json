@@ -1,0 +1,1716 @@
+{
+  "generatedAt": "2026-08-04T14:32:48.230Z",
+  "note": "scripts/generate-media-requests.mjs が生成します。手で編集しないでください。手書きの指示は requests.json に書いてください。",
+  "requests": [
+    {
+      "pageKey": "cardport:card:aurum-noir",
+      "slot": "inline",
+      "query": "airport terminal",
+      "alternateQueries": ["travel luggage"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "card",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Airport terminal"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:card:aurum-platinum",
+      "slot": "inline",
+      "query": "hotel lobby",
+      "alternateQueries": ["airport terminal", "hotel reception desk"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "card",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Lobby (room)"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:card:chainbridge-flow",
+      "slot": "inline",
+      "query": "neural network diagram",
+      "alternateQueries": ["server rack data center", "blockchain network diagram"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "card",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Artificial neural network"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:card:chainbridge-nova",
+      "slot": "inline",
+      "query": "stock exchange trading screen",
+      "alternateQueries": ["blockchain network diagram", "cryptocurrency physical coin"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "card",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Stock exchange"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:card:hoshimart-gold",
+      "slot": "inline",
+      "query": "convenience store interior",
+      "alternateQueries": ["grocery store aisle", "supermarket checkout"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "card",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Convenience store"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:card:hoshimart-plus",
+      "slot": "inline",
+      "query": "convenience store interior",
+      "alternateQueries": ["grocery store aisle", "supermarket checkout"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "card",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Convenience store"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:card:linkmobile-prepaid",
+      "slot": "inline",
+      "query": "neural network diagram",
+      "alternateQueries": ["server rack data center", "mobile app screen"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "card",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Artificial neural network"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:card:meridian-classic",
+      "slot": "inline",
+      "query": "bank branch interior",
+      "alternateQueries": ["bank building", "gas station pump"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "card",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Bank"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:card:meridian-debit",
+      "slot": "inline",
+      "query": "bank branch interior",
+      "alternateQueries": ["bank building"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "card",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Bank"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:card:meridian-gold",
+      "slot": "inline",
+      "query": "loyalty card",
+      "alternateQueries": ["shopping receipt", "airport lounge"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "card",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Loyalty program"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:card:meridian-sky",
+      "slot": "inline",
+      "query": "passenger aircraft at gate",
+      "alternateQueries": ["airline boarding pass", "airport departure board"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "card",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Airliner"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:card:nova-travel",
+      "slot": "inline",
+      "query": "airport terminal",
+      "alternateQueries": ["travel luggage", "hotel lobby"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "card",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Airport terminal"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:card:nova-zero",
+      "slot": "inline",
+      "query": "contactless payment terminal",
+      "alternateQueries": ["convenience store interior", "mobile app screen"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "card",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Contactless payment"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:card:orbit-business",
+      "slot": "inline",
+      "query": "business meeting table",
+      "alternateQueries": ["modern office interior", "invoice paperwork"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "card",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Meeting"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:card:orbit-business-gold",
+      "slot": "inline",
+      "query": "business meeting table",
+      "alternateQueries": ["modern office interior", "invoice paperwork"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "card",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Meeting"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:card:orbit-solo",
+      "slot": "inline",
+      "query": "loyalty card",
+      "alternateQueries": ["shopping receipt"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "card",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Loyalty program"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:card:orbit-virtual",
+      "slot": "inline",
+      "query": "loyalty card",
+      "alternateQueries": ["shopping receipt"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "card",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Loyalty program"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:category:beginner",
+      "slot": "hero",
+      "query": "credit card payment",
+      "alternateQueries": ["plastic payment card"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "category",
+      "minimumWidth": 1280,
+      "minimumHeight": 720,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Credit card"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:category:black",
+      "slot": "hero",
+      "query": "credit card payment",
+      "alternateQueries": ["plastic payment card"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "category",
+      "minimumWidth": 1280,
+      "minimumHeight": 720,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Credit card"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:category:business",
+      "slot": "hero",
+      "query": "invoice paperwork",
+      "alternateQueries": ["office desk accounting", "credit card payment"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "category",
+      "minimumWidth": 1280,
+      "minimumHeight": 720,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Invoice"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:category:convenience-store",
+      "slot": "hero",
+      "query": "convenience store interior",
+      "alternateQueries": ["contactless payment terminal", "credit card payment"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "category",
+      "minimumWidth": 1280,
+      "minimumHeight": 720,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Convenience store"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:category:crypto",
+      "slot": "hero",
+      "query": "cryptocurrency physical coin",
+      "alternateQueries": ["bitcoin coin", "credit card payment"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "category",
+      "minimumWidth": 1280,
+      "minimumHeight": 720,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Cryptocurrency"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:category:debit",
+      "slot": "hero",
+      "query": "credit card payment",
+      "alternateQueries": ["plastic payment card", "debit card payment"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "category",
+      "minimumWidth": 1280,
+      "minimumHeight": 720,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Credit card"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:category:free-annual-fee",
+      "slot": "hero",
+      "query": "credit card payment",
+      "alternateQueries": ["plastic payment card"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "category",
+      "minimumWidth": 1280,
+      "minimumHeight": 720,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Credit card"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:category:gas",
+      "slot": "hero",
+      "query": "gas station pump",
+      "alternateQueries": ["credit card payment", "loyalty card"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "category",
+      "minimumWidth": 1280,
+      "minimumHeight": 720,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Filling station"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:category:gold",
+      "slot": "hero",
+      "query": "airport lounge",
+      "alternateQueries": ["credit card payment", "plastic payment card"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "category",
+      "minimumWidth": 1280,
+      "minimumHeight": 720,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Airport lounge"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:category:high-reward",
+      "slot": "hero",
+      "query": "loyalty card",
+      "alternateQueries": ["shopping receipt", "credit card payment"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "category",
+      "minimumWidth": 1280,
+      "minimumHeight": 720,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Loyalty program"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:category:mile",
+      "slot": "hero",
+      "query": "airline boarding pass",
+      "alternateQueries": ["airport departure board", "credit card payment"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "category",
+      "minimumWidth": 1280,
+      "minimumHeight": 720,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Boarding pass"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:category:online-shopping",
+      "slot": "hero",
+      "query": "online shopping laptop",
+      "alternateQueries": ["parcel delivery box", "credit card payment"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "category",
+      "minimumWidth": 1280,
+      "minimumHeight": 720,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Online shopping"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:category:overseas",
+      "slot": "hero",
+      "query": "airport terminal",
+      "alternateQueries": ["travel luggage", "credit card payment"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "category",
+      "minimumWidth": 1280,
+      "minimumHeight": 720,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Airport terminal"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:category:platinum",
+      "slot": "hero",
+      "query": "airport lounge",
+      "alternateQueries": ["credit card payment", "plastic payment card"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "category",
+      "minimumWidth": 1280,
+      "minimumHeight": 720,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Airport lounge"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:category:prepaid",
+      "slot": "hero",
+      "query": "credit card payment",
+      "alternateQueries": ["plastic payment card"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "category",
+      "minimumWidth": 1280,
+      "minimumHeight": 720,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Credit card"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:category:sole-proprietor",
+      "slot": "hero",
+      "query": "credit card payment",
+      "alternateQueries": ["plastic payment card", "invoice paperwork"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "category",
+      "minimumWidth": 1280,
+      "minimumHeight": 720,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Credit card"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:category:student",
+      "slot": "hero",
+      "query": "credit card payment",
+      "alternateQueries": ["plastic payment card"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "category",
+      "minimumWidth": 1280,
+      "minimumHeight": 720,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Credit card"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:category:subscription",
+      "slot": "hero",
+      "query": "credit card payment",
+      "alternateQueries": ["loyalty card", "plastic payment card"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "category",
+      "minimumWidth": 1280,
+      "minimumHeight": 720,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Credit card"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:category:travel",
+      "slot": "hero",
+      "query": "airport terminal",
+      "alternateQueries": ["travel luggage", "credit card payment"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "category",
+      "minimumWidth": 1280,
+      "minimumHeight": 720,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Airport terminal"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:category:virtual",
+      "slot": "hero",
+      "query": "credit card payment",
+      "alternateQueries": ["plastic payment card"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "category",
+      "minimumWidth": 1280,
+      "minimumHeight": 720,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Credit card"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:guide:business-card-basics",
+      "slot": "gallery",
+      "query": "invoice paperwork",
+      "alternateQueries": ["office desk accounting", "credit card payment"],
+      "locale": "ja",
+      "limit": 4,
+      "priority": 20,
+      "contentType": "guide",
+      "minimumWidth": 600,
+      "minimumHeight": 400,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Invoice"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:guide:business-card-basics",
+      "slot": "inline",
+      "query": "invoice paperwork",
+      "alternateQueries": ["office desk accounting", "credit card payment"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "guide",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Invoice"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:guide:card-security-basics",
+      "slot": "gallery",
+      "query": "computer security lock",
+      "alternateQueries": ["padlock security", "credit card payment"],
+      "locale": "ja",
+      "limit": 4,
+      "priority": 20,
+      "contentType": "guide",
+      "minimumWidth": 600,
+      "minimumHeight": 400,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Computer security"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:guide:card-security-basics",
+      "slot": "inline",
+      "query": "computer security lock",
+      "alternateQueries": ["padlock security", "credit card payment"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "guide",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Computer security"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:guide:how-to-choose-first-card",
+      "slot": "gallery",
+      "query": "credit card payment",
+      "alternateQueries": ["plastic payment card", "payment terminal"],
+      "locale": "ja",
+      "limit": 4,
+      "priority": 20,
+      "contentType": "guide",
+      "minimumWidth": 600,
+      "minimumHeight": 400,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Credit card"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:guide:how-to-choose-first-card",
+      "slot": "inline",
+      "query": "credit card payment",
+      "alternateQueries": ["plastic payment card", "payment terminal"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "guide",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Credit card"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:guide:miles-basics",
+      "slot": "gallery",
+      "query": "airline boarding pass",
+      "alternateQueries": ["airport departure board", "credit card payment"],
+      "locale": "ja",
+      "limit": 4,
+      "priority": 20,
+      "contentType": "guide",
+      "minimumWidth": 600,
+      "minimumHeight": 400,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Boarding pass"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:guide:miles-basics",
+      "slot": "inline",
+      "query": "airline boarding pass",
+      "alternateQueries": ["airport departure board", "credit card payment"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "guide",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Boarding pass"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:guide:points-basics",
+      "slot": "gallery",
+      "query": "loyalty card",
+      "alternateQueries": ["shopping receipt", "airline boarding pass"],
+      "locale": "ja",
+      "limit": 4,
+      "priority": 20,
+      "contentType": "guide",
+      "minimumWidth": 600,
+      "minimumHeight": 400,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Loyalty program"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:guide:web3-payment-basics",
+      "slot": "gallery",
+      "query": "bitcoin coin",
+      "alternateQueries": ["cryptocurrency physical coin", "encryption padlock"],
+      "locale": "ja",
+      "limit": 4,
+      "priority": 20,
+      "contentType": "guide",
+      "minimumWidth": 600,
+      "minimumHeight": 400,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Bitcoin"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:guide:web3-payment-basics",
+      "slot": "inline",
+      "query": "bitcoin coin",
+      "alternateQueries": ["cryptocurrency physical coin", "encryption padlock"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "guide",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Bitcoin"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:news:annual-fee-vs-benefit",
+      "slot": "comparison",
+      "query": "airport lounge",
+      "alternateQueries": ["airport terminal seating", "credit card payment"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "news:comparison",
+      "minimumWidth": 800,
+      "minimumHeight": 450,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Airport lounge"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:news:annual-fee-vs-benefit",
+      "slot": "inline",
+      "query": "airport lounge",
+      "alternateQueries": ["airport terminal seating", "credit card payment"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 20,
+      "contentType": "news:comparison",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Airport lounge"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:news:cashless-ratio-report",
+      "slot": "inline",
+      "query": "cashless payment",
+      "alternateQueries": ["QR code payment terminal", "data chart printout"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 20,
+      "contentType": "news:editorial",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Cashless society"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:news:cashless-ratio-report",
+      "slot": "thumbnail",
+      "query": "cashless payment",
+      "alternateQueries": ["QR code payment terminal", "data chart printout"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "news:editorial",
+      "minimumWidth": 400,
+      "minimumHeight": 225,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Cashless society"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:news:chainbridge-region-restriction",
+      "slot": "inline",
+      "query": "credit card payment",
+      "alternateQueries": ["plastic payment card", "bitcoin coin"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 20,
+      "contentType": "news:official",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Credit card"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:news:chainbridge-region-restriction",
+      "slot": "thumbnail",
+      "query": "credit card payment",
+      "alternateQueries": ["plastic payment card", "bitcoin coin"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "news:official",
+      "minimumWidth": 400,
+      "minimumHeight": 225,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Credit card"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:news:hoshimart-plus-campaign",
+      "slot": "inline",
+      "query": "loyalty card",
+      "alternateQueries": ["shopping receipt", "credit card payment"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 20,
+      "contentType": "news:campaign",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Loyalty program"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:news:hoshimart-plus-campaign",
+      "slot": "thumbnail",
+      "query": "loyalty card",
+      "alternateQueries": ["shopping receipt", "credit card payment"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "news:campaign",
+      "minimumWidth": 400,
+      "minimumHeight": 225,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Loyalty program"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:news:meridian-gold-waiver-change",
+      "slot": "inline",
+      "query": "bank branch interior",
+      "alternateQueries": ["bank building", "credit card payment"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 20,
+      "contentType": "news:official",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Bank"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:news:meridian-gold-waiver-change",
+      "slot": "thumbnail",
+      "query": "bank branch interior",
+      "alternateQueries": ["bank building", "credit card payment"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "news:official",
+      "minimumWidth": 400,
+      "minimumHeight": 225,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Bank"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:news:mile-award-chart-change",
+      "slot": "inline",
+      "query": "airline boarding pass",
+      "alternateQueries": ["airport departure board", "passenger aircraft at gate"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 20,
+      "contentType": "news:press",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Boarding pass"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:news:mile-award-chart-change",
+      "slot": "thumbnail",
+      "query": "airline boarding pass",
+      "alternateQueries": ["airport departure board", "passenger aircraft at gate"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "news:press",
+      "minimumWidth": 400,
+      "minimumHeight": 225,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Boarding pass"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:news:nova-zero-contactless-boost",
+      "slot": "inline",
+      "query": "contactless payment terminal",
+      "alternateQueries": ["loyalty card", "NFC payment"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 20,
+      "contentType": "news:official",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Contactless payment"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:news:nova-zero-contactless-boost",
+      "slot": "thumbnail",
+      "query": "contactless payment terminal",
+      "alternateQueries": ["loyalty card", "NFC payment"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "news:official",
+      "minimumWidth": 400,
+      "minimumHeight": 225,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Contactless payment"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:news:nova-zero-rate-analysis",
+      "slot": "inline",
+      "query": "loyalty card",
+      "alternateQueries": ["shopping receipt", "credit card payment"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 20,
+      "contentType": "news:editorial",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Loyalty program"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:news:nova-zero-rate-analysis",
+      "slot": "thumbnail",
+      "query": "loyalty card",
+      "alternateQueries": ["shopping receipt", "credit card payment"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "news:editorial",
+      "minimumWidth": 400,
+      "minimumHeight": 225,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Loyalty program"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:news:orbit-business-accounting-integration",
+      "slot": "inline",
+      "query": "invoice paperwork",
+      "alternateQueries": ["office desk accounting", "receipt paper"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 20,
+      "contentType": "news:official",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Invoice"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:news:orbit-business-accounting-integration",
+      "slot": "thumbnail",
+      "query": "invoice paperwork",
+      "alternateQueries": ["office desk accounting", "receipt paper"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "news:official",
+      "minimumWidth": 400,
+      "minimumHeight": 225,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Invoice"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:news:phishing-alert-card-brands",
+      "slot": "inline",
+      "query": "padlock security",
+      "alternateQueries": ["credit card payment", "phishing warning screen"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 20,
+      "contentType": "news:editorial",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Padlock"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:news:phishing-alert-card-brands",
+      "slot": "thumbnail",
+      "query": "padlock security",
+      "alternateQueries": ["credit card payment", "phishing warning screen"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "news:editorial",
+      "minimumWidth": 400,
+      "minimumHeight": 225,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Padlock"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:news:stablecoin-settlement-pilot",
+      "slot": "inline",
+      "query": "cryptocurrency exchange screen",
+      "alternateQueries": ["digital currency concept", "invoice paperwork"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 20,
+      "contentType": "news:press",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Cryptocurrency exchange"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:news:stablecoin-settlement-pilot",
+      "slot": "thumbnail",
+      "query": "cryptocurrency exchange screen",
+      "alternateQueries": ["digital currency concept", "invoice paperwork"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "news:press",
+      "minimumWidth": 400,
+      "minimumHeight": 225,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Cryptocurrency exchange"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:news:virtual-card-fraud-prevention",
+      "slot": "inline",
+      "query": "credit card payment",
+      "alternateQueries": ["plastic payment card", "computer security lock"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 20,
+      "contentType": "news:editorial",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Credit card"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:news:virtual-card-fraud-prevention",
+      "slot": "thumbnail",
+      "query": "credit card payment",
+      "alternateQueries": ["plastic payment card", "computer security lock"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "news:editorial",
+      "minimumWidth": 400,
+      "minimumHeight": 225,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Credit card"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:payment:pay-bankdirect",
+      "slot": "inline",
+      "query": "bank branch interior",
+      "alternateQueries": ["bank building", "contactless payment terminal"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "payment",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Bank"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:payment:pay-hoshipay",
+      "slot": "inline",
+      "query": "loyalty card",
+      "alternateQueries": ["QR code payment", "QR code scanner"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "payment",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Loyalty program"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:payment:pay-laterflow",
+      "slot": "inline",
+      "query": "contactless payment terminal",
+      "alternateQueries": ["point of sale terminal"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "payment",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Contactless payment"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:payment:pay-linkpay",
+      "slot": "inline",
+      "query": "QR code payment",
+      "alternateQueries": ["QR code scanner", "contactless payment terminal"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "payment",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["QR code"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:payment:pay-novawallet",
+      "slot": "inline",
+      "query": "hardware wallet device",
+      "alternateQueries": ["leather wallet", "credit card payment"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "payment",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Cryptocurrency wallet"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:payment:pay-transit",
+      "slot": "inline",
+      "query": "credit card payment",
+      "alternateQueries": ["loyalty card", "plastic payment card"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "payment",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Credit card"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:video:best-credit-cards",
+      "slot": "thumbnail",
+      "query": "credit card payment",
+      "alternateQueries": ["plastic payment card", "point of sale terminal"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "video",
+      "minimumWidth": 400,
+      "minimumHeight": 225,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Credit card"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:video:business-card-basics",
+      "slot": "thumbnail",
+      "query": "invoice paperwork",
+      "alternateQueries": ["office desk accounting", "credit card payment"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "video",
+      "minimumWidth": 400,
+      "minimumHeight": 225,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Invoice"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:video:crypto-card-risk",
+      "slot": "thumbnail",
+      "query": "bitcoin coin",
+      "alternateQueries": ["credit card payment", "cryptocurrency physical coin"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "video",
+      "minimumWidth": 400,
+      "minimumHeight": 225,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Bitcoin"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:video:point-strategy",
+      "slot": "thumbnail",
+      "query": "loyalty card",
+      "alternateQueries": ["shopping receipt", "contactless payment terminal"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "video",
+      "minimumWidth": 400,
+      "minimumHeight": 225,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Loyalty program"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:video:shorts-annual-fee",
+      "slot": "thumbnail",
+      "query": "loyalty card",
+      "alternateQueries": ["shopping receipt", "contactless payment terminal"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "video",
+      "minimumWidth": 400,
+      "minimumHeight": 225,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Loyalty program"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:video:shorts-touch-payment",
+      "slot": "thumbnail",
+      "query": "contactless payment terminal",
+      "alternateQueries": ["credit card payment", "NFC payment"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "video",
+      "minimumWidth": 400,
+      "minimumHeight": 225,
+      "aspectRatio": 1.778,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Contactless payment"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:web3:chainbridge-flow-card",
+      "slot": "inline",
+      "query": "credit card payment",
+      "alternateQueries": ["plastic payment card", "bitcoin coin"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "web3",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Credit card"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:web3:chainbridge-remit",
+      "slot": "inline",
+      "query": "cryptocurrency exchange screen",
+      "alternateQueries": ["digital currency concept"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "web3",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Cryptocurrency exchange"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:web3:linkmobile-token-reward",
+      "slot": "inline",
+      "query": "digital art display screen",
+      "alternateQueries": ["loyalty card", "shopping receipt"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "web3",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Digital art"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:web3:nova-web3-wallet",
+      "slot": "inline",
+      "query": "hardware wallet device",
+      "alternateQueries": ["leather wallet", "mobile app screen"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "web3",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Cryptocurrency wallet"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:web3:orbit-nft-membership",
+      "slot": "inline",
+      "query": "digital art display screen",
+      "alternateQueries": [],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "web3",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Digital art"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    },
+    {
+      "pageKey": "cardport:web3:stablepay-settlement",
+      "slot": "inline",
+      "query": "cryptocurrency exchange screen",
+      "alternateQueries": ["digital currency concept"],
+      "locale": "ja",
+      "limit": 6,
+      "priority": 10,
+      "contentType": "web3",
+      "minimumWidth": 640,
+      "minimumHeight": 427,
+      "aspectRatio": 1.5,
+      "wikipediaTitles": {
+        "lang": "en",
+        "titles": ["Cryptocurrency exchange"]
+      },
+      "wikidataEntityId": null,
+      "generated": true
+    }
+  ]
+}
