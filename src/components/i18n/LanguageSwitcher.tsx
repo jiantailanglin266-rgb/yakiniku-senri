@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Image from "next/image";
 import { Check } from "lucide-react";
 import { findLanguage, flagSrc, languages } from "@/data/languages";
+import { withBasePath } from "@/lib/base-path";
 import {
   applyLanguage,
   getServerLanguage,
@@ -117,6 +118,17 @@ export function LanguageSwitcher({ className }: { className?: string }) {
             日本語以外は機械翻訳です。正確な情報は日本語表示をご確認ください。
             <br />
             国旗は言語の目印で、国を限定するものではありません。
+            <br />
+            {/* MIT は著作権表示の保持が条件です。素材を使う画面から辿れるようにしています。 */}
+            国旗素材：
+            <a
+              href={withBasePath("/licenses/flag-icons-LICENSE.txt")}
+              target="_blank"
+              rel="noopener noreferrer license"
+              className="hover:text-gold underline underline-offset-2 transition-colors"
+            >
+              flag-icons（MIT）
+            </a>
           </p>
         </div>
       ) : null}

@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { Reveal } from "@/components/ai-port/effects/Reveal";
 import { PageBody, PageHero, RelatedLinks } from "@/components/ai-port/layout/PageShell";
+import { AiMediaBackdrop } from "@/components/ai-port/media/AiMediaBackdrop";
 import { NewsCard, NewsEmptyState } from "@/components/ai-port/news/NewsCard";
 import { ToolGrid } from "@/components/ai-port/tools/ToolCard";
 import { Disclaimer, GlassCard } from "@/components/ai-port/ui/Primitives";
@@ -81,6 +82,15 @@ export default async function TopicHubPage({ params }: Params) {
         title={topic.name}
         description={topic.summary}
         crumbs={crumbs}
+        visual={
+          <AiMediaBackdrop
+            kind="topic"
+            slug={topic.slug}
+            theme={topicTheme(topic.group)}
+            seed={topics.findIndex((entry) => entry.slug === topic.slug)}
+            priority
+          />
+        }
       />
 
       <PageBody>
@@ -188,4 +198,11 @@ export default async function TopicHubPage({ params }: Params) {
       />
     </>
   );
+}
+
+/** トピックの系統から装飾テーマを決めます（画像が無いときの見た目）。 */
+function topicTheme(group: "ai" | "industry" | "web3"): "news" | "business" | "crypto" {
+  if (group === "web3") return "crypto";
+  if (group === "industry") return "business";
+  return "news";
 }

@@ -138,6 +138,19 @@ export function LocaleSwitcher({
               </button>
             );
           })}
+
+          {/* MIT は著作権表示の保持が条件です。旗を使う画面から辿れるようにしています。 */}
+          <p className="px-3 pt-2 pb-1 text-[0.625rem] leading-[1.7] text-(--color-ink-dim)">
+            国旗素材：
+            <a
+              href={withBasePath("/licenses/flag-icons-LICENSE.txt")}
+              target="_blank"
+              rel="noopener noreferrer license"
+              className="underline underline-offset-2"
+            >
+              flag-icons（MIT）
+            </a>
+          </p>
         </div>
       ) : null}
     </div>
