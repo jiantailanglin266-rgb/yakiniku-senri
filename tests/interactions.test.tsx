@@ -26,8 +26,37 @@ const movieWithSource = {
 
 const movieWithoutSource = { ...movieWithSource, mp4: "" };
 
+/**
+ * IntersectionObserver を「観測した瞬間に交差した」と通知する実装に差し替えます。
+ * setup.ts の既定スタブは通知しないため、遅延読み込みの前後を別々に検証できます。
+ */
+function observeImmediately() {
+  class ImmediateObserver {
+    root = null;
+    rootMargin = "";
+    thresholds: number[] = [];
+    constructor(private readonly callback: IntersectionObserverCallback) {}
+    observe(target: Element) {
+      // 同期で呼ぶと effect 内の setState になるため、次のタスクで通知します
+      setTimeout(() => {
+        this.callback(
+          [{ isIntersecting: true, target } as IntersectionObserverEntry],
+          this as unknown as IntersectionObserver,
+        );
+      }, 0);
+    }
+    unobserve() {}
+    disconnect() {}
+    takeRecords(): IntersectionObserverEntry[] {
+      return [];
+    }
+  }
+  vi.stubGlobal("IntersectionObserver", ImmediateObserver);
+}
+
 afterEach(() => {
   document.body.style.overflow = "";
+  vi.unstubAllGlobals();
 });
 
 describe("モバイルナビゲーション", () => {
@@ -74,37 +103,40 @@ describe("モバイルナビゲーション", () => {
 });
 
 describe("ブランドムービー", () => {
-  it("動画が設定されている場合のみ再生ボタンを表示する", () => {
-    const { unmount } = render(<BrandMovie movie={movieWithoutSource} />);
+  it("動画が未設定なら準備中の案内だけを出す", () => {
+    render(<BrandMovie movie={movieWithoutSource} />);
+    expect(screen.getByText("ブランドムービーは準備中です。")).toBeInTheDocument();
+    expect(document.querySelector("video")).toBeNull();
+  });
+
+  it("枠が画面に入るまで動画を読み込まない", () => {
+    // setup.ts の IntersectionObserver スタブは交差を通知しません
+    render(<BrandMovie movie={movieWithSource} />);
+    expect(document.querySelector("video")).toBeNull();
+  });
+
+  it("再生ボタンを押さずに消音でループ再生する", async () => {
+    observeImmediately();
+    render(<BrandMovie movie={movieWithSource} />);
+
+    const video = await waitFor(() => {
+      const element = document.querySelector("video");
+      expect(element).toBeTruthy();
+      return element as HTMLVideoElement;
+    });
+
+    // 自動再生はミュートかつインライン再生でなければブラウザが許可しません
+    expect(video).toHaveAttribute("autoplay");
+    expect(video).toHaveAttribute("loop");
+    expect(video).toHaveAttribute("playsinline");
+    expect(video.muted || video.hasAttribute("muted")).toBe(true);
+
+    // 再生ボタンもモーダルも出さない＝再生してもページの表示は変わりません
     expect(
       screen.queryByRole("button", { name: "ブランドムービーを再生する" }),
     ).not.toBeInTheDocument();
-    expect(screen.getByText("ブランドムービーは準備中です。")).toBeInTheDocument();
-    unmount();
-
-    render(<BrandMovie movie={movieWithSource} />);
-    expect(screen.getByRole("button", { name: "ブランドムービーを再生する" })).toBeInTheDocument();
-  });
-
-  it("モーダルを開閉できる", async () => {
-    const user = userEvent.setup();
-    render(<BrandMovie movie={movieWithSource} />);
-
-    await user.click(screen.getByRole("button", { name: "ブランドムービーを再生する" }));
-    const dialog = await screen.findByRole("dialog", { name: "ブランドムービー" });
-    expect(dialog).toBeInTheDocument();
-
-    // 自動再生する場合はミュート必須
-    const video = dialog.querySelector("video");
-    expect(video).toBeTruthy();
-    expect(video).toHaveAttribute("autoplay");
-    expect(video?.muted ?? video?.hasAttribute("muted")).toBeTruthy();
-    expect(video).toHaveAttribute("controls");
-
-    await user.keyboard("{Escape}");
-    await waitFor(() =>
-      expect(screen.queryByRole("dialog", { name: "ブランドムービー" })).not.toBeInTheDocument(),
-    );
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(document.body.style.overflow).toBe("");
   });
 });
 
