@@ -1,22 +1,24 @@
 # このリポジトリについて
 
-このリポジトリには **2つのサイト** が同居しています。
+このリポジトリには、**4つの独立したサイト**が同居しています。
+ルートレイアウト（`src/app/layout.tsx`）は `<html>` / `<body>` だけを持ち、
+ブランド固有の外枠（背景・ヘッダー・フッター・フォント・CSS）は各サイトのレイアウトにあります。
 
-| サイト                              | URL                      | ソース                       | ドキュメント                             |
-| ----------------------------------- | ------------------------ | ---------------------------- | ---------------------------------------- |
-| 焼肉 千里（公式サイト）             | `/`, `/menu`, `/news` …  | `src/app/(senri)/`           | この README（以下）                      |
-| **SPORTS PORT**（スポーツポータル） | `/ja/`, `/en/`, `/ko/` … | `src/app/(sports)/[locale]/` | [docs/sports-port/](./docs/sports-port/) |
+| サイト              | URL                         | ルート              | ドキュメント                               |
+| ------------------- | --------------------------- | ------------------- | ------------------------------------------ |
+| 焼肉 千里（既存）   | `/`, `/menu`, `/news` …     | `src/app/(senri)/`  | この README（以下）                        |
+| AI PORT             | `/ai-port/…`                | `src/app/ai-port/`  | ソース内のコメント                         |
+| CRYPTO PORT（仮称） | `/ja/`, `/en/`, `/zh-cn/` … | `src/app/(portal)/` | **[README-portal.md](./README-portal.md)** |
+| SPORTS PORT（仮称） | `/sports-port/ja/` … | `src/app/sports-port/` | **[docs/sports-port/](./docs/sports-port/)** |
 
-Next.js の複数ルートレイアウト（route group ごとに `layout.tsx` を持つ構成）で完全に分離しており、
-フォント・CSS・ヘッダー・フッターを共有しません。片方を触ってももう片方は影響を受けません。
-
-```bash
-npm install
-npm run dev
-# → http://localhost:3000/      焼肉 千里
-# → http://localhost:3000/ja    SPORTS PORT（日本語）
-# → http://localhost:3000/en    SPORTS PORT（英語）
-```
+> 相互リンクは張っていません。CRYPTO PORT を別ドメインへ切り出すときは
+> `src/app/(portal)/` と `src/portal/` を移せば済む構成にしています。
+> SPORTS PORT も同様に `src/app/sports-port/` と `src/sports/` で完結しており、
+> 切り出すときは `src/sports/config/site.ts` の `routePrefix` を空にすれば `/ja/` に戻ります。
+>
+> 各サイトのCSSはそれぞれのレイアウトからのみ読み込まれ、
+> クラス指定は `.ai-root` / `.portal-root` / `.sports-root` の配下に閉じています。
+> 焼肉 千里 のページに他サイトのスタイルやフォントは配信されません。
 
 ---
 
@@ -27,6 +29,17 @@ npm run dev
 
 - ブランドコンセプト：**炎とともに、受け継がれる味。**
 - サブコンセプト：世田谷で愛され続ける、老舗焼肉店。
+
+> **このリポジトリは3つのサイトを配信しています。**
+>
+> | サイト          | URL               | 説明                                                                   |
+> | --------------- | ----------------- | ---------------------------------------------------------------------- |
+> | 焼肉 千里       | `/`（従来どおり） | このREADMEが説明しているサイト                                         |
+> | **AI PORT**     | `/ai-port`        | AIポータルメディア。→ [docs/ai-port/README.md](docs/ai-port/README.md) |
+> | **CRYPTO PORT** | `/ja`, `/en` …    | 仮想通貨ポータル。→ [README-portal.md](README-portal.md)               |
+>
+> ルートグループ（`src/app/(senri)/`）を使っているため、**焼肉 千里 のURLは1つも変わっていません**。
+> CSS・フォント・レイアウトも分離されており、他サイトの追加が千里側の表示速度に影響することはありません。
 
 ---
 
@@ -99,12 +112,15 @@ npm run start
 ```text
 src/
 ├── app/                  ルーティング（App Router）
-│   ├── page.tsx          トップページ
-│   ├── layout.tsx        共通レイアウト・フォント・全体のメタデータ
-│   ├── sitemap.ts        /sitemap.xml を生成
+│   ├── layout.tsx        <html>/<body> と共通フォント・全体のメタデータ
+│   ├── (senri)/          ★ 焼肉 千里（ルートグループ。URLには現れません）
+│   │   ├── layout.tsx    千里のヘッダー・フッター・背景
+│   │   ├── page.tsx      トップページ
+│   │   └── <各ページ>/page.tsx
+│   ├── ai-port/          AI PORT（→ docs/ai-port/README.md）
+│   ├── sitemap.ts        /sitemap.xml を生成（両サイト分）
 │   ├── robots.ts         /robots.txt を生成
-│   ├── not-found.tsx     404ページ
-│   └── <各ページ>/page.tsx
+│   └── not-found.tsx     404ページ
 ├── components/
 │   ├── layout/           ヘッダー・フッター・モバイルナビ・固定バー
 │   ├── home/             トップページの各セクション
@@ -116,7 +132,8 @@ src/
 │   ├── animations/       木槿（ムクゲ）の降下アニメーション
 │   ├── i18n/             自動翻訳（言語切り替え・翻訳エンジンの読み込み）
 │   ├── chat/             よくあるご質問チャットボット
-│   └── ui/               ボタン・見出し・画像・縦書きなどの汎用パーツ
+│   ├── ui/               ボタン・見出し・画像・縦書きなどの汎用パーツ
+│   └── ai-port/          AI PORT のUI（千里側からは読み込まれません）
 ├── data/                 ★ 編集するのは基本ここだけ
 │   ├── store.ts          店舗情報（住所・電話・営業時間・定休日）
 │   ├── site.ts           サイトURL・SNS・外部リンク
@@ -126,11 +143,16 @@ src/
 │   ├── content.ts        ストーリー・こだわり・オーナー・テイクアウト・FAQ
 │   ├── languages.ts      自動翻訳の対応言語（42言語）
 │   ├── chatbot.ts        チャットボットの回答（★編集はここ）
-│   └── navigation.ts     ナビゲーション項目
-└── lib/                  SEO / 構造化データ / ユーティリティ
+│   ├── navigation.ts     ナビゲーション項目
+│   └── ai-port/          AI PORT のデータ
+├── lib/                  SEO / 構造化データ / ユーティリティ
+│   └── ai-port/          AI PORT のRSS収集・検索・スコア計算など
+└── styles/
+    └── ai-port.css       AI PORT 専用のCSS（/ai-port 配下だけで読み込み）
 
 public/
 ├── images/               差し替え用の画像（下記参照）
+│   └── ai-port/          AI PORT のロゴ・OGP
 └── videos/               ブランドムービーのmp4置き場
 ```
 

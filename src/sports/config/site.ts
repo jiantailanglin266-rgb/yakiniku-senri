@@ -20,7 +20,13 @@ export type SportsBrand = {
   subCopy: { ja: string; en: string };
   /** 公開ドメイン（末尾スラッシュなし） */
   origin: string;
-  /** サイトのルートパス。ロケールセグメントの前に付きます */
+  /**
+   * サイトのルートパス。ロケールセグメントの前に付きます。
+   *
+   * 同じリポジトリに CRYPTO PORT が同居しており、そちらが `/{locale}/` を
+   * 使っているため、SPORTS PORT は `/sports-port/{locale}/` に置いています。
+   * 独自ドメインへ切り出すときは空文字にすれば `/ja/` に戻ります。
+   */
   routePrefix: string;
 };
 
@@ -58,7 +64,7 @@ export const brand: SportsBrand = {
     en: "Live scores, news, streaming, data and Web3 in a single sports terminal.",
   },
   origin,
-  routePrefix: "",
+  routePrefix: process.env.NEXT_PUBLIC_SPORTS_ROUTE_PREFIX ?? "/sports-port",
 };
 
 export const theme: SportsTheme = {
