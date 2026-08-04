@@ -20,6 +20,13 @@ import { coinBanners } from "@/portal/data/coin-banners";
  *   バナーの文字は画像内にあり、読み上げでは意味が伝わりません。
  *   `alt` は空にし、リンクの名前は銘柄名（`label`）で与えます。
  *
+ * ⚠ 画像はコイン部分だけの正方形です（値動きの示唆を避けるため）
+ *   元素材は横長で、右側に上昇チャートと
+ *   「THE STANDARD FOR GLOBAL VALUE」「BUILD・TRADE・EARN」のような
+ *   キャッチコピーが入っていました。値上がりの示唆や運営者による推奨と
+ *   読まれるため、コイン部分だけを切り出しています。
+ *   ここに騰落率・順位・チャートを足さないでください。
+ *
  * ■ バナーが1件も無いときは、帯そのものを出しません
  *   空の帯だけが残ると、レイアウトに意味のない隙間ができます。
  */
@@ -42,10 +49,10 @@ export function CoinMarquee({ locale, label }: { locale: string; label: string }
                   <Image
                     src={withBasePath(`/images/portal/marquee/${banner.slug}.webp`)}
                     alt=""
-                    width={960}
-                    height={480}
-                    sizes="(min-width: 640px) 28rem, 20rem"
-                    className="h-24 w-auto object-cover sm:h-32"
+                    width={800}
+                    height={800}
+                    sizes="128px"
+                    className="size-24 object-cover sm:size-32"
                   />
                 </Link>
               </li>
