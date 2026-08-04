@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-04T15:28:23.254Z",
+  "generatedAt": "2026-08-04T15:32:26.213Z",
   "note": "scripts/wikimedia-sync.mjs が生成します。手で編集しないでください。",
   "assets": [
     {
@@ -121,6 +121,555 @@
       ],
       "verifiedAt": null,
       "relevanceScore": 87
+    },
+    {
+      "id": "wm-additivecolormixing",
+      "commonsPageId": 4798169,
+      "wikidataEntityId": null,
+      "fileName": "AdditiveColorMixing.svg",
+      "title": "File:AdditiveColorMixing.svg",
+      "description": "Additive color mixing with RGB colors .",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/0/05/AdditiveColorMixing.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/AdditiveColorMixing.svg/1280px-AdditiveColorMixing.svg.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "commonsPageUrl": "https://commons.wikimedia.org/wiki/File:AdditiveColorMixing.svg",
+      "mimeType": "image/svg+xml",
+      "width": 512,
+      "height": 500,
+      "aspectRatio": 1.024,
+      "authorName": "Quark67 (Modified color by Monami)",
+      "authorUrl": "https://fr.wikipedia.org/wiki/User:Quark67",
+      "sourceName": "Image:Synthese+.svg",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Synthese%2B.svg",
+      "rawLicenses": [
+        "CC BY-SA 3.0",
+        "cc-by-sa-3.0",
+        "Creative Commons Attribution-Share Alike 3.0"
+      ],
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "attributionText": null,
+      "copyrightStatus": "True",
+      "publicDomainRationale": null,
+      "categories": [
+        "CC-BY-SA-3.0",
+        "GFDL",
+        "License migration redundant",
+        "RGB",
+        "Self-published work"
+      ],
+      "retrievedAt": "2026-08-04T15:18:04.932Z",
+      "metadataRaw": {
+        "DateTime": {
+          "value": "2023-08-28 12:06:11",
+          "source": "mediawiki-metadata",
+          "hidden": ""
+        },
+        "ObjectName": {
+          "value": "AdditiveColorMixing",
+          "source": "mediawiki-metadata"
+        },
+        "CommonsMetadataExtension": {
+          "value": 1.2,
+          "source": "extension",
+          "hidden": ""
+        },
+        "Categories": {
+          "value": "GFDL|RGB|License migration redundant|Self-published work",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "Assessments": {
+          "value": "",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "ImageDescription": {
+          "value": "<a href=\"https://en.wikipedia.org/wiki/Additive_color\" class=\"extiw\" title=\"w:Additive color\">Additive color</a> mixing with <a href=\"https://en.wikipedia.org/wiki/RGB_color_model\" class=\"extiw\" title=\"w:RGB color model\">RGB colors</a>.",
+          "source": "commons-desc-page"
+        },
+        "DateTimeOriginal": {
+          "value": "2008-09-16",
+          "source": "commons-desc-page"
+        },
+        "Credit": {
+          "value": "<a href=\"//commons.wikimedia.org/wiki/File:Synthese%2B.svg\" title=\"File:Synthese+.svg\">Image:Synthese+.svg</a>",
+          "source": "commons-desc-page"
+        },
+        "Artist": {
+          "value": "<a href=\"https://fr.wikipedia.org/wiki/User:Quark67\" class=\"extiw\" title=\"fr:User:Quark67\">Quark67</a>(Modified color by Monami)",
+          "source": "commons-desc-page"
+        },
+        "LicenseShortName": {
+          "value": "CC BY-SA 3.0",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "UsageTerms": {
+          "value": "Creative Commons Attribution-Share Alike 3.0",
+          "source": "commons-desc-page"
+        },
+        "AttributionRequired": {
+          "value": "true",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "LicenseUrl": {
+          "value": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "commons-desc-page"
+        },
+        "Copyrighted": {
+          "value": "True",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "Restrictions": {
+          "value": "",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "License": {
+          "value": "cc-by-sa-3.0",
+          "source": "commons-templates",
+          "hidden": ""
+        }
+      },
+      "licenseCode": "CC-BY-3.0",
+      "localPath": null,
+      "optimized": null,
+      "blurDataURL": null,
+      "isModified": false,
+      "modificationDescription": null,
+      "objectPosition": "center",
+      "rightsRisks": [],
+      "usageStatus": "in_use",
+      "verificationStatus": "needs_review",
+      "verificationNotes": [
+        "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
+        "Wikipedia 記事の代表画像として取得（関連度 13 点）",
+        "採点の内訳: {\"query\":10,\"alternate\":0,\"title\":0,\"description\":3,\"categories\":0,\"wikidata\":0,\"resolution\":0,\"landscape\":6,\"aspect\":6,\"license\":5,\"metadata\":8,\"penalty\":-25}",
+        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。"
+      ],
+      "verifiedAt": null,
+      "relevanceScore": 13
+    },
+    {
+      "id": "wm-aerial-wiew-of-los-angeles-international-airport-juy-2022-2",
+      "commonsPageId": 120963100,
+      "wikidataEntityId": null,
+      "fileName": "Aerial wiew of Los Angeles International Airport, Juy 2022 (2).jpg",
+      "title": "File:Aerial wiew of Los Angeles International Airport, Juy 2022 (2).jpg",
+      "description": "Aerial wiew of Los Angeles International Airport, Juy 2022",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d7/Aerial_wiew_of_Los_Angeles_International_Airport%2C_Juy_2022_%282%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Aerial_wiew_of_Los_Angeles_International_Airport%2C_Juy_2022_%282%29.jpg/1280px-Aerial_wiew_of_Los_Angeles_International_Airport%2C_Juy_2022_%282%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "commonsPageUrl": "https://commons.wikimedia.org/wiki/File:Aerial_wiew_of_Los_Angeles_International_Airport,_Juy_2022_(2).jpg",
+      "mimeType": "image/jpeg",
+      "width": 3636,
+      "height": 2468,
+      "aspectRatio": 1.473257698541329,
+      "authorName": "Benoît Prieur",
+      "authorUrl": "https://www.wikidata.org/wiki/Q42790984",
+      "sourceName": "Own work",
+      "sourceUrl": null,
+      "rawLicenses": ["CC0", "cc0", "Creative Commons Zero, Public Domain Dedication"],
+      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "attributionText": null,
+      "copyrightStatus": "True",
+      "publicDomainRationale": null,
+      "categories": [
+        "2022 aerial photographs of the United States",
+        "2022 at Los Angeles International Airport",
+        "2022 images by Benoît Prieur",
+        "Aerial photographs from airplanes over the United States",
+        "Aerial photographs of Los Angeles",
+        "Aircraft cabin window views",
+        "CC-Zero",
+        "Files with coordinates missing SDC location of creation",
+        "Images of Los Angeles International Airport by Benoît Prieur",
+        "Images taken from airliner by Benoît Prieur",
+        "July 2022 in Los Angeles",
+        "Photographs by Benoît Prieur",
+        "Self-published work",
+        "Tom Bradley International Terminal",
+        "United States photographs taken on 2022-07-19",
+        "Uploaded with PyCommonist"
+      ],
+      "retrievedAt": "2026-08-04T15:21:17.807Z",
+      "metadataRaw": {
+        "DateTime": {
+          "value": "2022-07-23 16:11:56",
+          "source": "mediawiki-metadata",
+          "hidden": ""
+        },
+        "ObjectName": {
+          "value": "Aerial wiew of Los Angeles International Airport, Juy 2022 (2)",
+          "source": "mediawiki-metadata"
+        },
+        "CommonsMetadataExtension": {
+          "value": 1.2,
+          "source": "extension",
+          "hidden": ""
+        },
+        "Categories": {
+          "value": "CC-Zero|Tom Bradley International Terminal|Photographs by Benoît Prieur|Self-published work|Aerial photographs of Los Angeles|Files with coordinates missing SDC location of creation|2022 images by Benoît Prieur|2022 at Los Angeles International Airport|2022 aerial photographs of the United States|July 2022 in Los Angeles|United States photographs taken on 2022-07-19|Aerial photographs from airplanes over the United States|Uploaded with PyCommonist|Aircraft cabin window views|Images taken from airliner by Benoît Prieur|Images of Los Angeles International Airport by Benoît Prieur",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "Assessments": {
+          "value": "",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "GPSLatitude": {
+          "value": "33.936897",
+          "source": "commons-desc-page"
+        },
+        "GPSLongitude": {
+          "value": "-118.409347",
+          "source": "commons-desc-page"
+        },
+        "GPSMapDatum": {
+          "value": "WGS-84",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "ImageDescription": {
+          "value": "Aerial wiew of Los Angeles International Airport, Juy 2022",
+          "source": "commons-desc-page"
+        },
+        "DateTimeOriginal": {
+          "value": "2022-07-19 14:27:45",
+          "source": "commons-desc-page"
+        },
+        "Credit": {
+          "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+          "source": "commons-desc-page"
+        },
+        "Artist": {
+          "value": "<bdi><a href=\"https://www.wikidata.org/wiki/Q42790984\" class=\"extiw\" title=\"d:Q42790984\"><span title=\"French computing engineer\">Benoît Prieur</span></a></bdi>",
+          "source": "commons-desc-page"
+        },
+        "LicenseShortName": {
+          "value": "CC0",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "UsageTerms": {
+          "value": "Creative Commons Zero, Public Domain Dedication",
+          "source": "commons-desc-page"
+        },
+        "AttributionRequired": {
+          "value": "false",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "LicenseUrl": {
+          "value": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+          "source": "commons-desc-page"
+        },
+        "Copyrighted": {
+          "value": "True",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "Restrictions": {
+          "value": "",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "License": {
+          "value": "cc0",
+          "source": "commons-templates",
+          "hidden": ""
+        }
+      },
+      "licenseCode": "CC0",
+      "localPath": null,
+      "optimized": null,
+      "blurDataURL": null,
+      "isModified": false,
+      "modificationDescription": null,
+      "objectPosition": "center",
+      "rightsRisks": [],
+      "usageStatus": "in_use",
+      "verificationStatus": "needs_review",
+      "verificationNotes": [
+        "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
+        "Wikipedia 記事の代表画像として取得（関連度 78 点）",
+        "採点の内訳: {\"query\":30,\"alternate\":0,\"title\":0,\"description\":4,\"categories\":8,\"wikidata\":0,\"resolution\":14,\"landscape\":6,\"aspect\":8,\"license\":10,\"metadata\":8,\"penalty\":-10}",
+        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。"
+      ],
+      "verifiedAt": null,
+      "relevanceScore": 78
+    },
+    {
+      "id": "wm-apartment-building-lobby",
+      "commonsPageId": 101219151,
+      "wikidataEntityId": null,
+      "fileName": "Apartment building lobby.jpg",
+      "title": "File:Apartment building lobby.jpg",
+      "description": "Lobby of a contemporary apartment building in Washington, D.C.",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b6/Apartment_building_lobby.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Apartment_building_lobby.jpg/1280px-Apartment_building_lobby.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "commonsPageUrl": "https://commons.wikimedia.org/wiki/File:Apartment_building_lobby.jpg",
+      "mimeType": "image/jpeg",
+      "width": 4608,
+      "height": 3456,
+      "aspectRatio": 1.3333333333333333,
+      "authorName": "Sdkb",
+      "authorUrl": "https://commons.wikimedia.org/wiki/User:Sdkb",
+      "sourceName": "Own work",
+      "sourceUrl": null,
+      "rawLicenses": [
+        "CC BY-SA 4.0",
+        "cc-by-sa-4.0",
+        "Creative Commons Attribution-Share Alike 4.0"
+      ],
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "attributionText": null,
+      "copyrightStatus": "True",
+      "publicDomainRationale": null,
+      "categories": [
+        "Apartment buildings in Washington, D.C.",
+        "CC-BY-SA-4.0",
+        "Files with coordinates missing SDC location of creation",
+        "Images taken by Sdkb",
+        "Lobbies in the United States",
+        "Self-published work"
+      ],
+      "retrievedAt": "2026-08-04T15:19:30.354Z",
+      "metadataRaw": {
+        "DateTime": {
+          "value": "2021-03-08 07:01:13",
+          "source": "mediawiki-metadata",
+          "hidden": ""
+        },
+        "ObjectName": {
+          "value": "Apartment building lobby",
+          "source": "mediawiki-metadata"
+        },
+        "CommonsMetadataExtension": {
+          "value": 1.2,
+          "source": "extension",
+          "hidden": ""
+        },
+        "Categories": {
+          "value": "Apartment buildings in Washington, D.C.|Self-published work|Files with coordinates missing SDC location of creation|Images taken by Sdkb|Lobbies in the United States",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "Assessments": {
+          "value": "",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "GPSLatitude": {
+          "value": "38.879435",
+          "source": "commons-desc-page"
+        },
+        "GPSLongitude": {
+          "value": "-77.005569",
+          "source": "commons-desc-page"
+        },
+        "GPSMapDatum": {
+          "value": "WGS-84",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "ImageDescription": {
+          "value": "Lobby of a contemporary apartment building in Washington, D.C.",
+          "source": "commons-desc-page"
+        },
+        "DateTimeOriginal": {
+          "value": "2019-07-14 18:40:52",
+          "source": "commons-desc-page"
+        },
+        "Credit": {
+          "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+          "source": "commons-desc-page"
+        },
+        "Artist": {
+          "value": "<a href=\"//commons.wikimedia.org/wiki/User:Sdkb\" title=\"User:Sdkb\">Sdkb</a>",
+          "source": "commons-desc-page"
+        },
+        "LicenseShortName": {
+          "value": "CC BY-SA 4.0",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "UsageTerms": {
+          "value": "Creative Commons Attribution-Share Alike 4.0",
+          "source": "commons-desc-page"
+        },
+        "AttributionRequired": {
+          "value": "true",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "LicenseUrl": {
+          "value": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "commons-desc-page"
+        },
+        "Copyrighted": {
+          "value": "True",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "Restrictions": {
+          "value": "",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "License": {
+          "value": "cc-by-sa-4.0",
+          "source": "commons-templates",
+          "hidden": ""
+        }
+      },
+      "licenseCode": "CC-BY-4.0",
+      "localPath": null,
+      "optimized": null,
+      "blurDataURL": null,
+      "isModified": false,
+      "modificationDescription": null,
+      "objectPosition": "center",
+      "rightsRisks": [],
+      "usageStatus": "in_use",
+      "verificationStatus": "needs_review",
+      "verificationNotes": [
+        "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
+        "Wikipedia 記事の代表画像として取得（関連度 61 点）",
+        "採点の内訳: {\"query\":15,\"alternate\":0,\"title\":0,\"description\":4,\"categories\":0,\"wikidata\":0,\"resolution\":14,\"landscape\":6,\"aspect\":9,\"license\":5,\"metadata\":8,\"penalty\":0}",
+        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。"
+      ],
+      "verifiedAt": null,
+      "relevanceScore": 61
+    },
+    {
+      "id": "wm-apple-payment-square",
+      "commonsPageId": 47048635,
+      "wikidataEntityId": null,
+      "fileName": "Apple-payment-square.jpg",
+      "title": "File:Apple-payment-square.jpg",
+      "description": "Paying for coffee with Square's apple pay reader Detailed photo description: A gentleman paying for coffee with an iPhone 6 with Square's apple pay and EMV reader . Location: Blue Bottle Coffee Company in San Francisco, CA",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/b/bb/Apple-payment-square.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Apple-payment-square.jpg/1280px-Apple-payment-square.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "commonsPageUrl": "https://commons.wikimedia.org/wiki/File:Apple-payment-square.jpg",
+      "mimeType": "image/jpeg",
+      "width": 1360,
+      "height": 880,
+      "aspectRatio": 1.5454545454545454,
+      "authorName": "Mybloodtypeiscoffee",
+      "authorUrl": "https://commons.wikimedia.org/w/index.php?title=User:Mybloodtypeiscoffee&amp;action=edit&amp;redlink=1",
+      "sourceName": "Own work",
+      "sourceUrl": null,
+      "rawLicenses": ["CC BY 4.0", "cc-by-4.0", "Creative Commons Attribution 4.0"],
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+      "attributionText": null,
+      "copyrightStatus": "True",
+      "publicDomainRationale": null,
+      "categories": [
+        "Apple Pay",
+        "Blue Bottle Coffee",
+        "CC-BY-4.0",
+        "Cashless society",
+        "IPhone 6S",
+        "Self-published work",
+        "Square, Inc."
+      ],
+      "retrievedAt": "2026-08-04T15:22:15.475Z",
+      "metadataRaw": {
+        "DateTime": {
+          "value": "2016-02-19 00:34:03",
+          "source": "mediawiki-metadata",
+          "hidden": ""
+        },
+        "ObjectName": {
+          "value": "Apple-payment-square",
+          "source": "mediawiki-metadata"
+        },
+        "CommonsMetadataExtension": {
+          "value": 1.2,
+          "source": "extension",
+          "hidden": ""
+        },
+        "Categories": {
+          "value": "Apple Pay|IPhone 6S|Blue Bottle Coffee|Square, Inc.|Self-published work|Cashless society",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "Assessments": {
+          "value": "",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "ImageDescription": {
+          "value": "Paying for coffee with Square's apple pay reader<br>\n<p><b>Detailed photo description:</b> A gentleman paying for coffee with an iPhone 6 with <a rel=\"nofollow\" class=\"external text\" href=\"https://squareup.com/contactless-chip-reader\">Square's apple pay and EMV reader</a>.<br>\n</p>\nLocation: Blue Bottle Coffee Company in San Francisco, CA",
+          "source": "commons-desc-page"
+        },
+        "DateTimeOriginal": {
+          "value": "2015-06-15",
+          "source": "commons-desc-page"
+        },
+        "Credit": {
+          "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+          "source": "commons-desc-page"
+        },
+        "Artist": {
+          "value": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:Mybloodtypeiscoffee&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:Mybloodtypeiscoffee (page does not exist)\">Mybloodtypeiscoffee</a>",
+          "source": "commons-desc-page"
+        },
+        "LicenseShortName": {
+          "value": "CC BY 4.0",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "UsageTerms": {
+          "value": "Creative Commons Attribution 4.0",
+          "source": "commons-desc-page"
+        },
+        "AttributionRequired": {
+          "value": "true",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "LicenseUrl": {
+          "value": "https://creativecommons.org/licenses/by/4.0",
+          "source": "commons-desc-page"
+        },
+        "Copyrighted": {
+          "value": "True",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "Restrictions": {
+          "value": "",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "License": {
+          "value": "cc-by-4.0",
+          "source": "commons-templates",
+          "hidden": ""
+        }
+      },
+      "licenseCode": "CC-BY-4.0",
+      "localPath": null,
+      "optimized": null,
+      "blurDataURL": null,
+      "isModified": false,
+      "modificationDescription": null,
+      "objectPosition": "center",
+      "rightsRisks": [],
+      "usageStatus": "suspended",
+      "verificationStatus": "rejected",
+      "verificationNotes": [
+        "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
+        "Wikipedia 記事の代表画像として取得（関連度 26 点）",
+        "採点の内訳: {\"query\":30,\"alternate\":3,\"title\":0,\"description\":0,\"categories\":4,\"wikidata\":0,\"resolution\":14,\"landscape\":6,\"aspect\":9,\"license\":7,\"metadata\":8,\"penalty\":-55}",
+        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。",
+        "[2026-08-04T15:31:30.508Z] 判定規則の見直しにより却下しました（brand）。ライセンスとは別に、商標権・肖像権が及ぶ被写体です。"
+      ],
+      "verifiedAt": null,
+      "relevanceScore": 26
     },
     {
       "id": "wm-assoc-football-match",
@@ -506,6 +1055,256 @@
       ],
       "verifiedAt": null,
       "relevanceScore": 87
+    },
+    {
+      "id": "wm-basketball-hoop-2230447712",
+      "commonsPageId": 23356598,
+      "wikidataEntityId": null,
+      "fileName": "Basketball Hoop (2230447712).jpg",
+      "title": "File:Basketball Hoop (2230447712).jpg",
+      "description": "Basketball Hoop",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f2/Basketball_Hoop_%282230447712%29.jpg",
+      "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Basketball_Hoop_%282230447712%29.jpg/1280px-Basketball_Hoop_%282230447712%29.jpg",
+      "commonsPageUrl": "https://commons.wikimedia.org/wiki/File:Basketball_Hoop_(2230447712).jpg",
+      "mimeType": "image/jpeg",
+      "width": 2816,
+      "height": 1584,
+      "aspectRatio": 1.7777777777777777,
+      "authorName": "Marcus Quigmire from Florida, USA",
+      "authorUrl": "https://www.flickr.com/people/41896843@N00",
+      "sourceName": "Basketball Hoop",
+      "sourceUrl": "https://www.flickr.com/photos/marcusq/2230447712/",
+      "rawLicenses": [
+        "CC BY-SA 2.0",
+        "cc-by-sa-2.0",
+        "Creative Commons Attribution-Share Alike 2.0"
+      ],
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+      "attributionText": null,
+      "copyrightStatus": "True",
+      "publicDomainRationale": null,
+      "categories": [
+        "Basketball goals",
+        "Basketball nets",
+        "CC-BY-SA-2.0",
+        "Flickr images reviewed by File Upload Bot (Magnus Manske)",
+        "Photographs by Marcus Quigmire",
+        "Taken with Canon Digital IXUS 60"
+      ],
+      "retrievedAt": "2026-08-04T15:31:55.325Z",
+      "metadataRaw": {
+        "DateTime": {
+          "value": "2012-12-27 05:54:36",
+          "source": "mediawiki-metadata",
+          "hidden": ""
+        },
+        "ObjectName": {
+          "value": "Basketball Hoop (2230447712)",
+          "source": "mediawiki-metadata"
+        },
+        "CommonsMetadataExtension": {
+          "value": 1.2,
+          "source": "extension",
+          "hidden": ""
+        },
+        "Categories": {
+          "value": "Taken with Canon Digital IXUS 60|Basketball goals|Basketball nets|Flickr images reviewed by File Upload Bot (Magnus Manske)|Photographs by Marcus Quigmire",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "Assessments": {
+          "value": "",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "ImageDescription": {
+          "value": "Basketball Hoop",
+          "source": "commons-desc-page"
+        },
+        "DateTimeOriginal": {
+          "value": "2008-01-24 18:06",
+          "source": "commons-desc-page"
+        },
+        "Credit": {
+          "value": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/photos/marcusq/2230447712/\">Basketball Hoop</a>",
+          "source": "commons-desc-page"
+        },
+        "Artist": {
+          "value": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/41896843@N00\">Marcus Quigmire</a> from Florida, USA",
+          "source": "commons-desc-page"
+        },
+        "LicenseShortName": {
+          "value": "CC BY-SA 2.0",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "UsageTerms": {
+          "value": "Creative Commons Attribution-Share Alike 2.0",
+          "source": "commons-desc-page"
+        },
+        "AttributionRequired": {
+          "value": "true",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "LicenseUrl": {
+          "value": "https://creativecommons.org/licenses/by-sa/2.0",
+          "source": "commons-desc-page"
+        },
+        "Copyrighted": {
+          "value": "True",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "Restrictions": {
+          "value": "",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "License": {
+          "value": "cc-by-sa-2.0",
+          "source": "commons-templates",
+          "hidden": ""
+        }
+      },
+      "licenseCode": "CC-BY-SA-2.0",
+      "localPath": null,
+      "optimized": null,
+      "blurDataURL": null,
+      "isModified": false,
+      "modificationDescription": null,
+      "objectPosition": "center",
+      "rightsRisks": [],
+      "usageStatus": "in_use",
+      "verificationStatus": "needs_review",
+      "verificationNotes": [
+        "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
+        "Commons の全文検索から採用（関連度 87 点）",
+        "採点の内訳: {\"query\":30,\"alternate\":0,\"title\":12,\"description\":8,\"categories\":4,\"wikidata\":0,\"resolution\":14,\"landscape\":6,\"aspect\":10,\"license\":5,\"metadata\":8,\"penalty\":-10}",
+        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。"
+      ],
+      "verifiedAt": null,
+      "relevanceScore": 87
+    },
+    {
+      "id": "wm-bitcoin",
+      "commonsPageId": 30202095,
+      "wikidataEntityId": null,
+      "fileName": "Bitcoin.svg",
+      "title": "File:Bitcoin.svg",
+      "description": "Logo of Bitcoin",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/4/46/Bitcoin.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/1280px-Bitcoin.svg.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "commonsPageUrl": "https://commons.wikimedia.org/wiki/File:Bitcoin.svg",
+      "mimeType": "image/svg+xml",
+      "width": 64,
+      "height": 64,
+      "aspectRatio": 1,
+      "authorName": "Grayliptrot",
+      "authorUrl": null,
+      "sourceName": "This file was derived from: Bitcoin logo.svg",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bitcoin_logo.svg",
+      "rawLicenses": ["Public domain", "pd", "Public domain"],
+      "licenseUrl": null,
+      "attributionText": null,
+      "copyrightStatus": "False",
+      "publicDomainRationale": null,
+      "categories": [
+        "Bitcoin logos",
+        "Derivative versions",
+        "PD textlogo",
+        "SVG text logos",
+        "Valid SVG created with Inkscape-hand",
+        "Valid SVG created with Text Editor",
+        "With trademark"
+      ],
+      "retrievedAt": "2026-08-04T15:22:05.235Z",
+      "metadataRaw": {
+        "DateTime": {
+          "value": "2014-03-31 02:42:07",
+          "source": "mediawiki-metadata",
+          "hidden": ""
+        },
+        "ObjectName": {
+          "value": "Bitcoin",
+          "source": "mediawiki-metadata"
+        },
+        "CommonsMetadataExtension": {
+          "value": 1.2,
+          "source": "extension",
+          "hidden": ""
+        },
+        "Categories": {
+          "value": "With trademark|PD textlogo|Valid SVG created with Text Editor|SVG text logos|Derivative versions|Bitcoin logos|Valid SVG created with Inkscape-hand",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "Assessments": {
+          "value": "",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "ImageDescription": {
+          "value": "Logo of <a href=\"https://en.wikipedia.org/wiki/Bitcoin\" class=\"extiw\" title=\"w:Bitcoin\">Bitcoin</a>",
+          "source": "commons-desc-page"
+        },
+        "Credit": {
+          "value": "This file was derived from:  <a href=\"//commons.wikimedia.org/wiki/File:Bitcoin_logo.svg\" title=\"File:Bitcoin logo.svg\">Bitcoin logo.svg</a><br>",
+          "source": "commons-desc-page"
+        },
+        "Artist": {
+          "value": "Grayliptrot",
+          "source": "commons-desc-page"
+        },
+        "LicenseShortName": {
+          "value": "Public domain",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "UsageTerms": {
+          "value": "Public domain",
+          "source": "commons-desc-page"
+        },
+        "AttributionRequired": {
+          "value": "false",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "Copyrighted": {
+          "value": "False",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "Restrictions": {
+          "value": "trademarked",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "License": {
+          "value": "pd",
+          "source": "commons-templates",
+          "hidden": ""
+        }
+      },
+      "licenseCode": "PD",
+      "localPath": null,
+      "optimized": null,
+      "blurDataURL": null,
+      "isModified": false,
+      "modificationDescription": null,
+      "objectPosition": "center",
+      "rightsRisks": [],
+      "usageStatus": "suspended",
+      "verificationStatus": "rejected",
+      "verificationNotes": [
+        "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
+        "Wikipedia 記事の代表画像として取得（関連度 0 点）",
+        "採点の内訳: {\"query\":15,\"alternate\":0,\"title\":0,\"description\":4,\"categories\":4,\"wikidata\":0,\"resolution\":0,\"landscape\":0,\"aspect\":7,\"license\":10,\"metadata\":6,\"penalty\":-55}",
+        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。",
+        "[2026-08-04T15:31:30.508Z] 判定規則の見直しにより却下しました（logo）。ライセンスとは別に、商標権・肖像権が及ぶ被写体です。"
+      ],
+      "verifiedAt": null,
+      "relevanceScore": 0
     },
     {
       "id": "wm-burj-khalifa-16260269606",
@@ -941,6 +1740,569 @@
       "relevanceScore": 81
     },
     {
+      "id": "wm-colored-neural-network",
+      "commonsPageId": 24913461,
+      "wikidataEntityId": null,
+      "fileName": "Colored neural network.svg",
+      "title": "File:Colored neural network.svg",
+      "description": "Artificial neural network with layer coloring",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/4/46/Colored_neural_network.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Colored_neural_network.svg/1280px-Colored_neural_network.svg.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "commonsPageUrl": "https://commons.wikimedia.org/wiki/File:Colored_neural_network.svg",
+      "mimeType": "image/svg+xml",
+      "width": 296,
+      "height": 356,
+      "aspectRatio": 0.8314606741573034,
+      "authorName": "Glosser.ca",
+      "authorUrl": "https://commons.wikimedia.org/wiki/User_talk:Glosser.ca",
+      "sourceName": "Own work , Derivative of File:Artificial neural network.svg",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Artificial_neural_network.svg",
+      "rawLicenses": [
+        "CC BY-SA 3.0",
+        "cc-by-sa-3.0",
+        "Creative Commons Attribution-Share Alike 3.0"
+      ],
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "attributionText": null,
+      "copyrightStatus": "True",
+      "publicDomainRationale": null,
+      "categories": [
+        "CC-BY-SA-3.0",
+        "Perceptrons",
+        "Self-published work",
+        "Valid SVG created with Asymptote code"
+      ],
+      "retrievedAt": "2026-08-04T15:19:43.253Z",
+      "metadataRaw": {
+        "DateTime": {
+          "value": "2013-02-28 18:55:15",
+          "source": "mediawiki-metadata",
+          "hidden": ""
+        },
+        "ObjectName": {
+          "value": "Colored neural network",
+          "source": "mediawiki-metadata"
+        },
+        "CommonsMetadataExtension": {
+          "value": 1.2,
+          "source": "extension",
+          "hidden": ""
+        },
+        "Categories": {
+          "value": "Self-published work|Valid SVG created with Asymptote code|Perceptrons",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "Assessments": {
+          "value": "",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "ImageDescription": {
+          "value": "Artificial neural network with layer coloring",
+          "source": "commons-desc-page"
+        },
+        "DateTimeOriginal": {
+          "value": "2013-02-28 13:53:39",
+          "source": "commons-desc-page"
+        },
+        "Credit": {
+          "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>, Derivative of <a href=\"//commons.wikimedia.org/wiki/File:Artificial_neural_network.svg\" title=\"File:Artificial neural network.svg\">File:Artificial neural network.svg</a>",
+          "source": "commons-desc-page"
+        },
+        "Artist": {
+          "value": "<a href=\"//commons.wikimedia.org/wiki/User_talk:Glosser.ca\" class=\"mw-redirect\" title=\"User talk:Glosser.ca\">Glosser.ca</a>",
+          "source": "commons-desc-page"
+        },
+        "Permission": {
+          "value": "Allow",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "LicenseShortName": {
+          "value": "CC BY-SA 3.0",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "UsageTerms": {
+          "value": "Creative Commons Attribution-Share Alike 3.0",
+          "source": "commons-desc-page"
+        },
+        "AttributionRequired": {
+          "value": "true",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "LicenseUrl": {
+          "value": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "commons-desc-page"
+        },
+        "Copyrighted": {
+          "value": "True",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "Restrictions": {
+          "value": "",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "License": {
+          "value": "cc-by-sa-3.0",
+          "source": "commons-templates",
+          "hidden": ""
+        }
+      },
+      "licenseCode": "CC-BY-3.0",
+      "localPath": null,
+      "optimized": null,
+      "blurDataURL": null,
+      "isModified": false,
+      "modificationDescription": null,
+      "objectPosition": "center",
+      "rightsRisks": [],
+      "usageStatus": "in_use",
+      "verificationStatus": "needs_review",
+      "verificationNotes": [
+        "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
+        "Wikipedia 記事の代表画像として取得（関連度 19 点）",
+        "採点の内訳: {\"query\":20,\"alternate\":0,\"title\":0,\"description\":5,\"categories\":0,\"wikidata\":0,\"resolution\":0,\"landscape\":0,\"aspect\":6,\"license\":5,\"metadata\":8,\"penalty\":-25}",
+        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。"
+      ],
+      "verifiedAt": null,
+      "relevanceScore": 19
+    },
+    {
+      "id": "wm-convenience-store-interior",
+      "commonsPageId": 33165226,
+      "wikidataEntityId": null,
+      "fileName": "Convenience store interior.jpg",
+      "title": "File:Convenience store interior.jpg",
+      "description": "The inside of a 7-Eleven in central Kyoto.",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/0/04/Convenience_store_interior.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Convenience_store_interior.jpg/1280px-Convenience_store_interior.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "commonsPageUrl": "https://commons.wikimedia.org/wiki/File:Convenience_store_interior.jpg",
+      "mimeType": "image/jpeg",
+      "width": 5147,
+      "height": 2895,
+      "aspectRatio": 1.7778929188255612,
+      "authorName": "Japanexperterna",
+      "authorUrl": "http://www.japanexperterna.se",
+      "sourceName": "Own work",
+      "sourceUrl": null,
+      "rawLicenses": [
+        "CC BY-SA 3.0",
+        "cc-by-sa-3.0",
+        "Creative Commons Attribution-Share Alike 3.0"
+      ],
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+      "attributionText": null,
+      "copyrightStatus": "True",
+      "publicDomainRationale": null,
+      "categories": [
+        "CC-BY-SA-3.0",
+        "Interiors of 7-Eleven stores in Japan",
+        "Interiors of convenience stores in Japan",
+        "Japan photographs taken on 2014-05-13",
+        "May 2014 in Kyoto",
+        "Pink and red",
+        "Self-published work",
+        "Shop staff in Japan"
+      ],
+      "retrievedAt": "2026-08-04T15:20:30.098Z",
+      "metadataRaw": {
+        "DateTime": {
+          "value": "2014-06-03 02:30:03",
+          "source": "mediawiki-metadata",
+          "hidden": ""
+        },
+        "ObjectName": {
+          "value": "Convenience store interior",
+          "source": "mediawiki-metadata"
+        },
+        "CommonsMetadataExtension": {
+          "value": 1.2,
+          "source": "extension",
+          "hidden": ""
+        },
+        "Categories": {
+          "value": "Self-published work|Pink and red|Interiors of 7-Eleven stores in Japan|Interiors of convenience stores in Japan|May 2014 in Kyoto|Japan photographs taken on 2014-05-13|Shop staff in Japan",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "Assessments": {
+          "value": "",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "ImageDescription": {
+          "value": "The inside of a 7-Eleven in central Kyoto.",
+          "source": "commons-desc-page"
+        },
+        "DateTimeOriginal": {
+          "value": "2014-05-13 22:24:41",
+          "source": "commons-desc-page"
+        },
+        "Credit": {
+          "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+          "source": "commons-desc-page"
+        },
+        "Artist": {
+          "value": "<a rel=\"nofollow\" class=\"external text\" href=\"http://www.japanexperterna.se\">Japanexperterna</a>",
+          "source": "commons-desc-page"
+        },
+        "LicenseShortName": {
+          "value": "CC BY-SA 3.0",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "UsageTerms": {
+          "value": "Creative Commons Attribution-Share Alike 3.0",
+          "source": "commons-desc-page"
+        },
+        "AttributionRequired": {
+          "value": "true",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "LicenseUrl": {
+          "value": "https://creativecommons.org/licenses/by-sa/3.0",
+          "source": "commons-desc-page"
+        },
+        "Copyrighted": {
+          "value": "True",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "Restrictions": {
+          "value": "",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "License": {
+          "value": "cc-by-sa-3.0",
+          "source": "commons-templates",
+          "hidden": ""
+        }
+      },
+      "licenseCode": "CC-BY-3.0",
+      "localPath": null,
+      "optimized": null,
+      "blurDataURL": null,
+      "isModified": false,
+      "modificationDescription": null,
+      "objectPosition": "center",
+      "rightsRisks": [],
+      "usageStatus": "in_use",
+      "verificationStatus": "needs_review",
+      "verificationNotes": [
+        "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
+        "Wikipedia 記事の代表画像として取得（関連度 78 点）",
+        "採点の内訳: {\"query\":30,\"alternate\":0,\"title\":12,\"description\":0,\"categories\":3,\"wikidata\":0,\"resolution\":14,\"landscape\":6,\"aspect\":10,\"license\":5,\"metadata\":8,\"penalty\":-10}",
+        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。"
+      ],
+      "verifiedAt": null,
+      "relevanceScore": 78
+    },
+    {
+      "id": "wm-credit-cards",
+      "commonsPageId": 99950,
+      "wikidataEntityId": null,
+      "fileName": "Credit-cards.jpg",
+      "title": "File:Credit-cards.jpg",
+      "description": "Credit cards",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/4/4f/Credit-cards.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Credit-cards.jpg/1280px-Credit-cards.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "commonsPageUrl": "https://commons.wikimedia.org/wiki/File:Credit-cards.jpg",
+      "mimeType": "image/jpeg",
+      "width": 1600,
+      "height": 1200,
+      "aspectRatio": 1.3333333333333333,
+      "authorName": "Lotus Head from Johannesburg, Gauteng, South Africa",
+      "authorUrl": "http://www.sxc.hu/profile/LotusHead",
+      "sourceName": "sxc.hu",
+      "sourceUrl": "http://www.sxc.hu/browse.phtml?f=view&amp;id=206578",
+      "rawLicenses": [
+        "CC BY-SA 2.5",
+        "cc-by-sa-2.5",
+        "Creative Commons Attribution-Share Alike 2.5"
+      ],
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.5",
+      "attributionText": null,
+      "copyrightStatus": "True",
+      "publicDomainRationale": null,
+      "categories": [
+        "2 objects",
+        "Absa Group Limited",
+        "CC-BY-SA-2.5,2.0,1.0",
+        "Commons featured desktop backgrounds",
+        "Featured pictures on Wikimedia Commons",
+        "Featured pictures on Wikipedia, Croatian",
+        "Featured pictures on Wikipedia, Turkish",
+        "GFDL",
+        "ISO ID-1 cards",
+        "Images with extracted images",
+        "Images with opaque backgrounds",
+        "Items with VRTS permission confirmed",
+        "License migration not eligible",
+        "Location not applicable",
+        "Mastercard (credit card)",
+        "Objects with white background",
+        "Picture of week on the Czech Wikipedia",
+        "Pictures of the day (2008)",
+        "Visa (credit card)",
+        "With trademark"
+      ],
+      "retrievedAt": "2026-08-04T15:22:20.648Z",
+      "metadataRaw": {
+        "DateTime": {
+          "value": "2005-04-06 23:13:11",
+          "source": "mediawiki-metadata",
+          "hidden": ""
+        },
+        "ObjectName": {
+          "value": "Credit-cards",
+          "source": "mediawiki-metadata"
+        },
+        "CommonsMetadataExtension": {
+          "value": 1.2,
+          "source": "extension",
+          "hidden": ""
+        },
+        "Categories": {
+          "value": "GFDL|CC-BY-SA-2.5,2.0,1.0|Absa Group Limited|Images with opaque backgrounds|Location not applicable|With trademark|License migration not eligible|Visa (credit card)|Mastercard (credit card)|Commons featured desktop backgrounds|Items with VRTS permission confirmed|Images with extracted images|Picture of week on the Czech Wikipedia|Featured pictures on Wikipedia, Croatian|Featured pictures on Wikipedia, Turkish|Objects with white background|2 objects|ISO ID-1 cards",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "Assessments": {
+          "value": "featured|potd",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "ImageDescription": {
+          "value": "Credit cards",
+          "source": "commons-desc-page"
+        },
+        "DateTimeOriginal": {
+          "value": "circa 2005<div style=\"display: none;\">date QS:P,+2005-00-00T00:00:00Z/9,P1480,Q5727902</div>",
+          "source": "commons-desc-page"
+        },
+        "Credit": {
+          "value": "<a rel=\"nofollow\" class=\"external text\" href=\"http://www.sxc.hu/browse.phtml?f=view&amp;id=206578\">sxc.hu</a>",
+          "source": "commons-desc-page"
+        },
+        "Artist": {
+          "value": "<a rel=\"nofollow\" class=\"external text\" href=\"http://www.sxc.hu/profile/LotusHead\">Lotus Head</a> from Johannesburg, Gauteng, South Africa",
+          "source": "commons-desc-page"
+        },
+        "Permission": {
+          "value": "<p><span class=\"layouttemplateargs\" style=\"display:none;speak:none;\" title=\"template=PermissionTicket 1%3Dhttps%3A%2F%2Fticket.wikimedia.org%2Fotrs%2Findex.pl%3FAction%3DAgentTicketZoom%26TicketNumber%3D2007062510004765 2%3D2007062510004765\"> </span>\n</p>\n<link rel=\"mw-deduplicated-inline-style\" href=\"mw-data:TemplateStyles:r1254222110\"><table class=\"plainlinks messagebox mbox-notice layouttemplate\" role=\"presentation\" style=\"margin:0.3em 0;width:100%;\"><tbody><tr><td class=\"mbox-image\"><span typeof=\"mw:File\"><span title=\"VRT Wikimedia\"><img alt=\"VRT Wikimedia\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Permission_logo_2021.svg/120px-Permission_logo_2021.svg.png\" decoding=\"async\" width=\"75\" height=\"48\" class=\"mw-file-element\" srcset=\"https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Permission_logo_2021.svg/250px-Permission_logo_2021.svg.png 2x\" data-file-width=\"935\" data-file-height=\"600\"></span></span></td><td class=\"mbox-text\">This work is <a href=\"https://freedomdefined.org/Definition\" class=\"extiw\" title=\"freedomdefined:Definition\">free</a> and may be used by anyone for any purpose. If you wish to <b><a href=\"//commons.wikimedia.org/wiki/Commons:Reusing_content_outside_Wikimedia\" title=\"Commons:Reusing content outside Wikimedia\">use this content</a></b>, you do not need to request permission as long as you follow any licensing requirements mentioned on this page.\n<p>The Wikimedia Foundation has received an e-mail confirming that the copyright holder has approved publication under the terms mentioned on this page. This correspondence has been <b><span style=\"background:transparent;color:#0f7f1f;font-weight:400;\" title=\"transparent\">reviewed</span></b> by a <a href=\"//commons.wikimedia.org/wiki/Template:PermissionTicket/Users\" title=\"Template:PermissionTicket/Users\">Volunteer Response Team (VRT) member</a> and stored in our <a href=\"//commons.wikimedia.org/wiki/Commons:Volunteer_Response_Team\" title=\"Commons:Volunteer Response Team\">permission archive</a>. The correspondence is available to trusted volunteers as <b><a href=\"https://ticket.wikimedia.org/otrs/index.pl?Action=AgentTicketZoom&amp;TicketNumber=2007062510004765\" class=\"extiw\" title=\"ticket:2007062510004765\">ticket #2007062510004765</a></b>.\n</p><p><small>If you have questions about the archived correspondence, please use the <a href=\"//commons.wikimedia.org/wiki/Commons:Volunteer_Response_Team/Noticeboard\" title=\"Commons:Volunteer Response Team/Noticeboard\">VRT noticeboard</a>.</small>\n<small>Ticket link: <a class=\"external free\" href=\"https://ticket.wikimedia.org/otrs/index.pl?Action=AgentTicketZoom&amp;TicketNumber=2007062510004765\">https://ticket.wikimedia.org/otrs/index.pl?Action=AgentTicketZoom&amp;TicketNumber=2007062510004765</a></small>\n<br><small>Find other files from the same ticket:</small> <span typeof=\"mw:File\"><a href=\"https://wcqs-beta.wmflabs.org/#%23defaultView%3AImageGrid%09%0ASELECT%20%3Fimage%20%20%20%7B%0A%20%20%3Ffile%20wdt%3AP6305%20%222007062510004765%22%20.%0A%20%20%3Ffile%20schema%3Aurl%20%3Fimage.%0A%7D%20%0A\" title=\"SDC query (SPARQL)\" rel=\"nofollow\"><img alt=\"SDC query (SPARQL)\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Wikimedia_Commons_Query_Service_Logo.svg/20px-Wikimedia_Commons_Query_Service_Logo.svg.png\" decoding=\"async\" width=\"15\" height=\"20\" class=\"mw-file-element\" srcset=\"https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Wikimedia_Commons_Query_Service_Logo.svg/40px-Wikimedia_Commons_Query_Service_Logo.svg.png 2x\" data-file-width=\"512\" data-file-height=\"688\"></a></span>\n</p>\n<span id=\"field-otrs\" title=\"https://ticket.wikimedia.org/otrs/index.pl?Action=AgentTicketZoom&amp;TicketNumber=2007062510004765\"></span></td></tr></tbody></table>\n<table style=\"width:100%; clear:both; margin:0.5em auto; border-spacing:8px; background-color:var(--background-color-neutral-subtle,#f7f8ff); border:2px solid #8888aa;color: inherit;\" lang=\"en\" dir=\"ltr\" class=\"layouttemplate restrictiontemplate restriction-trademarked\">\n<tbody><tr>\n<td style=\"border:none; width:64px;\"><figure class=\"mw-halign-center\" typeof=\"mw:File\"><a href=\"//commons.wikimedia.org/wiki/Commons:Non-copyright_restrictions\" title=\"Trademarked\"><img alt=\"Trademarked\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Trademark_Warning_Symbol.svg/120px-Trademark_Warning_Symbol.svg.png\" decoding=\"async\" width=\"64\" height=\"64\" class=\"mw-file-element\" srcset=\"https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Trademark_Warning_Symbol.svg/250px-Trademark_Warning_Symbol.svg.png 2x\" data-file-width=\"64\" data-file-height=\"64\"></a><figcaption>Trademarked</figcaption></figure>\n</td>\n<td style=\"border:none;\">This work includes material that may be <b>protected as a <a href=\"https://en.wikipedia.org/wiki/en:trademark\" class=\"extiw\" title=\"w:en:trademark\">trademark</a></b> in some jurisdictions. If you want to use it, you have to ensure that you have the legal right to do so and that you do not infringe any trademark rights. See our <a href=\"//commons.wikimedia.org/wiki/Commons:General_disclaimer\" title=\"Commons:General disclaimer\">general disclaimer</a>.<br><small>This tag does not indicate the copyright status of the attached work. <span style=\"white-space:nowrap\">A normal <a href=\"//commons.wikimedia.org/wiki/Special:MyLanguage/Commons:Copyright_tags\" title=\"Special:MyLanguage/Commons:Copyright tags\">copyright tag</a> is still required.</span> <span style=\"white-space:nowrap\">See <a href=\"//commons.wikimedia.org/wiki/Special:MyLanguage/Commons:Licensing\" title=\"Special:MyLanguage/Commons:Licensing\">Commons:Licensing</a>.</span></small>\n</td></tr></tbody></table>\n<table style=\"width:100%; clear:both; margin:0.5em auto; background-color: var(--background-color-neutral-subtle, #f9f9f9); color: var(--color-base, #202122); border: var(--border-subtle, 2px solid #e0e0e0); border-spacing: 8px; box-sizing: border-box; padding: 0;\" dir=\"ltr\" lang=\"en\" class=\"layouttemplate licensetpl\">\n<tbody><tr>\n<td><span class=\"noviewer\" typeof=\"mw:File\"><span title=\"GNU head\"><img alt=\"GNU head\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Heckert_GNU_white.svg/120px-Heckert_GNU_white.svg.png\" decoding=\"async\" width=\"64\" height=\"63\" class=\"mw-file-element\" srcset=\"https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Heckert_GNU_white.svg/250px-Heckert_GNU_white.svg.png 2x\" data-file-width=\"535\" data-file-height=\"523\"></span></span>\n</td>\n<td>Permission is granted to copy, distribute and/or modify this document under the terms of the <b><a href=\"https://en.wikipedia.org/wiki/en:GNU_Free_Documentation_License\" class=\"extiw\" title=\"w:en:GNU Free Documentation License\">GNU Free Documentation License</a></b>, Version 1.2 or any later version published by the <a href=\"https://en.wikipedia.org/wiki/en:Free_Software_Foundation\" class=\"extiw\" title=\"w:en:Free Software Foundation\">Free Software Foundation</a>; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license is included in the section entitled <i><a href=\"//commons.wikimedia.org/wiki/Commons:GNU_Free_Documentation_License,_version_1.2\" title=\"Commons:GNU Free Documentation License, version 1.2\">GNU Free Documentation License</a></i>.<span class=\"licensetpl_link\" style=\"display:none;\">http://www.gnu.org/copyleft/fdl.html</span><span class=\"licensetpl_short\" style=\"display:none;\">GFDL</span><span class=\"licensetpl_long\" style=\"display:none;\">GNU Free Documentation License</span><span class=\"licensetpl_link_req\" style=\"display:none;\">true</span><span class=\"licensetpl_attr_req\" style=\"display:none;\">true</span>\n</td></tr></tbody></table><div class=\"responsive-license-cc layouttemplate licensetpl\" dir=\"ltr\" lang=\"en\"><div class=\"rlicense-icons\"><span class=\"skin-invert\" typeof=\"mw:File\"><span title=\"w:en:Creative Commons\"><img alt=\"w:en:Creative Commons\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/CC_some_rights_reserved.svg/120px-CC_some_rights_reserved.svg.png\" decoding=\"async\" width=\"90\" height=\"36\" class=\"mw-file-element\" srcset=\"https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/CC_some_rights_reserved.svg/250px-CC_some_rights_reserved.svg.png 2x\" data-file-width=\"744\" data-file-height=\"300\"></span></span><br>\n<span class=\"skin-invert\" typeof=\"mw:File\"><span title=\"attribution\"><img alt=\"attribution\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Cc-by_new_white.svg/40px-Cc-by_new_white.svg.png\" decoding=\"async\" width=\"24\" height=\"24\" class=\"mw-file-element\" srcset=\"https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Cc-by_new_white.svg/60px-Cc-by_new_white.svg.png 2x\" data-file-width=\"64\" data-file-height=\"64\"></span></span> <span class=\"skin-invert\" typeof=\"mw:File\"><span title=\"share alike\"><img alt=\"share alike\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Cc-sa_white.svg/40px-Cc-sa_white.svg.png\" decoding=\"async\" width=\"24\" height=\"24\" class=\"mw-file-element\" srcset=\"https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Cc-sa_white.svg/60px-Cc-sa_white.svg.png 2x\" data-file-width=\"64\" data-file-height=\"64\"></span></span></div><div class=\"rlicense-text\"><div class=\"rlicense-declaration\">This file is licensed under the <a href=\"https://en.wikipedia.org/wiki/en:Creative_Commons\" class=\"extiw\" title=\"w:en:Creative Commons\">Creative Commons</a> Attribution-Share Alike <a href=\"//creativecommons.org/licenses/by-sa/2.5/deed.en\" class=\"extiw\" title=\"creativecommons:by-sa/2.5/deed.en\">2.5 Generic</a>, <a href=\"//creativecommons.org/licenses/by-sa/2.0/deed.en\" class=\"extiw\" title=\"creativecommons:by-sa/2.0/deed.en\">2.0 Generic</a> and <a href=\"//creativecommons.org/licenses/by-sa/1.0/deed.en\" class=\"extiw\" title=\"creativecommons:by-sa/1.0/deed.en\">1.0 Generic</a> license.</div><div class=\"rlicense-desc\" style=\"text-align:start;\" lang=\"en\">\n<dl><dd>You are free:\n<ul><li><b>to share</b> – to copy, distribute and transmit the work</li>\n<li><b>to remix</b> – to adapt the work</li></ul></dd>\n<dd>Under the following conditions:\n<ul><li><b>attribution</b> – You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.</li>\n<li><b>share alike</b> – If you remix, transform, or build upon the material, you must distribute your contributions under the <a href=\"https://creativecommons.org/share-your-work/licensing-considerations/compatible-licenses\" class=\"extiw\" title=\"ccorg:share-your-work/licensing-considerations/compatible-licenses\">same or compatible license</a> as the original.</li></ul></dd></dl></div><span class=\"licensetpl_link\" style=\"display:none;\">https://creativecommons.org/licenses/by-sa/2.5</span><span class=\"licensetpl_short\" style=\"display:none;\">CC BY-SA 2.5 </span><span class=\"licensetpl_long\" style=\"display:none;\">Creative Commons Attribution-Share Alike 2.5 </span><span class=\"licensetpl_link_req\" style=\"display:none;\">true</span><span class=\"licensetpl_attr_req\" style=\"display:none;\">true</span></div></div>",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "LicenseShortName": {
+          "value": "CC BY-SA 2.5",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "UsageTerms": {
+          "value": "Creative Commons Attribution-Share Alike 2.5",
+          "source": "commons-desc-page"
+        },
+        "AttributionRequired": {
+          "value": "true",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "LicenseUrl": {
+          "value": "https://creativecommons.org/licenses/by-sa/2.5",
+          "source": "commons-desc-page"
+        },
+        "Copyrighted": {
+          "value": "True",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "Restrictions": {
+          "value": "trademarked",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "License": {
+          "value": "cc-by-sa-2.5",
+          "source": "commons-templates",
+          "hidden": ""
+        }
+      },
+      "licenseCode": "CC-BY-2.5",
+      "localPath": null,
+      "optimized": null,
+      "blurDataURL": null,
+      "isModified": false,
+      "modificationDescription": null,
+      "objectPosition": "center",
+      "rightsRisks": [],
+      "usageStatus": "suspended",
+      "verificationStatus": "rejected",
+      "verificationNotes": [
+        "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
+        "Wikipedia 記事の代表画像として取得（関連度 47 点）",
+        "採点の内訳: {\"query\":20,\"alternate\":4,\"title\":0,\"description\":3,\"categories\":5,\"wikidata\":0,\"resolution\":14,\"landscape\":6,\"aspect\":7,\"license\":5,\"metadata\":8,\"penalty\":-25}",
+        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。",
+        "[2026-08-04T15:31:30.508Z] 判定規則の見直しにより却下しました（brand, logo）。ライセンスとは別に、商標権・肖像権が及ぶ被写体です。"
+      ],
+      "verifiedAt": null,
+      "relevanceScore": 47
+    },
+    {
+      "id": "wm-cupertino-united-states-january-2018-18-18-35-443000",
+      "commonsPageId": 65363822,
+      "wikidataEntityId": null,
+      "fileName": "Cupertino, United States, January 2018 18 18 35 443000.jpeg",
+      "title": "File:Cupertino, United States, January 2018 18 18 35 443000.jpeg",
+      "description": "Cupertino, United States, January 2018",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/2/2b/Cupertino%2C_United_States%2C_January_2018_18_18_35_443000.jpeg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Cupertino%2C_United_States%2C_January_2018_18_18_35_443000.jpeg/1280px-Cupertino%2C_United_States%2C_January_2018_18_18_35_443000.jpeg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "commonsPageUrl": "https://commons.wikimedia.org/wiki/File:Cupertino,_United_States,_January_2018_18_18_35_443000.jpeg",
+      "mimeType": "image/jpeg",
+      "width": 4032,
+      "height": 3024,
+      "aspectRatio": 1.3333333333333333,
+      "authorName": "Wizz4prep",
+      "authorUrl": "https://commons.wikimedia.org/w/index.php?title=User:Wizz4prep&amp;action=edit&amp;redlink=1",
+      "sourceName": "Own work",
+      "sourceUrl": null,
+      "rawLicenses": [
+        "CC BY-SA 4.0",
+        "cc-by-sa-4.0",
+        "Creative Commons Attribution-Share Alike 4.0"
+      ],
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "attributionText": null,
+      "copyrightStatus": "True",
+      "publicDomainRationale": null,
+      "categories": [
+        "Buildings in Cupertino, California",
+        "CC-BY-SA-4.0",
+        "Clouds in Santa Clara County, California",
+        "Diablo Range",
+        "Files with coordinates missing SDC location of creation",
+        "Flora of Cupertino, California",
+        "Forests in Santa Clara County, California",
+        "Geography of Cupertino, California",
+        "Nature of Cupertino, California",
+        "Santa Cruz Mountains",
+        "Self-published work"
+      ],
+      "retrievedAt": "2026-08-04T15:19:17.091Z",
+      "metadataRaw": {
+        "DateTime": {
+          "value": "2018-01-08 02:18:40",
+          "source": "mediawiki-metadata",
+          "hidden": ""
+        },
+        "ObjectName": {
+          "value": "Cupertino, United States, January 2018 18 18 35 443000",
+          "source": "mediawiki-metadata"
+        },
+        "CommonsMetadataExtension": {
+          "value": 1.2,
+          "source": "extension",
+          "hidden": ""
+        },
+        "Categories": {
+          "value": "Diablo Range|Santa Cruz Mountains|Self-published work|Files with coordinates missing SDC location of creation|Buildings in Cupertino, California|Forests in Santa Clara County, California|Clouds in Santa Clara County, California|Nature of Cupertino, California|Geography of Cupertino, California|Flora of Cupertino, California",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "Assessments": {
+          "value": "",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "GPSLatitude": {
+          "value": "37.284542",
+          "source": "commons-desc-page"
+        },
+        "GPSLongitude": {
+          "value": "-122.066131",
+          "source": "commons-desc-page"
+        },
+        "GPSMapDatum": {
+          "value": "WGS-84",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "ImageDescription": {
+          "value": "Cupertino, United States, January 2018",
+          "source": "commons-desc-page"
+        },
+        "DateTimeOriginal": {
+          "value": "2018-01-04 11:11:54",
+          "source": "commons-desc-page"
+        },
+        "Credit": {
+          "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+          "source": "commons-desc-page"
+        },
+        "Artist": {
+          "value": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:Wizz4prep&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:Wizz4prep (page does not exist)\">Wizz4prep</a>",
+          "source": "commons-desc-page"
+        },
+        "LicenseShortName": {
+          "value": "CC BY-SA 4.0",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "UsageTerms": {
+          "value": "Creative Commons Attribution-Share Alike 4.0",
+          "source": "commons-desc-page"
+        },
+        "AttributionRequired": {
+          "value": "true",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "LicenseUrl": {
+          "value": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "commons-desc-page"
+        },
+        "Copyrighted": {
+          "value": "True",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "Restrictions": {
+          "value": "",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "License": {
+          "value": "cc-by-sa-4.0",
+          "source": "commons-templates",
+          "hidden": ""
+        }
+      },
+      "licenseCode": "CC-BY-4.0",
+      "localPath": null,
+      "optimized": null,
+      "blurDataURL": null,
+      "isModified": false,
+      "modificationDescription": null,
+      "objectPosition": "center",
+      "rightsRisks": [],
+      "usageStatus": "in_use",
+      "verificationStatus": "needs_review",
+      "verificationNotes": [
+        "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
+        "Wikipedia 記事の代表画像として取得（関連度 73 点）",
+        "採点の内訳: {\"query\":30,\"alternate\":0,\"title\":0,\"description\":4,\"categories\":8,\"wikidata\":0,\"resolution\":14,\"landscape\":6,\"aspect\":8,\"license\":5,\"metadata\":8,\"penalty\":-10}",
+        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。"
+      ],
+      "verifiedAt": null,
+      "relevanceScore": 73
+    },
+    {
       "id": "wm-datacenter-telecom",
       "commonsPageId": 154674,
       "wikidataEntityId": null,
@@ -1327,6 +2689,127 @@
       "relevanceScore": 0
     },
     {
+      "id": "wm-google-homepage",
+      "commonsPageId": 88469404,
+      "wikidataEntityId": null,
+      "fileName": "Google Homepage.svg",
+      "title": "File:Google Homepage.svg",
+      "description": "Google Homepage",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_Homepage.svg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_Homepage.svg/1280px-Google_Homepage.svg.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "commonsPageUrl": "https://commons.wikimedia.org/wiki/File:Google_Homepage.svg",
+      "mimeType": "image/svg+xml",
+      "width": 512,
+      "height": 288,
+      "aspectRatio": 1.7777777777777777,
+      "authorName": "Google",
+      "authorUrl": null,
+      "sourceName": "Own work",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Google_Homepage.svg#P7482",
+      "rawLicenses": ["Public domain", "pd", "Public domain"],
+      "licenseUrl": null,
+      "attributionText": null,
+      "copyrightStatus": "False",
+      "publicDomainRationale": null,
+      "categories": ["Google Search screenshots", "PD ineligible", "With trademark"],
+      "retrievedAt": "2026-08-04T15:18:50.447Z",
+      "metadataRaw": {
+        "DateTime": {
+          "value": "2020-03-23 04:30:02",
+          "source": "mediawiki-metadata",
+          "hidden": ""
+        },
+        "ObjectName": {
+          "value": "Google Homepage",
+          "source": "mediawiki-metadata"
+        },
+        "CommonsMetadataExtension": {
+          "value": 1.2,
+          "source": "extension",
+          "hidden": ""
+        },
+        "Categories": {
+          "value": "PD ineligible|With trademark|Google Search screenshots",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "Assessments": {
+          "value": "",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "ImageDescription": {
+          "value": "Google Homepage",
+          "source": "commons-desc-page"
+        },
+        "DateTimeOriginal": {
+          "value": "2020-03-23",
+          "source": "commons-desc-page"
+        },
+        "Credit": {
+          "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span> <span class=\"mw-valign-text-top noprint\" typeof=\"mw:File/Frameless\"><a href=\"//commons.wikimedia.org/wiki/File:Google_Homepage.svg#P7482\" title=\"Edit this at Structured Data on Commons\"><img alt=\"Edit this at Structured Data on Commons\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/OOjs_UI_icon_edit-ltr-progressive.svg/20px-OOjs_UI_icon_edit-ltr-progressive.svg.png\" decoding=\"async\" width=\"10\" height=\"10\" class=\"mw-file-element\" data-file-width=\"20\" data-file-height=\"20\"></a></span>",
+          "source": "commons-desc-page"
+        },
+        "Artist": {
+          "value": "Google",
+          "source": "commons-desc-page"
+        },
+        "Permission": {
+          "value": "<table style=\"width:100%; clear:both; margin:0.5em auto; border-spacing:8px; background-color:var(--background-color-neutral-subtle,#f7f8ff); border:2px solid #8888aa;color: inherit;\" lang=\"en\" dir=\"ltr\" class=\"layouttemplate restrictiontemplate restriction-trademarked\">\n<tbody><tr>\n<td style=\"border:none; width:64px;\"><figure class=\"mw-halign-center\" typeof=\"mw:File\"><a href=\"//commons.wikimedia.org/wiki/Commons:Non-copyright_restrictions\" title=\"Trademarked\"><img alt=\"Trademarked\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Trademark_Warning_Symbol.svg/120px-Trademark_Warning_Symbol.svg.png\" decoding=\"async\" width=\"64\" height=\"64\" class=\"mw-file-element\" srcset=\"https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Trademark_Warning_Symbol.svg/250px-Trademark_Warning_Symbol.svg.png 2x\" data-file-width=\"64\" data-file-height=\"64\"></a><figcaption>Trademarked</figcaption></figure>\n</td>\n<td style=\"border:none;\">This work includes material that may be <b>protected as a <a href=\"https://en.wikipedia.org/wiki/en:trademark\" class=\"extiw\" title=\"w:en:trademark\">trademark</a></b> in some jurisdictions. If you want to use it, you have to ensure that you have the legal right to do so and that you do not infringe any trademark rights. See our <a href=\"//commons.wikimedia.org/wiki/Commons:General_disclaimer\" title=\"Commons:General disclaimer\">general disclaimer</a>.<br><small>This tag does not indicate the copyright status of the attached work. <span style=\"white-space:nowrap\">A normal <a href=\"//commons.wikimedia.org/wiki/Special:MyLanguage/Commons:Copyright_tags\" title=\"Special:MyLanguage/Commons:Copyright tags\">copyright tag</a> is still required.</span> <span style=\"white-space:nowrap\">See <a href=\"//commons.wikimedia.org/wiki/Special:MyLanguage/Commons:Licensing\" title=\"Special:MyLanguage/Commons:Licensing\">Commons:Licensing</a>.</span></small>\n</td></tr></tbody></table>",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "LicenseShortName": {
+          "value": "Public domain",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "UsageTerms": {
+          "value": "Public domain",
+          "source": "commons-desc-page"
+        },
+        "AttributionRequired": {
+          "value": "false",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "Copyrighted": {
+          "value": "False",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "Restrictions": {
+          "value": "trademarked",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "License": {
+          "value": "pd",
+          "source": "commons-templates",
+          "hidden": ""
+        }
+      },
+      "licenseCode": "PD",
+      "localPath": null,
+      "optimized": null,
+      "blurDataURL": null,
+      "isModified": false,
+      "modificationDescription": null,
+      "objectPosition": "center",
+      "rightsRisks": [],
+      "usageStatus": "suspended",
+      "verificationStatus": "rejected",
+      "verificationNotes": [
+        "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
+        "Wikipedia 記事の代表画像として取得（関連度 5 点）",
+        "採点の内訳: {\"query\":10,\"alternate\":0,\"title\":0,\"description\":0,\"categories\":3,\"wikidata\":0,\"resolution\":0,\"landscape\":6,\"aspect\":10,\"license\":10,\"metadata\":6,\"penalty\":-40}",
+        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。",
+        "[2026-08-04T15:31:30.508Z] 判定規則の見直しにより却下しました（logo）。ライセンスとは別に、商標権・肖像権が及ぶ被写体です。"
+      ],
+      "verifiedAt": null,
+      "relevanceScore": 5
+    },
+    {
       "id": "wm-hand-tools",
       "commonsPageId": 9792066,
       "wikidataEntityId": null,
@@ -1446,6 +2929,270 @@
       ],
       "verifiedAt": null,
       "relevanceScore": 69
+    },
+    {
+      "id": "wm-holding-bitcoin-cryptocurrency-coin",
+      "commonsPageId": 128701877,
+      "wikidataEntityId": null,
+      "fileName": "Holding Bitcoin cryptocurrency coin.jpg",
+      "title": "File:Holding Bitcoin cryptocurrency coin.jpg",
+      "description": "Holding Bitcoin cryptocurrency coin in hand. Stock photography by Satheesh Sankaran",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e4/Holding_Bitcoin_cryptocurrency_coin.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Holding_Bitcoin_cryptocurrency_coin.jpg/1280px-Holding_Bitcoin_cryptocurrency_coin.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "commonsPageUrl": "https://commons.wikimedia.org/wiki/File:Holding_Bitcoin_cryptocurrency_coin.jpg",
+      "mimeType": "image/jpeg",
+      "width": 4596,
+      "height": 3112,
+      "aspectRatio": 1.4768637532133677,
+      "authorName": "Satheesh Sankaran",
+      "authorUrl": null,
+      "sourceName": "https://www.flickr.com/photos/justanothercreativesoul/52687909661/",
+      "sourceUrl": "https://www.flickr.com/photos/justanothercreativesoul/52687909661/",
+      "rawLicenses": ["CC BY 2.0", "cc-by-2.0", "Creative Commons Attribution 2.0"],
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+      "attributionText": null,
+      "copyrightStatus": "True",
+      "publicDomainRationale": null,
+      "categories": [
+        "CC-BY-2.0",
+        "Digital currency",
+        "Flickr images reviewed by FlickreviewR 2",
+        "Physical Bitcoins"
+      ],
+      "retrievedAt": "2026-08-04T15:20:37.020Z",
+      "metadataRaw": {
+        "DateTime": {
+          "value": "2023-02-14 04:26:14",
+          "source": "mediawiki-metadata",
+          "hidden": ""
+        },
+        "ObjectName": {
+          "value": "Holding Bitcoin cryptocurrency coin",
+          "source": "mediawiki-metadata"
+        },
+        "CommonsMetadataExtension": {
+          "value": 1.2,
+          "source": "extension",
+          "hidden": ""
+        },
+        "Categories": {
+          "value": "Digital currency|Flickr images reviewed by FlickreviewR 2|Physical Bitcoins",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "Assessments": {
+          "value": "",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "ImageDescription": {
+          "value": "Holding Bitcoin cryptocurrency coin in hand. Stock photography by Satheesh Sankaran",
+          "source": "commons-desc-page"
+        },
+        "DateTimeOriginal": {
+          "value": "2023-02-13",
+          "source": "commons-desc-page"
+        },
+        "Credit": {
+          "value": "<a rel=\"nofollow\" class=\"external free\" href=\"https://www.flickr.com/photos/justanothercreativesoul/52687909661/\">https://www.flickr.com/photos/justanothercreativesoul/52687909661/</a>",
+          "source": "commons-desc-page"
+        },
+        "Artist": {
+          "value": "Satheesh Sankaran",
+          "source": "commons-desc-page"
+        },
+        "LicenseShortName": {
+          "value": "CC BY 2.0",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "UsageTerms": {
+          "value": "Creative Commons Attribution 2.0",
+          "source": "commons-desc-page"
+        },
+        "AttributionRequired": {
+          "value": "true",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "LicenseUrl": {
+          "value": "https://creativecommons.org/licenses/by/2.0",
+          "source": "commons-desc-page"
+        },
+        "Copyrighted": {
+          "value": "True",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "Restrictions": {
+          "value": "",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "License": {
+          "value": "cc-by-2.0",
+          "source": "commons-templates",
+          "hidden": ""
+        }
+      },
+      "licenseCode": "CC-BY-2.0",
+      "localPath": null,
+      "optimized": null,
+      "blurDataURL": null,
+      "isModified": false,
+      "modificationDescription": null,
+      "objectPosition": "center",
+      "rightsRisks": [],
+      "usageStatus": "in_use",
+      "verificationStatus": "needs_review",
+      "verificationNotes": [
+        "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
+        "Commons の全文検索から採用（関連度 83 点）",
+        "採点の内訳: {\"query\":30,\"alternate\":12,\"title\":0,\"description\":5,\"categories\":3,\"wikidata\":0,\"resolution\":14,\"landscape\":6,\"aspect\":8,\"license\":7,\"metadata\":8,\"penalty\":-10}",
+        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。"
+      ],
+      "verifiedAt": null,
+      "relevanceScore": 83
+    },
+    {
+      "id": "wm-ibm-thinkpad-r51",
+      "commonsPageId": 17306,
+      "wikidataEntityId": null,
+      "fileName": "IBM Thinkpad R51.jpg",
+      "title": "File:IBM Thinkpad R51.jpg",
+      "description": "IBM Thinkpad R51. The logos shown in this picture are copyright.",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/0/0e/IBM_Thinkpad_R51.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/IBM_Thinkpad_R51.jpg/1280px-IBM_Thinkpad_R51.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "commonsPageUrl": "https://commons.wikimedia.org/wiki/File:IBM_Thinkpad_R51.jpg",
+      "mimeType": "image/jpeg",
+      "width": 1291,
+      "height": 1200,
+      "aspectRatio": 1.0758333333333334,
+      "authorName": "André Karwath aka Aka",
+      "authorUrl": "https://commons.wikimedia.org/wiki/User:Aka",
+      "sourceName": "Own work",
+      "sourceUrl": null,
+      "rawLicenses": [
+        "CC BY-SA 4.0",
+        "cc-by-sa-4.0",
+        "Creative Commons Attribution-Share Alike 4.0"
+      ],
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "attributionText": null,
+      "copyrightStatus": "True",
+      "publicDomainRationale": null,
+      "categories": [
+        "CC-BY-SA-2.5",
+        "CC-BY-SA-4.0",
+        "Formerly featured pictures on Wikimedia Commons",
+        "GFDL",
+        "German Wikipedia screenshots",
+        "Laptop computers with white background",
+        "License migration redundant",
+        "Taken with Nikon D70",
+        "ThinkPad R series",
+        "With trademark"
+      ],
+      "retrievedAt": "2026-08-04T15:17:59.845Z",
+      "metadataRaw": {
+        "DateTime": {
+          "value": "2004-11-23 18:06:44",
+          "source": "mediawiki-metadata",
+          "hidden": ""
+        },
+        "ObjectName": {
+          "value": "IBM Thinkpad R51",
+          "source": "mediawiki-metadata"
+        },
+        "CommonsMetadataExtension": {
+          "value": 1.2,
+          "source": "extension",
+          "hidden": ""
+        },
+        "Categories": {
+          "value": "GFDL|Taken with Nikon D70|With trademark|ThinkPad R series|License migration redundant|Formerly featured pictures on Wikimedia Commons|German Wikipedia screenshots|Laptop computers with white background",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "Assessments": {
+          "value": "",
+          "source": "commons-categories",
+          "hidden": ""
+        },
+        "ImageDescription": {
+          "value": "IBM Thinkpad R51. The logos shown in this picture are copyright.",
+          "source": "commons-desc-page"
+        },
+        "DateTimeOriginal": {
+          "value": "<p>12 November 2004\n</p>",
+          "source": "commons-desc-page"
+        },
+        "Credit": {
+          "value": "<p><span class=\"int-own-work\" lang=\"en\">Own work</span>\n</p>",
+          "source": "commons-desc-page"
+        },
+        "Artist": {
+          "value": "<p>André Karwath aka <a href=\"//commons.wikimedia.org/wiki/User:Aka\" title=\"User:Aka\">Aka</a>\n</p>",
+          "source": "commons-desc-page"
+        },
+        "Permission": {
+          "value": "<div class=\"responsive-license-cc layouttemplate licensetpl\" dir=\"ltr\" lang=\"en\"><div class=\"rlicense-icons\"><span class=\"skin-invert\" typeof=\"mw:File\"><span title=\"w:en:Creative Commons\"><img alt=\"w:en:Creative Commons\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/CC_some_rights_reserved.svg/120px-CC_some_rights_reserved.svg.png\" decoding=\"async\" width=\"90\" height=\"36\" class=\"mw-file-element\" srcset=\"https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/CC_some_rights_reserved.svg/250px-CC_some_rights_reserved.svg.png 2x\" data-file-width=\"744\" data-file-height=\"300\"></span></span><br>\n<span class=\"skin-invert\" typeof=\"mw:File\"><span title=\"attribution\"><img alt=\"attribution\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Cc-by_new_white.svg/40px-Cc-by_new_white.svg.png\" decoding=\"async\" width=\"24\" height=\"24\" class=\"mw-file-element\" srcset=\"https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Cc-by_new_white.svg/60px-Cc-by_new_white.svg.png 2x\" data-file-width=\"64\" data-file-height=\"64\"></span></span> <span class=\"skin-invert\" typeof=\"mw:File\"><span title=\"share alike\"><img alt=\"share alike\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Cc-sa_white.svg/40px-Cc-sa_white.svg.png\" decoding=\"async\" width=\"24\" height=\"24\" class=\"mw-file-element\" srcset=\"https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Cc-sa_white.svg/60px-Cc-sa_white.svg.png 2x\" data-file-width=\"64\" data-file-height=\"64\"></span></span></div><div class=\"rlicense-text\"><div class=\"rlicense-declaration\">This file is licensed under the <a href=\"https://en.wikipedia.org/wiki/en:Creative_Commons\" class=\"extiw\" title=\"w:en:Creative Commons\">Creative Commons</a> <a href=\"//creativecommons.org/licenses/by-sa/2.5/deed.en\" class=\"extiw\" title=\"creativecommons:by-sa/2.5/deed.en\">Attribution-Share Alike 2.5 Generic</a> license.</div><div class=\"rlicense-desc\" style=\"text-align:start;\" lang=\"en\">\n<dl><dd>You are free:\n<ul><li><b>to share</b> – to copy, distribute and transmit the work</li>\n<li><b>to remix</b> – to adapt the work</li></ul></dd>\n<dd>Under the following conditions:\n<ul><li><b>attribution</b> – You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.</li>\n<li><b>share alike</b> – If you remix, transform, or build upon the material, you must distribute your contributions under the <a href=\"https://creativecommons.org/share-your-work/licensing-considerations/compatible-licenses\" class=\"extiw\" title=\"ccorg:share-your-work/licensing-considerations/compatible-licenses\">same or compatible license</a> as the original.</li></ul></dd></dl></div><span class=\"licensetpl_link\" style=\"display:none;\">https://creativecommons.org/licenses/by-sa/2.5</span><span class=\"licensetpl_short\" style=\"display:none;\">CC BY-SA 2.5 </span><span class=\"licensetpl_long\" style=\"display:none;\">Creative Commons Attribution-Share Alike 2.5 </span><span class=\"licensetpl_link_req\" style=\"display:none;\">true</span><span class=\"licensetpl_attr_req\" style=\"display:none;\">true</span></div></div>",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "LicenseShortName": {
+          "value": "CC BY-SA 4.0",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "UsageTerms": {
+          "value": "Creative Commons Attribution-Share Alike 4.0",
+          "source": "commons-desc-page"
+        },
+        "AttributionRequired": {
+          "value": "true",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "LicenseUrl": {
+          "value": "https://creativecommons.org/licenses/by-sa/4.0",
+          "source": "commons-desc-page"
+        },
+        "Copyrighted": {
+          "value": "True",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "Restrictions": {
+          "value": "trademarked",
+          "source": "commons-desc-page",
+          "hidden": ""
+        },
+        "License": {
+          "value": "cc-by-sa-4.0",
+          "source": "commons-templates",
+          "hidden": ""
+        }
+      },
+      "licenseCode": "CC-BY-4.0",
+      "localPath": null,
+      "optimized": null,
+      "blurDataURL": null,
+      "isModified": false,
+      "modificationDescription": null,
+      "objectPosition": "center",
+      "rightsRisks": [],
+      "usageStatus": "suspended",
+      "verificationStatus": "rejected",
+      "verificationNotes": [
+        "ライセンス表記は読み取れました。被写体の権利（肖像・商標・建築）を含む掲載可否は、管理画面で確認してください。",
+        "Wikipedia 記事の代表画像として取得（関連度 0 点）",
+        "採点の内訳: {\"query\":10,\"alternate\":0,\"title\":0,\"description\":0,\"categories\":3,\"wikidata\":0,\"resolution\":14,\"landscape\":6,\"aspect\":6,\"license\":5,\"metadata\":8,\"penalty\":-75}",
+        "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。",
+        "[2026-08-04T15:31:30.509Z] 判定規則の見直しにより却下しました（logo）。ライセンスとは別に、商標権・肖像権が及ぶ被写体です。"
+      ],
+      "verifiedAt": null,
+      "relevanceScore": 0
     },
     {
       "id": "wm-jgc-visa01s",
@@ -1571,7 +3318,7 @@
         "Wikipedia 記事の代表画像として取得（関連度 39 点）",
         "採点の内訳: {\"query\":15,\"alternate\":0,\"title\":0,\"description\":0,\"categories\":4,\"wikidata\":0,\"resolution\":14,\"landscape\":6,\"aspect\":9,\"license\":10,\"metadata\":6,\"penalty\":-25}",
         "自動承認は無効です（MEDIA_AUTO_APPROVE）。人の確認へ回します。",
-        "[2026-08-04T15:25:35.534Z] 判定規則の見直しにより却下しました（brand, logo）。ライセンスとは別に、商標権・肖像権が及ぶ被写体です。"
+        "[2026-08-04T15:31:30.509Z] 判定規則の見直しにより却下しました（brand, logo）。ライセンスとは別に、商標権・肖像権が及ぶ被写体です。"
       ],
       "verifiedAt": null,
       "relevanceScore": 39
@@ -2277,7 +4024,7 @@
         "Time 15:35",
         "Time 15:40"
       ],
-      "retrievedAt": "2026-08-04T15:25:47.324Z",
+      "retrievedAt": "2026-08-04T15:31:42.336Z",
       "metadataRaw": {
         "DateTime": {
           "value": "2006-10-27 14:24:50",
@@ -2353,7 +4100,7 @@
           "hidden": ""
         }
       },
-      "licenseCode": "CC-BY-3.0",
+      "licenseCode": "CC-BY-SA-3.0",
       "localPath": null,
       "optimized": null,
       "blurDataURL": null,
@@ -3831,6 +5578,34 @@
       "assetId": "wm-basketball-going-into-a-basketball-hoop-with-sunset-in-backg",
       "locale": "ja",
       "altText": "basketball hoop",
+      "caption": null,
+      "description": null
+    },
+    {
+      "assetId": "wm-basketball-hoop-2230447712",
+      "locale": "en",
+      "altText": "basketball hoop",
+      "caption": null,
+      "description": null
+    },
+    {
+      "assetId": "wm-basketball-hoop-2230447712",
+      "locale": "ja",
+      "altText": "basketball hoop",
+      "caption": null,
+      "description": null
+    },
+    {
+      "assetId": "wm-bitcoin",
+      "locale": "en",
+      "altText": "A bitcoin coin",
+      "caption": null,
+      "description": null
+    },
+    {
+      "assetId": "wm-bitcoin",
+      "locale": "ja",
+      "altText": "ビットコインを模したコイン",
       "caption": null,
       "description": null
     },
