@@ -461,8 +461,14 @@ describe("掲載データの状態", () => {
 
 describe("構造化データ・サイトマップへの漏れ", () => {
   it("掲載可能な画像が無いページでは、ImageObject を出力しない", () => {
-    expect(pageImagesJsonLd(pageKey("cardport", "guide", "points-basics"), "ja")).toBeNull();
-    expect(pageImageSitemapEntries(pageKey("cardport", "news", "any"), "ja")).toEqual([]);
+    /*
+      実在しないページキーを使います。
+      実在するページを指すと、画像が承認された時点でこのテストが落ちます。
+      ここで確かめたいのは「画像が無ければ何も出さない」という性質です。
+    */
+    const empty = pageKey("cardport", "guide", "no-such-guide-for-test");
+    expect(pageImagesJsonLd(empty, "ja")).toBeNull();
+    expect(pageImageSitemapEntries(empty, "ja")).toEqual([]);
   });
 
   it("構造化データにも作者・ライセンス・出典を含める", () => {

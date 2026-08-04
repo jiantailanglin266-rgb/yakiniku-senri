@@ -12,4 +12,5 @@ export { ImageAttribution, type AttributionLabels } from "./ImageAttribution";
 export { ImageLicenseBadge } from "./ImageLicenseBadge";
 export { ImageSourceDetails } from "./ImageSourceDetails";
 export { MediaReviewQueue } from "./MediaReviewQueue";
+export { MediaAdminBrowser } from "./MediaAdminBrowser";
 export { WikimediaImage } from "./WikimediaImage";

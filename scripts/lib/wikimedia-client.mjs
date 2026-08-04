@@ -263,7 +263,15 @@ export async function fetchLeadImageTitle(lang, title, config, stats) {
   // Commons 以外（各言語版ローカルアップロード）はここで捨てます
   if (project !== "commons") return null;
 
-  return `File:${decodeURIComponent(encodedName)}`;
+  /*
+    URL のパスはアンダースコア区切りですが、API が返すタイトルはスペース区切りです。
+      URL:   .../commons/a/ab/Sceptre_Rugby_Ball.jpg
+      title: "File:Sceptre Rugby Ball.jpg"
+    ここを揃えないと、あとで「この候補は代表画像か」を照合できず、
+    関連度の足切り免除が効きません。
+  */
+  const fileName = decodeURIComponent(encodedName).replace(/_/g, " ");
+  return `File:${fileName}`;
 }
 
 export { COMMONS_API };
