@@ -8,7 +8,7 @@ import { topics } from "@/data/ai-port/taxonomy";
 import { diagnoses } from "@/data/ai-port/diagnosis";
 import { relativeTime, type NewsItem } from "@/lib/ai-port/news";
 import { HeroSearch } from "./HeroSearch";
-import { HeroOrb } from "./HeroOrb";
+import { HeroVisual } from "./HeroVisual";
 
 /**
  * トップページのヒーロー。
@@ -65,7 +65,7 @@ export function HeroSection({ news }: { news: NewsItem[] }) {
         </div>
 
         <div className="relative min-w-0">
-          <HeroOrb />
+          <HeroVisual />
         </div>
       </div>
 
