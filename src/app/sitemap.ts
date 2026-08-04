@@ -6,7 +6,10 @@ import { siteUrl } from "@/data/site";
 export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date();
+  // ビルドのたびに現在時刻を入れると全URLが「毎回更新された」ことになり、
+  // クロールの優先度判断を誤らせます。最新のお知らせの日付を基準にします。
+  const latestNews = getNews(1)[0];
+  const lastModified = latestNews ? new Date(latestNews.date) : new Date(0);
 
   const staticPages: MetadataRoute.Sitemap = [
     { url: `${siteUrl}/`, lastModified, changeFrequency: "weekly", priority: 1 },
