@@ -117,12 +117,6 @@
       "priority": 0
     },
     {
-      "assetId": "wm-kundenkarten",
-      "pageKey": "cardport:guide:points-basics",
-      "slot": "gallery",
-      "priority": 20
-    },
-    {
       "assetId": "wm-bitcoin",
       "pageKey": "cardport:guide:web3-payment-basics",
       "slot": "gallery",
@@ -133,18 +127,6 @@
       "pageKey": "cardport:guide:web3-payment-basics",
       "slot": "inline",
       "priority": 10
-    },
-    {
-      "assetId": "wm-sala-dal-rinc-n-del-vino-5657319902",
-      "pageKey": "cardport:news:annual-fee-vs-benefit",
-      "slot": "comparison",
-      "priority": 10
-    },
-    {
-      "assetId": "wm-sala-dal-rinc-n-del-vino-5657319902",
-      "pageKey": "cardport:news:annual-fee-vs-benefit",
-      "slot": "inline",
-      "priority": 20
     },
     {
       "assetId": "wm-apple-payment-square",
@@ -169,12 +151,6 @@
       "pageKey": "cardport:news:chainbridge-region-restriction",
       "slot": "thumbnail",
       "priority": 10
-    },
-    {
-      "assetId": "wm-kundenkarten",
-      "pageKey": "cardport:news:hoshimart-plus-campaign",
-      "slot": "inline",
-      "priority": 20
     },
     {
       "assetId": "wm-qr-code-for-mobile-english-wikipedia",
