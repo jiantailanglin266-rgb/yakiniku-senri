@@ -6,7 +6,7 @@
  */
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { MEDIA_SITE, mediaSeed, newsFallbackTheme, portalPageKey } from "@/portal/lib/media";
 import { newsCategories } from "@/portal/data/news";
@@ -14,7 +14,13 @@ import { coins } from "@/portal/data/coins";
 import { learnArticles } from "@/portal/data/learn";
 import { photoCredit, portalPhoto } from "@/portal/lib/photos";
 import { footerNav } from "@/portal/data/site-content";
-import { portalSitemap } from "@/portal/lib/sitemap";
+import {
+  portalNewsSitemapUrls,
+  portalSitemap,
+  portalVideoSitemapEntries,
+} from "@/portal/lib/sitemap";
+import { sortedNews } from "@/portal/data/news";
+import { videos } from "@/portal/data/videos";
 import { healthIssues } from "@/portal/lib/admin";
 import { wikimediaAssets } from "@/media/data/assets";
 import { assetUsages } from "@/media/data/usages";
@@ -212,5 +218,65 @@ describe("一括クレジット方式の写真（mountain-peak 方式）", () =>
       "utf8",
     );
     expect(source).not.toContain("@/media");
+  });
+});
+
+describe("ニュース／動画サイトマップ", () => {
+  it("ニュースサイトマップは公開から2日以内の記事だけを載せる", () => {
+    // 2日を超えた記事は Google ニュースが受け付けないため、機械的に落とします
+    const latest = sortedNews()[0];
+    const justAfter = new Date(Date.parse(latest.publishedAt) + 60_000);
+    const fresh = portalNewsSitemapUrls("ja", justAfter);
+    expect(fresh.length).toBeGreaterThan(0);
+
+    const wayLater = new Date(Date.parse(latest.publishedAt) + 30 * 86_400_000);
+    expect(portalNewsSitemapUrls("ja", wayLater)).toHaveLength(0);
+  });
+
+  it("ニュースサイトマップの言語が hreflang と一致する", () => {
+    const latest = sortedNews()[0];
+    const justAfter = new Date(Date.parse(latest.publishedAt) + 60_000);
+    expect(portalNewsSitemapUrls("zh-cn", justAfter)[0]?.language).toBe("zh-Hans");
+  });
+
+  it("動画サイトマップは再生場所を示せる動画だけを載せる", () => {
+    // player_loc は必須項目です。youtubeId が無い動画は載せません
+    const entries = portalVideoSitemapEntries("ja");
+    expect(entries.length).toBe(videos.filter((video) => video.youtubeId.length > 0).length);
+    for (const entry of entries) {
+      expect(entry.playerUrl).toMatch(/^https:\/\/www\.youtube\.com\/embed\/.+/);
+      expect(entry.durationSec).toBeGreaterThan(0);
+    }
+  });
+
+  it("同じオリジンで配信しているときは robots.txt が両方を申告する", async () => {
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://example.com");
+    vi.stubEnv("NEXT_PUBLIC_PORTAL_URL", "https://example.com");
+    vi.resetModules();
+    try {
+      const { default: sameOriginRobots } = await import("@/app/robots");
+      const result = sameOriginRobots();
+      const sitemaps = Array.isArray(result.sitemap) ? result.sitemap : [result.sitemap];
+      expect(sitemaps.some((url) => url?.includes("/news-sitemap.xml"))).toBe(true);
+      expect(sitemaps.some((url) => url?.includes("/video-sitemap.xml"))).toBe(true);
+    } finally {
+      vi.unstubAllEnvs();
+      vi.resetModules();
+    }
+  });
+
+  it("別ドメインで配信しているときは申告しない（存在しないURLを書かない）", async () => {
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://example.com");
+    vi.stubEnv("NEXT_PUBLIC_PORTAL_URL", "https://crypto.example.net");
+    vi.resetModules();
+    try {
+      const { default: crossOriginRobots } = await import("@/app/robots");
+      const result = crossOriginRobots();
+      const sitemaps = Array.isArray(result.sitemap) ? result.sitemap : [result.sitemap];
+      expect(sitemaps.some((url) => url?.includes("-sitemap.xml"))).toBe(false);
+    } finally {
+      vi.unstubAllEnvs();
+      vi.resetModules();
+    }
   });
 });

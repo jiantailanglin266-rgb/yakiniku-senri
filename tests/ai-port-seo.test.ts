@@ -240,7 +240,9 @@ describe("robots.txt", () => {
   it("それ以外は許可し、サイトマップを申告する", () => {
     const rule = Array.isArray(result.rules) ? result.rules[0] : result.rules;
     expect(rule?.allow).toBe("/");
-    expect(result.sitemap).toContain("/sitemap.xml");
+    // サイトマップは複数申告しています（主サイトマップ + CRYPTO PORT のニュース／動画）
+    const sitemaps = Array.isArray(result.sitemap) ? result.sitemap : [result.sitemap];
+    expect(sitemaps.some((url) => url?.endsWith("/sitemap.xml"))).toBe(true);
   });
 });
 

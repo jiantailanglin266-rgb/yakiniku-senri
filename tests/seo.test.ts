@@ -141,7 +141,12 @@ describe("sitemap / robots", () => {
 
     expect(rule?.userAgent).toBe("*");
     expect(rule?.allow).toBe("/");
-    expect(result.sitemap).toBe(`${siteUrl}/sitemap.xml`);
+    // 主サイトマップは常に先頭。種類の違うサイトマップ（news / video）は
+    // 同じオリジンで配信しているときだけ後ろに続きます
+    const sitemaps = Array.isArray(result.sitemap) ? result.sitemap : [result.sitemap];
+    expect(sitemaps[0]).toBe(`${siteUrl}/sitemap.xml`);
+    // 申告するURLは、すべて自ホストのものに限ります
+    for (const url of sitemaps) expect(url?.startsWith(siteUrl)).toBe(true);
 
     // 除外しているのは各ポータルの検索結果・管理画面・APIだけで、
     // 焼肉 千里 側のページは1つもブロックされていないこと
