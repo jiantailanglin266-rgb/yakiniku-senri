@@ -88,6 +88,27 @@ describe("ライセンスの正規化", () => {
     expect(normalizeLicense("GFDL")).toBe("GFDL");
   });
 
+  /*
+    Commons は同じライセンスを短縮形と正式名称の両方で返します。
+    正式名称は語が分かれるため（"Attribution-Share Alike"）、
+    短縮形だけを見ていると継承や非商用の条件を落とします。
+
+    実際に取得した5件が CC BY-SA を CC BY と誤判定されました。
+    NC / ND の取りこぼしはさらに危険で、使えない画像が
+    掲載可能として通ってしまいます。
+  */
+  it.each([
+    ["Creative Commons Attribution-Share Alike 4.0", "CC-BY-SA-4.0"],
+    ["Creative Commons Attribution-Share Alike 3.0", "CC-BY-SA-3.0"],
+    ["Creative Commons Attribution-Share Alike 2.0", "CC-BY-SA-2.0"],
+    ["Creative Commons Attribution-NonCommercial 4.0", "CC-BY-NC"],
+    ["Creative Commons Attribution-Non-Commercial 4.0", "CC-BY-NC"],
+    ["Creative Commons Attribution-No Derivative Works 3.0", "CC-BY-ND"],
+    ["Creative Commons Attribution 4.0", "CC-BY-4.0"],
+  ])("正式名称も正しく判定する: %s", (raw, expected) => {
+    expect(normalizeLicense(raw)).toBe(expected);
+  });
+
   it("読み取れない表記は推測せず UNKNOWN にする", () => {
     expect(normalizeLicense(null)).toBe("UNKNOWN");
     expect(normalizeLicense("")).toBe("UNKNOWN");

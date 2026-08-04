@@ -288,11 +288,21 @@ const AUTO_USABLE = new Set([
 function pickLicense(rawLicenses) {
   const codes = rawLicenses.map(normalizeLicense);
   if (codes.length === 0) return { code: "UNKNOWN", hadUnknown: true };
+  /*
+    表記が食い違ったときは、緩いほうではなく**厳しいほう**を採ります。
+
+    以前は PD/CC0 → CC BY → CC BY-SA の順に「使いやすいもの」を選んでいました。
+    しかし3つの表記は同じライセンスの言い換えであることがほとんどで、
+    食い違いは解析の取りこぼしを意味します。
+    そこで緩いほうを選ぶと、継承義務や非商用条件を落としたまま公開されます。
+
+    使えないライセンス（NC / ND / 不明）が1つでもあれば、それを採用して止めます。
+  */
   const rank = (code) => {
-    if (!AUTO_USABLE.has(code)) return 100;
-    if (code === "PD" || code === "CC0") return 0;
-    if (code.startsWith("CC-BY-SA")) return 2;
-    return 1;
+    if (!AUTO_USABLE.has(code)) return 0;
+    if (code.startsWith("CC-BY-SA")) return 1;
+    if (code === "PD" || code === "CC0") return 3;
+    return 2;
   };
   const best = [...codes].sort((a, b) => rank(a) - rank(b))[0];
   return { code: best, hadUnknown: codes.includes("UNKNOWN") };
