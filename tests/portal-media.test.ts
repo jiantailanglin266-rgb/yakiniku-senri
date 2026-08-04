@@ -130,7 +130,15 @@ describe("取得対象リスト", () => {
       （手で書けてしまうと、確認済みの画像と区別がつかなくなります）。
       wikipedia は探索の起点（記事タイトル）で、権利情報ではありません。
     */
-    const allowedKeys = ["limit", "pageKey", "query", "slot", "wikidataEntityId", "wikipedia"];
+    const allowedKeys = [
+      "limit",
+      "pageKey",
+      "query",
+      "slot",
+      "wikidataEntityId",
+      "wikipedia",
+      "leadImage",
+    ];
     for (const request of requests) {
       expect(request).not.toHaveProperty("licenseCode");
       expect(request).not.toHaveProperty("authorName");
