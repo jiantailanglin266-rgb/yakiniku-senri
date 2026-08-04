@@ -643,6 +643,190 @@ create trigger card_rewards_history_trigger
   execute function record_reward_history();
 
 -- ---------------------------------------------------------------------
+-- 画像（Wikimedia Commons）
+--
+--   設計の要点:
+--     1. 取得結果（metadata_raw）と掲載可否（verification_status）を別の列に持つ
+--        API が 200 を返したことは、掲載してよい根拠になりません。
+--     2. ライセンス情報の無い画像を公開状態にできないよう、制約で縛る
+--     3. 同じ画像を複数ページで使っても、画像情報は1行だけ（usages で結ぶ）
+--     4. 作者名・ライセンス正式名称・ファイル名は原文列。翻訳列を持たせない
+--        翻訳するのは alt / caption / description だけ（wikimedia_asset_localizations）
+-- ---------------------------------------------------------------------
+
+create table wikimedia_licenses (
+  code                    text primary key,          -- 'CC-BY-SA-4.0' など
+  name                    text not null,             -- 正式名称。翻訳しません
+  url                     text,
+  version                 text,
+  commercial_use_allowed  boolean not null,
+  derivative_works_allowed boolean not null,
+  share_alike_required    boolean not null,
+  attribution_required    boolean not null,
+  is_public_domain        boolean not null,
+  -- 人の確認なしで公開してよいか。既定は false
+  auto_usable             boolean not null default false
+);
+
+create type media_verification_status as enum (
+  'pending', 'needs_review', 'license_unknown', 'rights_risk', 'approved', 'rejected'
+);
+create type media_usage_status as enum ('unused', 'in_use', 'suspended');
+
+create table wikimedia_assets (
+  id                      uuid primary key default gen_random_uuid(),
+  commons_page_id         bigint unique,
+  wikidata_entity_id      text,
+
+  -- 原文（翻訳禁止）
+  file_name               text not null unique,
+  title                   text not null,
+  description             text,
+  commons_page_url        text not null,
+  original_url            text not null,
+  thumbnail_url           text,
+  local_path              text,
+
+  mime_type               text not null,
+  width                   integer not null check (width > 0),
+  height                  integer not null check (height > 0),
+  -- CLS 防止のため保持します
+  aspect_ratio            numeric generated always as (width::numeric / height::numeric) stored,
+
+  -- 取得できなかった項目は null。推測値を入れません
+  author_name             text,
+  author_url              text,
+  source_name             text,
+  source_url              text,
+
+  license_code            text not null references wikimedia_licenses(code),
+  license_url             text,
+  license_version         text,
+  attribution_text        text,
+  copyright_status        text,
+  public_domain_rationale text,
+
+  -- サイト側での加工（トリミング・オーバーレイ）
+  is_modified             boolean not null default false,
+  modification_description text,
+
+  retrieved_at            timestamptz not null default now(),
+  verified_at             timestamptz,
+  verified_by             uuid references users(id),
+  verification_status     media_verification_status not null default 'pending',
+  verification_notes      text[] not null default '{}',
+  rights_risks            text[] not null default '{}',
+
+  usage_status            media_usage_status not null default 'unused',
+  object_position         text not null default 'center',
+
+  -- API のレスポンス原文。監査用で、表示には使いません
+  metadata_raw            jsonb,
+
+  created_at              timestamptz not null default now(),
+  updated_at              timestamptz not null default now(),
+
+  -- ライセンス不明のまま承認できません
+  constraint wikimedia_assets_no_unknown_approval
+    check (verification_status <> 'approved' or license_code <> 'UNKNOWN'),
+  -- 承認済みには必ず検証日時が要ります
+  constraint wikimedia_assets_approved_needs_timestamp
+    check (verification_status <> 'approved' or verified_at is not null),
+  -- 出典（Commons のファイルページ）が無い画像は承認できません
+  constraint wikimedia_assets_approved_needs_source
+    check (verification_status <> 'approved' or commons_page_url <> '')
+);
+
+create index wikimedia_assets_status_idx on wikimedia_assets(verification_status);
+create index wikimedia_assets_license_idx on wikimedia_assets(license_code);
+
+/*
+ * 作者表示が必要なライセンスなのに作者が空の行を、承認済みにできないようにします。
+ * 列だけの CHECK では他テーブル（licenses）を参照できないため、トリガで縛ります。
+ */
+create or replace function enforce_attribution_before_approval()
+returns trigger as $$
+declare
+  needs_attribution boolean;
+begin
+  if new.verification_status = 'approved' then
+    select attribution_required into needs_attribution
+      from wikimedia_licenses where code = new.license_code;
+    if needs_attribution and coalesce(new.author_name, '') = '' then
+      raise exception '作者表示が必要なライセンス（%）ですが、author_name が空です', new.license_code;
+    end if;
+  end if;
+  return new;
+end;
+$$ language plpgsql;
+
+create trigger wikimedia_assets_attribution_guard
+  before insert or update on wikimedia_assets
+  for each row execute function enforce_attribution_before_approval();
+
+-- 翻訳するのはこの3項目だけです（作者名・ライセンス名はここに入れません）
+create table wikimedia_asset_localizations (
+  asset_id     uuid not null references wikimedia_assets(id) on delete cascade,
+  locale       text not null,
+  alt_text     text not null,
+  caption      text,
+  description  text,
+  primary key (asset_id, locale)
+);
+
+-- どのページのどの枠で使うか（画像そのものは重複保存しません）
+create table wikimedia_asset_usages (
+  asset_id   uuid not null references wikimedia_assets(id) on delete cascade,
+  page_key   text not null,          -- 'cardport:guide:points-basics'
+  slot       text not null,          -- hero / card / thumbnail / inline / ogp ...
+  priority   integer not null default 0,
+  primary key (asset_id, page_key, slot)
+);
+create index wikimedia_asset_usages_page_idx on wikimedia_asset_usages(page_key, slot, priority);
+
+-- 表示したクレジットの記録。後から「何をどう表示したか」を再現できます
+create table image_attributions (
+  id               uuid primary key default gen_random_uuid(),
+  asset_id         uuid not null references wikimedia_assets(id) on delete cascade,
+  page_key         text not null,
+  -- 実際に画面へ出した文字列（原文のまま）
+  rendered_text    text not null,
+  rendered_at      timestamptz not null default now()
+);
+
+-- 検証の履歴。誰がいつ状態を変えたか
+create table image_verification_logs (
+  id           uuid primary key default gen_random_uuid(),
+  asset_id     uuid not null references wikimedia_assets(id) on delete cascade,
+  from_status  media_verification_status,
+  to_status    media_verification_status not null,
+  actor_id     uuid references users(id),
+  note         text,
+  created_at   timestamptz not null default now()
+);
+
+-- 取得バッチの記録。「取得できた件数」と「掲載できた件数」を別に数えます
+create table image_sync_logs (
+  id                uuid primary key default gen_random_uuid(),
+  started_at        timestamptz not null default now(),
+  finished_at       timestamptz,
+  query             text,
+  fetched_count     integer not null default 0,
+  -- 取得できても掲載できないものが普通にあります。両方記録します
+  publishable_count integer not null default 0,
+  error_count       integer not null default 0,
+  notes             text
+);
+
+-- 却下の記録。同じ画像を何度も候補に挙げないために残します
+create table image_rejections (
+  file_name    text primary key,
+  reason       text not null,
+  actor_id     uuid references users(id),
+  rejected_at  timestamptz not null default now()
+);
+
+-- ---------------------------------------------------------------------
 -- Row Level Security（Supabase 前提）
 --   公開データは誰でも読める。書き込みは認証済みの編集者だけ。
 -- ---------------------------------------------------------------------
@@ -669,5 +853,10 @@ create policy clicks_insert_anon on affiliate_clicks
 create policy favorites_owner on favorites
   using (auth.uid() = user_id)
   with check (auth.uid() = user_id);
+
+-- 画像は「承認済み」だけが公開されます。確認前の候補は誰にも見えません
+alter table wikimedia_assets enable row level security;
+create policy wikimedia_assets_public_read on wikimedia_assets
+  for select using (verification_status = 'approved' and usage_status <> 'suspended');
 
 commit;

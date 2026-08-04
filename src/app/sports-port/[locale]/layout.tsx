@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import "../sports.css";
+// 画像モジュールの配色トークン（クレジット表示に使います）
+import "@/media/styles/media.css";
 
 import { brand, features } from "@/sports/config/site";
 import { getDictionary, localeCodes, findLocale } from "@/sports/i18n";

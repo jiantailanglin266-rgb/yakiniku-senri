@@ -16,8 +16,8 @@ import { LeagueCard, NewsCard, PlayerCard } from "@/sports/components/cards/Card
 import { WatchOptions } from "@/sports/components/streaming/StreamingTable";
 import { Badge, Breadcrumbs, JsonLd, SectionHeading } from "@/sports/components/ui/primitives";
 import { breadcrumbJsonLd, howToJsonLd } from "@/sports/lib/structured-data";
-import { WikimediaHero } from "@/wikimedia/components/WikimediaImage";
-import { assetForPage } from "@/wikimedia/data/assets";
+import { MediaSlot } from "@/media/components";
+import { pageKey } from "@/media/data/usages";
 
 export function generateStaticParams() {
   return localeCodes.flatMap((locale) => sports.map((sport) => ({ locale, slug: sport.slug })));
@@ -80,24 +80,24 @@ export default async function SportDetailPage({
       <Breadcrumbs locale={locale} trail={trail} />
 
       {/*
-        承認済みの Wikimedia 画像があればヒーローに使い、無ければ生成ビジュアルにします。
-        画像の上に見出しを重ねるため、クレジットは画像内に必ず表示されます
-        （WikimediaHero が creditPlacement="overlay" を強制します）。
+        ライセンス確認済みの画像があればヒーローに使い、無ければ装飾表現にします。
+        画像が入った場合もクレジットは MediaSlot の内部で必ず表示されます。
       */}
       <header className="border-edge relative isolate mb-10 overflow-hidden rounded-2xl border">
         {/*
           背景側。前面の見出しは後続の要素なので、そのまま上に重なります。
-          高さだけを指定すると、比率指定から幅が逆算されて横幅が足りなくなるため、
+          高さだけを指定すると比率から幅が逆算されて横幅が足りなくなるため、
           幅と高さの両方をここで固定します。
         */}
         <div className="absolute inset-0 [&_figure]:size-full [&_figure>div]:size-full [&>div]:size-full">
-          <WikimediaHero
-            asset={assetForPage(`/sports/${sport.slug}`, "hero")}
+          <MediaSlot
+            pageKey={pageKey("sportsport", "sport", sport.slug)}
+            slot="hero"
             locale={locale}
+            theme="neutral"
+            seed={sport.statKeys.length + sport.periodCount}
             sizes="100vw"
-            fallbackSeed={sport.slug}
-            fallbackAccent={sport.accent}
-            // 記号は見出しの隣に出しているので、背景では重ねません
+            showCaption={false}
             className="size-full"
           />
         </div>

@@ -13,8 +13,8 @@ import { getSport } from "../../data/sports";
 import { getLeague } from "../../data/leagues";
 import { getTeam } from "../../data/teams";
 import { authorsById } from "../../data/news";
-import { WikimediaCardImage } from "@/wikimedia/components/WikimediaImage";
-import { assetForPage } from "@/wikimedia/data/assets";
+import { MediaSlot } from "@/media/components";
+import { pageKey } from "@/media/data/usages";
 
 /* ------------------------------------------------------------------
    ニュース
@@ -35,6 +35,20 @@ const categoryLabel: Record<string, { ja: string; en: string }> = {
   web3: { ja: "Web3.0", en: "Web3" },
   esports: { ja: "eスポーツ", en: "Esports" },
 };
+
+/**
+ * 装飾の見た目を、スラッグから決定的に決めるための種。
+ *
+ * 乱数を使うと、再ビルドのたびに絵柄が変わり、
+ * サーバー描画とクライアント描画でも食い違います。
+ */
+function seedFrom(slug: string): number {
+  let hash = 0;
+  for (let index = 0; index < slug.length; index += 1) {
+    hash = (hash * 31 + slug.charCodeAt(index)) % 1000;
+  }
+  return hash;
+}
 
 export function confidenceTone(confidence: NewsArticle["confidence"]) {
   return confidence === "official" ? "success" : confidence === "report" ? "accent" : "caution";
@@ -61,14 +75,15 @@ export function NewsCard({ article, locale }: { article: NewsArticle; locale: st
         報道写真は権利関係が重く、確認が済むまでは生成ビジュアルのままにします。
       */}
       <Link href={href(locale, `/news/${article.slug}`)} className="border-edge block border-b">
-        <WikimediaCardImage
-          asset={assetForPage(`/news/${article.slug}`, "card")}
+        <MediaSlot
+          pageKey={pageKey("sportsport", "news", article.slug)}
+          slot="card"
           locale={locale}
-          ratio="16/9"
+          theme="news"
+          seed={seedFrom(article.slug)}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          fallbackSeed={article.slug}
-          fallbackAccent={sport?.accent ?? "#22d3ee"}
-          fallbackGlyph={sport?.glyph}
+          showCaption={false}
+          className="aspect-[16/9]"
         />
       </Link>
 
@@ -115,7 +130,6 @@ export function NewsCard({ article, locale }: { article: NewsArticle; locale: st
    動画
    ------------------------------------------------------------------ */
 export function VideoCard({ video, locale }: { video: VideoItem; locale: string }) {
-  const sport = getSport(video.sportId);
   return (
     <article className="sp-solid sp-tilt flex h-full flex-col overflow-hidden">
       <Link href={href(locale, `/videos/${video.slug}`)} className="block">
@@ -124,14 +138,15 @@ export function VideoCard({ video, locale }: { video: VideoItem; locale: string 
             承認済みの Wikimedia 画像があればそれを、無ければ生成ビジュアルを出します。
             関連性の低い画像を装飾目的で並べない方針のため、既定は生成ビジュアルです。
           */}
-          <WikimediaCardImage
-            asset={assetForPage(`/videos/${video.slug}`, "card")}
+          <MediaSlot
+            pageKey={pageKey("sportsport", "video", video.slug)}
+            slot="card"
             locale={locale}
-            ratio="16/9"
+            theme="video"
+            seed={seedFrom(video.slug)}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            fallbackSeed={video.slug}
-            fallbackAccent={sport?.accent ?? "#22d3ee"}
-            fallbackGlyph={sport?.glyph ?? "▶"}
+            showCaption={false}
+            className="aspect-[16/9]"
           />
           <span className="sp-mono bg-void/80 text-ink absolute right-2 bottom-2 rounded-sm px-1.5 py-0.5 text-[0.625rem]">
             {formatDuration(video.durationSec)}

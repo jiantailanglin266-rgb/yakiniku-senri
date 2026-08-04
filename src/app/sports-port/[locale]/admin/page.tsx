@@ -19,8 +19,10 @@ import { streamingServices } from "@/sports/data/streaming";
 import { web3Services } from "@/sports/data/web3";
 import { diagnoses } from "@/sports/data/diagnoses";
 import { usingMockData } from "@/sports/lib/api";
-import { wikimediaAssets, wikimediaRejections, wikimediaSyncedAt } from "@/wikimedia/data/assets";
-import { evaluateAsset } from "@/wikimedia/licenses";
+import { MediaReviewQueue } from "@/media/components";
+import { wikimediaAssets, assetRejections } from "@/media/data/assets";
+import { getMediaLabels } from "@/media/i18n/labels";
+import { isPublishable } from "@/media/lib/eligibility";
 
 import { Badge, Breadcrumbs, JsonLd, SectionHeading } from "@/sports/components/ui/primitives";
 import { breadcrumbJsonLd } from "@/sports/lib/structured-data";
@@ -71,7 +73,7 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
     {
       key: "published",
       label: locale === "ja" ? "公開中" : "Published",
-      count: wikimediaAssets.filter((asset) => evaluateAsset(asset).allowed).length,
+      count: wikimediaAssets.filter(isPublishable).length,
     },
     {
       key: "needs_review",
@@ -90,10 +92,15 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
     },
     {
       key: "rejected",
-      label: locale === "ja" ? "同期時に除外" : "Rejected at sync",
-      count: byStatus("rejected") + wikimediaRejections.length,
+      label: locale === "ja" ? "除外" : "Rejected",
+      count: byStatus("rejected") + assetRejections.length,
     },
   ];
+
+  // 未承認のものだけを確認キューに出します（承認済みは出典ページで確認できます）
+  const pendingMediaAssets = wikimediaAssets
+    .filter((asset) => asset.verificationStatus !== "approved")
+    .sort((a, b) => a.fileName.localeCompare(b.fileName));
 
   const collections = [
     { key: "sports", label: dict.sectionSports, count: sports.length, path: "/leagues" },
@@ -307,8 +314,8 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
           title={locale === "ja" ? "画像の承認状況" : "Image review queue"}
           description={
             locale === "ja"
-              ? "npm run wikimedia:sync で取得した候補の判定結果です。承認は src/wikimedia/data/reviews.json への追記（＝コードレビュー）で行います。画面から直接公開できる導線は意図的に設けていません。"
-              : "Verification state of candidates fetched by npm run wikimedia:sync. Approval happens by editing src/wikimedia/data/reviews.json, so every publication passes code review. There is deliberately no publish button here."
+              ? "node scripts/wikimedia-sync.mjs で取得した候補の判定結果です。取得できたことは、掲載してよい根拠になりません。承認はデータの更新（＝コードレビュー）で行い、画面から直接公開できる導線は設けていません。"
+              : "Verification state of candidates fetched by scripts/wikimedia-sync.mjs. Successful retrieval is not permission to publish. Approval happens in the data, through code review — there is deliberately no publish button here."
           }
         />
         <ul className="mb-3 grid gap-3 sm:grid-cols-3 lg:grid-cols-6">
@@ -319,19 +326,13 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
             </li>
           ))}
         </ul>
-        <div className="sp-solid text-ink-soft p-4 text-xs leading-relaxed">
-          <p>
-            {locale === "ja" ? "最終同期" : "Last sync"}:{" "}
-            <span className="sp-mono" translate="no">
-              {wikimediaSyncedAt ? wikimediaSyncedAt.slice(0, 19).replace("T", " ") : "—"}
-            </span>
-          </p>
-          <p className="text-ink-dim mt-2">
-            {locale === "ja"
-              ? "承認済みの画像は、ライセンス・作者・出典が揃っているものだけです。1つでも欠けると WikimediaImage が描画を拒否し、生成ビジュアルに切り替わります。"
-              : "Only assets with a licence, an author and a source are approved. If any of the three is missing, WikimediaImage refuses to render and falls back to a generated visual."}
-          </p>
-          <p className="mt-2">
+        <div className="sp-solid overflow-hidden p-4">
+          <MediaReviewQueue
+            assets={pendingMediaAssets}
+            locale={locale}
+            labels={getMediaLabels(locale)}
+          />
+          <p className="mt-3 text-xs">
             <Link href={href(locale, "/image-credits")} className="text-cyan hover:underline">
               {dict.footerImageCredits}
             </Link>

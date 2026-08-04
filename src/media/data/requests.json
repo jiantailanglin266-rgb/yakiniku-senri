@@ -1,0 +1,184 @@
+[
+  {
+    "pageKey": "cardport:guide:points-basics",
+    "slot": "inline",
+    "query": "contactless payment terminal",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "cardport:guide:credit-card-basics",
+    "slot": "inline",
+    "query": "EMV chip card reader",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "cardport:payment:qr",
+    "slot": "inline",
+    "query": "QR code payment",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "cardport:guide:mile-basics",
+    "slot": "inline",
+    "query": "airport departure board",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "cardport:web3:stablecoin",
+    "slot": "inline",
+    "query": "blockchain network diagram",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "sportsport:sport:football",
+    "slot": "hero",
+    "query": "association football ball on pitch",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "sportsport:sport:baseball",
+    "slot": "hero",
+    "query": "baseball field empty",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "sportsport:sport:basketball",
+    "slot": "hero",
+    "query": "basketball hoop",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "sportsport:sport:american-football",
+    "slot": "hero",
+    "query": "american football ball",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "sportsport:sport:ice-hockey",
+    "slot": "hero",
+    "query": "ice hockey rink empty",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "sportsport:sport:tennis",
+    "slot": "hero",
+    "query": "tennis court empty",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "sportsport:sport:golf",
+    "slot": "hero",
+    "query": "golf course fairway",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "sportsport:sport:f1",
+    "slot": "hero",
+    "query": "formula one circuit aerial",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "sportsport:sport:motogp",
+    "slot": "hero",
+    "query": "motorcycle racing circuit",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "sportsport:sport:boxing",
+    "slot": "hero",
+    "query": "boxing ring empty",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "sportsport:sport:mma",
+    "slot": "hero",
+    "query": "mixed martial arts cage empty",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "sportsport:sport:pro-wrestling",
+    "slot": "hero",
+    "query": "professional wrestling ring empty",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "sportsport:sport:rugby",
+    "slot": "hero",
+    "query": "rugby ball",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "sportsport:sport:cricket",
+    "slot": "hero",
+    "query": "cricket ground empty",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "sportsport:sport:volleyball",
+    "slot": "hero",
+    "query": "volleyball court empty",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "sportsport:sport:table-tennis",
+    "slot": "hero",
+    "query": "table tennis table",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "sportsport:sport:badminton",
+    "slot": "hero",
+    "query": "badminton court empty",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "sportsport:sport:horse-racing",
+    "slot": "hero",
+    "query": "horse racing track empty",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "sportsport:sport:esports",
+    "slot": "hero",
+    "query": "esports arena empty",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "sportsport:sport:olympics",
+    "slot": "hero",
+    "query": "athletics track empty",
+    "wikidataEntityId": null,
+    "limit": 5
+  },
+  {
+    "pageKey": "sportsport:sport:winter-sports",
+    "slot": "hero",
+    "query": "ski slope",
+    "wikidataEntityId": null,
+    "limit": 5
+  }
+]

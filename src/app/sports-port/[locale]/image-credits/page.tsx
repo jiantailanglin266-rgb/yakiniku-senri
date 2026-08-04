@@ -1,3 +1,14 @@
+/**
+ * 画像の出典一覧。
+ *
+ * ■ このページの役割
+ *   ライセンスが要求する作者表示は、画像のすぐ近くに出すのが原則です。
+ *   このページは**その代わり**ではなく、まとめて確認するための補助です
+ *   （各画像のクレジットは WikimediaImage が画像と同じ figure に描画します）。
+ *
+ * ■ 掲載していない画像は、このページにも出しません
+ *   「一覧に出ている ＝ 掲載可否の確認が済んでいる」という関係を保つためです。
+ */
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -8,12 +19,13 @@ import { href } from "@/sports/lib/url";
 import { Breadcrumbs, JsonLd, SectionHeading } from "@/sports/components/ui/primitives";
 import { breadcrumbJsonLd } from "@/sports/lib/structured-data";
 
-import { wikimediaAssets, usagesForAsset } from "@/wikimedia/data/assets";
-import { thirdPartyAssets } from "@/wikimedia/data/third-party";
-import { ImageAttribution } from "@/wikimedia/components/ImageAttribution";
-import { evaluateAsset } from "@/wikimedia/licenses";
-import { CreditsFilter } from "@/wikimedia/components/CreditsFilter";
-import { ImageLicenseBadge } from "@/wikimedia/components/ImageLicenseBadge";
+import { ImageLicenseBadge } from "@/media/components";
+import { wikimediaAssets, getLocalization } from "@/media/data/assets";
+import { getPagesUsingAsset } from "@/media/data/usages";
+import { thirdPartyAssets } from "@/media/data/third-party";
+import { getMediaLabels } from "@/media/i18n/labels";
+import { isPublishable } from "@/media/lib/eligibility";
+import { getLicense } from "@/media/lib/license";
 
 export function generateStaticParams() {
   return localeCodes.map((locale) => ({ locale }));
@@ -27,14 +39,12 @@ export async function generateMetadata({
   const { locale } = await params;
   const info = findLocale(locale);
   if (!info) return {};
+  const labels = getMediaLabels(info.code);
   return sportsMetadata({
     locale: info.code,
     path: "/image-credits",
-    title: info.code === "ja" ? "画像出典・ライセンス一覧" : "Image credits and licences",
-    description:
-      info.code === "ja"
-        ? "当サイトで使用している画像の作者・出典・ライセンス・取得日の一覧です。"
-        : "Every image used on this site, with its author, source, licence and retrieval date.",
+    title: labels.creditsTitle,
+    description: labels.creditsIntro,
   });
 }
 
@@ -43,16 +53,18 @@ export default async function ImageCreditsPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  const { locale, dict, t } = await resolveLocale(params);
-  void dict;
+  const { locale, dict } = await resolveLocale(params);
+  const labels = getMediaLabels(locale);
+  const ja = locale === "ja";
 
-  const published = wikimediaAssets.filter((asset) => evaluateAsset(asset).allowed);
-  const pending = wikimediaAssets.filter((asset) => !evaluateAsset(asset).allowed);
+  // 掲載できる状態の画像だけを並べます
+  const published = wikimediaAssets
+    .filter(isPublishable)
+    .sort((a, b) => a.fileName.localeCompare(b.fileName));
 
-  const title = locale === "ja" ? "画像出典・ライセンス一覧" : "Image credits and licences";
   const trail = [
     { label: "HOME", path: "/" },
-    { label: title, path: "/image-credits" },
+    { label: labels.creditsTitle, path: "/image-credits" },
   ];
 
   return (
@@ -61,30 +73,26 @@ export default async function ImageCreditsPage({
 
       <header className="mb-10">
         <p className="sp-eyebrow mb-2">IMAGE CREDITS</p>
-        <h1 className="text-ink text-3xl font-extrabold sm:text-4xl">{title}</h1>
-        <p className="text-ink-dim mt-3 max-w-3xl text-sm leading-relaxed">
-          {locale === "ja"
-            ? "当サイトで使用しているすべての画像について、作者・出典・ライセンス・取得日を記載しています。作者名・作品名・ライセンス正式名称は、どの言語のページでも原文のまま表示しています。"
-            : "Author, source, licence and retrieval date for every image on this site. Author names, titles and licence names are shown in their original form in every language."}
-        </p>
+        <h1 className="text-ink text-3xl font-extrabold sm:text-4xl">{labels.creditsTitle}</h1>
+        <p className="text-ink-dim mt-3 max-w-3xl text-sm leading-relaxed">{labels.creditsIntro}</p>
       </header>
 
-      {/* 自サイトで生成した素材と、第三者素材を分けて示します */}
+      {/* 自前で作った素材と、第三者素材を分けて示します */}
       <section aria-labelledby="ic-own" className="mb-12">
         <SectionHeading
           id="ic-own"
           eyebrow="OWN WORK"
-          title={locale === "ja" ? "当サイトが作成した素材" : "Created by this site"}
+          title={ja ? "当サイトが作成した素材" : "Created by this site"}
         />
         <div className="sp-solid text-ink-soft p-5 text-sm leading-relaxed">
-          {locale === "ja" ? (
+          {ja ? (
             <>
               <p>
                 チームエンブレム・選手のシルエット・カードの背景・OGP画像は、すべて当サイトが
                 プログラムで生成したものです。第三者の著作物は含まれていません。
               </p>
               <p className="mt-2">
-                チームロゴ・リーグロゴ・選手写真は、権利処理が済むまで掲載していません （
+                チームロゴ・リーグロゴ・選手写真は、権利処理が済むまで掲載していません（
                 <Link href={href(locale, "/legal/copyright")} className="text-cyan hover:underline">
                   著作権・画像利用方針
                 </Link>
@@ -111,9 +119,9 @@ export default async function ImageCreditsPage({
           <SectionHeading
             id="ic-third"
             eyebrow="THIRD PARTY"
-            title={locale === "ja" ? "第三者素材" : "Third-party assets"}
+            title={ja ? "第三者素材" : "Third-party assets"}
             description={
-              locale === "ja"
+              ja
                 ? "Wikimedia Commons 以外の、ライセンスに基づいて利用している素材です。"
                 : "Assets used under licence from sources other than Wikimedia Commons."
             }
@@ -122,53 +130,46 @@ export default async function ImageCreditsPage({
             {thirdPartyAssets.map((asset) => (
               <li key={asset.id} className="sp-solid p-4">
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <h3 className="text-ink text-sm font-semibold" translate="no">
+                  {/* 素材名とライセンス名は識別子です。翻訳しません */}
+                  <h2 className="text-ink text-sm font-semibold" translate="no">
                     {asset.name}
-                  </h3>
+                  </h2>
                   <span className="sp-mono text-cyan text-[0.6875rem]" translate="no">
                     {asset.licenseName}
                   </span>
                 </div>
-                <p className="text-ink-dim mt-1.5 text-xs leading-relaxed">{t(asset.usage)}</p>
+                <p className="text-ink-dim mt-1.5 text-xs leading-relaxed">
+                  {ja ? asset.usage.ja : asset.usage.en}
+                </p>
                 <dl className="mt-3 space-y-1 text-[0.6875rem]">
-                  <div className="flex gap-2">
-                    <dt className="text-ink-faint w-24 shrink-0">
-                      {locale === "ja" ? "著作権表示" : "Copyright"}
-                    </dt>
-                    <dd className="text-ink-soft min-w-0 flex-1" translate="no">
-                      {asset.copyrightNotice}
-                    </dd>
-                  </div>
-                  <div className="flex gap-2">
-                    <dt className="text-ink-faint w-24 shrink-0">
-                      {locale === "ja" ? "配布元" : "Source"}
-                    </dt>
-                    <dd className="min-w-0 flex-1">
-                      <a
-                        href={asset.sourceUrl}
-                        target="_blank"
-                        rel="noopener noreferrer nofollow"
-                        className="text-ink-soft hover:text-cyan break-all"
-                      >
-                        {asset.sourceUrl}
-                      </a>
-                    </dd>
-                  </div>
-                  <div className="flex gap-2">
-                    <dt className="text-ink-faint w-24 shrink-0">
-                      {locale === "ja" ? "ライセンス" : "Licence"}
-                    </dt>
-                    <dd className="min-w-0 flex-1">
-                      <a
-                        href={asset.licenseUrl}
-                        target="_blank"
-                        rel="noopener noreferrer nofollow"
-                        className="text-ink-soft hover:text-cyan break-all"
-                      >
-                        {asset.licenseUrl}
-                      </a>
-                    </dd>
-                  </div>
+                  <Row label={ja ? "著作権表示" : "Copyright"}>
+                    <span translate="no">{asset.copyrightNotice}</span>
+                  </Row>
+                  <Row label={ja ? "配布元" : "Source"}>
+                    <a
+                      href={asset.sourceUrl}
+                      target="_blank"
+                      rel="nofollow noopener noreferrer"
+                      className="hover:text-cyan break-all underline decoration-dotted underline-offset-2"
+                    >
+                      {asset.sourceUrl}
+                    </a>
+                  </Row>
+                  <Row label={labels.license}>
+                    <a
+                      href={asset.licenseUrl}
+                      target="_blank"
+                      rel="nofollow noopener noreferrer"
+                      className="hover:text-cyan break-all underline decoration-dotted underline-offset-2"
+                    >
+                      {asset.licenseUrl}
+                    </a>
+                  </Row>
+                  {asset.modification ? (
+                    <Row label={labels.modified}>
+                      {ja ? asset.modification.ja : asset.modification.en}
+                    </Row>
+                  ) : null}
                 </dl>
               </li>
             ))}
@@ -180,64 +181,120 @@ export default async function ImageCreditsPage({
         <SectionHeading
           id="ic-commons"
           eyebrow="WIKIMEDIA COMMONS"
-          title={locale === "ja" ? "Wikimedia Commons の画像" : "Images from Wikimedia Commons"}
+          title={ja ? "Wikimedia Commons の画像" : "Images from Wikimedia Commons"}
         />
 
         {published.length === 0 ? (
+          /*
+            画像が0件でも、それらしい一覧を作りません。
+            ライセンス確認が済んでいない画像を「掲載中」に見せないためです。
+          */
           <div className="sp-solid text-ink-soft p-5 text-sm leading-relaxed">
             <p>
-              {locale === "ja"
-                ? "現在、Wikimedia Commons の画像は掲載していません。"
-                : "No Wikimedia Commons images are currently published."}
+              {ja
+                ? "現在、ライセンスを確認できた Wikimedia Commons の画像はありません。"
+                : "No Wikimedia Commons images have completed licence verification yet."}
             </p>
             <p className="text-ink-dim mt-2 text-xs">
-              {locale === "ja"
-                ? "画像取得パイプラインは実装済みですが、ライセンス・作者・出典が確認できた画像だけを掲載する方針のため、確認が完了するまでは生成ビジュアルを表示しています。"
-                : "The retrieval pipeline is implemented, but we only publish images whose licence, author and source we have verified. Until then, generated visuals are used."}
+              {ja
+                ? "確認が済むまで、各ページは画像を使わない装飾表現で表示しています。"
+                : "Until they do, pages use image-free decorative visuals."}
             </p>
-            {pending.length > 0 ? (
-              <p className="text-caution mt-2 text-xs">
-                {locale === "ja"
-                  ? `確認待ちの候補：${pending.length} 件`
-                  : `Candidates awaiting review: ${pending.length}`}
-              </p>
-            ) : null}
           </div>
         ) : (
-          <CreditsFilter locale={locale}>
-            {published.map((asset) => (
-              <li
-                key={asset.id}
-                className="sp-solid p-4"
-                data-license={asset.licenseCode}
-                data-author={asset.authorName ?? ""}
-                data-title={asset.title}
-                data-pages={usagesForAsset(asset.id)
-                  .map((usage) => usage.path)
-                  .join(" ")}
-              >
-                <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <h3 className="text-ink text-sm font-semibold" translate="no">
-                    {asset.title}
-                  </h3>
-                  <ImageLicenseBadge code={asset.licenseCode} />
-                </div>
-                <ImageAttribution asset={asset} locale={locale} variant="full" className="mt-3" />
-                <p className="text-ink-faint mt-2 text-[0.625rem]">
-                  {locale === "ja" ? "掲載ページ" : "Used on"}:{" "}
-                  {usagesForAsset(asset.id).map((usage) => (
-                    <Link
-                      key={`${usage.path}-${usage.slot}`}
-                      href={href(locale, usage.path)}
-                      className="hover:text-cyan mr-2 underline decoration-dotted underline-offset-2"
-                    >
-                      {usage.path}
-                    </Link>
-                  ))}
-                </p>
-              </li>
-            ))}
-          </CreditsFilter>
+          <ul className="space-y-3">
+            {published.map((asset) => {
+              const license = getLicense(asset.licenseCode);
+              const localization = getLocalization(asset.id, locale);
+              const usages = getPagesUsingAsset(asset.id);
+
+              return (
+                <li key={asset.id} className="sp-solid p-4">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <ImageLicenseBadge code={asset.licenseCode} />
+                    <span className="text-ink-faint text-[0.6875rem]">
+                      {labels.commercialUse}:{" "}
+                      {license.commercialUseAllowed ? labels.allowed : labels.notAllowed}
+                    </span>
+                    <span className="text-ink-faint text-[0.6875rem]">
+                      {labels.derivativeWorks}:{" "}
+                      {license.derivativeWorksAllowed ? labels.allowed : labels.notAllowed}
+                    </span>
+                    <span className="text-ink-faint text-[0.6875rem]">
+                      {labels.shareAlike}:{" "}
+                      {license.shareAlikeRequired ? labels.required : labels.notRequired}
+                    </span>
+                  </div>
+
+                  {/* ファイル名は識別子です。翻訳しません */}
+                  <h2 className="text-ink mt-2 text-sm font-semibold" translate="no">
+                    {asset.fileName}
+                  </h2>
+                  {localization?.caption ? (
+                    <p className="text-ink-dim mt-1 text-xs leading-relaxed">
+                      {localization.caption}
+                    </p>
+                  ) : null}
+
+                  <dl className="mt-3 grid gap-x-4 gap-y-1 text-[0.6875rem] sm:grid-cols-2">
+                    <Row label={labels.author}>
+                      {asset.authorName ? (
+                        asset.authorUrl ? (
+                          <a
+                            href={asset.authorUrl}
+                            target="_blank"
+                            rel="nofollow noopener noreferrer"
+                            translate="no"
+                            className="hover:text-cyan underline decoration-dotted underline-offset-2"
+                          >
+                            {asset.authorName}
+                          </a>
+                        ) : (
+                          <span translate="no">{asset.authorName}</span>
+                        )
+                      ) : (
+                        labels.notProvided
+                      )}
+                    </Row>
+                    <Row label={labels.source}>
+                      <a
+                        href={asset.commonsPageUrl}
+                        target="_blank"
+                        rel="nofollow noopener noreferrer"
+                        translate="no"
+                        className="hover:text-cyan underline decoration-dotted underline-offset-2"
+                      >
+                        Wikimedia Commons
+                      </a>
+                    </Row>
+                    <Row label={labels.license}>
+                      {asset.licenseUrl ? (
+                        <a
+                          href={asset.licenseUrl}
+                          target="_blank"
+                          rel="nofollow noopener noreferrer"
+                          translate="no"
+                          className="hover:text-cyan underline decoration-dotted underline-offset-2"
+                        >
+                          {license.name}
+                        </a>
+                      ) : (
+                        <span translate="no">{license.name}</span>
+                      )}
+                      {asset.isModified ? ` ${labels.modified}` : ""}
+                    </Row>
+                    {usages.length > 0 ? (
+                      <Row label={ja ? "使用ページ" : "Used on"}>
+                        <span translate="no">
+                          {usages.map((usage) => usage.pageKey).join(", ")}
+                        </span>
+                      </Row>
+                    ) : null}
+                  </dl>
+                </li>
+              );
+            })}
+          </ul>
         )}
       </section>
 
@@ -245,40 +302,50 @@ export default async function ImageCreditsPage({
         <SectionHeading
           id="ic-policy"
           eyebrow="POLICY"
-          title={locale === "ja" ? "画像の掲載方針" : "How we choose images"}
+          title={ja ? "画像の掲載方針" : "How we handle images"}
         />
         <ul className="sp-solid divide-edge divide-y">
-          {(locale === "ja"
-            ? [
-                "Wikimedia Commons のファイルページでライセンス・作者・出典を確認できた画像のみを掲載します",
-                "Wikipedia の記事に載っているという理由だけで転載しません",
-                "商用利用不可（CC BY-NC など）・改変不可（CC BY-ND）・ライセンス不明の画像は使用しません",
-                "パブリックドメインと CC0 以外は、人間が内容を確認してから公開します",
-                "存命人物・商標・建築著作物・美術作品が写る画像は、ライセンスが自由でも自動公開しません",
-                "適切な画像が無いときは、無理に画像を使わず生成ビジュアルを表示します",
-              ]
-            : [
-                "We publish only images whose licence, author and source we could verify on the Commons file page",
-                "We never copy an image just because it appears in a Wikipedia article",
-                "We do not use non-commercial (CC BY-NC), no-derivatives (CC BY-ND) or unknown-licence images",
-                "Anything other than public domain and CC0 is reviewed by a person before publication",
-                "Images showing living people, trademarks, architecture or artworks are never auto-published",
-                "When no suitable image exists we show a generated visual instead of forcing one",
-              ]
-          ).map((item) => (
-            <li key={item} className="text-ink-soft px-4 py-3 text-sm">
+          {[
+            ja
+              ? "対象は Wikimedia Commons に登録されたファイルです。Wikipedia の記事に表示されているという理由だけで転載することはしません。"
+              : "We only use files hosted on Wikimedia Commons. Appearing in a Wikipedia article is never on its own a reason to reuse an image.",
+            ja
+              ? "ライセンス・作者・出典を機械的に確認できない画像は掲載しません。取得できたことと、掲載してよいことは別に判定しています。"
+              : "Images whose licence, author or source cannot be verified are not published. Successful retrieval and permission to publish are judged separately.",
+            ja
+              ? "商用利用不可（CC BY-NC など）・改変不可（CC BY-ND）・ライセンス不明の画像は使用しません。"
+              : "We do not use non-commercial, no-derivatives or unknown-licence images.",
+            ja
+              ? "存命人物・商標・建築著作物・美術作品が写る画像は、ライセンスが自由でも自動公開しません。"
+              : "Images showing living people, trademarks, architecture or artworks are never auto-published, however free the licence.",
+            labels.disclaimer,
+            ja
+              ? "当サイトは Wikimedia Foundation とは関係がなく、同財団による推奨も受けていません。"
+              : "This site is not affiliated with, nor endorsed by, the Wikimedia Foundation.",
+          ].map((item) => (
+            <li key={item} className="text-ink-soft px-4 py-3 text-sm leading-relaxed">
               {item}
             </li>
           ))}
         </ul>
-        <p className="text-ink-faint mt-3 text-[0.6875rem]">
-          {locale === "ja"
-            ? "当サイトは Wikimedia Foundation とは無関係であり、公認を受けたものではありません。"
-            : "This site is not affiliated with or endorsed by the Wikimedia Foundation."}
-        </p>
       </section>
+
+      <p className="text-ink-faint text-[0.6875rem]">
+        <Link href={href(locale, "/legal/copyright")} className="hover:text-cyan">
+          {dict.footerCopyright}
+        </Link>
+      </p>
 
       <JsonLd data={[breadcrumbJsonLd(locale, trail)]} />
     </>
+  );
+}
+
+function Row({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="flex gap-2">
+      <dt className="text-ink-faint w-24 shrink-0">{label}</dt>
+      <dd className="text-ink-soft m-0 min-w-0 flex-1 break-words">{children}</dd>
+    </div>
   );
 }
