@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 vi.mock("next/image", async () => (await import("./helpers/next-mocks")).imageMock());
@@ -8,6 +8,8 @@ vi.mock("next/navigation", async () =>
   (await import("./helpers/next-mocks")).navigationMock("/ja"),
 );
 
+import { BrandLogo } from "@/portal/components/layout/BrandLogo";
+import { brand } from "@/portal/lib/site";
 import { getDictionary } from "@/portal/i18n/dictionaries";
 import { locales } from "@/portal/i18n/config";
 import { domesticExchanges } from "@/portal/data/exchanges";
@@ -245,5 +247,31 @@ describe("診断", () => {
     );
     const progress = screen.getByRole("progressbar");
     expect(progress).toHaveAttribute("aria-valuemax", String(diagnosis.questions.length));
+  });
+});
+
+describe("動画ロゴ", () => {
+  it("動画が使えないときは、差し替え前と同じ文字ロゴに戻る", () => {
+    // 読み込み失敗でロゴが消えたままになると、サイトの識別ができなくなります
+    render(<BrandLogo withMark />);
+    const video = document.querySelector("video");
+    expect(video).not.toBeNull();
+
+    fireEvent.error(video!);
+
+    expect(document.querySelector("video")).toBeNull();
+    expect(screen.getByText("CRYPTO")).toBeInTheDocument();
+    expect(screen.getByText("PORT")).toBeInTheDocument();
+    expect(screen.getByText("CP")).toBeInTheDocument();
+  });
+
+  it("動画は装飾として扱い、サイト名は必ず読み上げられる", () => {
+    render(<BrandLogo />);
+    const video = document.querySelector("video");
+    expect(video?.getAttribute("aria-hidden")).toBe("true");
+    // 音の出る自動再生はブラウザが許可しないため、消音とインライン再生は必須です
+    expect(video).toHaveAttribute("loop");
+    expect(video).toHaveAttribute("preload", "auto");
+    expect(screen.getByText(brand.name, { selector: ".sr-only" })).toBeInTheDocument();
   });
 });

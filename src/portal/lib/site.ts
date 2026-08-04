@@ -41,13 +41,13 @@ export const portalOrigin = normalizeOrigin(
 export const portalBase = `${portalOrigin}${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}`;
 
 /**
- * ヘッダー下・フッター上に流す映像帯のファイル。
+ * 動画ロゴ。ヘッダーとフッターのロゴをこれに差し替えます。
  *
- * 装飾として置くため、構造化データ（VideoObject）には出しません。
+ * 空文字にすると、これまでの文字ロゴ（`brand.nameParts`）に戻ります。
  * 差し替えるときは /public/videos/ にファイルを置いてパスを変えてください。
- * 空文字にすると帯そのものが出なくなります。
+ * 消音でのループ再生が前提のため、音声トラックの有無は表示に影響しません。
  */
-export const portalBandVideo = withBasePath("/videos/portal-band.mp4");
+export const brandLogoVideo = withBasePath("/videos/crypto-port-logo.mp4");
 
 /**
  * ソーシャル。空文字のものはUIに出しません（未確認情報を載せないため）。
