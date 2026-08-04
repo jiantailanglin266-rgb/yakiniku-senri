@@ -2,6 +2,7 @@ import Link from "next/link";
 import { localePath } from "@/portal/i18n/config";
 import { footerNav } from "@/portal/data/site-content";
 import { brand, socialEntries } from "@/portal/lib/site";
+import { BrandLogo } from "./BrandLogo";
 import { navLabel, t } from "@/portal/lib/format";
 import type { Dictionary } from "@/portal/i18n/dictionaries";
 import { NoticeBox } from "@/portal/components/ui/primitives";
@@ -25,14 +26,7 @@ export function PortalFooter({ locale, dict }: { locale: string; dict: Dictionar
 
         <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
           <div className="lg:col-span-1">
-            <p className="font-display text-lg font-semibold">
-              <span className="text-gradient">{brand.nameParts[0]}</span>
-              {brand.nameParts[1] ? (
-                <span className="ms-1 text-(--color-ink-soft)">
-                  {brand.nameParts.slice(1).join(" ")}
-                </span>
-              ) : null}
-            </p>
+            <BrandLogo videoClassName="h-12 sm:h-14" textClassName="text-lg" />
             <p className="mt-2 text-sm text-(--color-ink-dim)">{dict.hero.eyebrow}</p>
 
             {socialEntries.length > 0 ? (
