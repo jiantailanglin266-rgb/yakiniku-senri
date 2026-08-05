@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+/* ============================================================
+   土台だけを持つファイル。
+
+   ■ 配色・書体・レイアウトはここに書きません
+     CRYPTO PORT のデザインは `portal.css` にあります。
+     このファイルは Tailwind の読み込みと、
+     ページ全体にかかる最小限の指定だけを持ちます。
+
+   ■ 分割前の経緯
+     もともと焼肉 千里 と同居しており、そちらの `globals.css` が
+     Tailwind を読み込んでいました。`portal.css` は
+     「Tailwind は読み込み済み」という前提で書かれているため、
+     ここで読み込みます（portal.css 側は変更していません）。
+   ============================================================ */
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+    /* 固定ヘッダー分のアンカーオフセット */
+    scroll-padding-top: 5.5rem;
+  }
+
+  html,
+  body {
+    /* 横スクロール防止 */
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  body {
+    background-color: transparent;
+  }
+}

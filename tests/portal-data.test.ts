@@ -1,0 +1,670 @@
+import { describe, expect, it } from "vitest";
+import { existsSync } from "node:fs";
+import path from "node:path";
+
+import { defaultLocale, isLocale, localePath, locales } from "@/portal/i18n/config";
+import { getDictionary, hasAuthoredDictionary } from "@/portal/i18n/dictionaries";
+import { coins, getCoin, getCoinBySymbol } from "@/portal/data/coins";
+import { domesticExchanges, exchanges, overseasExchanges } from "@/portal/data/exchanges";
+import { wallets } from "@/portal/data/wallets";
+import { categoryFields, tools } from "@/portal/data/tools";
+import { videos } from "@/portal/data/videos";
+import { learnArticles } from "@/portal/data/learn";
+import { diagnoses } from "@/portal/data/diagnoses";
+import { legalPages } from "@/portal/data/legal";
+import { groupedNews, news, relatedByStory, trendingNews } from "@/portal/data/news";
+import { footerNav, mainNav, siteFaq } from "@/portal/data/site-content";
+import { coinBanners } from "@/portal/data/coin-banners";
+import { keywordRows } from "@/portal/data/keywords";
+import { brandLogoVideo } from "@/portal/lib/site";
+import { navLabel } from "@/portal/lib/format";
+
+/**
+ * データの整合性テスト。
+ *
+ * ここで守りたいのは「リンク先が存在すること」と「事実性のルールを破っていないこと」です。
+ * 表示の細部よりも、壊れると気づきにくいものを対象にしています。
+ */
+
+// vitest はプロジェクトルートを cwd として起動します
+const publicDir = path.join(process.cwd(), "public");
+
+describe("多言語設定", () => {
+  it("要件の13言語をすべて備えている", () => {
+    const required = [
+      "ja",
+      "en",
+      "ko",
+      "zh-cn",
+      "zh-tw",
+      "es",
+      "fr",
+      "de",
+      "pt",
+      "th",
+      "vi",
+      "id",
+      "ar",
+    ];
+    for (const code of required) {
+      expect(locales.map((locale) => locale.code)).toContain(code);
+    }
+  });
+
+  it("言語コードが重複していない", () => {
+    const codes = locales.map((locale) => locale.code);
+    expect(new Set(codes).size).toBe(codes.length);
+  });
+
+  it("すべての言語に国旗画像が存在する", () => {
+    // 言語を足したのに旗を足し忘れる、が一番起きやすい壊れ方です
+    for (const locale of locales) {
+      expect(
+        existsSync(`${publicDir}/images/flags/${locale.country}.webp`),
+        `国旗が見つかりません: ${locale.country} (${locale.labelJa})`,
+      ).toBe(true);
+    }
+  });
+
+  it("並び順が日本語・英語から始まる（アルファベット順ではない）", () => {
+    expect(locales[0].code).toBe("ja");
+    expect(locales[1].code).toBe("en");
+  });
+
+  it("右横書きの言語に rtl が設定されている", () => {
+    expect(locales.find((locale) => locale.code === "ar")?.rtl).toBe(true);
+  });
+
+  it("isLocale が未対応の言語を弾く", () => {
+    expect(isLocale("ja")).toBe(true);
+    expect(isLocale("xx")).toBe(false);
+    expect(isLocale(undefined)).toBe(false);
+  });
+
+  it("localePath が言語プレフィックスを付ける", () => {
+    expect(localePath("ja")).toBe("/ja");
+    expect(localePath("en", "/coins/bitcoin")).toBe("/en/coins/bitcoin");
+    expect(localePath("ko", "coins")).toBe("/ko/coins");
+  });
+});
+
+describe("辞書", () => {
+  it("対応している13言語すべてに辞書がある", () => {
+    for (const locale of locales) {
+      expect(hasAuthoredDictionary(locale.code), locale.code).toBe(true);
+    }
+  });
+
+  it("未知の言語コードは英語へフォールバックする（日本語のままにしない）", () => {
+    const unknown = getDictionary("xx");
+    expect(unknown.common.search).toBe(getDictionary("en").common.search);
+  });
+
+  it("同じキー構造を持つ", () => {
+    const ja = getDictionary("ja");
+    for (const locale of locales) {
+      const dict = getDictionary(locale.code);
+      expect(Object.keys(dict).sort(), locale.code).toEqual(Object.keys(ja).sort());
+      for (const key of Object.keys(ja) as Array<keyof typeof ja>) {
+        expect(Object.keys(dict[key]).sort(), `${locale.code}.${String(key)}`).toEqual(
+          Object.keys(ja[key]).sort(),
+        );
+      }
+    }
+  });
+
+  it("空文字の項目がない（未翻訳を空欄で埋めない）", () => {
+    for (const locale of locales) {
+      const dict = getDictionary(locale.code) as unknown as Record<string, Record<string, unknown>>;
+      for (const [group, entries] of Object.entries(dict)) {
+        for (const [key, value] of Object.entries(entries)) {
+          const values = typeof value === "string" ? [value] : Object.values(value as object);
+          for (const text of values) {
+            expect(String(text).trim().length, `${locale.code}.${group}.${key}`).toBeGreaterThan(0);
+          }
+        }
+      }
+    }
+  });
+
+  it("英語の文言をそのまま流用していない（コピー漏れの検出）", () => {
+    // ナビゲーションは各言語で必ず訳し分かれるはずの箇所です。
+    // ラテン文字圏どうしで一部一致することはあるため、全一致だけを弾きます。
+    const en = getDictionary("en");
+    for (const locale of locales) {
+      if (locale.code === "en") continue;
+      const dict = getDictionary(locale.code);
+      const identical = Object.keys(en.nav).every(
+        (key) => dict.nav[key as keyof typeof en.nav] === en.nav[key as keyof typeof en.nav],
+      );
+      expect(identical, locale.code).toBe(false);
+    }
+  });
+
+  it("すべての言語でリスク注記が出る（金融メディアとして落とさない）", () => {
+    for (const locale of locales) {
+      const dict = getDictionary(locale.code);
+      expect(dict.footer.disclaimerTitle.length, locale.code).toBeGreaterThan(0);
+      expect(dict.footer.disclaimer.length, locale.code).toBeGreaterThan(30);
+      expect(dict.diagnosis.disclaimer.length, locale.code).toBeGreaterThan(30);
+      // 秘密鍵・シードフレーズを入力させない注意は全言語で必須です
+      expect(dict.chat.securityNotice.length, locale.code).toBeGreaterThan(0);
+      expect(dict.wallets.lead.length, locale.code).toBeGreaterThan(0);
+    }
+  });
+
+  it("検索の例示は日本語表記を残す（かな・カナでも引けることを示すため）", () => {
+    for (const locale of locales) {
+      expect(getDictionary(locale.code).search.placeholder, locale.code).toContain("ビットコイン");
+    }
+  });
+});
+
+describe("通貨", () => {
+  it("スラッグとIDが重複していない", () => {
+    expect(new Set(coins.map((coin) => coin.slug)).size).toBe(coins.length);
+    expect(new Set(coins.map((coin) => coin.id)).size).toBe(coins.length);
+  });
+
+  it("要件の13銘柄を掲載している", () => {
+    const symbols = coins.map((coin) => coin.symbol);
+    for (const symbol of [
+      "BTC",
+      "ETH",
+      "XRP",
+      "SOL",
+      "BNB",
+      "ADA",
+      "DOGE",
+      "AVAX",
+      "LINK",
+      "DOT",
+      "SUI",
+      "TRX",
+      "SHIB",
+    ]) {
+      expect(symbols).toContain(symbol);
+    }
+  });
+
+  it("取扱取引所として存在しないIDを参照していない", () => {
+    const ids = new Set(exchanges.map((exchange) => exchange.id));
+    for (const coin of coins) {
+      for (const exchangeId of coin.listedOn) {
+        expect(ids.has(exchangeId), `${coin.id} → ${exchangeId}`).toBe(true);
+      }
+    }
+  });
+
+  it("すべての通貨にリスクの記載がある", () => {
+    // 価格変動リスクを書かないまま銘柄ページを公開しないための歯止めです
+    for (const coin of coins) {
+      expect(coin.risks.ja.length, coin.id).toBeGreaterThan(0);
+      expect(coin.risks.en.length, coin.id).toBeGreaterThan(0);
+    }
+  });
+
+  it("スラッグ・シンボルのどちらでも引ける", () => {
+    expect(getCoin("bitcoin")?.symbol).toBe("BTC");
+    expect(getCoin("xrp")?.id).toBe("ripple");
+    expect(getCoinBySymbol("eth")?.id).toBe("ethereum");
+  });
+});
+
+describe("取引所", () => {
+  it("国内と海外に分かれている", () => {
+    expect(domesticExchanges.length).toBeGreaterThan(0);
+    expect(overseasExchanges.length).toBeGreaterThan(0);
+    expect(domesticExchanges.length + overseasExchanges.length).toBe(exchanges.length);
+  });
+
+  it("評価は0〜5の範囲で、内訳を必ず持つ", () => {
+    for (const exchange of exchanges) {
+      expect(exchange.rating).toBeGreaterThanOrEqual(0);
+      expect(exchange.rating).toBeLessThanOrEqual(5);
+      for (const score of Object.values(exchange.ratingBreakdown)) {
+        expect(score).toBeGreaterThanOrEqual(0);
+        expect(score).toBeLessThanOrEqual(5);
+      }
+    }
+  });
+
+  it("メリットとデメリットの両方を書いている", () => {
+    // 良い点しか書かない比較記事にしないための歯止めです
+    for (const exchange of exchanges) {
+      expect(exchange.pros.ja.length, exchange.id).toBeGreaterThan(0);
+      expect(exchange.cons.ja.length, exchange.id).toBeGreaterThan(0);
+    }
+  });
+
+  it("海外取引所には日本語対応の状況を明示している", () => {
+    for (const exchange of overseasExchanges) {
+      expect(["yes", "no", "partial", "unknown"]).toContain(exchange.japanese);
+    }
+  });
+});
+
+describe("ウォレット・ツール", () => {
+  it("ウォレットのスラッグが重複していない", () => {
+    expect(new Set(wallets.map((wallet) => wallet.slug)).size).toBe(wallets.length);
+  });
+
+  it("要件のウォレットを掲載している", () => {
+    const names = wallets.map((wallet) => wallet.name);
+    for (const name of [
+      "MetaMask",
+      "Phantom",
+      "Trust Wallet",
+      "Ledger",
+      "Trezor",
+      "Safe",
+      "Coinbase Wallet",
+    ]) {
+      expect(names).toContain(name);
+    }
+  });
+
+  it("ツールのカテゴリすべてに表示項目が定義されている", () => {
+    for (const tool of tools) {
+      expect(categoryFields[tool.category], tool.id).toBeDefined();
+    }
+  });
+
+  it("ツールの代替サービスが実在するIDを指している", () => {
+    const ids = new Set(tools.map((tool) => tool.id));
+    for (const tool of tools) {
+      for (const alternative of tool.alternatives) {
+        expect(ids.has(alternative), `${tool.id} → ${alternative}`).toBe(true);
+      }
+    }
+  });
+
+  it("すべてのツールに安全上の注意がある", () => {
+    for (const tool of tools) {
+      expect(tool.safety.ja.length, tool.id).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe("ニュース", () => {
+  it("情報元と公開日時が必ず入っている", () => {
+    for (const article of news) {
+      expect(article.outlet.length, article.id).toBeGreaterThan(0);
+      expect(Number.isNaN(Date.parse(article.publishedAt)), article.id).toBe(false);
+    }
+  });
+
+  it("同じ storyKey の記事は1件にまとめられる", () => {
+    const groups = groupedNews();
+    const etf = groups.find((group) => group.article.storyKey === "sample-etf-flows");
+    expect(etf).toBeDefined();
+    expect(etf?.duplicates.length).toBeGreaterThan(0);
+    // まとめられた記事は一覧の代表としては現れません
+    expect(groups.filter((group) => group.article.storyKey === "sample-etf-flows")).toHaveLength(1);
+  });
+
+  it("同じ話題の記事を相互に辿れる", () => {
+    const article = news.find((entry) => entry.id === "n-001");
+    expect(article).toBeDefined();
+    expect(relatedByStory(article!).map((entry) => entry.id)).toContain("n-012");
+  });
+
+  it("急上昇は指定件数以内で、新しい記事が有利になる", () => {
+    const trending = trendingNews(3);
+    expect(trending.length).toBeLessThanOrEqual(3);
+    expect(trending.length).toBeGreaterThan(0);
+  });
+
+  it("関連通貨として存在しないIDを参照していない", () => {
+    const ids = new Set(coins.map((coin) => coin.id));
+    for (const article of news) {
+      for (const coinId of article.relatedCoins) {
+        expect(ids.has(coinId), `${article.id} → ${coinId}`).toBe(true);
+      }
+    }
+  });
+});
+
+describe("動画", () => {
+  it("要約と文字起こしがあり、動画を見なくても要点が読める", () => {
+    for (const video of videos) {
+      expect(video.keyPoints.ja.length, video.slug).toBeGreaterThan(0);
+      expect(video.transcript.ja.length, video.slug).toBeGreaterThan(0);
+    }
+  });
+
+  it("関連する通貨・取引所・ツール・記事が実在する", () => {
+    const coinIds = new Set(coins.map((coin) => coin.id));
+    const exchangeIds = new Set(exchanges.map((exchange) => exchange.id));
+    const toolIds = new Set(tools.map((tool) => tool.id));
+    const learnIds = new Set(learnArticles.map((article) => article.id));
+
+    for (const video of videos) {
+      video.relatedCoins.forEach((id) =>
+        expect(coinIds.has(id), `${video.slug} → ${id}`).toBe(true),
+      );
+      video.relatedExchanges.forEach((id) =>
+        expect(exchangeIds.has(id), `${video.slug} → ${id}`).toBe(true),
+      );
+      video.relatedTools.forEach((id) =>
+        expect(toolIds.has(id), `${video.slug} → ${id}`).toBe(true),
+      );
+      video.relatedLearn.forEach((id) =>
+        expect(learnIds.has(id), `${video.slug} → ${id}`).toBe(true),
+      );
+    }
+  });
+
+  it("ショート動画が用意されている", () => {
+    expect(videos.some((video) => video.shorts)).toBe(true);
+  });
+});
+
+describe("学習コンテンツ", () => {
+  it("結論・要点・定義・注意点をすべて備えている", () => {
+    // 「結論を先に置く」構成を崩さないための歯止めです
+    for (const article of learnArticles) {
+      expect(article.conclusion.ja.length, article.slug).toBeGreaterThan(0);
+      expect(article.keyPoints.ja.length, article.slug).toBeGreaterThan(0);
+      expect(article.definition.ja.length, article.slug).toBeGreaterThan(0);
+      expect(article.cautions.ja.length, article.slug).toBeGreaterThan(0);
+    }
+  });
+
+  it("難易度ラベルが付いている", () => {
+    for (const article of learnArticles) {
+      expect(["beginner", "intermediate", "advanced"]).toContain(article.level);
+    }
+  });
+
+  it("次に読む記事が実在する", () => {
+    const ids = new Set(learnArticles.map((article) => article.id));
+    for (const article of learnArticles) {
+      for (const next of article.next) {
+        expect(ids.has(next), `${article.slug} → ${next}`).toBe(true);
+      }
+    }
+  });
+});
+
+describe("診断", () => {
+  it("要件の7種類を備えている", () => {
+    expect(diagnoses).toHaveLength(7);
+  });
+
+  it("すべての選択肢が実在する結果プロフィールへ加点している", () => {
+    for (const diagnosis of diagnoses) {
+      const resultIds = new Set(diagnosis.results.map((result) => result.id));
+      for (const question of diagnosis.questions) {
+        for (const option of question.options) {
+          for (const key of Object.keys(option.scores)) {
+            expect(
+              resultIds.has(key),
+              `${diagnosis.slug}/${question.id}/${option.id} → ${key}`,
+            ).toBe(true);
+          }
+        }
+      }
+    }
+  });
+
+  it("すべての結果に到達しうる（加点されない結果を作らない）", () => {
+    for (const diagnosis of diagnoses) {
+      const scored = new Set<string>();
+      for (const question of diagnosis.questions) {
+        for (const option of question.options) {
+          Object.keys(option.scores).forEach((key) => scored.add(key));
+        }
+      }
+      for (const result of diagnosis.results) {
+        expect(scored.has(result.id), `${diagnosis.slug} → ${result.id} に到達できません`).toBe(
+          true,
+        );
+      }
+    }
+  });
+
+  it("結果が参照する取引所・ウォレット・ツール・記事が実在する", () => {
+    const exchangeIds = new Set(exchanges.map((entry) => entry.id));
+    const walletIds = new Set(wallets.map((entry) => entry.id));
+    const toolIds = new Set(tools.map((entry) => entry.id));
+    const learnIds = new Set(learnArticles.map((entry) => entry.id));
+
+    for (const diagnosis of diagnoses) {
+      for (const result of diagnosis.results) {
+        result.exchangeIds?.forEach((id) => expect(exchangeIds.has(id), id).toBe(true));
+        result.walletIds?.forEach((id) => expect(walletIds.has(id), id).toBe(true));
+        result.toolIds?.forEach((id) => expect(toolIds.has(id), id).toBe(true));
+        result.learnIds?.forEach((id) => expect(learnIds.has(id), id).toBe(true));
+      }
+    }
+  });
+
+  it("すべての結果に注意点が書かれている", () => {
+    for (const diagnosis of diagnoses) {
+      for (const result of diagnosis.results) {
+        expect(result.cautions.ja.length, `${diagnosis.slug}/${result.id}`).toBeGreaterThan(0);
+      }
+    }
+  });
+});
+
+describe("固定ページ・ナビゲーション", () => {
+  it("金融メディアとして必要な固定ページが揃っている", () => {
+    const slugs = legalPages.map((page) => page.slug);
+    for (const required of [
+      "about",
+      "editorial-policy",
+      "advertising-policy",
+      "affiliate-policy",
+      "disclaimer",
+      "privacy",
+      "terms",
+      "cookie",
+      "sources",
+      "corrections",
+      "copyright",
+      "contact",
+    ]) {
+      expect(slugs, required).toContain(required);
+    }
+  });
+
+  it("フッターのリンク先がすべて実在するルートを指す", () => {
+    const legalHrefs = new Set(legalPages.map((page) => `/legal/${page.slug}`));
+    const known = new Set([
+      "/coins",
+      "/news",
+      "/campaigns",
+      "/search",
+      "/exchanges",
+      "/exchanges/overseas",
+      "/wallets",
+      "/tools",
+      "/learn",
+      "/videos",
+      "/diagnosis",
+      "/faq",
+      "/image-credits",
+    ]);
+    for (const group of footerNav) {
+      for (const item of group.items) {
+        expect(known.has(item.href) || legalHrefs.has(item.href), item.href).toBe(true);
+      }
+    }
+  });
+
+  it("主要ナビゲーションが空でない", () => {
+    expect(mainNav.length).toBeGreaterThan(0);
+    expect(siteFaq.length).toBeGreaterThan(0);
+  });
+
+  it("既定言語が対応言語に含まれている", () => {
+    expect(isLocale(defaultLocale)).toBe(true);
+  });
+});
+
+describe("ナビゲーションの多言語化", () => {
+  it("主要ナビはすべて辞書から引ける（ja / en 止まりにしない）", () => {
+    // dictKey が無いと13言語のうち11言語で英語のままになります
+    for (const item of mainNav) {
+      expect(item.dictKey, item.href).toBeTruthy();
+    }
+  });
+
+  it("dictKey が実在するキーを指している", () => {
+    const dict = getDictionary("ja") as unknown;
+    const check = (item: { href: string; dictKey?: string }) => {
+      if (!item.dictKey) return;
+      // `market.live.title` のように階層が深いキーも辿ります
+      let value: unknown = dict;
+      for (const segment of item.dictKey.split(".")) {
+        value =
+          typeof value === "object" && value !== null
+            ? (value as Record<string, unknown>)[segment]
+            : undefined;
+      }
+      expect(typeof value, `${item.href} → ${item.dictKey}`).toBe("string");
+    };
+    for (const item of mainNav) {
+      check(item);
+      for (const child of item.children ?? []) check(child);
+    }
+    for (const group of footerNav) for (const item of group.items) check(item);
+  });
+
+  it("辞書を引いた表示名が言語ごとに変わる", () => {
+    const news = mainNav.find((item) => item.href === "/news")!;
+    expect(navLabel(news, "th", getDictionary("th"))).toBe(getDictionary("th").nav.news);
+    expect(navLabel(news, "th", getDictionary("th"))).not.toBe(getDictionary("en").nav.news);
+  });
+
+  it("dictKey の無い固有名詞はそのまま出る", () => {
+    const market = mainNav.find((item) => item.href === "/coins")!;
+    const bitcoin = market.children!.find((child) => child.href === "/coins/bitcoin")!;
+    expect(navLabel(bitcoin, "th", getDictionary("th"))).toBe("Bitcoin");
+  });
+});
+
+describe("銘柄バナーのマーキー", () => {
+  it("バナーの slug が実在する銘柄を指す", () => {
+    // リンク切れを防ぎます。slug を間違えると 404 のページへ飛びます
+    const slugs = new Set(coins.map((coin) => coin.slug));
+    for (const banner of coinBanners) {
+      expect(slugs.has(banner.slug), banner.slug).toBe(true);
+    }
+  });
+
+  it("バナーに対応する画像ファイルが存在する", () => {
+    // ファイルが無いまま登録すると、帯に 404 が並びます
+    for (const banner of coinBanners) {
+      const file = path.join(publicDir, "images/portal/marquee", `${banner.slug}.webp`);
+      expect(existsSync(file), `${banner.slug}.webp`).toBe(true);
+    }
+  });
+
+  it("画像が正方形（800×800）である", async () => {
+    // CoinMarquee は width/height に 800×800 を宣言しています。
+    // ここがずれると、読み込み中に帯の高さが動きます（CLS）。
+    // 横長のまま差し替えると、上昇チャートやキャッチコピーが写り込みます。
+    const sharp = (await import("sharp")).default;
+    for (const banner of coinBanners) {
+      const file = path.join(publicDir, "images/portal/marquee", `${banner.slug}.webp`);
+      const meta = await sharp(file).metadata();
+      expect({ w: meta.width, h: meta.height }, `${banner.slug}.webp`).toEqual({ w: 800, h: 800 });
+    }
+  });
+
+  it("slug が重複していない", () => {
+    const slugs = coinBanners.map((banner) => banner.slug);
+    expect(new Set(slugs).size).toBe(slugs.length);
+  });
+
+  it("読み上げ用の名前が空でない", () => {
+    for (const banner of coinBanners) {
+      expect(banner.label.trim().length, banner.slug).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe("ファーストビューの動くロゴ", () => {
+  it("ファイルが存在する", () => {
+    // パスを間違えると、ロゴが出ずに文字表示へ落ちます
+    const file = path.join(publicDir, brandLogoVideo.replace(/^\//, ""));
+    expect(existsSync(file), brandLogoVideo).toBe(true);
+  });
+
+  it("透過を保てる WebM を指している", () => {
+    // 暗い背景に置くため、ロゴの背景は透明である必要があります。
+    // MP4/H.264 はアルファチャンネルを持てないので、白い箱として出てしまいます。
+    expect(brandLogoVideo.endsWith(".webm")).toBe(true);
+  });
+
+  it("背景つきの MP4 が残っていない", () => {
+    // 代替として置かれると、再生できたブラウザで白い箱が出ます
+    expect(existsSync(path.join(publicDir, "videos/crypto-port-logo.mp4"))).toBe(false);
+  });
+});
+
+describe("斜めのキーワード帯", () => {
+  it("値動き・順位・利回りを主張する語を入れない", () => {
+    // ここは装飾です。根拠の無い主張を混ぜないための歯止めです
+    const banned = [
+      "高騰",
+      "急騰",
+      "暴騰",
+      "おすすめ",
+      "必ず",
+      "儲か",
+      "年利",
+      "APY",
+      "MOON",
+      "PUMP",
+      "GUARANTEED",
+      "BEST",
+      "PROFIT",
+    ];
+    for (const row of keywordRows) {
+      for (const word of row.words) {
+        for (const ng of banned) {
+          expect(word.toUpperCase().includes(ng.toUpperCase()), `${word} / ${ng}`).toBe(false);
+        }
+      }
+    }
+  });
+
+  it("1行あたり10語以上ある", () => {
+    // 少ないと1周が短く、同じ語がすぐ戻ってきて回っているのが見えます
+    for (const row of keywordRows) {
+      expect(row.words.length).toBeGreaterThanOrEqual(10);
+    }
+  });
+
+  it("同じ語を重複させない", () => {
+    const all = keywordRows.flatMap((row) => row.words);
+    expect(new Set(all).size).toBe(all.length);
+  });
+
+  it("行ごとに傾きと速度が違う", () => {
+    // 全部同じだと平行線が流れるだけで、奥行きが出ません
+    expect(new Set(keywordRows.map((row) => row.angle)).size).toBe(keywordRows.length);
+    expect(new Set(keywordRows.map((row) => row.duration)).size).toBe(keywordRows.length);
+  });
+});
+
+describe("ファーストビューに浮かぶコイン", () => {
+  it("画像ファイルが存在する", () => {
+    // 欠けると装飾が消えるだけでなく、404 が並びます
+    for (const slug of ["bitcoin", "ethereum", "xrp", "dogecoin"]) {
+      const file = path.join(publicDir, "images/portal/coins", `${slug}.webp`);
+      expect(existsSync(file), `${slug}.webp`).toBe(true);
+    }
+  });
+
+  it("slug が実在する銘柄を指す", () => {
+    const slugs = new Set(coins.map((coin) => coin.slug));
+    for (const slug of ["bitcoin", "ethereum", "xrp", "dogecoin"]) {
+      expect(slugs.has(slug), slug).toBe(true);
+    }
+  });
+});

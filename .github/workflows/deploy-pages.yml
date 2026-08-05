@@ -1,0 +1,70 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # 検査で落ちたらデプロイまで進みません（build も含めてここで失敗させます）
+      - name: Quality checks
+        run: |
+          npm run typecheck
+          npm run lint
+          npm run format:check
+          npm run test
+
+      # ⚠ 環境変数は4つとも必要です。
+      #   PAGES_BASE_PATH … Next.js の basePath（_next/ 配下とリンクに効きます）
+      #   NEXT_PUBLIC_BASE_PATH … withBasePath() が使う値
+      #     next/image は unoptimized のとき basePath を自動で付けないため、
+      #     /public 配下を直接参照する画像・動画はこちらで前置します。
+      #     片方だけだと、ページは開けるのに画像だけ 404 になります。
+      #   NEXT_PUBLIC_PORTAL_URL … オリジンだけ。リポジトリ名は入れません。
+      #     絶対URLは basePath と連結するため、入れると /crypto-port/ai-port/... になります。
+      - name: Build (static export)
+        env:
+          GITHUB_PAGES: "true"
+          PAGES_BASE_PATH: /${{ github.event.repository.name }}
+          NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
+          NEXT_PUBLIC_PORTAL_URL: https://${{ github.repository_owner }}.github.io
+        run: |
+          npm run build
+          # _next/ を Jekyll に無視されないようにします
+          touch out/.nojekyll
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
