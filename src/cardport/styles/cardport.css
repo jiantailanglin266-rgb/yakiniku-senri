@@ -1,0 +1,809 @@
+/* ============================================================
+   CARD PORT — デザインシステム
+   「2040年のデジタル決済と信用経済」
+
+   ■ 読み込まれる範囲
+     `/card-port` 配下のレイアウトからのみ読み込みます。
+     同居している焼肉 千里 / AI PORT / CRYPTO PORT には配信されません。
+
+   ■ Tailwind の読み込み方
+     preflight（リセット）はルートの `globals.css` が全ページへ配信済みです。
+     ここで `@import "tailwindcss"` をそのまま使うとリセットが二重になるため、
+     theme と utilities のレイヤーだけを読み込みます。
+
+   ■ トークン名の接頭辞
+     `@theme` は全サイト共通のスコープに入ります。
+     `--color-gold` や `--font-display` のような一般的な名前は
+     焼肉 千里 側のトークンと衝突するため、すべて `cp-` を付けています。
+
+   ■ 装飾より可読性
+     年会費・還元率・キャンペーン条件は、どの装飾の上でもコントラスト比 4.5:1 を
+     下回らないこと。発光・グラデーションは「面」に掛け、文字には掛けません
+     （見出しの text-gradient を除く）。
+   ============================================================ */
+@layer theme, base, components, utilities;
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities) source(none);
+
+@source "../../app/card-port";
+@source "../components";
+@source "../data";
+@source "../lib";
+@source "../config";
+@source "../i18n";
+
+@theme {
+  /* ---- 地の色 ---------------------------------------------- */
+  --color-cp-void: #05070f;
+  --color-cp-abyss: #080c18;
+  --color-cp-navy: #0b1020;
+  --color-cp-navy-soft: #111832;
+  --color-cp-slate: #1b2440;
+  --color-cp-line: #263254;
+
+  /* ---- 文字色 ---------------------------------------------- */
+  --color-cp-ink: #f2f6ff;
+  --color-cp-mist: #b7c2dd;
+  --color-cp-dim: #8492b4;
+
+  /* ---- アクセント ------------------------------------------ */
+  --color-cp-cyan: #22d3ee;
+  --color-cp-electric: #3b82f6;
+  --color-cp-violet: #8b5cf6;
+  --color-cp-magenta: #e548a8;
+  --color-cp-emerald: #34d399;
+  --color-cp-amber: #fbbf24;
+  --color-cp-gold: #e3c37a;
+  --color-cp-danger: #fb7185;
+
+  /* ---- タイポグラフィ -------------------------------------- */
+  --font-cp-display: var(--font-cardport-display), "Segoe UI", system-ui, sans-serif;
+  --font-cp-body:
+    var(--font-cardport-body), system-ui, -apple-system, "Hiragino Sans", "Yu Gothic",
+    "Noto Sans JP", sans-serif;
+  --font-cp-mono: var(--font-cardport-mono), "SFMono-Regular", ui-monospace, monospace;
+
+  --ease-port: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ------------------------------------------------------------
+   ベース
+
+   ルートレイアウトの `globals.css`（焼肉 千里のトークン）が全ページに効いているため、
+   ここでの指定はすべて `.cardport-root` の配下に閉じ込めます。
+   ------------------------------------------------------------ */
+.cardport-root {
+  color-scheme: dark;
+
+  /* config/site.ts の palette からレイアウトが上書きします */
+  --port-base: #05070f;
+  --port-surface: #0b1020;
+  --port-cyan: #22d3ee;
+  --port-electric: #3b82f6;
+  --port-violet: #8b5cf6;
+  --port-magenta: #e548a8;
+  --port-emerald: #34d399;
+  --port-gold: #e3c37a;
+
+  position: relative;
+  min-height: 100svh;
+  background-color: var(--port-base);
+  color: var(--color-cp-ink);
+  font-family: var(--font-cp-body);
+  font-feature-settings: "palt" 1;
+  line-height: 1.8;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.cardport-root h1,
+.cardport-root h2,
+.cardport-root h3,
+.cardport-root h4 {
+  font-family: var(--font-cp-display);
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.005em;
+}
+
+/* 数字は等幅で桁を揃える（金額・還元率の読み違いを防ぐ） */
+.cardport-root .numeric {
+  font-family: var(--font-cp-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+/* 右横書き（アラビア語など）でも数値ブロックが崩れないように */
+.cardport-root[dir="rtl"] .numeric,
+.cardport-root [dir="rtl"] .numeric {
+  direction: ltr;
+  unicode-bidi: embed;
+}
+
+.cardport-root ::selection {
+  background: color-mix(in srgb, var(--port-cyan) 45%, transparent);
+  color: #ffffff;
+}
+
+.cardport-root :focus-visible {
+  outline: 2px solid var(--port-cyan);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ------------------------------------------------------------
+   背景レイヤー
+   固定配置の3枚重ね。セクション個別の背景色は持たせません。
+   ------------------------------------------------------------ */
+.cardport-root .port-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: -4;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      60% 42% at 12% 0%,
+      color-mix(in srgb, var(--port-violet) 26%, transparent) 0%,
+      transparent 62%
+    ),
+    radial-gradient(
+      54% 40% at 88% 8%,
+      color-mix(in srgb, var(--port-cyan) 20%, transparent) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      70% 50% at 50% 104%,
+      color-mix(in srgb, var(--port-electric) 22%, transparent) 0%,
+      transparent 64%
+    ),
+    radial-gradient(
+      42% 32% at 96% 62%,
+      color-mix(in srgb, var(--port-magenta) 16%, transparent) 0%,
+      transparent 60%
+    ),
+    linear-gradient(180deg, var(--port-base) 0%, #070b16 46%, var(--port-base) 100%);
+}
+
+/* サイバーグリッド — 中央だけ抜いて本文の可読性を確保 */
+.cardport-root .port-grid {
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image:
+    linear-gradient(to right, rgba(120, 160, 255, 0.09) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(120, 160, 255, 0.09) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(120% 90% at 50% 40%, transparent 26%, #000 92%);
+  mask-image: radial-gradient(120% 90% at 50% 40%, transparent 26%, #000 92%);
+}
+
+/* ノイズ — グラデーションのバンディングを撹拌 */
+.cardport-root .port-grain {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+/* ------------------------------------------------------------
+   ガラス・パネル
+   ------------------------------------------------------------ */
+.cardport-root .glass {
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.03) 42%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(14px) saturate(1.25);
+  -webkit-backdrop-filter: blur(14px) saturate(1.25);
+}
+
+.cardport-root .glass-solid {
+  background: linear-gradient(160deg, rgba(17, 24, 50, 0.94) 0%, rgba(8, 12, 24, 0.94) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+/* 光るボーダー — 疑似要素でグラデーション枠を作る */
+.cardport-root .glow-border {
+  position: relative;
+  isolation: isolate;
+}
+.cardport-root .glow-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--port-cyan) 70%, transparent) 0%,
+    color-mix(in srgb, var(--port-violet) 60%, transparent) 42%,
+    color-mix(in srgb, var(--port-magenta) 55%, transparent) 100%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.55;
+  transition: opacity 400ms var(--ease-port);
+}
+.cardport-root .glow-border:hover::before {
+  opacity: 1;
+}
+
+/* ------------------------------------------------------------
+   文字グラデーション
+   ------------------------------------------------------------ */
+.cardport-root .text-aurora {
+  background: linear-gradient(
+    100deg,
+    var(--port-cyan) 0%,
+    var(--port-electric) 32%,
+    var(--port-violet) 62%,
+    var(--port-magenta) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.cardport-root .text-gold-port {
+  background: linear-gradient(100deg, #b98d3c 0%, var(--port-gold) 46%, #fff3d0 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ------------------------------------------------------------
+   3D クレジットカード（CSS 3D）
+   WebGL を持ち込まずに立体感を出します。低スペック端末でも破綻しません。
+   ------------------------------------------------------------ */
+.cardport-root .card3d-scene {
+  perspective: 1400px;
+  perspective-origin: 50% 40%;
+}
+
+.cardport-root .card3d {
+  position: relative;
+  aspect-ratio: 1.585 / 1; /* ISO/IEC 7810 ID-1 */
+  /* 券面の文字をカード幅に追従させます（一覧の小さい券面でも溢れないように） */
+  container-type: inline-size;
+  border-radius: 1rem;
+  transform-style: preserve-3d;
+  transition:
+    transform 700ms var(--ease-port),
+    box-shadow 700ms var(--ease-port);
+  box-shadow:
+    0 24px 60px -20px rgba(0, 0, 0, 0.85),
+    0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+  will-change: transform;
+}
+
+/* 券面を流れる光 */
+.cardport-root .card3d-sheen {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  pointer-events: none;
+}
+.cardport-root .card3d-sheen::after {
+  content: "";
+  position: absolute;
+  top: -60%;
+  left: -30%;
+  width: 45%;
+  height: 220%;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.32) 45%,
+    transparent 100%
+  );
+  transform: rotate(18deg);
+  animation: card-sheen 5.5s var(--ease-port) infinite;
+}
+
+@keyframes card-sheen {
+  0%,
+  62% {
+    transform: translateX(-40%) rotate(18deg);
+    opacity: 0;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(340%) rotate(18deg);
+    opacity: 0;
+  }
+}
+
+/* 空中に浮かぶ */
+@keyframes port-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(var(--port-tilt, 0deg));
+  }
+  50% {
+    transform: translate3d(0, -14px, 0) rotate(var(--port-tilt, 0deg));
+  }
+}
+.cardport-root .port-float {
+  animation: port-float 7s ease-in-out infinite;
+  animation-delay: var(--port-delay, 0s);
+}
+
+/* ホログラム */
+.cardport-root .holo {
+  background:
+    linear-gradient(
+      115deg,
+      rgba(255, 255, 255, 0.14) 0%,
+      transparent 30%,
+      rgba(255, 255, 255, 0.1) 55%,
+      transparent 78%
+    ),
+    conic-gradient(
+      from 200deg,
+      #22d3ee 0deg,
+      #8b5cf6 72deg,
+      #e548a8 144deg,
+      #fbbf24 216deg,
+      #34d399 288deg,
+      #22d3ee 360deg
+    );
+  background-blend-mode: overlay;
+  opacity: 0.85;
+}
+
+/* ------------------------------------------------------------
+   ニュース／キャンペーンのティッカー
+   ------------------------------------------------------------ */
+@keyframes port-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.cardport-root .port-marquee {
+  display: flex;
+  width: max-content;
+  animation: port-marquee var(--port-marquee-duration, 42s) linear infinite;
+}
+.cardport-root .port-marquee:hover,
+.cardport-root .port-marquee:focus-within {
+  animation-play-state: paused;
+}
+
+/* ------------------------------------------------------------
+   斜めキーワードマーキー
+
+   ■ はみ出しの止め方
+     帯を回転させると、四隅に地の色が三角に覗きます。
+     行を画面幅より広く取り（140%）、左へずらして中央に戻したうえで、
+     帯そのものに overflow: hidden を掛けて隠しています。
+
+   ■ 端末ごとの角度
+     スマホでは角度を浅くします。狭い画面で深く傾けると、
+     1行に収まる語数が減って「流れている」ことが伝わらないためです。
+
+   ■ 色を回すのは背景だけ
+     hue-rotate は背後のオーロラにだけ掛けます。
+     チップに掛けると filter が文字の描画にも効き、
+     コントラスト比が時間によって変わって読めない瞬間ができます。
+   ------------------------------------------------------------ */
+@keyframes port-kw-drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+/*
+  オーロラは回転させません。
+
+  長方形を回すと、回した角が帯の角を覆いきれず、
+  背景との境目が硬い斜めの線になって出ます（実機で確認）。
+  色の変化は hue-rotate に任せ、動きは横移動と拡縮だけにします。
+*/
+@keyframes port-kw-aurora {
+  from {
+    transform: translate3d(-7%, -3%, 0) scale(1.2);
+    filter: blur(var(--port-kw-blur)) hue-rotate(0deg);
+  }
+  50% {
+    transform: translate3d(7%, 3%, 0) scale(1.45);
+    filter: blur(var(--port-kw-blur)) hue-rotate(180deg);
+  }
+  to {
+    transform: translate3d(-7%, -3%, 0) scale(1.2);
+    filter: blur(var(--port-kw-blur)) hue-rotate(360deg);
+  }
+}
+@keyframes port-kw-beam {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: translate3d(-30%, 0, 0);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translate3d(30%, 0, 0);
+  }
+}
+
+.cardport-root .port-kwband {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding-block: clamp(2.75rem, 8vw, 5.5rem);
+  border-block: 1px solid var(--color-cp-line);
+  background:
+    radial-gradient(120% 140% at 12% 0%, rgb(59 130 246 / 0.22), transparent 60%),
+    radial-gradient(120% 140% at 88% 100%, rgb(229 72 168 / 0.22), transparent 60%),
+    linear-gradient(180deg, var(--color-cp-abyss), var(--color-cp-navy) 55%, var(--color-cp-void));
+}
+
+/* 背後で回るオーロラ（面にだけ色を掛けます） */
+.cardport-root .port-kwaurora {
+  position: absolute;
+  inset: -35%;
+  z-index: -2;
+  display: block;
+  pointer-events: none;
+  background: conic-gradient(
+    from 140deg,
+    rgb(34 211 238 / 0.5) 0deg,
+    rgb(139 92 246 / 0.5) 70deg,
+    rgb(229 72 168 / 0.5) 140deg,
+    rgb(251 191 36 / 0.45) 210deg,
+    rgb(52 211 153 / 0.5) 285deg,
+    rgb(34 211 238 / 0.5) 360deg
+  );
+  /*
+    ぼかし量は帯の高さに対する相対で決めます。
+    スマホでは帯が低いぶん、同じ 64px でぼかすと色が全部混ざって
+    ただの暗い面になります（実機で確認）。
+  */
+  --port-kw-blur: 38px;
+
+  opacity: 0.42;
+  filter: blur(var(--port-kw-blur));
+  animation: port-kw-aurora 44s linear infinite;
+}
+
+/* 横切る光の帯 */
+.cardport-root .port-kwbeam {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  display: block;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent 34%,
+    rgb(242 246 255 / 0.11) 50%,
+    transparent 66%
+  );
+  animation: port-kw-beam 9s var(--ease-port) infinite;
+}
+
+.cardport-root .port-kwtilt {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1.6vw, 0.9rem);
+  transform: rotate(-3deg);
+}
+
+.cardport-root .port-kwrow {
+  display: flex;
+  width: max-content;
+  /* 回転で四隅が覗かないよう、画面より広く取って中央へ戻します */
+  margin-inline-start: -20%;
+  padding-inline-end: 40%;
+  animation: port-kw-drift var(--port-kw-duration, 64s) linear infinite;
+  animation-direction: var(--port-kw-direction, normal);
+}
+.cardport-root .port-kwtrack {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.5rem, 1.4vw, 0.85rem);
+  padding-inline-end: clamp(0.5rem, 1.4vw, 0.85rem);
+}
+
+.cardport-root .port-kwchip {
+  --port-kw-tint: var(--color-cp-cyan);
+
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.5em;
+  white-space: nowrap;
+  border: 1px solid color-mix(in oklab, var(--port-kw-tint) 46%, transparent);
+  border-radius: 999px;
+  padding: 0.5em 1.1em;
+  font-family: var(--font-cp-display);
+  font-size: clamp(0.78rem, 2.6vw, 1.15rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--port-kw-tint);
+  /*
+    地はアクセント色を混ぜず、暗いままにします。
+    color-mix を使うと、対応していないブラウザ向けの代替として
+    アクセント色そのものが地に落ちてしまい、
+    同じ色の文字が読めなくなります（ビルド後のCSSで確認済み）。
+    色味は文字・枠線・発光と、背後のオーロラで足ります。
+  */
+  background: rgb(8 12 24 / 0.74);
+  box-shadow:
+    0 0 0 1px rgb(5 7 15 / 0.6),
+    0 10px 30px -18px color-mix(in oklab, var(--port-kw-tint) 80%, transparent);
+  /*
+    チップ自体には色のアニメーションを掛けません。
+
+    filter: hue-rotate() は文字の描画にも掛かるため、
+    時間によって文字色が変わり、コントラスト比が読めなくなります。
+    色を回すのは背後のオーロラだけにして、
+    キーワードの文字色は 4.5:1 を確保できる値で固定します。
+
+    56 個のチップに box-shadow のアニメーションを掛けると
+    毎フレーム描き直しになるため、そちらも掛けていません。
+    動きは行の流れ（transform）だけで作ります。
+  */
+}
+.cardport-root .port-kwdot {
+  display: inline-block;
+  width: 0.42em;
+  height: 0.42em;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.cardport-root .port-kw-cyan {
+  --port-kw-tint: var(--color-cp-cyan);
+}
+.cardport-root .port-kw-magenta {
+  --port-kw-tint: var(--color-cp-magenta);
+}
+.cardport-root .port-kw-emerald {
+  --port-kw-tint: var(--color-cp-emerald);
+}
+.cardport-root .port-kw-amber {
+  --port-kw-tint: var(--color-cp-amber);
+}
+.cardport-root .port-kw-gold {
+  --port-kw-tint: var(--color-cp-gold);
+}
+
+/* 画面が広いほど角度を深くします（狭い画面で深く傾けると語数が減ります） */
+@media (min-width: 640px) {
+  .cardport-root .port-kwaurora {
+    --port-kw-blur: 56px;
+
+    opacity: 0.36;
+  }
+  .cardport-root .port-kwtilt {
+    transform: rotate(-4.5deg);
+  }
+}
+@media (min-width: 1024px) {
+  .cardport-root .port-kwaurora {
+    --port-kw-blur: 64px;
+
+    opacity: 0.34;
+  }
+  .cardport-root .port-kwtilt {
+    transform: rotate(-5.5deg);
+  }
+}
+
+/* ------------------------------------------------------------
+   プリズム（ファーストビューの背景で色が巡るグラデーション）
+
+   円錐グラデーションを2枚ずらして重ね、強くぼかしてから全体の色相を回します。
+   単色のグラデーションを動かすより、隣り合う色が混ざって
+   「面が発光している」ように見えます。
+
+   文字には掛けません（`.cardport-root` の方針どおり、発光は面だけに掛けます）。
+   ------------------------------------------------------------ */
+@keyframes port-prism {
+  from {
+    transform: rotate(0deg) scale(1.08);
+  }
+  to {
+    transform: rotate(360deg) scale(1.08);
+  }
+}
+@keyframes port-hue {
+  from {
+    filter: blur(3.2rem) saturate(1.2) hue-rotate(0deg);
+  }
+  to {
+    filter: blur(3.2rem) saturate(1.2) hue-rotate(360deg);
+  }
+}
+.cardport-root .port-prism {
+  position: absolute;
+  /* 回転で四隅が欠けないよう、箱より一回り大きく取ります */
+  inset: -28%;
+  pointer-events: none;
+  opacity: 0.42;
+  background:
+    conic-gradient(
+      from 210deg at 32% 38%,
+      var(--color-cp-cyan) 0deg,
+      var(--color-cp-violet) 78deg,
+      var(--color-cp-magenta) 150deg,
+      var(--color-cp-amber) 232deg,
+      var(--color-cp-emerald) 300deg,
+      var(--color-cp-cyan) 360deg
+    ),
+    conic-gradient(
+      from 30deg at 72% 68%,
+      var(--color-cp-electric) 0deg,
+      var(--color-cp-emerald) 96deg,
+      var(--color-cp-gold) 190deg,
+      var(--color-cp-magenta) 268deg,
+      var(--color-cp-electric) 360deg
+    );
+  background-blend-mode: screen;
+  filter: blur(3.2rem) saturate(1.2);
+  animation:
+    port-prism 34s linear infinite,
+    port-hue 52s linear infinite;
+}
+
+/* ------------------------------------------------------------
+   スクロール連動の出現
+   ------------------------------------------------------------ */
+@keyframes port-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.cardport-root .port-reveal {
+  animation: port-reveal 760ms var(--ease-port) both;
+  animation-play-state: paused;
+}
+.cardport-root .port-reveal.is-in {
+  animation-play-state: running;
+}
+.cardport-root .port-stagger > * {
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+
+/* データストリーム（縦に流れる光の線） */
+@keyframes port-stream {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  18% {
+    opacity: 1;
+  }
+  82% {
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+.cardport-root .port-stream span {
+  position: absolute;
+  top: 0;
+  width: 1px;
+  height: 22%;
+  background: linear-gradient(180deg, transparent, var(--port-cyan), transparent);
+  animation: port-stream var(--port-stream-duration, 6s) linear infinite;
+  animation-delay: var(--port-delay, 0s);
+}
+
+/* ------------------------------------------------------------
+   ユーティリティ
+   ------------------------------------------------------------ */
+.cardport-root .hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.cardport-root .hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.cardport-root .port-shadow {
+  box-shadow: 0 20px 50px -24px rgba(0, 0, 0, 0.9);
+}
+
+/* 表の1列目を固定して、横スクロール中も行が読める状態を保ちます */
+.cardport-root .sticky-col th:first-child,
+.cardport-root .sticky-col td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: rgba(8, 12, 24, 0.96);
+}
+
+/* ------------------------------------------------------------
+   モーション低減 — 必須対応
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  .cardport-root,
+  .cardport-root *,
+  .cardport-root *::before,
+  .cardport-root *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .cardport-root .port-reveal {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .cardport-root .port-marquee {
+    animation: none !important;
+    transform: none !important;
+  }
+  /*
+    斜めマーキーは、動きを止めても「傾いた帯にキーワードが並んでいる」
+    見た目がそのまま残ります。行の位置だけ戻して、装飾としては残します。
+  */
+  .cardport-root .port-kwrow {
+    animation: none !important;
+  }
+  .cardport-root .port-kwaurora,
+  .cardport-root .port-kwbeam {
+    animation: none !important;
+    opacity: 0.3 !important;
+    transform: none !important;
+  }
+  .cardport-root .card3d-sheen::after,
+  .cardport-root .port-stream span {
+    display: none !important;
+  }
+  .cardport-root .port-float {
+    animation: none !important;
+  }
+  /* 色が巡らないぶん、静止画としての見え方を整えます */
+  .cardport-root .port-prism {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* 印刷（比較表を紙で持ち歩けるように） */
+@media print {
+  .cardport-root {
+    color-scheme: light;
+    background: #fff !important;
+    color: #111 !important;
+  }
+  .cardport-root .port-canvas,
+  .cardport-root .port-grid,
+  .cardport-root .port-grain,
+  .cardport-root .no-print {
+    display: none !important;
+  }
+}
