@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+/* ============================================================
+   AI PORT — デザイントークン
+
+   ■ 分離前の経緯
+     もともと焼肉 千里 と同居しており、この `@theme` は
+     千里の `globals.css` の中にありました。トークン名の `ai-` 接頭辞は、
+     千里側のトークンと衝突させないための措置です。
+     単独リポジトリになった今も、`src/styles/ai-port.css` が
+     `bg-ai-void` などの形で参照しているため、名前は変えていません。
+
+   ■ Tailwind の読み込み
+     `ai-port.css` は「Tailwind は読み込み済み」という前提で書かれています
+     （同居時代に千里の globals.css が読んでいたため）。
+     ここで読み込みます。ai-port.css 側は変更していません。
+   ============================================================ */
+
+@theme {
+  /* 地の色 — 深宇宙のネイビーからブラックへ */
+  --color-ai-void: #04060f;
+  --color-ai-abyss: #070b18;
+  --color-ai-ink: #0c1226;
+  --color-ai-slate: #141c36;
+  --color-ai-line: #1e2947;
+
+  /* 文字 */
+  --color-ai-white: #f4f8ff;
+  --color-ai-mist: #c3cee4;
+  --color-ai-haze: #8494b3;
+  --color-ai-dim: #5b6a88;
+
+  /* アクセント — シアン→ブルー→パープル→ピンクの連なり */
+  --color-ai-cyan: #2ee6ff;
+  --color-ai-sky: #4aa8ff;
+  --color-ai-blue: #4d6dff;
+  --color-ai-violet: #8b5cf6;
+  --color-ai-purple: #a855f7;
+  --color-ai-pink: #ff4fd8;
+  --color-ai-mint: #5eead4;
+  --color-ai-amber: #ffb547;
+
+  --font-ai-display: var(--font-space-grotesk), var(--font-noto-sans-jp), system-ui, sans-serif;
+  --font-ai-sans: var(--font-noto-sans-jp), "Hiragino Sans", system-ui, sans-serif;
+  --font-ai-mono: var(--font-jetbrains-mono), ui-monospace, "SFMono-Regular", monospace;
+
+  --ease-ai: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-ai-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+  }
+
+  html,
+  body {
+    /* 横スクロール防止 */
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  body {
+    background-color: var(--color-ai-void);
+  }
+}
