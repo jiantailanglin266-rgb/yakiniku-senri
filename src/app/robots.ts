@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next";
 import { siteUrl } from "@/data/site";
-import { AI_PORT_BASE } from "@/data/ai-port/site";
 import { brand as sportsBrand } from "@/sports/config/site";
 import { staticLocales } from "@/portal/i18n/config";
 import { localeUrl } from "@/portal/lib/seo";
@@ -35,10 +34,8 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: "*",
         allow: "/",
         // 検索結果ページはキーワードごとに無限にURLが生えるため、クロールさせません
-        // （ページ側でも noindex を返しています）。APIも同様に除外します。
+        // （ページ側でも noindex を返しています）。
         disallow: [
-          `${AI_PORT_BASE}/search`,
-          `${AI_PORT_BASE}/api/`,
           // SPORTS PORT の検索結果と管理画面（クロールしても価値がありません）
           `${sportsBrand.routePrefix}/*/search`,
           `${sportsBrand.routePrefix}/*/admin`,

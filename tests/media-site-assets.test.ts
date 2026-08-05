@@ -88,7 +88,6 @@ describe("ライセンス表記への導線", () => {
    */
   const switchers = [
     "src/components/i18n/LanguageSwitcher.tsx",
-    "src/components/ai-port/layout/AiLanguageSwitcher.tsx",
     "src/cardport/components/layout/LanguageSwitcher.tsx",
     "src/sports/components/layout/LocaleSwitcher.tsx",
     "src/portal/components/layout/LocaleSwitcher.tsx",
